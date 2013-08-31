@@ -70,7 +70,7 @@ namespace NinjaTrader.Indicator
         /// </summary>
         protected override void OnBarUpdate()
         {
-			if (CurrentBars[0] <= BarsRequired)
+			if (CurrentBars[0] <= 2) //BarsRequired)
         		return;
 			
 			double value1 = 2 * WMA(Inputs[0], (int)(Period / 2))[0];
