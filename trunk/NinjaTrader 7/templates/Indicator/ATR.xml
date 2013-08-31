@@ -1,0 +1,59 @@
+<NinjaTrader>
+  <Version>7.0.1000.12</Version>
+  <ClassName>NinjaTrader.Indicator.ATR</ClassName>
+  <Default>
+    <ATR xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+      <AutoScale>true</AutoScale>
+      <BarsPeriods>
+        <Period>
+          <BasePeriodType>Minute</BasePeriodType>
+          <BasePeriodValue>1</BasePeriodValue>
+          <Id>Minute</Id>
+          <MarketDataType>Last</MarketDataType>
+          <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+          <ReversalType>Tick</ReversalType>
+          <Value>1</Value>
+          <Value2>1</Value2>
+        </Period>
+      </BarsPeriods>
+      <CalculateOnBarClose>true</CalculateOnBarClose>
+      <DisableScaleBuffer>false</DisableScaleBuffer>
+      <Displacement>0</Displacement>
+      <DisplayInDataBox>true</DisplayInDataBox>
+      <DrawOnPricePanel>true</DrawOnPricePanel>
+      <Enabled>false</Enabled>
+      <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+      <HorizontalGridLines>true</HorizontalGridLines>
+      <InstrumentsSerializable>CL 05-13 Nymex</InstrumentsSerializable>
+      <Lines />
+      <LinesConfigurable>true</LinesConfigurable>
+      <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+      <Name>ATR</Name>
+      <Overlay>false</Overlay>
+      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <Panel>2</Panel>
+      <PanelUI>3</PanelUI>
+      <Plots>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>ATR</Name>
+          <PenSerializable>
+            <Color>n:DarkGreen</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>1</Width>
+          </PenSerializable>
+          <PlotStyle>Line</PlotStyle>
+        </Plot>
+      </Plots>
+      <PlotsConfigurable>true</PlotsConfigurable>
+      <ScaleJustification>Right</ScaleJustification>
+      <SelectedSeries>0</SelectedSeries>
+      <SessionBreakLines>true</SessionBreakLines>
+      <VerticalGridLines>true</VerticalGridLines>
+      <ZOrder>10381</ZOrder>
+      <Period>14</Period>
+    </ATR>
+  </Default>
+</NinjaTrader>

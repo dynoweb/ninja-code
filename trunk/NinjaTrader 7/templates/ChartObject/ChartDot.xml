@@ -1,0 +1,25 @@
+<NinjaTrader>
+  <Version>7.0.1000.12</Version>
+  <Default>
+    <ChartDot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AutoScale>true</AutoScale>
+      <AddGlobalAsDefault>false</AddGlobalAsDefault>
+      <CreatedOnBar>-1</CreatedOnBar>
+      <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
+      <InstrumentOnCopyPaste />
+      <LastSeen>1800-01-01T00:00:00</LastSeen>
+      <Locked>false</Locked>
+      <Panel>0</Panel>
+      <Persist>true</Persist>
+      <ScaleJustification>Right</ScaleJustification>
+      <Selectable>true</Selectable>
+      <SeparateZOrder>false</SeparateZOrder>
+      <Y>1553.12322979621</Y>
+      <Tag>B</Tag>
+      <Time>2013-03-26T08:44:11</Time>
+      <VisibleOnInstrument>ES 06-13</VisibleOnInstrument>
+      <ZOrder>0</ZOrder>
+      <ColorSerialize>n:Red</ColorSerialize>
+    </ChartDot>
+  </Default>
+</NinjaTrader>

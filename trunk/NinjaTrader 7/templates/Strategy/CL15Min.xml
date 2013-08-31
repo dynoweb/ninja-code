@@ -1,0 +1,202 @@
+<NinjaTrader>
+  <Version>7.0.1000.9</Version>
+  <ClassName>NinjaTrader.Strategy.CL15Min</ClassName>
+  <Default>
+    <CL15Min xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AccountSize>0</AccountSize>
+      <Aggregated>false</Aggregated>
+      <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+      <BackTestFrom>2012-01-01T00:00:00</BackTestFrom>
+      <BackTestMode>Optimizer</BackTestMode>
+      <BackTestTo>2012-09-24T00:00:00-05:00</BackTestTo>
+      <BarsPeriods>
+        <Period>
+          <BasePeriodType>Minute</BasePeriodType>
+          <BasePeriodValue>1</BasePeriodValue>
+          <Id>Minute</Id>
+          <MarketDataType>Last</MarketDataType>
+          <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+          <ReversalType>Tick</ReversalType>
+          <Value>1</Value>
+          <Value2>1</Value2>
+        </Period>
+      </BarsPeriods>
+      <BarsRequired>20</BarsRequired>
+      <CalculateOnBarClose>true</CalculateOnBarClose>
+      <CancelEntryOrdersOnDisable>false</CancelEntryOrdersOnDisable>
+      <CancelExitOrdersOnDisable>true</CancelExitOrdersOnDisable>
+      <DataSeriesConfigurable>true</DataSeriesConfigurable>
+      <DefaultQuantity>1</DefaultQuantity>
+      <EntriesPerDirection>1</EntriesPerDirection>
+      <EntryHandling>AllEntries</EntryHandling>
+      <ExitOnClose>true</ExitOnClose>
+      <ExitOnCloseSeconds>30</ExitOnCloseSeconds>
+      <FillTypeSerializable>NinjaTrader.Strategy.DefaultFillType</FillTypeSerializable>
+      <IncludeCommission>true</IncludeCommission>
+      <InheritRunning>true</InheritRunning>
+      <KeepBestResults>10</KeepBestResults>
+      <Name>CL15Min</Name>
+      <OptimizationMethodSerializable>NinjaTrader.Strategy.DefaultOptimizationMethod</OptimizationMethodSerializable>
+      <OptimizationPeriod>28</OptimizationPeriod>
+      <OptimizationTypeSerializable>NinjaTrader.Strategy.MaxProfitFactor</OptimizationTypeSerializable>
+      <Parameters>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AbeProfitTrigger</Name>
+          <Max>6</Max>
+          <Min>6</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>6</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>ProfitTarget</Name>
+          <Max>0</Max>
+          <Min>0</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>0</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>Qty</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>StopLoss</Name>
+          <Max>7</Max>
+          <Min>7</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>7</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtStopLoss1</Name>
+          <Max>5</Max>
+          <Min>5</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>5</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtFrequency1</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtProfitTrigger1</Name>
+          <Max>10</Max>
+          <Min>10</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>10</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtStopLoss2</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtFrequency2</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtProfitTrigger2</Name>
+          <Max>0</Max>
+          <Min>0</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>0</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtStopLoss3</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtFrequency3</Name>
+          <Max>1</Max>
+          <Min>1</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>1</ValueSerializable>
+        </Parameter>
+        <Parameter>
+          <Increment>1</Increment>
+          <Name>AtProfitTrigger3</Name>
+          <Max>0</Max>
+          <Min>0</Min>
+          <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+          <ValueSerializable>0</ValueSerializable>
+        </Parameter>
+      </Parameters>
+      <PerformanceValue>NaN</PerformanceValue>
+      <QuantityType>Strategy</QuantityType>
+      <RealtimeErrorHandling>StopStrategyCancelOrdersClosePositions</RealtimeErrorHandling>
+      <RequiresBars>true</RequiresBars>
+      <SessionData>&lt;Use instrument settings&gt;</SessionData>
+      <Slippage>0</Slippage>
+      <StartedAt>1800-01-01T00:00:00</StartedAt>
+      <StopTargetHandling>PerEntryExecution</StopTargetHandling>
+      <StoppedAt>1800-01-01T00:00:00</StoppedAt>
+      <StrategySync>WaitUntilFlat</StrategySync>
+      <SyncAccountPosition>false</SyncAccountPosition>
+      <TimeInForce>Gtc</TimeInForce>
+      <TestPeriod>28</TestPeriod>
+      <TraceOrders>false</TraceOrders>
+      <ZOrder>0</ZOrder>
+      <BarsPeriodParameter>
+        <Increment>1</Increment>
+        <Name>	</Name>
+        <Max>0</Max>
+        <Min>0</Min>
+        <ParameterTypeSerializable>System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</ParameterTypeSerializable>
+        <ValueSerializable>0</ValueSerializable>
+      </BarsPeriodParameter>
+      <ConnectionLossHandling>KeepRunning</ConnectionLossHandling>
+      <Days2Load>5</Days2Load>
+      <DisconnectDelaySeconds>10</DisconnectDelaySeconds>
+      <ExcludeTradeHistoryInBacktest>false</ExcludeTradeHistoryInBacktest>
+      <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+      <IgnoreOverFill>true</IgnoreOverFill>
+      <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+      <MaxRestartAttempts>4</MaxRestartAttempts>
+      <MaxRestartMinutes>5</MaxRestartMinutes>
+      <OptimizeDataSeries>false</OptimizeDataSeries>
+      <RestartDelaySeconds>10</RestartDelaySeconds>
+      <SpreadFeeds>false</SpreadFeeds>
+      <Unmanaged>false</Unmanaged>
+      <WaitOnCancelConfirmationSeconds>40</WaitOnCancelConfirmationSeconds>
+      <WaitOnSyncOrderSeconds>5</WaitOnSyncOrderSeconds>
+      <WaitForOcoClosingBracket>true</WaitForOcoClosingBracket>
+      <AbeProfitTrigger>6</AbeProfitTrigger>
+      <ProfitTarget>0</ProfitTarget>
+      <Qty>1</Qty>
+      <StopLoss>7</StopLoss>
+      <AtStopLoss1>5</AtStopLoss1>
+      <AtFrequency1>1</AtFrequency1>
+      <AtProfitTrigger1>10</AtProfitTrigger1>
+      <AtStopLoss2>1</AtStopLoss2>
+      <AtFrequency2>1</AtFrequency2>
+      <AtProfitTrigger2>0</AtProfitTrigger2>
+      <AtStopLoss3>1</AtStopLoss3>
+      <AtFrequency3>1</AtFrequency3>
+      <AtProfitTrigger3>0</AtProfitTrigger3>
+    </CL15Min>
+  </Default>
+</NinjaTrader>

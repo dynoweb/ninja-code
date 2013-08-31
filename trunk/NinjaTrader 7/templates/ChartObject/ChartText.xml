@@ -1,0 +1,42 @@
+<NinjaTrader>
+  <Version>7.0.1000.11</Version>
+  <Default>
+    <ChartText xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AutoScale>false</AutoScale>
+      <AddGlobalAsDefault>false</AddGlobalAsDefault>
+      <CreatedOnBar>-1</CreatedOnBar>
+      <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
+      <InstrumentOnCopyPaste />
+      <LastSeen>1800-01-01T00:00:00</LastSeen>
+      <Locked>false</Locked>
+      <Panel>0</Panel>
+      <Persist>true</Persist>
+      <ScaleJustification>Right</ScaleJustification>
+      <Selectable>true</Selectable>
+      <SeparateZOrder>false</SeparateZOrder>
+      <Y>13836.8557345055</Y>
+      <Tag>2A</Tag>
+      <Time>2013-02-25T13:01:09</Time>
+      <VisibleOnInstrument>YM 03-13</VisibleOnInstrument>
+      <ZOrder>0</ZOrder>
+      <Alignment>Center</Alignment>
+      <AreaOpacity>127</AreaOpacity>
+      <BackColorSerialize>n:ActiveCaption</BackColorSerialize>
+      <ColorSerialize>-16777216</ColorSerialize>
+      <FontSerializable>
+        <FontFamily>Arial</FontFamily>
+        <Size>8</Size>
+        <Style>Regular</Style>
+      </FontSerializable>
+      <YPixelOffset>0</YPixelOffset>
+      <PenSerializable>
+        <Color>n:DarkSlateGray</Color>
+        <DashStyle>Solid</DashStyle>
+        <Width>1</Width>
+      </PenSerializable>
+      <Text>Late in the trend and weak stoc
+not a good entry, closed it quick
+for a small profit</Text>
+    </ChartText>
+  </Default>
+</NinjaTrader>
