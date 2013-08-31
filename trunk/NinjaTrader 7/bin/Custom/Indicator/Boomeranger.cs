@@ -58,17 +58,23 @@ namespace NinjaTrader.Indicator
 			dynamicTrend.UpColor = Color.DarkCyan;
 			dynamicTrend.PaintPriceMarkers = false;
 
-			slowSignal.Plots[0].Pen.Color = Color.Red;
-			slowSignal.PaintPriceMarkers = false;
-			slowSignal.CalculateOnBarClose = false;		}
+//			slowSignal.Plots[0].Pen.Color = Color.Red;
+//			slowSignal.PaintPriceMarkers = false;
+//			slowSignal.CalculateOnBarClose = false;		
+		}
 		
         /// <summary>
         /// This method is used to configure the indicator and is called once before any bar data is loaded.
         /// </summary>
         protected override void Initialize()
         {
+			/*
 			Add(PitColor(Color.Black, 83000, 25, 161500));
 			Add(TickCounter(true, false));
+			
+			Add(SMA(slowSignalPeriod));
+			SMA(slowSignalPeriod).Plots[0].Pen.Color = Color.Red;
+			SMA(slowSignalPeriod).PaintPriceMarkers = false;
 			
 			// TMA(40) may be an interesting alternative
 			// DWMA(70) is also interesting
@@ -93,7 +99,7 @@ namespace NinjaTrader.Indicator
 			HallMaColored(HmaPeriod2).Dash0Style = DashStyle.DashDot;
 			HallMaColored(HmaPeriod2).Plot0Width = 2;
 			HallMaColored(HmaPeriod2).PaintPriceMarkers = false;
-			
+			*/
 			Overlay				= true;
         }
 
