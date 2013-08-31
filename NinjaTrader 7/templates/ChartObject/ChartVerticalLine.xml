@@ -1,0 +1,33 @@
+<NinjaTrader>
+  <Version>7.0.1000.13</Version>
+  <Default>
+    <ChartVerticalLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AutoScale>false</AutoScale>
+      <AddGlobalAsDefault>false</AddGlobalAsDefault>
+      <CreatedOnBar>-1</CreatedOnBar>
+      <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
+      <InstrumentOnCopyPaste />
+      <LastSeen>1800-01-01T00:00:00</LastSeen>
+      <Locked>false</Locked>
+      <Panel>0</Panel>
+      <Persist>true</Persist>
+      <ScaleJustification>Right</ScaleJustification>
+      <Selectable>true</Selectable>
+      <SeparateZOrder>false</SeparateZOrder>
+      <Y>0</Y>
+      <Tag>4</Tag>
+      <Time>2013-06-11T07:57:28</Time>
+      <VisibleOnInstrument>CL 07-13</VisibleOnInstrument>
+      <ZOrder>0</ZOrder>
+      <EndTime>2013-06-11T07:57:28</EndTime>
+      <EndY>0</EndY>
+      <PenSerializable>
+        <Color>n:Blue</Color>
+        <DashStyle>Solid</DashStyle>
+        <Width>1</Width>
+      </PenSerializable>
+      <StartTime>2013-06-11T07:57:28</StartTime>
+      <StartY>0</StartY>
+    </ChartVerticalLine>
+  </Default>
+</NinjaTrader>

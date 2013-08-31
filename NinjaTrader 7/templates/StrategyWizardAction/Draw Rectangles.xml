@@ -1,0 +1,190 @@
+<NinjaTrader>
+  <Version>7.0.1000.9</Version>
+  <Action>
+    <ArrayOfStrategyWizardAction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <StrategyWizardAction>
+        <DisplayName>Rectangle</DisplayName>
+        <Help />
+        <MemberName>DrawRectangle</MemberName>
+        <Parameters>
+          <string>tag</string>
+          <string>startBarsAgo</string>
+          <string>startY</string>
+          <string>endBarsAgo</string>
+          <string>endY</string>
+          <string>color</string>
+        </Parameters>
+        <Values>
+          <string>"My rectangle"</string>
+          <string>0</string>
+          <string>DonchianChannel(200).Lower[3] + 3 * TickSize</string>
+          <string>1</string>
+          <string>5</string>
+          <string>Color.Blue</string>
+        </Values>
+        <WizardItems>
+          <StrategyWizardItem>
+            <DisplayName />
+            <IsIndicator>false</IsIndicator>
+            <IsInt>false</IsInt>
+            <IsMethod>false</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName />
+            <Parameters />
+            <Values />
+            <WizardItems />
+          </StrategyWizardItem>
+          <StrategyWizardItem>
+            <DisplayName>Numeric value</DisplayName>
+            <IsIndicator>false</IsIndicator>
+            <IsInt>true</IsInt>
+            <IsMethod>false</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName>0</MemberName>
+            <Parameters />
+            <Values />
+            <WizardItems />
+          </StrategyWizardItem>
+          <StrategyWizardItem>
+            <DisplayName>DonchianChannel</DisplayName>
+            <IsIndicator>true</IsIndicator>
+            <IsInt>false</IsInt>
+            <IsMethod>true</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName>DonchianChannel</MemberName>
+            <Parameters>
+              <string>	inputSeries</string>
+              <string>Period</string>
+              <string>	plot</string>
+              <string>	barsAgo</string>
+              <string>	offsetType</string>
+              <string>	offset</string>
+              <string>	plotOnChart</string>
+            </Parameters>
+            <Values>
+              <string>DefaultInput</string>
+              <string>200</string>
+              <string>"Lower"</string>
+              <string>3</string>
+              <string>NinjaTrader.Strategy.CalculationMode.Ticks</string>
+              <string>3</string>
+              <string>False</string>
+            </Values>
+            <WizardItems>
+              <StrategyWizardItem>
+                <DisplayName>DefaultInput</DisplayName>
+                <IsIndicator>false</IsIndicator>
+                <IsInt>false</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName>DefaultInput</MemberName>
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName>Numeric value</DisplayName>
+                <IsIndicator>false</IsIndicator>
+                <IsInt>true</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName>200</MemberName>
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName />
+                <IsIndicator>false</IsIndicator>
+                <IsInt>false</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName />
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName>Numeric value</DisplayName>
+                <IsIndicator>false</IsIndicator>
+                <IsInt>true</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName>3</MemberName>
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName />
+                <IsIndicator>false</IsIndicator>
+                <IsInt>false</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName />
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName>Numeric value</DisplayName>
+                <IsIndicator>false</IsIndicator>
+                <IsInt>true</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName>3</MemberName>
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+              <StrategyWizardItem>
+                <DisplayName />
+                <IsIndicator>false</IsIndicator>
+                <IsInt>false</IsInt>
+                <IsMethod>false</IsMethod>
+                <IsSet>true</IsSet>
+                <MemberName />
+                <Parameters />
+                <Values />
+                <WizardItems />
+              </StrategyWizardItem>
+            </WizardItems>
+          </StrategyWizardItem>
+          <StrategyWizardItem>
+            <DisplayName>Numeric value</DisplayName>
+            <IsIndicator>false</IsIndicator>
+            <IsInt>true</IsInt>
+            <IsMethod>false</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName>1</MemberName>
+            <Parameters />
+            <Values />
+            <WizardItems />
+          </StrategyWizardItem>
+          <StrategyWizardItem>
+            <DisplayName>Numeric value</DisplayName>
+            <IsIndicator>false</IsIndicator>
+            <IsInt>true</IsInt>
+            <IsMethod>false</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName>5</MemberName>
+            <Parameters />
+            <Values />
+            <WizardItems />
+          </StrategyWizardItem>
+          <StrategyWizardItem>
+            <DisplayName />
+            <IsIndicator>false</IsIndicator>
+            <IsInt>false</IsInt>
+            <IsMethod>false</IsMethod>
+            <IsSet>true</IsSet>
+            <MemberName />
+            <Parameters />
+            <Values />
+            <WizardItems />
+          </StrategyWizardItem>
+        </WizardItems>
+      </StrategyWizardAction>
+    </ArrayOfStrategyWizardAction>
+  </Action>
+</NinjaTrader>

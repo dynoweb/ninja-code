@@ -1,0 +1,55 @@
+<NinjaTrader>
+  <Version>7.0.1000.11</Version>
+  <Default>
+    <BarsData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AutoScale>true</AutoScale>
+      <BarsBack>50</BarsBack>
+      <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;2.1&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
+      <DaysBack>5</DaysBack>
+      <DisplayInDataBox>true</DisplayInDataBox>
+      <From>2013-02-17T00:00:00-06:00</From>
+      <Instrument>GC 04-13 Nymex</Instrument>
+      <IsPrimarySeries>false</IsPrimarySeries>
+      <Label>GC 04-13</Label>
+      <LongExecutionColorSerialize>n:Blue</LongExecutionColorSerialize>
+      <PaintPriceMarker>true</PaintPriceMarker>
+      <Panel>0</Panel>
+      <PanelUI>1</PanelUI>
+      <Period>
+        <BasePeriodType>Minute</BasePeriodType>
+        <BasePeriodValue>1</BasePeriodValue>
+        <Id>Minute</Id>
+        <MarketDataType>Last</MarketDataType>
+        <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+        <ReversalType>Tick</ReversalType>
+        <Value>15</Value>
+        <Value2>1</Value2>
+      </Period>
+      <PlotExecutions>TextAndMarker</PlotExecutions>
+      <PlotSessionBreaks>true</PlotSessionBreaks>
+      <PositionPenLooserSerializable>
+        <Color>n:Crimson</Color>
+        <DashStyle>Dot</DashStyle>
+        <Width>2</Width>
+      </PositionPenLooserSerializable>
+      <PositionPenWinnerSerializable>
+        <Color>n:DarkGreen</Color>
+        <DashStyle>Dot</DashStyle>
+        <Width>2</Width>
+      </PositionPenWinnerSerializable>
+      <PriceMarkerColorSerialize>n:Black</PriceMarkerColorSerialize>
+      <RangeType>Days</RangeType>
+      <ScaleJustification>Right</ScaleJustification>
+      <SessionBreakPenSerializable>
+        <Color>n:SteelBlue</Color>
+        <DashStyle>Solid</DashStyle>
+        <Width>2</Width>
+      </SessionBreakPenSerializable>
+      <SessionData>&lt;Use instrument settings&gt;</SessionData>
+      <ShortExecutionColorSerialize>n:Magenta</ShortExecutionColorSerialize>
+      <ShowGlobalDrawObjects>true</ShowGlobalDrawObjects>
+      <To>2013-02-22T00:00:00-06:00</To>
+      <ZOrder>2</ZOrder>
+    </BarsData>
+  </Default>
+</NinjaTrader>
