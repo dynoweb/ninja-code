@@ -43,10 +43,9 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
-			Add(PitColor(Color.White, 83000, 20, 161500));
             Add(EMA(EmaPeriod));
-            Add(SMARick(SmaPeriod));
-			//SMARick(SmaPeriod).Plots[0].Pen.Color = Color.Red;	
+            Add(SMA(SmaPeriod));
+			SMA(SmaPeriod).Plots[0].Pen.Color = Color.Red;	
             Add(Stochastics(stocD, stocK, stocS));
 			Stochastics(stocD, stocK, stocS).Plots[0].Pen.Color = Color.Blue; // D color
 			Stochastics(stocD, stocK, stocS).Plots[1].Pen.Color = Color.DarkGray; // K color
@@ -71,17 +70,10 @@ namespace NinjaTrader.Strategy
         {
 			stoc = Stochastics(stocD, stocK, stocS);
 			
-			int currentTrend = Rising(SMARick(SmaPeriod)) ? 1: -1;
+			int currentTrend = Rising(SMA(SmaPeriod)) ? 1: -1;
 			
 			MarkCycleHigh();			
-			MarkCycleLow();		
-			IdentifySecondChance();
-			
-			// In-Trend note:
-			// multi-hook entry pattern provides a higher probability that we are making a cycle high or low, than a single hook.
-			// even more so, is when the price falls with the hooks are going up (long entry)
-			// example in doc on pg 24 is using Stoc D
-			// for the example above, if it's down trend and you're short, it could signal time to exit
+			MarkCycleLow();			
 			
 			if ((trend <= 0 && currentTrend == 1) 
 				|| (trend >= 0 && currentTrend == -1))
@@ -168,7 +160,7 @@ namespace NinjaTrader.Strategy
 	                && stoc.D[1] < stoc.D[0]
 					)
 				{
-					DrawArrowUp("My up arrow" + CurrentBar, false, 0, Low[0], Color.Lime);
+					DrawArrowUp("My up arrow" + CurrentBar, false, 0, Low[0], Color.Black);
 					
 					if (Position.MarketPosition == MarketPosition.Flat)
 					{
@@ -178,26 +170,6 @@ namespace NinjaTrader.Strategy
             }
         }
 
-		/// <summary>
-		/// 	Identifies Second Chance Patterns
-		/// 	<ul>
-		/// 		<li>Mini-Divergence - divergence from the trend</li>
-		/// 		<li>Mini-Convergence</li>
-		/// 		<li>Triple Cross</li>
-		/// 		<li>Head and Shoulders</li>
-		/// 		<li>Double Tops and Bottoms</li>
-		/// 		<li>The Mitten Pattern</li>
-		/// 	</ul>
-		/// </summary>
-		void IdentifySecondChance()
-		{
-			//MarkKHookBottom();		
-			if (Rising(SMARick(SmaPeriod)))
-				MarkKDoubleBottom();
-			if (Falling(SMARick(SmaPeriod)))
-				MarkKDoubleTop();
-		}
-		
 		void MarkCycleHigh()
 		{
 			if (CrossBelow(stoc.D, 55.0, 1)) 
@@ -229,92 +201,6 @@ namespace NinjaTrader.Strategy
 				DrawDot(CurrentBar + "Low", true, lowBar, 2 * Low[lowBar] - High[lowBar], Color.Red);
 			}
 		}
-		
-		void MarkKHookBottom()
-		{
-			if (KHookBottom(0))
-			{
-				DrawVerticalLine(CurrentBar + "KHookBottom", 0, Color.Blue);
-			}
-		}
-		
-		bool KHookBottom(int barsAgo)
-		{
-			if (stoc.K[barsAgo + 2] >= stoc.K[barsAgo + 1]
-				&& stoc.K[barsAgo + 1] < stoc.K[barsAgo + 0] 
-				&& stoc.K[barsAgo + 1] <= 45)
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		bool KHookTop(int barsAgo)
-		{
-			if (stoc.K[barsAgo + 2] <= stoc.K[barsAgo + 1]
-				&& stoc.K[barsAgo + 1] > stoc.K[barsAgo + 0] 
-				&& stoc.K[barsAgo + 1] >= 55)
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		void MarkKDoubleBottom()
-		{
-			if (KDoubleBottom())
-			{
-				DrawVerticalLine(CurrentBar + "LowerDivergence", 1, Color.Yellow);
-			}
-		}
-			
-		void MarkKDoubleTop()
-		{
-			if (KDoubleTop())
-			{
-				DrawVerticalLine(CurrentBar + "UpperDivergence", 1, Color.Cyan);
-			}
-		}
-			
-		/// <summary>
-		/// The key is to ignore all of the choppy hooks on %K, and only trade hooks on %K when %D is in
-		/// place for a potential Cycle High/Low and you get a divergence between price and %K with the
-		/// Trend.
-		/// </summary>
-		bool KDoubleBottom()
-		{
-			if (KHookBottom(0))
-			{
-				int barsAgo = 2;
-				while (stoc.K[barsAgo + 2] < 45)
-				{
-					if (KHookBottom(barsAgo))
-					{
-						return true;
-					}			
-					barsAgo++;
-				}
-			}
-			return false;
-		}
-		
-		bool KDoubleTop()
-		{
-			if (KHookTop(0))
-			{
-				int barsAgo = 2;
-				while (stoc.K[barsAgo + 2] > 55)
-				{
-					if (KHookTop(barsAgo))
-					{
-						return true;
-					}			
-					barsAgo++;
-				}
-			}
-			return false;
-		}
-		
 		
         #region Properties
         [Description("SMA Period")]
