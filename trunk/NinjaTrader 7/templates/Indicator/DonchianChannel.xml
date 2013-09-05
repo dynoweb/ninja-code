@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.9</Version>
+  <Version>7.0.1000.14</Version>
   <ClassName>NinjaTrader.Indicator.DonchianChannel</ClassName>
   <Default>
     <DonchianChannel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -9,11 +9,11 @@
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
           <BasePeriodValue>1</BasePeriodValue>
-          <Id>Custom4</Id>
+          <Id>Tick</Id>
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>10</Value>
+          <Value>1000</Value>
           <Value2>1</Value2>
         </Period>
       </BarsPeriods>
@@ -25,13 +25,13 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>CL 10-12 Nymex</InstrumentsSerializable>
+      <InstrumentsSerializable>ES 09-13 Globex</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
       <Name>DonchianChannel</Name>
       <Overlay>true</Overlay>
-      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <PaintPriceMarkers>false</PaintPriceMarkers>
       <Panel>-2</Panel>
       <PanelUI>-1</PanelUI>
       <Plots>
