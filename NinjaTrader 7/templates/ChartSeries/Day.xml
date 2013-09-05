@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.11</Version>
+  <Version>7.0.1000.14</Version>
   <Default>
     <BarsData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AutoScale>true</AutoScale>
@@ -7,10 +7,10 @@
       <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;2.1&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
       <DaysBack>365</DaysBack>
       <DisplayInDataBox>true</DisplayInDataBox>
-      <From>2012-02-28T00:00:00-06:00</From>
-      <Instrument>^RUT Cboe</Instrument>
+      <From>2012-09-04T00:00:00-05:00</From>
+      <Instrument>NQ 09-13 Globex</Instrument>
       <IsPrimarySeries>false</IsPrimarySeries>
-      <Label>^RUT</Label>
+      <Label />
       <LongExecutionColorSerialize>n:Blue</LongExecutionColorSerialize>
       <PaintPriceMarker>true</PaintPriceMarker>
       <Panel>0</Panel>
@@ -25,7 +25,7 @@
         <Value>1</Value>
         <Value2>1</Value2>
       </Period>
-      <PlotExecutions>TextAndMarker</PlotExecutions>
+      <PlotExecutions>DoNotPlot</PlotExecutions>
       <PlotSessionBreaks>true</PlotSessionBreaks>
       <PositionPenLooserSerializable>
         <Color>n:Crimson</Color>
@@ -48,7 +48,7 @@
       <SessionData>&lt;Use instrument settings&gt;</SessionData>
       <ShortExecutionColorSerialize>n:Magenta</ShortExecutionColorSerialize>
       <ShowGlobalDrawObjects>true</ShowGlobalDrawObjects>
-      <To>2013-02-27T00:00:00-06:00</To>
+      <To>2013-09-04T00:00:00-05:00</To>
       <ZOrder>2</ZOrder>
     </BarsData>
   </Default>
