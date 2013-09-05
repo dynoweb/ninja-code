@@ -34,7 +34,7 @@ namespace NinjaTrader.Indicator
 		/// </summary>
 		protected override void Initialize()
 		{
-			Add(new Plot(Color.Orange, "SMA"));
+			Add(new Plot(Color.Green, "SMA"));
 			PlotsConfigurable = false;	
 
 			Overlay = true;
@@ -69,7 +69,7 @@ namespace NinjaTrader.Indicator
 					}
 					else
 					{
-						PlotColors[0][0] = downColor;
+						PlotColors[0][0] = DownColor;
 					}
 				}
 				else
