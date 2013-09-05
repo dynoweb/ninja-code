@@ -1,10 +1,10 @@
 <NinjaTrader>
-  <Version>7.0.1000.11</Version>
+  <Version>7.0.1000.14</Version>
   <ClassName>NinjaTrader.Indicator.IchiCloud</ClassName>
   <Default>
     <IchiCloud xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>true</AutoScale>
+      <AutoScale>false</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
@@ -13,7 +13,7 @@
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>377</Value>
+          <Value>450</Value>
           <Value2>1</Value2>
         </Period>
       </BarsPeriods>
@@ -25,13 +25,13 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>6E 12-12 Globex</InstrumentsSerializable>
+      <InstrumentsSerializable>NQ 09-13 Globex</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
       <Name>IchiCloud</Name>
       <Overlay>true</Overlay>
-      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <PaintPriceMarkers>false</PaintPriceMarkers>
       <Panel>-2</Panel>
       <PanelUI>-1</PanelUI>
       <Plots>
@@ -63,7 +63,7 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>10002</ZOrder>
+      <ZOrder>30002</ZOrder>
       <PeriodFast>9</PeriodFast>
       <PeriodMedium>26</PeriodMedium>
       <PeriodSlow>52</PeriodSlow>
