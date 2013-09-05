@@ -47,9 +47,9 @@ namespace NinjaTrader.Strategy
 		private bool enableSummary = true;
 		private int extendPeriod = 1;	// 0 == false, 1 == true
 		private int hour = 7; // CST
-		private int maxReversals = 2;		
+		private int maxReversals = 4;		
 		private int minute = 0;
-		private int period = 20;
+		private int period = 18;
 		private int sessionHighLow = 0;
 		private bool useTrailing = false;
 
@@ -178,8 +178,8 @@ namespace NinjaTrader.Strategy
 			{
 				if (ToTime(Time[0]) == ToTime(hour, minute, 0)
 					|| (extendPeriod == 1
-						&& ToTime(Time[0]) >= ToTime(hour + (Time[0].DayOfWeek == DayOfWeek.Wednesday ? -5 : 0), minute, 0)
-						&& ToTime(Time[0]) <= ToTime(hour + (Time[0].DayOfWeek == DayOfWeek.Wednesday ? -5 : 0), minute + BarsPeriod.Value * period, 0))
+						&& ToTime(Time[0]) >= ToTime(hour + (Time[0].DayOfWeek == DayOfWeek.Wednesday ? 0 : 0), minute, 0)
+						&& ToTime(Time[0]) <= ToTime(hour + (Time[0].DayOfWeek == DayOfWeek.Wednesday ? 0 : 0), minute + BarsPeriod.Value * period, 0))
 					)
 				{
 					adjustedChannelSize = calcAdjustedChannelSize();
