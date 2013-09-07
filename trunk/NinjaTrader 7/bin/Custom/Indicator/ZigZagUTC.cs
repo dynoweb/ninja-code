@@ -59,11 +59,11 @@ namespace NinjaTrader.Indicator
 			private bool drawlines, showdots;
 			private int linewidth = 2;
 		// Useful public properties
-			private int dir;         // direction of current zigzag trend, 1=up, -1=down
-			private int lasthibar;   // bar number of last swing high (bars ago = CurrentBar-lasthibar)
-			private int lastlobar;   // bar number of last swing low
-			private double lasthi;   // value of last swing high
-			private double lastlo;   // value of last swing low
+			public int dir;         // direction of current zigzag trend, 1=up, -1=down
+			public int lasthibar;   // bar number of last swing high (bars ago = CurrentBar-lasthibar)
+			public int lastlobar;   // bar number of last swing low
+			public double lasthi;   // value of last swing high
+			public double lastlo;   // value of last swing low
         #endregion
 
         /// <summary>
@@ -144,8 +144,6 @@ namespace NinjaTrader.Indicator
 					if (showdots) ZigZagDot.Set(CurrentBar-lastlobar, lastlo);
 				}
 			}
-			Print(Time + " -- dir: " + Dir + " lasthibar: " + Lasthibar + " lastlobar: " + Lastlobar
-				+ " lasthi: " + Lasthi + " lastlo: " + Lastlo);			
         }
 
         #region Properties
@@ -195,47 +193,6 @@ namespace NinjaTrader.Indicator
             get { return show; }
             set { show = Math.Max(1, Math.Min(3, value)); }
         }
-		
-        [Browsable(false)]	// this line prevents this from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public int Dir
-        {
-            get { return dir; }
-			set { dir = value; }
-        }
-
-        [Browsable(false)]	// this line prevents this from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public int Lasthibar
-        {
-            get { return lasthibar; }
-			set { lasthibar = value; }
-        }
-
-        [Browsable(false)]	// this line prevents this from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public int Lastlobar
-        {
-            get { return lastlobar; }
-			set { lastlobar = value; }
-        }
-
-        [Browsable(false)]	// this line prevents this from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public double Lasthi
-        {
-            get { return lasthi; }
-			set { lasthi = value; }
-        }
-
-        [Browsable(false)]	// this line prevents this from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public double Lastlo
-        {
-            get { return lastlo; }
-			set { lastlo = value; }
-        }
-		
         #endregion
     }
 }
