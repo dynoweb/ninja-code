@@ -55,13 +55,13 @@ namespace NinjaTrader.Indicator
 			private Color zigZagColor = Color.Green; // Default setting for zigZagColor
 			private int show = 3; // Default setting for Show
         // User defined variables (add any user defined variables below)
-			private DataSeries hi, lo, swingRelation, lastHighBar;//, lastLowBar;
+			private DataSeries hi, lo, swingRelation, lastHighBar, lastLowBar;
 			private bool drawlines, showdots;
 			private int linewidth = 2;
 		// Useful public properties
 			public int dir;         // direction of current zigzag trend, 1=up, -1=down
 			//public int lastHighBar;   // bar number of last swing high (bars ago = CurrentBar-lastHighBar)
-			public int lastLowBar;   // bar number of last swing low
+			//public int lastLowBar;   // bar number of last swing low
 			public double lasthi,prevhi;   // value of last swing high, previous is the one prior to the last
 			public double lastlo,prevlo;   // value of last swing low, previous is the one prior to the last
 			
@@ -83,7 +83,7 @@ namespace NinjaTrader.Indicator
 			lo = new DataSeries(this);
 			swingRelation = new DataSeries(this);
 			lastHighBar = new DataSeries(this);
-//			lastLowBar = new DataSeries(this);
+			lastLowBar = new DataSeries(this);
 			
 			dir = 0;
 			drawlines = ((show & 1) > 0);
@@ -98,7 +98,7 @@ namespace NinjaTrader.Indicator
 			if (CurrentBar == 0) { // first bar initialization
 				lasthi = hi[0] = useHiLo ? High[0] : Input[0];
 				lastlo = lo[0] = useHiLo ? Low[0] : Input[0];
-				lastHighBar.Set(0); lastLowBar = 0;
+				lastHighBar.Set(0); lastLowBar.Set(0);
 				return;
 			}
 
@@ -107,6 +107,7 @@ namespace NinjaTrader.Indicator
 			Lo.Set(MIN(useHiLo ? Low : Input, span)[0]);
 
 			lastHighBar.Set(lastHighBar[1]);
+			lastLowBar.Set(lastLowBar[1]);
 			
 			// set initial trend direction (dir will become non-zero after the first couple of bars)
 			if (dir == 0) { // set initial direction
@@ -115,7 +116,7 @@ namespace NinjaTrader.Indicator
 					if (lo[0] > lo[1]) dir = 1;
 				}
 				if (lo[0] < lastlo) {
-					lastlo = lo[0]; lastLowBar = CurrentBar;
+					lastlo = lo[0]; lastLowBar.Set(CurrentBar);
 					if (hi[0] < hi[1]) dir = -1;
 				}
 			}
@@ -125,15 +126,15 @@ namespace NinjaTrader.Indicator
 				if (hi[0] > lasthi) { // found a higher high
 					lasthi = hi[0]; lastHighBar.Set(CurrentBar);
 					if (drawlines) // draw/re-draw upward (current trend) line from lastLowBar
-						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-lastLowBar, lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth); 
+						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-(int)lastLowBar[0], lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth); 
 				}
 				else if (hi[0] < lasthi && lo[0] < lo[1]) { // found a swing high
 					if (drawlines) // redraw the upward line from lastLowBar to new swing high
-						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-lastLowBar, lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth); 
+						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-(int)lastLowBar[0], lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth); 
 					dir = -1;                               // trend direction is now down
-					lastlo = lo[0]; lastLowBar = CurrentBar; // now seeking new lows
+					lastlo = lo[0]; lastLowBar.Set(CurrentBar); // now seeking new lows
 					if (drawlines) // start new trendline from new swing high to most recent low
-						DrawLine(lastHighBar[0].ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-lastLowBar, lastlo, zigZagColor, DashStyle.Solid, linewidth);
+						DrawLine(lastHighBar[0].ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-(int)lastLowBar[0], lastlo, zigZagColor, DashStyle.Solid, linewidth);
 					if (showdots) 
 						ZigZagDot.Set(CurrentBar-(int)lastHighBar[0], lasthi);
 					
@@ -157,33 +158,33 @@ namespace NinjaTrader.Indicator
 
 			} else { // dir < 0, trend is down, look for new swing low
 				if (lo[0] < lastlo) { // found a lower low
-					lastlo = lo[0]; lastLowBar = CurrentBar;
+					lastlo = lo[0]; lastLowBar.Set(CurrentBar);
 					if (drawlines) // draw/re-draw downward (current trend) line from lastHighBar
-						DrawLine(lastHighBar.ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-lastLowBar, lastlo, zigZagColor, DashStyle.Solid, linewidth);
+						DrawLine(lastHighBar[0].ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-(int)lastLowBar[0], lastlo, zigZagColor, DashStyle.Solid, linewidth);
 				}
 				else if (lo[0] > lastlo && hi[0] > hi[1]) { // found a swing low
 					if (drawlines) // redraw the downward line from lastLowBar to new swing low
-						DrawLine(lastHighBar.ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-lastLowBar, lastlo, zigZagColor, DashStyle.Solid, linewidth);
+						DrawLine(lastHighBar[0].ToString(), AutoScale, CurrentBar-(int)lastHighBar[0], lasthi, CurrentBar-(int)lastLowBar[0], lastlo, zigZagColor, DashStyle.Solid, linewidth);
 					dir = 1;                                // trend direction is now up
 					lasthi = hi[0]; lastHighBar.Set(CurrentBar); // now seeking new highs
 					if (drawlines) {// start new trendline from new swing low to most recent high
-						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-lastLowBar, lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth);
+						DrawLine(lastLowBar.ToString(), AutoScale, CurrentBar-(int)lastLowBar[0], lastlo, CurrentBar-(int)lastHighBar[0], lasthi, zigZagColor, DashStyle.Solid, linewidth);
 					}
 					if (showdots) 
-						ZigZagDot.Set(CurrentBar-lastLowBar, lastlo);
+						ZigZagDot.Set(CurrentBar-(int)lastLowBar[0], lastlo);
 					
 					// The following added by Rick
 					int dtbStrength = 15;
-		            double dtbOffset = ATR(14)[CurrentBar - lastLowBar] * dtbStrength / 100;
+		            double dtbOffset = ATR(14)[CurrentBar-(int)lastLowBar[0]] * dtbStrength / 100;
 		            if (lastlo > prevlo - dtbOffset && lastlo < prevlo + dtbOffset) {
 						longRelationship = "DB";
-        		        DrawText(lastLowBar + "txt", "DB", CurrentBar-lastLowBar, lastlo-1*TickSize, Color.Orange);
+        		        DrawText(lastLowBar[0] + "txt", "DB", CurrentBar-(int)lastLowBar[0], lastlo-1*TickSize, Color.Orange);
 					} else if (lastlo < prevlo) {
 						longRelationship = "LL";
-						DrawText(lastLowBar + "txt", "LL", CurrentBar-lastLowBar, lastlo-1*TickSize, Color.Red);
+						DrawText(lastLowBar[0] + "txt", "LL", CurrentBar-(int)lastLowBar[0], lastlo-1*TickSize, Color.Red);
 					} else {
 						longRelationship = "HL";
-						DrawText(lastLowBar + "txt", "HL", CurrentBar-lastLowBar, lastlo-1*TickSize, Color.Green);
+						DrawText(lastLowBar[0] + "txt", "HL", CurrentBar-(int)lastLowBar[0], lastlo-1*TickSize, Color.Green);
 					}
 					prevlo = lastlo;
 				}
@@ -191,7 +192,7 @@ namespace NinjaTrader.Indicator
 			
 	        // -2 = DT | -1 = LL and LH | 0 = price is nowhere | 1 = HH and HL | 2 = DB
 			if (longRelationship == "LL" && shortRelationship == "LH"
-				&& lastHighBar[0] < lastLowBar)
+				&& lastHighBar[0] < lastLowBar[0])
 			{
 				SwingRelation.Set(-1);
 			} else {
@@ -244,7 +245,7 @@ namespace NinjaTrader.Indicator
         {
             get { return swingRelation; }
         }
-/*		
+		
 		/// <summary>
 		/// The last high bar, bars ago
 		/// </summary>
@@ -266,7 +267,7 @@ namespace NinjaTrader.Indicator
         {
             get { return lastLowBar; }
         }
-*/
+
         [Description("Bar span to consider for highest and lowest values")]
         [Category("Parameters")]
         public int Span
