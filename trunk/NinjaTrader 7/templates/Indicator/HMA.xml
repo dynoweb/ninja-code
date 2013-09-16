@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.9</Version>
+  <Version>7.0.1000.14</Version>
   <ClassName>NinjaTrader.Indicator.HMA</ClassName>
   <Default>
     <HMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -9,12 +9,12 @@
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
           <BasePeriodValue>1</BasePeriodValue>
-          <Id>Range</Id>
+          <Id>Tick</Id>
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>8</Value>
-          <Value2>3</Value2>
+          <Value>377</Value>
+          <Value2>1</Value2>
         </Period>
       </BarsPeriods>
       <CalculateOnBarClose>true</CalculateOnBarClose>
@@ -25,7 +25,7 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>6E 09-12 Globex</InstrumentsSerializable>
+      <InstrumentsSerializable>6E 09-13 Globex</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -40,7 +40,7 @@
           <Min>-1.7976931348623157E+308</Min>
           <Name>HMA</Name>
           <PenSerializable>
-            <Color>n:Yellow</Color>
+            <Color>n:BlueViolet</Color>
             <DashStyle>Solid</DashStyle>
             <Width>2</Width>
           </PenSerializable>
@@ -53,7 +53,7 @@
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
       <ZOrder>10005</ZOrder>
-      <Period>5</Period>
+      <Period>10</Period>
     </HMA>
   </Default>
 </NinjaTrader>

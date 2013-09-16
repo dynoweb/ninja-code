@@ -14,7 +14,21 @@ using NinjaTrader.Gui.Chart;
 namespace NinjaTrader.Indicator
 {
     /// <summary>
+	/// Written by Rick Cromer Aug 2013
+	/// Status - incomplete
+	/// 
     /// Shows how perdictable the instrument trend
+	/// 
+	/// This idea came from a presentation where one of the indicators showed how often a trend 
+	/// continued from different points.  For example, if I have three up (or down) bars on a row, 
+	/// what percentage of occurances does the forth bar continue in the same direction.  
+	/// Next bar on the plot would show if there were 4 up bars, how often the next bar 
+	/// would be an up bar.  
+	/// 
+	/// This can be used then to compare different instruments or time frames to create or use
+	/// an environment which may be the most predicable.
+	/// 
+	/// 
     /// </summary>
     [Description("Shows how perdictable the instrument trend")]
     public class TrendPredictability : Indicator

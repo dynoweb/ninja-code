@@ -14,7 +14,12 @@ using NinjaTrader.Gui.Chart;
 namespace NinjaTrader.Indicator
 {
     /// <summary>
-    /// Indicator to use for confirmation against the indexes.  Written by Rick Cromer (dynoweb) - 2013
+    /// Indicator to use for confirmation against the indexes.  
+	/// Written by Rick Cromer (dynoweb) - 2013
+	/// 
+	/// Not complate
+	/// 
+	/// 
     /// </summary>
     [Description("Indicator to use for confirmation against the indexes.  Written by Rick Cromer (dynoweb) - 2013")]
     public class CromIndex : Indicator

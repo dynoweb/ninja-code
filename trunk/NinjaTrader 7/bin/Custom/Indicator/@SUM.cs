@@ -33,6 +33,8 @@ namespace NinjaTrader.Indicator
 		protected override void Initialize()
 		{
 			Add(new Plot(Color.Green, "SUM"));
+
+			PriceTypeSupported	= true;
 		}
 
 		/// <summary>
@@ -47,7 +49,7 @@ namespace NinjaTrader.Indicator
 		/// <summary>
 		/// </summary>
 		[Description("Numbers of bars used for calculations")]
-		[GridCategory("Parameters")]
+		[Category("Parameters")]
 		public int Period
 		{
 			get { return period; }

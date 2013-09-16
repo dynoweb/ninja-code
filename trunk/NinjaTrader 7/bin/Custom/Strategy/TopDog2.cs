@@ -189,7 +189,7 @@ namespace NinjaTrader.Strategy
 			stoc = StochasticsCycles(stocD, stocK, MAType.HMARick, false, false, stocS, Threshold, 3, TrendPlotPeriod);
             Add(stoc);
 			
-			macd = MACDRick2(macdFast, macdSlow, macdSmooth);
+			macd = MACDRick2(Color.Green, Color.Red, true, macdFast, 25, macdSlow, macdSmooth);
 			macd.Lines[0].Pen.Width = 10;
 			Add(macd);
 
