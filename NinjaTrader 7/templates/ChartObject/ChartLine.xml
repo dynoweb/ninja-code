@@ -14,20 +14,20 @@
       <ScaleJustification>Right</ScaleJustification>
       <Selectable>true</Selectable>
       <SeparateZOrder>false</SeparateZOrder>
-      <Y>1640.01354235453</Y>
+      <Y>1.31659128017311</Y>
       <Tag>13</Tag>
-      <Time>2013-08-27T09:45:23</Time>
-      <VisibleOnInstrument>ES 09-13</VisibleOnInstrument>
+      <Time>2013-09-06T08:59:04</Time>
+      <VisibleOnInstrument>6E 09-13</VisibleOnInstrument>
       <ZOrder>0</ZOrder>
-      <EndTime>2013-08-27T10:28:53</EndTime>
-      <EndY>1642.04161445291</EndY>
+      <EndTime>2013-09-06T09:03:52</EndTime>
+      <EndY>1.31880096556518</EndY>
       <PenSerializable>
-        <Color>n:Lime</Color>
+        <Color>n:Green</Color>
         <DashStyle>Dash</DashStyle>
         <Width>2</Width>
       </PenSerializable>
-      <StartTime>2013-08-27T09:45:23</StartTime>
-      <StartY>1640.01354235453</StartY>
+      <StartTime>2013-09-06T08:59:04</StartTime>
+      <StartY>1.31659128017311</StartY>
     </ChartLine>
   </Default>
 </NinjaTrader>

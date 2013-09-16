@@ -30,6 +30,12 @@ namespace NinjaTrader.Indicator
 		private	DataSeries		fastEma;
 		private	DataSeries		slowEma;
 		private int upDown = 0;
+		
+		Color backgroundShortColor = Color.Red;
+		Color backgroundLongColor = Color.Green;
+		int opacity	= 25;
+		bool enableBackgroundColor = true;
+		
 		#endregion
 
 		/// <summary>
@@ -98,6 +104,13 @@ namespace NinjaTrader.Indicator
 				}
 				
 				Mom.Set(macd);
+				
+				// dad = macdAvg
+				// mom = macd
+				if (macd > 0 && macdAvg > 0)
+					BackColorAll = Color.FromArgb(Opacity, BackgroundLongColor);
+				else if (macd < 0 && macdAvg < 0)
+					BackColorAll = Color.FromArgb(Opacity, BackgroundShortColor);
 			}
 		}
 
@@ -167,6 +180,43 @@ namespace NinjaTrader.Indicator
 			get { return smooth; }
 			set { smooth = Math.Max(1, value); }
 		}
+
+        [Description("Opacity range 0-100, lower numbers for more transparency")]
+        [GridCategory("Background")]
+        public int Opacity
+        {
+            get { return opacity; }
+            set { opacity = Math.Max(0, value); }
+        }
+		
+        [Description("Color for background MACD long")]
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Background Long Color")]
+        public Color BackgroundLongColor
+        {
+            get { return backgroundLongColor; }
+            set { backgroundLongColor = value; }
+        }
+		
+        [Description("Color for background MACD short")]
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Background Short Color")]
+        public Color BackgroundShortColor
+        {
+            get { return backgroundShortColor; }
+            set { backgroundShortColor = value; }
+        }
+		
+        [Description("Turn on background trend colors")]
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Background Colors")]
+        public bool EnableBackgroundColor
+        {
+            get { return enableBackgroundColor; }
+            set { enableBackgroundColor = value; }
+        }
+		
+		
 		#endregion
 	}
 }
@@ -185,26 +235,34 @@ namespace NinjaTrader.Indicator
         /// The MACD (Moving Average Convergence/Divergence) is a trend following momentum indicator that shows the relationship between two moving averages of prices.
         /// </summary>
         /// <returns></returns>
-        public MACDRick2 MACDRick2(int fast, int slow, int smooth)
+        public MACDRick2 MACDRick2(Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
-            return MACDRick2(Input, fast, slow, smooth);
+            return MACDRick2(Input, backgroundLongColor, backgroundShortColor, enableBackgroundColor, fast, opacity, slow, smooth);
         }
 
         /// <summary>
         /// The MACD (Moving Average Convergence/Divergence) is a trend following momentum indicator that shows the relationship between two moving averages of prices.
         /// </summary>
         /// <returns></returns>
-        public MACDRick2 MACDRick2(Data.IDataSeries input, int fast, int slow, int smooth)
+        public MACDRick2 MACDRick2(Data.IDataSeries input, Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
             if (cacheMACDRick2 != null)
                 for (int idx = 0; idx < cacheMACDRick2.Length; idx++)
-                    if (cacheMACDRick2[idx].Fast == fast && cacheMACDRick2[idx].Slow == slow && cacheMACDRick2[idx].Smooth == smooth && cacheMACDRick2[idx].EqualsInput(input))
+                    if (cacheMACDRick2[idx].BackgroundLongColor == backgroundLongColor && cacheMACDRick2[idx].BackgroundShortColor == backgroundShortColor && cacheMACDRick2[idx].EnableBackgroundColor == enableBackgroundColor && cacheMACDRick2[idx].Fast == fast && cacheMACDRick2[idx].Opacity == opacity && cacheMACDRick2[idx].Slow == slow && cacheMACDRick2[idx].Smooth == smooth && cacheMACDRick2[idx].EqualsInput(input))
                         return cacheMACDRick2[idx];
 
             lock (checkMACDRick2)
             {
+                checkMACDRick2.BackgroundLongColor = backgroundLongColor;
+                backgroundLongColor = checkMACDRick2.BackgroundLongColor;
+                checkMACDRick2.BackgroundShortColor = backgroundShortColor;
+                backgroundShortColor = checkMACDRick2.BackgroundShortColor;
+                checkMACDRick2.EnableBackgroundColor = enableBackgroundColor;
+                enableBackgroundColor = checkMACDRick2.EnableBackgroundColor;
                 checkMACDRick2.Fast = fast;
                 fast = checkMACDRick2.Fast;
+                checkMACDRick2.Opacity = opacity;
+                opacity = checkMACDRick2.Opacity;
                 checkMACDRick2.Slow = slow;
                 slow = checkMACDRick2.Slow;
                 checkMACDRick2.Smooth = smooth;
@@ -212,7 +270,7 @@ namespace NinjaTrader.Indicator
 
                 if (cacheMACDRick2 != null)
                     for (int idx = 0; idx < cacheMACDRick2.Length; idx++)
-                        if (cacheMACDRick2[idx].Fast == fast && cacheMACDRick2[idx].Slow == slow && cacheMACDRick2[idx].Smooth == smooth && cacheMACDRick2[idx].EqualsInput(input))
+                        if (cacheMACDRick2[idx].BackgroundLongColor == backgroundLongColor && cacheMACDRick2[idx].BackgroundShortColor == backgroundShortColor && cacheMACDRick2[idx].EnableBackgroundColor == enableBackgroundColor && cacheMACDRick2[idx].Fast == fast && cacheMACDRick2[idx].Opacity == opacity && cacheMACDRick2[idx].Slow == slow && cacheMACDRick2[idx].Smooth == smooth && cacheMACDRick2[idx].EqualsInput(input))
                             return cacheMACDRick2[idx];
 
                 MACDRick2 indicator = new MACDRick2();
@@ -223,7 +281,11 @@ namespace NinjaTrader.Indicator
                 indicator.MaximumBarsLookBack = MaximumBarsLookBack;
 #endif
                 indicator.Input = input;
+                indicator.BackgroundLongColor = backgroundLongColor;
+                indicator.BackgroundShortColor = backgroundShortColor;
+                indicator.EnableBackgroundColor = enableBackgroundColor;
                 indicator.Fast = fast;
+                indicator.Opacity = opacity;
                 indicator.Slow = slow;
                 indicator.Smooth = smooth;
                 Indicators.Add(indicator);
@@ -250,18 +312,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.MACDRick2 MACDRick2(int fast, int slow, int smooth)
+        public Indicator.MACDRick2 MACDRick2(Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
-            return _indicator.MACDRick2(Input, fast, slow, smooth);
+            return _indicator.MACDRick2(Input, backgroundLongColor, backgroundShortColor, enableBackgroundColor, fast, opacity, slow, smooth);
         }
 
         /// <summary>
         /// The MACD (Moving Average Convergence/Divergence) is a trend following momentum indicator that shows the relationship between two moving averages of prices.
         /// </summary>
         /// <returns></returns>
-        public Indicator.MACDRick2 MACDRick2(Data.IDataSeries input, int fast, int slow, int smooth)
+        public Indicator.MACDRick2 MACDRick2(Data.IDataSeries input, Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
-            return _indicator.MACDRick2(input, fast, slow, smooth);
+            return _indicator.MACDRick2(input, backgroundLongColor, backgroundShortColor, enableBackgroundColor, fast, opacity, slow, smooth);
         }
     }
 }
@@ -276,21 +338,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.MACDRick2 MACDRick2(int fast, int slow, int smooth)
+        public Indicator.MACDRick2 MACDRick2(Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
-            return _indicator.MACDRick2(Input, fast, slow, smooth);
+            return _indicator.MACDRick2(Input, backgroundLongColor, backgroundShortColor, enableBackgroundColor, fast, opacity, slow, smooth);
         }
 
         /// <summary>
         /// The MACD (Moving Average Convergence/Divergence) is a trend following momentum indicator that shows the relationship between two moving averages of prices.
         /// </summary>
         /// <returns></returns>
-        public Indicator.MACDRick2 MACDRick2(Data.IDataSeries input, int fast, int slow, int smooth)
+        public Indicator.MACDRick2 MACDRick2(Data.IDataSeries input, Color backgroundLongColor, Color backgroundShortColor, bool enableBackgroundColor, int fast, int opacity, int slow, int smooth)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.MACDRick2(input, fast, slow, smooth);
+            return _indicator.MACDRick2(input, backgroundLongColor, backgroundShortColor, enableBackgroundColor, fast, opacity, slow, smooth);
         }
     }
 }

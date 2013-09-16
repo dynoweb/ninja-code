@@ -14,6 +14,12 @@ using NinjaTrader.Data;
 using NinjaTrader.Gui.Chart;
 #endregion
 
+#region Global Enums
+
+public enum MAType {EMA, HMA, HMARick, SMA, SMARick}
+
+#endregion
+
 // This namespace holds all indicators and is required. Do not change it.
 namespace NinjaTrader.Indicator
 {
@@ -41,6 +47,10 @@ namespace NinjaTrader.Indicator
 		bool showHighsAndLows = false;
 		bool showHigherTimeframe = false;
 		int timeFrameMultiplier = 3;
+		private MAType selectedMAType = MAType.SMARick; 
+		static int FALLING = -1;
+		static int RISING = 1;
+		int trend = 0;
 		
 		#endregion
 
@@ -70,11 +80,11 @@ namespace NinjaTrader.Indicator
 			
 			// BarsPeriod.Value, PeriodType.Tick
 			
-			if (showHigherTimeframe && (BarsPeriod.Id == PeriodType.Tick || BarsPeriod.Id == PeriodType.Minute || BarsPeriod.Id == PeriodType.Volume))
-			{
-				Print("Instrument.FullName: " + Instrument.FullName + " BarsPeriod.Id: " + BarsPeriod.Id + " BarsPeriod.Value: " + BarsPeriod.Value);
-				Add(Instrument.FullName, BarsPeriod.Id, BarsPeriod.Value * timeFrameMultiplier);
-			}
+//			if (showHigherTimeframe && (BarsPeriod.Id == PeriodType.Tick || BarsPeriod.Id == PeriodType.Minute || BarsPeriod.Id == PeriodType.Volume))
+//			{
+//				Print("Instrument.FullName: " + Instrument.FullName + " BarsPeriod.Id: " + BarsPeriod.Id + " BarsPeriod.Value: " + BarsPeriod.Value);
+//				Add(Instrument.FullName, BarsPeriod.Id, BarsPeriod.Value * timeFrameMultiplier);
+//			}
 			//stocMT = Stochastics(BarsArray[1], periodD, periodK, smooth); 
 			//Add(Stochastics(stocMT[1], periodD, periodK, smooth));
 			//Add(Stochastics(BarsArray[1], periodD, periodK, smooth)); 
@@ -86,30 +96,31 @@ namespace NinjaTrader.Indicator
 		protected override void OnBarUpdate()
 		{
 			//Print(Time + " BarsInProgress " + BarsInProgress );
-			
+			//if (CurrentBars[0] <= BarsRequired)
+        	//	return;
 
 			// Check which Bars object is calling the OnBarUpdate() method 
-			if (BarsInProgress == 1) 
-	        {					
-				if (!showHigherTimeframe || CurrentBars[1] <= BarsRequired)
-					return;
-				
-				stocMT = Stochastics(BarsArray[1], periodD, periodK, smooth); 
-				if (stocMT.K[0] <= stocMT.K[1])
-					BackColor = Color.Pink;
-				if (stocMT.K[0] <= stocMT.K[1] && stocMT.D[0] <= stocMT.D[1])
-					BackColor = Color.Red;
-				if (stocMT.K[0] >= stocMT.K[1])
-					BackColor = Color.Lime;
-				if (stocMT.K[0] >= stocMT.K[1] && stocMT.D[0] >= stocMT.D[1])
-					BackColor = Color.Green;
-				
-				return;
-			}
+//			if (BarsInProgress == 1) 
+//	        {					
+//				if (!showHigherTimeframe || CurrentBars[1] <= BarsRequired)
+//					return;
+//				
+//				stocMT = Stochastics(BarsArray[1], periodD, periodK, smooth); 
+//				if (stocMT.K[0] <= stocMT.K[1])
+//					BackColor = Color.Pink;
+//				if (stocMT.K[0] <= stocMT.K[1] && stocMT.D[0] <= stocMT.D[1])
+//					BackColor = Color.Red;
+//				if (stocMT.K[0] >= stocMT.K[1])
+//					BackColor = Color.Lime;
+//				if (stocMT.K[0] >= stocMT.K[1] && stocMT.D[0] >= stocMT.D[1])
+//					BackColor = Color.Green;
+//				
+//				return;
+//			}
 			
 		    // Checks to ensure all Bars objects contain enough bars before beginning
-			if (BarsInProgress != 0 || CurrentBars[0] <= BarsRequired)
-				return;
+//			if (BarsInProgress != 0 || CurrentBars[0] <= BarsRequired)
+//				return;
 			
             nom.Set(Close[0] - MIN(Low, PeriodK)[0]);
             den.Set(MAX(High, PeriodK)[0] - MIN(Low, PeriodK)[0]);
@@ -123,8 +134,9 @@ namespace NinjaTrader.Indicator
             K.Set(SMA(fastK, Smooth)[0]);
             D.Set(SMA(K, PeriodD)[0]);
 
-			if (CurrentBar < 50)
-				return;
+			//Print(Time + " D " + D + " CurrentBar " + CurrentBar);
+			//if (CurrentBar < 50)
+			//	return;
 			
 			/// Here’s how we define Cycle highs and lows:
 			/// A Cycle high is the highest high in price after %D goes above 45 and before it gets back below 55.
@@ -159,7 +171,30 @@ namespace NinjaTrader.Indicator
 				}
 			}
 			
-			if (Falling(HMARick(TrendBars,70)) && HMARick(TrendBars,threshold).TrendSet[0] != 0)
+			if (CurrentBar < TrendBars)
+				return;
+			
+			// {EMA, HMA, HMARick, SMA, SMARick}
+			switch (selectedMAType)
+			{
+				case MAType.EMA: 
+					trend = Rising(EMA(TrendBars)) ? RISING: FALLING;
+					break;
+				case MAType.HMA:
+					trend = Rising(HMA(TrendBars)) ? RISING: FALLING;
+					break;
+				case MAType.HMARick:
+					trend = (int) HMARick(TrendBars, threshold).TrendSet[0]; 
+					break;
+				case MAType.SMA:
+					trend = Rising(SMA(TrendBars)) ? RISING: FALLING;
+					break;
+				case MAType.SMARick:
+					trend = Rising(SMARick(TrendBars)) ? RISING: FALLING;
+					break;
+			}
+
+			if (trend == -1)
 			{
 				if (K[0] <= K[1] && K[1] >= 80)
 				{
@@ -170,7 +205,7 @@ namespace NinjaTrader.Indicator
 					DrawArrowDown(CurrentBar + "validShort", 0, High[0] + 2 * TickSize, Color.Red);
 				}
 			}
-			if (Rising(HMARick(TrendBars,70)) && HMARick(TrendBars,threshold).TrendSet[0] != 0)
+			if (trend == 1)
 			{
 				if (K[0] >= K[1] && K[1] <= 20)
 				{
@@ -182,6 +217,7 @@ namespace NinjaTrader.Indicator
 				}
 			}
 		}
+		
 
 		#region Properties
 		/// <summary>
@@ -260,8 +296,19 @@ namespace NinjaTrader.Indicator
 		
 		/// <summary>
 		/// </summary>
-		[Description("Number of bars for SMA or HAM trend")]
-		[GridCategory("Parameters")]
+		[Description("Moving Average Type")]
+		[GridCategory("Trend Parameters")]
+		[Gui.Design.DisplayNameAttribute("Type for MA")]
+		public MAType SelectedMAType
+		{
+			get { return selectedMAType; }
+			set { selectedMAType = value; }
+		}
+		
+		/// <summary>
+		/// </summary>
+		[Description("Number of bars for SMA or HMA trend")]
+		[GridCategory("Trend Parameters")]
 		public int TrendBars
 		{
 			get { return trendBars; }
@@ -270,7 +317,7 @@ namespace NinjaTrader.Indicator
 		
 		/// </summary>
 		[Description("Neutral Slope Threshold as percentage of average true range, used in HMARick")]
-		[GridCategory("Parameters")]
+		[GridCategory("Trend Parameters")]
 		[Gui.Design.DisplayNameAttribute("Neutral Threshold")]
 		public int Threshold 
 		{
@@ -296,20 +343,20 @@ namespace NinjaTrader.Indicator
         /// The Stochastic Oscillator is made up of two lines that oscillate between a vertical scale of 0 to 100. The %K is the main line and it is drawn as a solid line. The second is the %D line and is a moving average of %K. The %D line is drawn as a dotted line. Use as a buy/sell signal generator, buying when fast moves above slow and selling when fast moves below slow.
         /// </summary>
         /// <returns></returns>
-        public StochasticsCycles StochasticsCycles(int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public StochasticsCycles StochasticsCycles(int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
-            return StochasticsCycles(Input, periodD, periodK, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
+            return StochasticsCycles(Input, periodD, periodK, selectedMAType, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
         }
 
         /// <summary>
         /// The Stochastic Oscillator is made up of two lines that oscillate between a vertical scale of 0 to 100. The %K is the main line and it is drawn as a solid line. The second is the %D line and is a moving average of %K. The %D line is drawn as a dotted line. Use as a buy/sell signal generator, buying when fast moves above slow and selling when fast moves below slow.
         /// </summary>
         /// <returns></returns>
-        public StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
             if (cacheStochasticsCycles != null)
                 for (int idx = 0; idx < cacheStochasticsCycles.Length; idx++)
-                    if (cacheStochasticsCycles[idx].PeriodD == periodD && cacheStochasticsCycles[idx].PeriodK == periodK && cacheStochasticsCycles[idx].ShowHigherTimeframe == showHigherTimeframe && cacheStochasticsCycles[idx].ShowHighsAndLows == showHighsAndLows && cacheStochasticsCycles[idx].Smooth == smooth && cacheStochasticsCycles[idx].Threshold == threshold && cacheStochasticsCycles[idx].TimeFrameMultiplier == timeFrameMultiplier && cacheStochasticsCycles[idx].TrendBars == trendBars && cacheStochasticsCycles[idx].EqualsInput(input))
+                    if (cacheStochasticsCycles[idx].PeriodD == periodD && cacheStochasticsCycles[idx].PeriodK == periodK && cacheStochasticsCycles[idx].SelectedMAType == selectedMAType && cacheStochasticsCycles[idx].ShowHigherTimeframe == showHigherTimeframe && cacheStochasticsCycles[idx].ShowHighsAndLows == showHighsAndLows && cacheStochasticsCycles[idx].Smooth == smooth && cacheStochasticsCycles[idx].Threshold == threshold && cacheStochasticsCycles[idx].TimeFrameMultiplier == timeFrameMultiplier && cacheStochasticsCycles[idx].TrendBars == trendBars && cacheStochasticsCycles[idx].EqualsInput(input))
                         return cacheStochasticsCycles[idx];
 
             lock (checkStochasticsCycles)
@@ -318,6 +365,8 @@ namespace NinjaTrader.Indicator
                 periodD = checkStochasticsCycles.PeriodD;
                 checkStochasticsCycles.PeriodK = periodK;
                 periodK = checkStochasticsCycles.PeriodK;
+                checkStochasticsCycles.SelectedMAType = selectedMAType;
+                selectedMAType = checkStochasticsCycles.SelectedMAType;
                 checkStochasticsCycles.ShowHigherTimeframe = showHigherTimeframe;
                 showHigherTimeframe = checkStochasticsCycles.ShowHigherTimeframe;
                 checkStochasticsCycles.ShowHighsAndLows = showHighsAndLows;
@@ -333,7 +382,7 @@ namespace NinjaTrader.Indicator
 
                 if (cacheStochasticsCycles != null)
                     for (int idx = 0; idx < cacheStochasticsCycles.Length; idx++)
-                        if (cacheStochasticsCycles[idx].PeriodD == periodD && cacheStochasticsCycles[idx].PeriodK == periodK && cacheStochasticsCycles[idx].ShowHigherTimeframe == showHigherTimeframe && cacheStochasticsCycles[idx].ShowHighsAndLows == showHighsAndLows && cacheStochasticsCycles[idx].Smooth == smooth && cacheStochasticsCycles[idx].Threshold == threshold && cacheStochasticsCycles[idx].TimeFrameMultiplier == timeFrameMultiplier && cacheStochasticsCycles[idx].TrendBars == trendBars && cacheStochasticsCycles[idx].EqualsInput(input))
+                        if (cacheStochasticsCycles[idx].PeriodD == periodD && cacheStochasticsCycles[idx].PeriodK == periodK && cacheStochasticsCycles[idx].SelectedMAType == selectedMAType && cacheStochasticsCycles[idx].ShowHigherTimeframe == showHigherTimeframe && cacheStochasticsCycles[idx].ShowHighsAndLows == showHighsAndLows && cacheStochasticsCycles[idx].Smooth == smooth && cacheStochasticsCycles[idx].Threshold == threshold && cacheStochasticsCycles[idx].TimeFrameMultiplier == timeFrameMultiplier && cacheStochasticsCycles[idx].TrendBars == trendBars && cacheStochasticsCycles[idx].EqualsInput(input))
                             return cacheStochasticsCycles[idx];
 
                 StochasticsCycles indicator = new StochasticsCycles();
@@ -346,6 +395,7 @@ namespace NinjaTrader.Indicator
                 indicator.Input = input;
                 indicator.PeriodD = periodD;
                 indicator.PeriodK = periodK;
+                indicator.SelectedMAType = selectedMAType;
                 indicator.ShowHigherTimeframe = showHigherTimeframe;
                 indicator.ShowHighsAndLows = showHighsAndLows;
                 indicator.Smooth = smooth;
@@ -376,18 +426,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.StochasticsCycles StochasticsCycles(int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public Indicator.StochasticsCycles StochasticsCycles(int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
-            return _indicator.StochasticsCycles(Input, periodD, periodK, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
+            return _indicator.StochasticsCycles(Input, periodD, periodK, selectedMAType, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
         }
 
         /// <summary>
         /// The Stochastic Oscillator is made up of two lines that oscillate between a vertical scale of 0 to 100. The %K is the main line and it is drawn as a solid line. The second is the %D line and is a moving average of %K. The %D line is drawn as a dotted line. Use as a buy/sell signal generator, buying when fast moves above slow and selling when fast moves below slow.
         /// </summary>
         /// <returns></returns>
-        public Indicator.StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public Indicator.StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
-            return _indicator.StochasticsCycles(input, periodD, periodK, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
+            return _indicator.StochasticsCycles(input, periodD, periodK, selectedMAType, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
         }
     }
 }
@@ -402,21 +452,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.StochasticsCycles StochasticsCycles(int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public Indicator.StochasticsCycles StochasticsCycles(int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
-            return _indicator.StochasticsCycles(Input, periodD, periodK, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
+            return _indicator.StochasticsCycles(Input, periodD, periodK, selectedMAType, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
         }
 
         /// <summary>
         /// The Stochastic Oscillator is made up of two lines that oscillate between a vertical scale of 0 to 100. The %K is the main line and it is drawn as a solid line. The second is the %D line and is a moving average of %K. The %D line is drawn as a dotted line. Use as a buy/sell signal generator, buying when fast moves above slow and selling when fast moves below slow.
         /// </summary>
         /// <returns></returns>
-        public Indicator.StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
+        public Indicator.StochasticsCycles StochasticsCycles(Data.IDataSeries input, int periodD, int periodK, MAType selectedMAType, bool showHigherTimeframe, bool showHighsAndLows, int smooth, int threshold, int timeFrameMultiplier, int trendBars)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.StochasticsCycles(input, periodD, periodK, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
+            return _indicator.StochasticsCycles(input, periodD, periodK, selectedMAType, showHigherTimeframe, showHighsAndLows, smooth, threshold, timeFrameMultiplier, trendBars);
         }
     }
 }

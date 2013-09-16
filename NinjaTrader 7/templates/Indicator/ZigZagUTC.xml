@@ -1,10 +1,10 @@
 <NinjaTrader>
   <Version>7.0.1000.14</Version>
-  <ClassName>NinjaTrader.Indicator.EMA</ClassName>
+  <ClassName>NinjaTrader.Indicator.ZigZagUTC</ClassName>
   <Default>
-    <EMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <ZigZagUTC xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>false</AutoScale>
+      <AutoScale>true</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
@@ -13,7 +13,7 @@
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>200</Value>
+          <Value>20</Value>
           <Value2>1</Value2>
         </Period>
       </BarsPeriods>
@@ -25,11 +25,11 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>TF 09-13 Nybot</InstrumentsSerializable>
+      <InstrumentsSerializable>NQ 09-13 Globex</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-      <Name>EMA</Name>
+      <Name>ZigZagUTC</Name>
       <Overlay>true</Overlay>
       <PaintPriceMarkers>false</PaintPriceMarkers>
       <Panel>-2</Panel>
@@ -38,13 +38,13 @@
         <Plot>
           <Max>1.7976931348623157E+308</Max>
           <Min>-1.7976931348623157E+308</Min>
-          <Name>EMA</Name>
+          <Name>ZigZagDot</Name>
           <PenSerializable>
-            <Color>n:Gray</Color>
+            <Color>n:DarkOrchid</Color>
             <DashStyle>Solid</DashStyle>
-            <Width>1</Width>
+            <Width>2</Width>
           </PenSerializable>
-          <PlotStyle>Line</PlotStyle>
+          <PlotStyle>Dot</PlotStyle>
         </Plot>
       </Plots>
       <PlotsConfigurable>true</PlotsConfigurable>
@@ -52,8 +52,17 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>30005</ZOrder>
-      <Period>15</Period>
-    </EMA>
+      <ZOrder>0</ZOrder>
+      <dir>0</dir>
+      <lasthi>0</lasthi>
+      <prevhi>0</prevhi>
+      <lastlo>0</lastlo>
+      <prevlo>0</prevlo>
+      <Span>1</Span>
+      <ZigZagColor />
+      <PaintColorSerialize>n:Green</PaintColorSerialize>
+      <UseHiLo>true</UseHiLo>
+      <Show>3</Show>
+    </ZigZagUTC>
   </Default>
 </NinjaTrader>

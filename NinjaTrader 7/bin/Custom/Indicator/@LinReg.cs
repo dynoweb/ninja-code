@@ -25,6 +25,7 @@ namespace NinjaTrader.Indicator
 	{
 		#region Variables
 		private int					period	= 14;
+		private	DataSeries		y;
 		#endregion
 
 		/// <summary>
@@ -34,7 +35,9 @@ namespace NinjaTrader.Indicator
 		{
 			Add(new Plot(Color.Orange, "LinReg"));
 	
+			y					= new DataSeries(this);
 			Overlay				= true;
+			PriceTypeSupported	= true;
 		}
 
 		/// <summary>
@@ -49,8 +52,9 @@ namespace NinjaTrader.Indicator
 			for (int count = 0; count < Period && CurrentBar - count >= 0; count++)
 				sumXY += count * Input[count];
 			
-            double slope        = ((double)Period * sumXY - sumX * SUM(Inputs[0], Period)[0]) / divisor;
-            double intercept    = (SUM(Inputs[0], Period)[0] - slope * sumX) / Period;
+			y.Set(Input[0]);
+			double	slope		= ((double) Period * sumXY - sumX * SUM(y, Period)[0]) / divisor;
+			double	intercept	= (SUM(y, Period)[0] - slope * sumX) / Period;
 			
 			Value.Set(intercept + slope * (Period - 1));
 		}
@@ -59,7 +63,7 @@ namespace NinjaTrader.Indicator
 		/// <summary>
 		/// </summary>
 		[Description("Numbers of bars used for calculations")]
-		[GridCategory("Parameters")]
+		[Category("Parameters")]
 		public int Period
 		{
 			get { return period; }
