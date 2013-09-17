@@ -190,6 +190,7 @@ namespace NinjaTrader.Indicator
         }
 		
         [Description("Color for background MACD long")]
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
         [GridCategory("Background")]
         [Gui.Design.DisplayNameAttribute("Background Long Color")]
         public Color BackgroundLongColor
@@ -199,6 +200,7 @@ namespace NinjaTrader.Indicator
         }
 		
         [Description("Color for background MACD short")]
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
         [GridCategory("Background")]
         [Gui.Design.DisplayNameAttribute("Background Short Color")]
         public Color BackgroundShortColor
