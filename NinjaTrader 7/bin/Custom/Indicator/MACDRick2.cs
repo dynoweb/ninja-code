@@ -31,10 +31,10 @@ namespace NinjaTrader.Indicator
 		private	DataSeries		slowEma;
 		private int upDown = 0;
 		
-		Color backgroundShortColor = Color.Red;
-		Color backgroundLongColor = Color.Green;
-		int opacity	= 25;
-		bool enableBackgroundColor = true;
+		private Color backgroundShortColor = Color.Red;
+		private Color backgroundLongColor = Color.Green;
+		private int opacity	= 25;
+		private bool enableBackgroundColor = true;
 		
 		#endregion
 
