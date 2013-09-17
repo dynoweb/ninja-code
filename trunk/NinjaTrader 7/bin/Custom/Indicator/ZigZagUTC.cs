@@ -81,7 +81,7 @@ namespace NinjaTrader.Indicator
         protected override void Initialize()
         {
             Add(new Plot(new Pen(Color.FromKnownColor(KnownColor.DarkOrchid), 2), PlotStyle.Dot, "ZigZagDot"));
-            CalculateOnBarClose	= false;
+            CalculateOnBarClose	= true;
             Overlay				= true;
             PriceTypeSupported	= true;
 
