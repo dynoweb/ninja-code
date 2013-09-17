@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.14</Version>
+  <Version>7.0.1000.15</Version>
   <AlertsEnabled>True</AlertsEnabled>
   <AlwaysOnTop>False</AlwaysOnTop>
   <AutoSortEnabled>False</AutoSortEnabled>
@@ -22,40 +22,31 @@
   <TotalRowEnabled>False</TotalRowEnabled>
   <Instruments>
     <Row>
-      <Column>ES 09-13 Globex</Column>
+      <Column>DX 12-13 Nybot</Column>
     </Row>
     <Row>
-      <Column>FDAX 09-13 Eurex</Column>
+      <Column>ES 12-13 Globex</Column>
     </Row>
     <Row>
-      <Column>NQ 09-13 Globex</Column>
+      <Column>NQ 12-13 Globex</Column>
     </Row>
     <Row>
-      <Column>TF 09-13 Nybot</Column>
+      <Column>TF 12-13 Nybot</Column>
     </Row>
     <Row>
-      <Column>YM 09-13 Globex</Column>
-    </Row>
-    <Row>
-      <Column>GC 12-13 Nymex</Column>
-    </Row>
-    <Row>
-      <Column>SI 12-13 Nymex</Column>
+      <Column>YM 12-13 Globex</Column>
     </Row>
     <Row>
       <Column>CL 10-13 Nymex</Column>
     </Row>
     <Row>
-      <Column>NG 10-13 Nymex</Column>
+      <Column>6E 12-13 Globex</Column>
     </Row>
     <Row>
-      <Column>6E 09-13 Globex</Column>
+      <Column>FDAX 09-13 Eurex</Column>
     </Row>
     <Row>
-      <Column>ZC 12-13 Globex</Column>
-    </Row>
-    <Row>
-      <Column>ZN 09-13 Globex</Column>
+      <Column>ZB 12-13 Globex</Column>
     </Row>
   </Instruments>
   <Labels>
@@ -65,21 +56,17 @@
     </Label>
     <Label>
       <Position>6</Position>
-      <Name>Metal</Name>
-    </Label>
-    <Label>
-      <Position>9</Position>
       <Name>Energy</Name>
     </Label>
     <Label>
-      <Position>12</Position>
+      <Position>8</Position>
       <Name>Other</Name>
     </Label>
   </Labels>
   <Columns>
     <Column0>
       <ClassName>NinjaTrader.MarketAnalyzer.Instrument</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <Instrument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -118,7 +105,7 @@
     </Column0>
     <Column1>
       <ClassName>NinjaTrader.MarketAnalyzer.DescriptionColumn</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <DescriptionColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -157,7 +144,7 @@
     </Column1>
     <Column2>
       <ClassName>NinjaTrader.MarketAnalyzer.LastPrice</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <LastPrice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -195,47 +182,8 @@
       </Column>
     </Column2>
     <Column3>
-      <ClassName>NinjaTrader.MarketAnalyzer.TimeLastTick</ClassName>
-      <Width>83</Width>
-      <Column>
-        <TimeLastTick xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <AlertConditions />
-          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
-          <BackColorSerialize>x:0</BackColorSerialize>
-          <BarColorSerialize>n:Lime</BarColorSerialize>
-          <BarGraphGrowthType>Center</BarGraphGrowthType>
-          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
-          <BarGraphReferenceValue>0</BarGraphReferenceValue>
-          <CalculateOnBarClose>false</CalculateOnBarClose>
-          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
-          <CellConditions />
-          <ColumnType>Regular</ColumnType>
-          <DataSeriesConfigurable>false</DataSeriesConfigurable>
-          <DataTypeSerializable>string</DataTypeSerializable>
-          <FilterConditions />
-          <ForeColorSerialize>x:0</ForeColorSerialize>
-          <FormatDecimals>2</FormatDecimals>
-          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>TimeLastTick</Name>
-          <Period>
-            <BasePeriodType>Minute</BasePeriodType>
-            <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
-            <MarketDataType>Last</MarketDataType>
-            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-            <ReversalType>Tick</ReversalType>
-            <Value>1</Value>
-            <Value2>1</Value2>
-          </Period>
-          <PriceType>Close</PriceType>
-          <RequiresBars>true</RequiresBars>
-          <ShowInTotalRow>false</ShowInTotalRow>
-        </TimeLastTick>
-      </Column>
-    </Column3>
-    <Column4>
       <ClassName>NinjaTrader.MarketAnalyzer.NetChange</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <NetChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -251,7 +199,7 @@
             <CellCondition>
               <BackColorSerialize>x:0</BackColorSerialize>
               <Condition>Greater</Condition>
-              <ForeColorSerialize>n:Green</ForeColorSerialize>
+              <ForeColorSerialize>n:LimeGreen</ForeColorSerialize>
               <Text />
               <Value>0</Value>
             </CellCondition>
@@ -287,10 +235,10 @@
           <Unit>Points</Unit>
         </NetChange>
       </Column>
-    </Column4>
-    <Column5>
+    </Column3>
+    <Column4>
       <ClassName>NinjaTrader.MarketAnalyzer.NetChange</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <NetChange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -306,7 +254,7 @@
             <CellCondition>
               <BackColorSerialize>x:0</BackColorSerialize>
               <Condition>Greater</Condition>
-              <ForeColorSerialize>n:Green</ForeColorSerialize>
+              <ForeColorSerialize>n:LimeGreen</ForeColorSerialize>
               <Text />
               <Value>0</Value>
             </CellCondition>
@@ -342,10 +290,10 @@
           <Unit>Percent</Unit>
         </NetChange>
       </Column>
-    </Column5>
-    <Column6>
+    </Column4>
+    <Column5>
       <ClassName>NinjaTrader.MarketAnalyzer.DailyVolume</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <DailyVolume xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -381,10 +329,49 @@
           <ShowInTotalRow>false</ShowInTotalRow>
         </DailyVolume>
       </Column>
+    </Column5>
+    <Column6>
+      <ClassName>NinjaTrader.MarketAnalyzer.TimeLastTick</ClassName>
+      <Width>94</Width>
+      <Column>
+        <TimeLastTick xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AlertConditions />
+          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
+          <BackColorSerialize>x:0</BackColorSerialize>
+          <BarColorSerialize>n:Lime</BarColorSerialize>
+          <BarGraphGrowthType>Center</BarGraphGrowthType>
+          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
+          <BarGraphReferenceValue>0</BarGraphReferenceValue>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
+          <CellConditions />
+          <ColumnType>Regular</ColumnType>
+          <DataSeriesConfigurable>false</DataSeriesConfigurable>
+          <DataTypeSerializable>string</DataTypeSerializable>
+          <FilterConditions />
+          <ForeColorSerialize>x:0</ForeColorSerialize>
+          <FormatDecimals>2</FormatDecimals>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>TimeLastTick</Name>
+          <Period>
+            <BasePeriodType>Minute</BasePeriodType>
+            <BasePeriodValue>1</BasePeriodValue>
+            <Id>Minute</Id>
+            <MarketDataType>Last</MarketDataType>
+            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+            <ReversalType>Tick</ReversalType>
+            <Value>1</Value>
+            <Value2>1</Value2>
+          </Period>
+          <PriceType>Close</PriceType>
+          <RequiresBars>true</RequiresBars>
+          <ShowInTotalRow>false</ShowInTotalRow>
+        </TimeLastTick>
+      </Column>
     </Column6>
     <Column7>
       <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -683,7 +670,7 @@
     </Column7>
     <Column8>
       <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -1010,7 +997,7 @@
     </Column8>
     <Column9>
       <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
-      <Width>83</Width>
+      <Width>94</Width>
       <Column>
         <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
@@ -1074,7 +1061,7 @@
             <MarketDataType>Last</MarketDataType>
             <PointAndFigurePriceType>Close</PointAndFigurePriceType>
             <ReversalType>Tick</ReversalType>
-            <Value>15</Value>
+            <Value>1</Value>
             <Value2>1</Value2>
           </Period>
           <PriceType>Close</PriceType>
@@ -1102,7 +1089,7 @@
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>15</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -1230,7 +1217,7 @@
           <SessionBreakLines>true</SessionBreakLines>
           <VerticalGridLines>true</VerticalGridLines>
           <ZOrder>0</ZOrder>
-          <SwingSize>7</SwingSize>
+          <SwingSize>1</SwingSize>
           <SwingType>Standard</SwingType>
           <DtbStrength>15</DtbStrength>
           <IgnoreInsideBars>true</IgnoreInsideBars>
@@ -1242,7 +1229,7 @@
     </Column9>
     <Column10>
       <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
-      <Width>87</Width>
+      <Width>103</Width>
       <Column>
         <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
