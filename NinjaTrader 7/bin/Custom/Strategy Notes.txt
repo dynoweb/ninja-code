@@ -1,0 +1,7 @@
+Stochastics Strategies
+Dog
+DogCycleCounter
+DogScalper
+StochScalper
+TopDog
+TopDog2
