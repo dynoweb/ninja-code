@@ -28,8 +28,8 @@ namespace NinjaTrader.Strategy
         private int donchianPeriod = 8; // Default setting for DonchianPeriod
         private bool longOnly = true; // Default setting for LongOnly
         private double stopLoss = 0.05; // Default setting for StopLoss
-        private int exitAfterXBars = 7; // Default setting for ExitAfterXBars
-        private double profitTarget = 300.00; // Default setting for ProfitTarget
+        private int exitAfterXBars = 14; // Default setting for ExitAfterXBars
+        private double profitTarget = 1500.00; // Default setting for ProfitTarget
         // User defined variables (add any user defined variables below)
         #endregion
 
@@ -49,7 +49,7 @@ namespace NinjaTrader.Strategy
 			// for the entire trade (targetPrice = fillPrice + profitTarget/positionQuantity)
 			if (profitTarget != 0) SetProfitTarget(profitTarget);
 			
-			Add(DonchianChannel(donchianPeriod));			
+			Add(DonchianChannelClose(donchianPeriod));			
         }
 
         /// <summary>
