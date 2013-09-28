@@ -25,7 +25,7 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int donchianPeriod = 8; // Default setting for DonchianPeriod
+        private int donchianPeriod = 20; // Default setting for DonchianPeriod
         private bool longOnly = false; // Default setting for LongOnly
         private double stopLoss = 0; // Default setting for StopLoss
         private int exitAfterXBars = 0; // Default setting for ExitAfterXBars
