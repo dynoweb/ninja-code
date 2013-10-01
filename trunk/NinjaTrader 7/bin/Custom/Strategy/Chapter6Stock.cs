@@ -23,7 +23,7 @@ namespace NinjaTrader.Strategy
 	/// 9/28/2013 - For some reason, my numbers don't match the books.  I do more trades and am not making as much profit.
 	/// 
 	/// Test - Using 9/30/99 - 12/31/2011 12 years to allow indicators to get historical data
-	/// 9/28/13 
+	/// 9/28/13 - SVN revision 57
 	/// Conditions: dP=4, eAXB=9, lTP=40, lO=true, lVT=3, pT=0
 	/// Results: PF=1.57, Net=532,920.23, Trades=6523, AvgTrade=81.70, MaxDD=3,268.91 - No Commission
 	/// 
@@ -67,6 +67,7 @@ namespace NinjaTrader.Strategy
 			if (profitTarget != 0) SetProfitTarget(profitTarget);
 			
 			Add(DonchianChannelClose(donchianPeriod));			
+			Add(SMARick(LongerTermPeriod));
 			Print("Initializing Strategy");
         }
 
@@ -100,20 +101,26 @@ namespace NinjaTrader.Strategy
 			}			
 			
 			// ENTRY CODE
-			if (Position.MarketPosition != MarketPosition.Long)
+			if (Position.MarketPosition != MarketPosition.Long && !forceReversalShort)
 			{				
 				if (Close[0] < MIN(Close, DonchianPeriod)[1]  // using reverse entry signals
-					&& (LongerTermPeriod == 0 || Close[0] > Close[LongerTermPeriod])
-					&& (LowVolatilityThreshold == 0 || !lowVolatility(LowVolatilityThreshold))
-					)
+					//&& (LongerTermPeriod == 0 || Close[0] > Close[LongerTermPeriod])
+					&& (LongerTermPeriod == 0 || Rising(SMARick(LongerTermPeriod))))
 				{
-					entryLongOrder = EnterLong(calcShares(5000), "Reversal");
+					if (LowVolatilityThreshold == 0 || !lowVolatility(LowVolatilityThreshold))
+					{
+						entryLongOrder = EnterLong(calcShares(5000), "Reversal");
+					}
 				}
 			}
 			
-			if (!LongOnly && Close[0] > MAX(Close, DonchianPeriod)[1])
+			if (Close[0] > MAX(Close, DonchianPeriod)[1])
 			{
-				EnterShort(calcShares(5000), "Reversal");
+				forceReversalShort = false;
+				if (!LongOnly)
+				{
+					EnterShort(calcShares(5000), "Reversal");
+				}
 			}
         }
 		
@@ -130,7 +137,22 @@ namespace NinjaTrader.Strategy
 			int Period = 20;
 			double stdDevValue = StdDev(Close, Period)[0];
 			//Print (Time + " stdDev percent of price " + ((stdDevValue/Close[0]) * 100));
-			return (stdDevValue/Close[0]) * 100 < minPercent ? true : false;
+			double stdDevPercentOfPrice = (stdDevValue/Close[0]) * 100;
+			Color colour = Color.Yellow;
+			if (stdDevPercentOfPrice >= 2) 
+			{
+				colour = Color.Red;
+			}
+			else if (stdDevPercentOfPrice >= 3) 
+			{
+				colour = Color.Green;
+			}
+			else if (stdDevPercentOfPrice >= 4) 
+			{		
+				colour = Color.Black;
+			}
+			DrawDot(CurrentBar + "vol", true, 0, High[0] * 1.05, colour);
+			return stdDevPercentOfPrice < minPercent ? true : false;
 		}
 		
 		private int calcShares(int investment)
@@ -160,13 +182,13 @@ namespace NinjaTrader.Strategy
 				// normal State life cycle PendingSubmit, Accepted, Working, Filled
 				if (order.OrderState == OrderState.Filled)
 				{
-					Print(Time + " entryLongOrder: " + order.ToString());
-					Print(Time + " closeXBarsOrder: " + order.ToString());
+					//Print(Time + " entryLongOrder: " + order.ToString());
+					//Print(Time + " closeXBarsOrder: " + order.ToString());
 					double profit = entryLongOrder.Quantity * (closeXBarsOrder.AvgFillPrice - entryLongOrder.AvgFillPrice);
-					Print("Profit: " + profit); 
+					//Print("Profit: " + profit); 
 					//closeXBarsOrder = null;
-					if (profit < 0)
-						forceReversalShort = true;
+//					if (profit < 0)
+//						forceReversalShort = true;
 				}
 			}
 		}
