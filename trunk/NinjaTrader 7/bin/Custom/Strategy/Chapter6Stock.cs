@@ -59,7 +59,7 @@ namespace NinjaTrader.Strategy
 			EntriesPerDirection = 1; 
 			EntryHandling = EntryHandling.AllEntries;
 			ClearOutputWindow();
-			ExitOnClose = true;
+			ExitOnClose = false;
 			CalculateOnBarClose = true;
 				
 			// if this is set without a CalculationMode then it's a dollar value
@@ -103,14 +103,20 @@ namespace NinjaTrader.Strategy
 			// ENTRY CODE
 			if (Position.MarketPosition != MarketPosition.Long && !forceReversalShort)
 			{				
-				if (Close[0] < MIN(Close, DonchianPeriod)[1]  // using reverse entry signals
-					//&& (LongerTermPeriod == 0 || Close[0] > Close[LongerTermPeriod])
-					&& (LongerTermPeriod == 0 || Rising(SMARick(LongerTermPeriod))))
+				if (Close[0] < MIN(Close, DonchianPeriod)[1])  // using reverse entry signals
 				{
-					if (LowVolatilityThreshold == 0 || !lowVolatility(LowVolatilityThreshold))
+					//&& (LongerTermPeriod == 0 || Close[0] > Close[LongerTermPeriod])
+					if (LongerTermPeriod == 0 || Rising(SMARick(LongerTermPeriod)))
 					{
-						entryLongOrder = EnterLong(calcShares(5000), "Reversal");
+						if (LowVolatilityThreshold == 0 || !lowVolatility(LowVolatilityThreshold))
+						{
+							entryLongOrder = EnterLong(calcShares(5000), "Reversal");
+						}
+						else
+							Print(Time + " excluded for low volatility " + ((StdDev(Close, 14)[0]/Close[0]) * 100));
 					}
+					else
+						Print(Time + " excluded for longTermTrend");
 				}
 			}
 			
@@ -134,7 +140,7 @@ namespace NinjaTrader.Strategy
 		/// <returns>true if the stock is trading in a very tight range</returns>
 		private bool lowVolatility(int minPercent)
 		{
-			int Period = 20;
+			int Period = 14;
 			double stdDevValue = StdDev(Close, Period)[0];
 			//Print (Time + " stdDev percent of price " + ((stdDevValue/Close[0]) * 100));
 			double stdDevPercentOfPrice = (stdDevValue/Close[0]) * 100;
