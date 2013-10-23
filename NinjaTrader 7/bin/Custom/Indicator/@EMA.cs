@@ -35,7 +35,6 @@ namespace NinjaTrader.Indicator
 			Add(new Plot(Color.Orange, "EMA"));
 
 			Overlay				= true;
-			PriceTypeSupported	= true;
 		}
 		
 		/// <summary>
@@ -50,7 +49,7 @@ namespace NinjaTrader.Indicator
 		/// <summary>
 		/// </summary>
 		[Description("Numbers of bars used for calculations")]
-		[Category("Parameters")]
+		[GridCategory("Parameters")]
 		public int Period
 		{
 			get { return period; }
