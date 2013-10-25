@@ -30,6 +30,11 @@ namespace NinjaTrader.Strategy
 	/// Conditions: dP=8, eAXB=8, lTP=70, lO=true, lVT=3, pT=300
 	/// Results: PF=1.61, Net=309,836.31, Trades=4907, AvgTrade=63.14, MaxDD=1,839.72 - No Commission
 	/// 
+	/// Test - Using 9/30/99 - 12/31/2011 12 years to allow indicators to get historical data
+	/// 10/24/13 - SVN revision 60
+	/// Conditions: dP=8, eAXB=9, lTP=70, lO=true, lVT=3, pT=0, vP=8
+	/// Results: PF=1.5, Net=205,592.26, Trades=2422, AvgTrade=84.89, MaxDD=2,264.56 - w/ $48k Commission
+	/// 
     /// </summary>
     [Description("Trades daily time period stocks, based on Chapter 5 of the book Building Reliable Trading Systems. Note when running live make sure to set the the 'Stop & target submission' property to ByStrategyPosition")]
     public class Chapter6Stock : Strategy
@@ -37,12 +42,13 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables
         private int donchianPeriod = 8; // Default setting for DonchianPeriod
-        private int exitAfterXBars = 8; // Default setting for ExitAfterXBars
+        private int exitAfterXBars = 9; // Default setting for ExitAfterXBars
         private int longerTermPeriod = 70; // Default setting for LongerTermPeriod
         private bool longOnly = true; // Default setting for LongOnly
 		private int lowVolatilityThreshold = 3;
-        private double profitTarget = 300.00; // Default setting for ProfitTarget, based on a $5000 investment
-        // User defined variables (add any user defined variables below)
+        private double profitTarget = 0; // Default setting for ProfitTarget, based on a $5000 investment
+		private int volPeriod = 8;	// the book showed 20, but 9 seems more like his website is using
+		// User defined variables (add any user defined variables below)
 
 		private bool forceReversalShort = false;	// looks for a short signal before enabling the long signal
 		private IOrder entryLongOrder = null;
@@ -61,6 +67,7 @@ namespace NinjaTrader.Strategy
 			ClearOutputWindow();
 			ExitOnClose = false;
 			CalculateOnBarClose = true;
+			Aggregated = true;
 				
 			// if this is set without a CalculationMode then it's a dollar value
 			// for the entire trade (targetPrice = fillPrice + profitTarget/positionQuantity)
@@ -96,6 +103,7 @@ namespace NinjaTrader.Strategy
 					&& Close[0] > MAX(Close, DonchianPeriod)[1]
 					)
 				{
+					Print(Time + " closing since prior bar broke above DC");
 					closeReversalOrder = ExitLong("Breakout", "Reversal");								
 				}
 			}			
@@ -113,7 +121,7 @@ namespace NinjaTrader.Strategy
 							entryLongOrder = EnterLong(calcShares(5000), "Reversal");
 						}
 						else
-							Print(Time + " excluded for low volatility " + ((StdDev(Close, 14)[0]/Close[0]) * 100));
+							Print(Time + " excluded for low volatility " + ((StdDev(Close, volPeriod)[0]/Close[0]) * 100));
 					}
 					else
 						Print(Time + " excluded for longTermTrend");
@@ -140,7 +148,7 @@ namespace NinjaTrader.Strategy
 		/// <returns>true if the stock is trading in a very tight range</returns>
 		private bool lowVolatility(int minPercent)
 		{
-			int Period = 14;
+			int Period = volPeriod;
 			double stdDevValue = StdDev(Close, Period)[0];
 			//Print (Time + " stdDev percent of price " + ((stdDevValue/Close[0]) * 100));
 			double stdDevPercentOfPrice = (stdDevValue/Close[0]) * 100;
@@ -175,6 +183,7 @@ namespace NinjaTrader.Strategy
 			{
 				if (order.OrderState == OrderState.Filled)
 				{
+					Print(Time + " order placed");
 					//Print(Time + " entryLongOrder: " + order.ToString());
 					//entryLongOrder = null;
 				}
@@ -281,6 +290,14 @@ namespace NinjaTrader.Strategy
         {
             get { return profitTarget; }
             set { profitTarget = Math.Max(0, value); }
+        }
+
+        [Description("Volatility period.")]
+        [GridCategory("Parameters")]
+        public int VolPeriod
+        {
+            get { return volPeriod; }
+            set { volPeriod = Math.Max(2, value); }
         }
 
         #endregion
