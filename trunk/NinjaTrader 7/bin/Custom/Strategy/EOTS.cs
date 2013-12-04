@@ -25,7 +25,8 @@ namespace NinjaTrader.Strategy
         // Wizard generated variables
 		private int donchianPeriod = 10;
         private int exitAfterXBars = 5; // Default setting for PeriodInTrade
-
+		private int period = 200;
+		
         // User defined variables (add any user defined variables below)
 		Random rnd = new Random();
         #endregion
@@ -41,6 +42,8 @@ namespace NinjaTrader.Strategy
 			EntriesPerDirection = 1; // Order Handling enforce only 1 position long or short at any time
 			EntryHandling = EntryHandling.AllEntries;
 			ExitOnClose = false;
+			
+			Add(ATR(Period));
         }
 
         /// <summary>
@@ -52,6 +55,10 @@ namespace NinjaTrader.Strategy
 			if (CurrentBar < BarsRequired)
         		return;			
 			
+			// calculate $ volativity
+			double adv = calcAvgDailyVolativity(Period);
+			Print(Time + " adv: " + adv);
+			
 			// EXIT CODE			
 			if (Position.MarketPosition != MarketPosition.Flat) 
 			{
@@ -60,13 +67,13 @@ namespace NinjaTrader.Strategy
 				{
 					if (Position.MarketPosition == MarketPosition.Long)
 					{
-						ExitLong();
-						Print(Time + " Exit market on open due to time in trade " + Instrument.FullName);
+					//	ExitLong();
+					//	Print(Time + " Exit market on open due to time in trade " + Instrument.FullName);
 					}
 					if (Position.MarketPosition == MarketPosition.Short)
 					{
-						ExitShort();
-						Print(Time + " Exit market on open due to time in trade " + Instrument.FullName);
+					//	ExitShort();
+					//	Print(Time + " Exit market on open due to time in trade " + Instrument.FullName);
 					}
 				}
 			} 
@@ -86,6 +93,17 @@ namespace NinjaTrader.Strategy
 				}
 			}
         }
+		
+		protected double calcAvgDailyVolativity(int period)
+		{
+			double adv = 0;
+			double delta = 0;
+			for (int i = 0; i < period; i++) 
+			{
+				delta += Math.Abs(Close[0 + i] - Close[1 + i]);
+			}
+			return delta/period;
+		}
 
         #region Properties
 		
@@ -103,6 +121,14 @@ namespace NinjaTrader.Strategy
         {
             get { return exitAfterXBars; }
             set { exitAfterXBars = Math.Max(0, value); }
+        }
+
+        [Description("Average Volitivity Period")]
+        [GridCategory("Parameters")]
+        public int Period
+        {
+            get { return period; }
+            set { period = Math.Max(0, value); }
         }
 
         #endregion

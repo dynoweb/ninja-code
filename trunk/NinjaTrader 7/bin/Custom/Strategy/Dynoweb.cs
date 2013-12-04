@@ -52,7 +52,7 @@ namespace NinjaTrader.Strategy
 		private int period = 18;
 		private int sessionHighLow = 0;
 		private bool useTrailing = false;
-
+		private double stdDevMax = 0.06;
 		/*
 		// Optimized for FDAX 1 min
 		private bool breakEvenLast = false;
@@ -154,6 +154,10 @@ namespace NinjaTrader.Strategy
 			if (BarsPeriod.Id != PeriodType.Minute || ToDay(Time[0]) > ToDay(exp))
 				return;
 
+			// If it's Friday, do not trade.
+		    if (Time[0].DayOfWeek == DayOfWeek.Friday)
+        		return;
+
 			// reset variables at the start of each day
 			if (Bars.BarsSinceSession == 1)
 			{
@@ -199,7 +203,7 @@ namespace NinjaTrader.Strategy
 				//&& ToTime(Time[0]) >= (ToTime(hour, minute, 0) + 10000) // add an hour before we start the trades
 				) 
 			{
-				if (entryOrderLong == null && entryOrderShort == null) 
+				if (entryOrderLong == null && entryOrderShort == null && StdDev(20)[0] < stdDevMax) 
 				{					
 					//Print(Time + " ATR: " + ATR(period).Plots[0]);
 	
@@ -644,6 +648,14 @@ namespace NinjaTrader.Strategy
         {
             get { return channelMin; }
             set { channelMin = Math.Max(1, value); }
+        }
+		
+        [Description("Minimum Channel Size in ticks")]
+        [GridCategory("Parameters")]
+        public double StdDevMax
+        {
+            get { return stdDevMax; }
+            set { stdDevMax = value; }
         }
 		
         [Description("Maximum Channel Size in ticks")]
