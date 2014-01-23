@@ -38,6 +38,8 @@ namespace NinjaTrader.Indicator
 		    private int slowPeriod;
 			private int fastPeriod;
 			private int direction = 1;  // 1=up, -1=down
+			private IntSeries crossedAgo;
+			private IntSeries crossedDirection;
         #endregion
 
         /// <summary>
@@ -47,14 +49,15 @@ namespace NinjaTrader.Indicator
         {
             Add(new Plot(Color.FromKnownColor(KnownColor.Blue), PlotStyle.Line, "FastPlot"));
             Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "SlowPlot"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedAgo"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedDirection"));
+            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedAgoPlot"));
+            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedDirectionPlot"));
 
 			Plots[0].Pen.Width = 2;
 			Plots[1].Pen.Width = 2;
-
-			PaintPriceMarkers = false;
 			
+			crossedAgo = new IntSeries(this);
+			crossedDirection = new IntSeries(this);
+						
 			if (timeframe == TimeframeType.Short)
 			{
 				slowPeriod = mASlowShort; 
@@ -71,6 +74,8 @@ namespace NinjaTrader.Indicator
 				fastPeriod = mAFastLong;
 			}
 
+			PriceTypeSupported = true;
+			PaintPriceMarkers = false;
 			CalculateOnBarClose = false;
 			AutoScale = false;
             Overlay	= true;
@@ -88,8 +93,12 @@ namespace NinjaTrader.Indicator
             // plot below by replacing 'Close[0]' with your own formula.
             FastPlot.Set(emaValue);
             SlowPlot.Set(smaValue);
-			CrossedAgo.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
-			CrossedDirection.Set(direction);
+			//CrossedAgo.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
+			//CrossedDirection.Set(direction);
+			CrossedAgoPlot.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
+			CrossedDirectionPlot.Set(direction);
+			crossedAgo.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
+			crossedDirection.Set(direction);
         }
 		
 		private int calcLastCross(IDataSeries series1, IDataSeries series2)
@@ -138,16 +147,30 @@ namespace NinjaTrader.Indicator
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries CrossedAgo
+        public DataSeries CrossedAgoPlot
         {
             get { return Values[2]; }
         }
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries CrossedDirection
+        public DataSeries CrossedDirectionPlot
         {
             get { return Values[3]; }
+        }
+		
+        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        public IntSeries CrossedAgo
+        {
+            get { return crossedAgo; }
+        }
+
+        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        public IntSeries CrossedDirection
+        {
+            get { return crossedDirection; }
         }
 		
 		/// <summary>
