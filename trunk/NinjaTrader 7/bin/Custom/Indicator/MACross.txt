@@ -1,0 +1,49 @@
+/*
+        [Description("Slow Moving Average Period - Short Time Period")]
+        [GridCategory("Parameters")]
+        public int MASlowShort
+        {
+            get { return mASlowShort; }
+            set { mASlowShort = Math.Max(1, value); }
+        }
+
+        [Description("Fast Moving Average Period - Short Time Period")]
+        [GridCategory("Parameters")]
+        public int MAFastShort
+        {
+            get { return mAFastShort; }
+            set { mAFastShort = Math.Max(1, value); }
+        }
+		
+        [Description("Slow Moving Average Period - Medium Time Period")]
+        [GridCategory("Parameters")]
+        public int MASlowMedium
+        {
+            get { return mASlowMedium; }
+            set { mASlowMedium = Math.Max(1, value); }
+        }
+
+        [Description("Fast Moving Average Period - Medium Time Period")]
+        [GridCategory("Parameters")]
+        public int MAFastMedium
+        {
+            get { return mAFastMedium; }
+            set { mAFastMedium = Math.Max(1, value); }
+        }
+		
+        [Description("Slow Moving Average Period - Long Time Period")]
+        [GridCategory("Parameters")]
+        public int MASlowLong
+        {
+            get { return mASlowLong; }
+            set { mASlowLong = Math.Max(1, value); }
+        }
+
+        [Description("Fast Moving Average Period - Long Time Period")]
+        [GridCategory("Parameters")]
+        public int MAFastLong
+        {
+            get { return mAFastLong; }
+            set { mAFastLong = Math.Max(1, value); }
+        }
+*/		
