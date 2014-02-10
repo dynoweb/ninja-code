@@ -25,7 +25,8 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int smaPeriod = 50; // Default setting for SmaPeriod
+        private int hmaPeriod = 50; // Default setting for HmaPeriod
+		int slopeFator = 50;
         private int emaPeriod = 15; // Default setting for EmaPeriod
         // User defined variables (add any user defined variables below)
 		int FALLING = -1;
@@ -45,13 +46,23 @@ namespace NinjaTrader.Strategy
 		int stocK = 5;
 		int stocS = 2;
 		
-		MACD macd;
+		MACDrick macd;
 		int macdFast = 5;
 		int macdSlow = 20;
 		int macdSmooth = 30;
 		
+		Color backgroundShortColor = Color.Red;
+		Color backgroundLongColor = Color.Green;
+		int opacity	= 25;
+		bool backgroundColorEnabled = true;
+		
+		int macdTrend = 0;
+		
 		int cycleCount = 0;
 		int trendCount = 0;
+		
+		int profitTarget = 0;
+		int stopLoss = 0;
         #endregion
 
         /// <summary>
@@ -64,39 +75,47 @@ namespace NinjaTrader.Strategy
 			Add(EMA(EmaPeriod));
 			EMA(EmaPeriod).Plots[0].Pen.Color = Color.Gray;
 			
-            Add(SMARick(SmaPeriod));
+            //Add(SMARick(SmaPeriod));
+			Add(HMARick(HmaPeriod, 75));
 			//SMARick(SmaPeriod).Plots[0].Pen.Color = Color.Red;	
 			//Add(SMARick(SmaPeriod * 3));
 			
-            Add(Stochastics(stocD, stocK, stocS));
-			Stochastics(stocD, stocK, stocS).Plots[0].Pen.Color = Color.Blue; // D color
-			Stochastics(stocD, stocK, stocS).Plots[1].Pen.Color = Color.Black; // K color
-			Stochastics(stocD, stocK, stocS).Plots[0].Pen.Width = 2; // D color
-			Stochastics(stocD, stocK, stocS).Plots[1].Pen.Width = 1; // K color
+//			Add(StochasticsCycles(stocD, stocK, MAType.HMA, false, false, stocS, 75, 3, HmaPeriod));
+			stoc = Stochastics(stocD, stocK, stocS);
+            Add(stoc);
+			stoc.Plots[0].Pen.Color = Color.Blue; // D color
+			stoc.Plots[1].Pen.Color = Color.Black; // K color
+			stoc.Plots[0].Pen.Width = 2; // D color
+			stoc.Plots[1].Pen.Width = 1; // K color
 			
-			Stochastics(stocD, stocK, stocS).Lines[0].Pen.Color = Color.Black; // Lower
-			Stochastics(stocD, stocK, stocS).Lines[1].Pen.Color = Color.Black; // Upper
-			Stochastics(stocD, stocK, stocS).Lines[0].Pen.DashStyle = DashStyle.Dot; // Lower
-			Stochastics(stocD, stocK, stocS).Lines[1].Pen.DashStyle = DashStyle.Dot; // Upper
-			Stochastics(stocD, stocK, stocS).Lines[0].Pen.Width = 2; // Lower
-			Stochastics(stocD, stocK, stocS).Lines[1].Pen.Width = 2; // Upper
-			Stochastics(stocD, stocK, stocS).Lines[0].Value = 20; // Lower
-			Stochastics(stocD, stocK, stocS).Lines[1].Value = 80; // Upper
+			stoc.Lines[0].Pen.Color = Color.Black; // Lower
+			stoc.Lines[1].Pen.Color = Color.Black; // Upper
+			stoc.Lines[0].Pen.DashStyle = DashStyle.Dot; // Lower
+			stoc.Lines[1].Pen.DashStyle = DashStyle.Dot; // Upper
+			stoc.Lines[0].Pen.Width = 2; // Lower
+			stoc.Lines[1].Pen.Width = 2; // Upper
+			stoc.Lines[0].Value = 20; // Lower
+			stoc.Lines[1].Value = 80; // Upper
 			
 			ConstantLines(45,55,0,0).Panel = 1;	// specifying to use the first indicator's panel
 			Add(ConstantLines(45,55,0,0)); 
 			ConstantLines(45,55,0,0).Plots[0].Pen.Color = Color.Red;
 			ConstantLines(45,55,0,0).Plots[1].Pen.Color = Color.Red;			
 
-			Add(MACD(macdFast,macdSlow,macdSmooth));
-			MACD(macdFast,macdSlow,macdSmooth).CalculateOnBarClose = true;
-			MACD(macdFast,macdSlow,macdSmooth).Plots[0].Pen.Color = Color.Black;	// Macd
-			MACD(macdFast,macdSlow,macdSmooth).Plots[1].Pen.Color = Color.Blue;	// Avg
-			MACD(macdFast,macdSlow,macdSmooth).Plots[2].Pen.Color = Color.Red;		//downBard
-//			MACD(macdFast,macdSlow,macdSmooth).Plots[3].Pen.Color = Color.Transparent;	// Diff
-			MACD(macdFast,macdSlow,macdSmooth).Plots[0].Pen.Width = 2;
-			MACD(macdFast,macdSlow,macdSmooth).Plots[1].Pen.Width = 3;
-			MACD(macdFast,macdSlow,macdSmooth).Plots[0].PlotStyle = PlotStyle.Bar;
+			macd = MACDrick(macdFast,macdSlow,macdSmooth);
+			Add(macd);
+			
+			//Add(MACDRick2(Color.Green, Color.Red, true, macdFast, 20, macdSlow,macdSmooth));
+			
+//			Add(MACD(macdFast,macdSlow,macdSmooth));
+//			MACD(macdFast,macdSlow,macdSmooth).CalculateOnBarClose = true;
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[0].Pen.Color = Color.Black;	// Macd
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[1].Pen.Color = Color.Blue;	// Avg
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[2].Pen.Color = Color.Red;		//downBard
+//  //			MACD(macdFast,macdSlow,macdSmooth).Plots[3].Pen.Color = Color.Transparent;	// Diff
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[0].Pen.Width = 2;
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[1].Pen.Width = 3;
+//			MACD(macdFast,macdSlow,macdSmooth).Plots[0].PlotStyle = PlotStyle.Bar;
 						
 			//SetProfitTarget("", CalculationMode.Ticks, 205);
             //SetTrailStop("", CalculationMode.Ticks, 5, false);
@@ -114,11 +133,31 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
+/// Lines with comments like these were commented out to help read a cleaner chart			
+		    // Checks to make sure we have at least 20 or more bars
+		    if (CurrentBar < 30)
+        		return;
+
+			// dad = macd.Avg
+			// mom = macd.Mom
+			macdTrend = 0;
+			if (macd.Mom[0] > 0 && macd.Avg[0] > 0)
+			{
+				macdTrend = 1;
+				if (BackgroundColorEnabled) BackColorAll = Color.FromArgb(Opacity, BackgroundLongColor);
+			}
+			else if (macd.Mom[0] < 0 && macd.Avg[0] < 0)
+			{
+				macdTrend = -1;
+				if (BackgroundColorEnabled) BackColorAll = Color.FromArgb(Opacity, BackgroundShortColor);
+			}
+			
 			stoc = Stochastics(stocD, stocK, stocS);
 			//stocX3 = Stochastics(IDataSeries, stocD, stocK, stocS);
 			
-			int currentTrend = Rising(SMARick(SmaPeriod)) ? RISING: FALLING;
-
+			//int currentTrend = Rising(SMARick(SmaPeriod)) ? RISING: FALLING;
+			int currentTrend = Rising(HMARick(HmaPeriod, 75)) ? RISING: FALLING;
+			
 			// is SMA trend changing
 			//if ((( Rising(SMARick(SmaPeriod))&& (SMARick(SmaPeriod)[1] - SMARick(SmaPeriod)[2]) < 0 ))
 			//	|| (Falling(SMARick(SmaPeriod)) && (SMARick(SmaPeriod)[1] - SMARick(SmaPeriod)[2]) > 0))
@@ -139,10 +178,10 @@ namespace NinjaTrader.Strategy
 				cycleHigh = int.MaxValue;
 				cycleLow = int.MinValue;
 				
-				if (currentTrend == FALLING)
-					DrawText(CurrentBar + " barCount", CurrentBar + " ", 0, 2 * (High[0] - Low[0]) + High[0], Color.DarkRed);
-				if (currentTrend == RISING)
-					DrawText(CurrentBar + " barCount", CurrentBar + " ", 0, 2 * (High[0] - Low[0]) + High[0], Color.DarkGreen);
+///				if (currentTrend == FALLING)
+///					DrawText(CurrentBar + " barCount", CurrentBar + " ", 0, 2 * (High[0] - Low[0]) + High[0], Color.DarkRed);
+///				if (currentTrend == RISING)
+///					DrawText(CurrentBar + " barCount", CurrentBar + " ", 0, 2 * (High[0] - Low[0]) + High[0], Color.DarkGreen);
 				//	cycleCount = 0;
 			}
 			
@@ -241,10 +280,12 @@ namespace NinjaTrader.Strategy
 	                && stoc.D[1] < stoc.D[0]
 					)
 				{
-					DrawArrowUp("My up arrow" + CurrentBar, false, 0, Low[0], Color.Lime);
+					//DrawDot(CurrentBar + "ELx", false, 1, High[0] + 1 * TickSize, Color.Magenta);
+					//DrawArrowUp("My up arrow" + CurrentBar, false, 0, Low[0], Color.Lime);
 					
 					if (Position.MarketPosition == MarketPosition.Flat)
 					{
+						//DrawDot(CurrentBar + "EL", false, 0, High[0] + 1 * TickSize, Color.Black);
 						//EnterLongStop(High[0] + 1 * TickSize);
 					}
 				}            
@@ -259,29 +300,59 @@ namespace NinjaTrader.Strategy
 			{
 				// Trade in the direction of the trend
 				// Long Condition
-				if (Rising(SMARick(SmaPeriod)))
+				//if (Rising(SMARick(SmaPeriod)))
+				
+				///
+				/// TODO - should check if the HMA is in the neutral area, 
+				/// may want to close on the sloped areas and not open on the neutral areas
+				
+				if (Rising(HMARick(HmaPeriod, 75)) && macdTrend >= 0)
 				{
+					DrawText(CurrentBar + "longStage", "1", 0, 4 * TickSize + High[0], Color.Green);
 					// retracing to the extreme
-					if (stoc.D[1] <= 20)
+					if (stoc.K[1] <= 20)
 					{
-						if (DHookBottom(0))
+						DrawText(CurrentBar + "longStage", "2", 0, 4 * TickSize + High[0], Color.Green);
+						if (KHookBottom(0) || DHookBottom(0) || DHookBottom(1))
 						{
+							DrawText(CurrentBar + "longStage", "3", 0, 4 * TickSize + High[0], Color.Green);
 							// confirmed on the higher time frame chart that
 							// stocK is leading stocD, PG 59
 							if (true) 
 							{
-								//EnterLong("DHookUp");
-								EnterLongStop(High[0] + 1 * TickSize, "DHookUp");
-								double stopLoss = (High[0] - Low[0])/TickSize + 2;
-								double profitTarget = stopLoss + 2;
-								SetStopLoss(CalculationMode.Ticks, stopLoss);
-								SetProfitTarget(CalculationMode.Ticks, profitTarget);
-								Print(Time + " Close[0]: " + Close[0] + " stopLoss: " + stopLoss + " profitTarget: " + profitTarget);
+								double entryPrice = High[0] + 1 * TickSize;
+								Print(Time + " entryPrice " + entryPrice);							
+
+								double stopPrice = Low[LowestBar(Low, 3)] -  1 * TickSize;
+								Print(Time + " stopPrice " + stopPrice + " --- Low[LowestBar(Low, 3)] " + Low[LowestBar(Low, 3)]);
+								
+								stopLoss = Math.Max(12, (int) ((entryPrice - stopPrice)/TickSize)); 
+								DrawDot(CurrentBar + "stp", true, 0, entryPrice - stopLoss * TickSize, Color.White);
+								Print(Time + " stopLoss " + stopLoss);
+
+								if (stopLoss <= 12)
+								{
+									EnterLongStop(entryPrice, "KHookUp");
+									SetStopLoss(CalculationMode.Ticks, stopLoss);
+								
+									// letting it ride at this time
+									profitTarget = 22; // stopLoss + 2;
+								
+									//Print(Time + " StopLoss: " + stopLoss + " Low[LowestBar(Low, 3)] " + Low[LowestBar(Low, 3)]);								
+									SetProfitTarget(CalculationMode.Ticks, profitTarget);
+								
+									//Print(Time + " Close[0]: " + Close[0] + " stopLoss: " + stopLoss + " profitTarget: " + profitTarget);
+								}
 							}
 						}
 					}
 					
 				}
+			}
+			else
+			{
+				if (macdTrend < 1 || Falling(HMARick(HmaPeriod, 75)))
+					ExitLong();
 			}
 		}
 		
@@ -299,9 +370,13 @@ namespace NinjaTrader.Strategy
 		void IdentifySecondChance()
 		{
 			//MarkKHookBottom();		
-			if (Rising(SMARick(SmaPeriod)))
+//			if (Rising(SMARick(SmaPeriod)))
+//				MarkKDoubleBottom();
+//			if (Falling(SMARick(SmaPeriod)))
+//				MarkKDoubleTop();
+			if (Rising(HMARick(HmaPeriod, 75)))
 				MarkKDoubleBottom();
-			if (Falling(SMARick(SmaPeriod)))
+			if (Falling(HMARick(HmaPeriod, 75)))
 				MarkKDoubleTop();
 		}
 		
@@ -314,7 +389,9 @@ namespace NinjaTrader.Strategy
 			if (CrossBelow(stoc.K, 20.0, 1)) 
 			{
 				int barsAgo = 1;
-				DrawDot(CurrentBar + "CrossedBelow", true, 0, High[0] + 1 * TickSize, Color.Yellow);
+				DrawDot(CurrentBar + "CrossedBelow7", true, 0, High[0] + 12 * TickSize, Color.Red);
+				DrawDot(CurrentBar + "CrossedBelow5", true, 0, High[0] +  8 * TickSize, Color.Yellow);
+				DrawDot(CurrentBar + "CrossedBelow3", true, 0, High[0] +  4 * TickSize, Color.Green);
 				bool failed = true;
 				
 				// TODO - this is where I was working on when I stopped.
@@ -344,9 +421,9 @@ namespace NinjaTrader.Strategy
 					//	if (cycleCount % 2 == 0)
 					Print(Time + " CurrentBar: " + CurrentBar + " highBarsAgo: " + highBarsAgo + " highBarNumber: " + (CurrentBar - highBarsAgo) + "  trendStartBar: " + trendStartBar);
 						cycleCount++;
-					DrawDot(CurrentBar + "BarsAgo", true, barsAgo, High[0] + 1 * TickSize, Color.Salmon);
-					DrawDot(CurrentBar + "High", true, highBarsAgo, 2 * High[highBarsAgo] - Low[highBarsAgo], Color.Blue);
-					DrawText(CurrentBar + "cycleCount", cycleCount.ToString() + " " + failed, highBarsAgo, 2 * (High[highBarsAgo] - Low[highBarsAgo]) + High[highBarsAgo], Color.Black);
+///					DrawDot(CurrentBar + "BarsAgo", true, barsAgo, High[0] + 1 * TickSize, Color.Salmon);
+///					DrawDot(CurrentBar + "High", true, highBarsAgo, 2 * High[highBarsAgo] - Low[highBarsAgo], Color.Blue);
+///					DrawText(CurrentBar + "cycleCount", cycleCount.ToString() + " " + failed, highBarsAgo, 2 * (High[highBarsAgo] - Low[highBarsAgo]) + High[highBarsAgo], Color.Black);
 					//lastCycleHighBar = highBar;
 				//}//
 			}
@@ -376,7 +453,7 @@ namespace NinjaTrader.Strategy
 						cycleCount++;
 					//DrawDot(CurrentBar + "BarsAgo", true, barsAgo, High[0] + 1 * TickSize, Color.Salmon);
 					DrawDot(CurrentBar + "Low", true, lowBar, 2 * Low[lowBar] - High[lowBar], Color.Red);
-					DrawText(CurrentBar + "cycleCount", cycleCount.ToString(), lowBar, Low[lowBar] - (High[lowBar] - Low[lowBar]) * 2, Color.Black);				
+///					DrawText(CurrentBar + "cycleCount", cycleCount.ToString(), lowBar, Low[lowBar] - (High[lowBar] - Low[lowBar]) * 2, Color.Black);				
 				}
 			}
 		}
@@ -490,12 +567,20 @@ namespace NinjaTrader.Strategy
 		
 		
         #region Properties
-        [Description("SMA Period")]
+        [Description("HMA Period")]
         [GridCategory("Parameters")]
-        public int SmaPeriod
+        public int HmaPeriod
         {
-            get { return smaPeriod; }
-            set { smaPeriod = Math.Max(1, value); }
+            get { return hmaPeriod; }
+            set { hmaPeriod = Math.Max(1, value); }
+        }
+
+        [Description("HMA Slope Factor")]
+        [GridCategory("Parameters")]
+        public int SlopeFator
+        {
+            get { return slopeFator; }
+            set { slopeFator = Math.Max(0, value); }
         }
 
         [Description("EMA Period")]
@@ -505,6 +590,45 @@ namespace NinjaTrader.Strategy
             get { return emaPeriod; }
             set { emaPeriod = Math.Max(1, value); }
         }
+		
+        [Description("Opacity range 0-100, lower numbers for more transparency")]
+        [GridCategory("Background")]
+        public int Opacity
+        {
+            get { return opacity; }
+            set { opacity = Math.Max(0, value); }
+        }
+		
+        [Description("Color for background MACD long")]
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Background Long Color")]
+        public Color BackgroundLongColor
+        {
+            get { return backgroundLongColor; }
+            set { backgroundLongColor = value; }
+        }
+		
+        [Description("Color for background MACD short")]
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Background Short Color")]
+        public Color BackgroundShortColor
+        {
+            get { return backgroundShortColor; }
+            set { backgroundShortColor = value; }
+        }
+		
+        [Description("Turn on background trend colors")]
+        [GridCategory("Background")]
+        [Gui.Design.DisplayNameAttribute("Enable Background Colors")]
+        public bool BackgroundColorEnabled
+        {
+            get { return backgroundColorEnabled; }
+            set { backgroundColorEnabled = value; }
+        }
+		
+		
         #endregion
     }
 }

@@ -16,10 +16,14 @@ using NinjaTrader.Strategy;
 namespace NinjaTrader.Strategy
 {
     /// <summary>
+    /// Written by Rick Cromer
+	/// Uses the @Stochastics indicator to find Highs/Lows 
+	/// 
+	/// Strategy not specific to a particular instrument or period
     /// This straegy is based on the Top Dog Trading rules.
 	/// I'm currently working with ES 610 Tick
     /// </summary>
-    [Description("This straegy is based on the Top Dog Trading rules.")]
+    [Description("This strategy is based on the Top Dog Trading rules.")]
     public class Dog : Strategy
     {
         #region Variables
@@ -56,9 +60,9 @@ namespace NinjaTrader.Strategy
 			ConstantLines(45,55,0,0).Plots[0].Pen.Color = Color.Red;
 			ConstantLines(45,55,0,0).Plots[1].Pen.Color = Color.Red;			
 			
-			SetProfitTarget("", CalculationMode.Ticks, 205);
+			SetProfitTarget("", CalculationMode.Ticks, 14);
             //SetTrailStop("", CalculationMode.Ticks, 5, false);
-			SetStopLoss("", CalculationMode.Ticks, 200, false);
+			SetStopLoss("", CalculationMode.Ticks, 10, false);
 
             CalculateOnBarClose = true;
         }
@@ -164,7 +168,7 @@ namespace NinjaTrader.Strategy
 					
 					if (Position.MarketPosition == MarketPosition.Flat)
 					{
-						//EnterLongStop(High[0] + 1 * TickSize);
+						EnterLongStop(High[0] + 1 * TickSize);
 					}
 				}            
             }

@@ -16,9 +16,12 @@ using NinjaTrader.Strategy;
 namespace NinjaTrader.Strategy
 {
     /// <summary>
-    /// Enter the description of your strategy here
+    /// Written by Rick Cromer
+	/// Uses the @Stochastics indicator to find Highs/Lows 
+	/// 
+	/// Strategy not specific to a particular instrument or period
     /// </summary>
-    [Description("Enter the description of your strategy here")]
+    [Description("Uses the @Stochastics indicator to find Highs/Lows")]
     public class DogCycleCounter : Strategy
     {
         #region Variables
