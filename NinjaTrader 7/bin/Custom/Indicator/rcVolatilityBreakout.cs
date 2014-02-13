@@ -47,7 +47,7 @@ namespace NinjaTrader.Indicator
     private int[] intArray8_1 = new int[8];
     private int[] intArray8_2 = new int[8];
     [XmlIgnore]
-    private Plot boxOutline = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1974));
+    private Plot boxOutline = new Plot(new Pen(Color.Orchard, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1974));
     private string email = "";
     private int barsLookback = 30;
     private bool extendedVisible = true;
@@ -62,7 +62,7 @@ namespace NinjaTrader.Indicator
     private Plot extendedMiddle = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2023));
     private int extendedMiddleLineLength = 6;
     private int extendedLineLength = 20;
-    private Color boxAreaColor = Color.Orange;
+    private Color boxAreaColor = Color.Blue;
     private int boxAreaOpacity = 1;
     private bool tickHeightVisible = true;
     private string tickHeightPosition = LEFT;
@@ -80,29 +80,17 @@ namespace NinjaTrader.Indicator
     private Plot extendedLineLevel2 = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2082));
     [XmlIgnore]
     private Plot extendedLineLevel3 = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2119));
-    private string soundHigh = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2156);
-    private string soundLow = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2156);
-    private string soundLevel1 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2156);
-    private string soundLevel2 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2156);
-    private string soundLevel3 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2156);
+    private string soundHigh = "Alert1.wav";
+    private string soundLow = "Alert1.wav";
+    private string soundLevel1 = "Alert1.wav";
+    private string soundLevel2 = "Alert1.wav";
+    private string soundLevel3 = "Alert1.wav";
     private DataSeries dataSeries1;
     private DataSeries dataSeries2;
-    private double ce532046b6b6b789cfb4e83dd4ded26e8;
-    private double c4401083d3066e091774c61d40eed01ad;
-    private double c3989dca8716e205f1ce35948cff57ac9;
-    private double ce0ad2a035fced4d4b79ef3da6ec927ae;
-    private double c5e0958df8f76b18b2ab9293382ae3d14;
-    private double cb5ff3849b5f0c4d175ca3bba67c0b947;
-    private double c37c8eb5e2c1b5ca77a4987ec1f116d56;
-    private double cd6bc814fcea78d4e2c478b3e42c0a050;
-    private double ca5ad4acedee8387a0d09b08e94ffd438;
-    private double c95e8e518faa568cb6142f92d98772c66;
-    private double cb638b9cc732de8bf65b6dbeeb52281d1;
-    private double c98884df07a511384f7ab4afade318e44;
     private int c84334302133d3436d40fc5c5c9cd118a;
     private int c703c1b4d798d0f3074ba94d947ccca39;
     private ToolStripDropDownButton toolStripDropDownButton;
-    private int ced563a5e9c3c71140c2e62f63afc998a;
+    private int barsSinceSqueeze;
     private Font font;
     private Color color1;
     private Color color2;
@@ -111,14 +99,14 @@ namespace NinjaTrader.Indicator
     private int c70fc78f80bfde9358a1dc14ea234aa72;
     private int aBarNumber;
     private int cdcf0ce7396813d4bd126a0b9fa8fea53;
-    private double cfb105a9d24e167ceec6191571a1a8e43;
-    private double c739d1f8b1109fe6f2de5bc1ec3c7d232;
+    private double squeezeHigh;
+    private double squeezeLow;
     private ToolStripSeparator toolStripSeparator;
     private ToolStripButton toolStripButton;
     private IRectangle iRectangle;
     private ILine iLine;
     private IText iText;
-    private int c6c9ad6a793905e213eacafa1be1fb516;
+    private int squeezeLength;
     private double c133da4068b26ce316e9f7ed309997e74;
     private double c950bfc49088216da2d12e2c56be386df;
     private int c13d059c56853219888b6d45fccc6b9e1;
@@ -176,7 +164,7 @@ namespace NinjaTrader.Indicator
         //this.toolStripDropDownButton.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(278);
         //ToolStripMenuItem toolStripMenuItem1 = new ToolStripMenuItem(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(291));
         //toolStripMenuItem1.Checked = this.extendedVisible;
-        //toolStripMenuItem1.Click += new EventHandler(this.ce3690bd0a1e9603192f7898e782b1f4f);
+        //toolStripMenuItem1.Click += new EventHandler(this.toggleShowBoxes);
         //this.toolStripDropDownButton.DropDownItems.Add((ToolStripItem) toolStripMenuItem1);
         //ToolStripMenuItem toolStripMenuItem2 = new ToolStripMenuItem(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(302));
         //toolStripMenuItem2.Checked = this.showLines;
@@ -207,31 +195,31 @@ namespace NinjaTrader.Indicator
                   if (this.Squeeze[1] != 0.0)
                   {
                         this.aBarNumber = CurrentBar;
-                        this.cfb105a9d24e167ceec6191571a1a8e43 = High[0];
-                        this.c739d1f8b1109fe6f2de5bc1ec3c7d232 = Low[0];
+                        this.squeezeHigh = High[0];
+                        this.squeezeLow = Low[0];
                         ++this.c70fc78f80bfde9358a1dc14ea234aa72;
                   }
                   if (this.Squeeze[1] == 0.0)
                   {
-                        if (High[0] > this.cfb105a9d24e167ceec6191571a1a8e43)
+                        if (High[0] > this.squeezeHigh)
                         {
-                              this.cfb105a9d24e167ceec6191571a1a8e43 = High[0];
+                              this.squeezeHigh = High[0];
                         }
-                        if (Low[0] < this.c739d1f8b1109fe6f2de5bc1ec3c7d232)
+                        if (Low[0] < this.squeezeLow)
                         {
-                              this.c739d1f8b1109fe6f2de5bc1ec3c7d232 = Low[0];
+                              this.squeezeLow = Low[0];
                         }
                         this.cdcf0ce7396813d4bd126a0b9fa8fea53 = CurrentBar;
                         if (this.aBarNumber != this.cdcf0ce7396813d4bd126a0b9fa8fea53)
                         {
-                          this.c133da4068b26ce316e9f7ed309997e74 = (this.cfb105a9d24e167ceec6191571a1a8e43 + this.c739d1f8b1109fe6f2de5bc1ec3c7d232) / 2.0;
-                          this.c950bfc49088216da2d12e2c56be386df = this.cfb105a9d24e167ceec6191571a1a8e43 - this.c739d1f8b1109fe6f2de5bc1ec3c7d232;
-                          this.iRectangle = this.DrawRectangle(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1102) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.aBarNumber, this.cfb105a9d24e167ceec6191571a1a8e43, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c739d1f8b1109fe6f2de5bc1ec3c7d232, this.boxOutline.Pen.Color, this.boxAreaColor, this.boxAreaOpacity);
+                          this.c133da4068b26ce316e9f7ed309997e74 = (this.squeezeHigh + this.squeezeLow) / 2.0;
+                          this.c950bfc49088216da2d12e2c56be386df = this.squeezeHigh - this.squeezeLow;
+                          this.iRectangle = this.DrawRectangle(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1102) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.aBarNumber, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, this.boxOutline.Pen.Color, this.boxAreaColor, this.boxAreaOpacity);
                           ((IShape) this.iRectangle).Pen.DashStyle = this.boxOutline.Pen.DashStyle;
                           ((IShape) this.iRectangle).Pen.Width = this.boxOutline.Pen.Width;
                           if (this.extendedHighVisible)
                           {
-                                this.iLine = this.DrawLine(CurrentBar + "292", true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.cfb105a9d24e167ceec6191571a1a8e43, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.cfb105a9d24e167ceec6191571a1a8e43, this.extendedHigh.Pen.Color, this.extendedHigh.Pen.DashStyle, (int) this.extendedHigh.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "292", true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh, this.extendedHigh.Pen.Color, this.extendedHigh.Pen.DashStyle, (int) this.extendedHigh.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                   this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
                                 if (!this.showLines)
@@ -241,7 +229,7 @@ namespace NinjaTrader.Indicator
                           }
                           if (this.extendedLowVisible)
                           {
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1114) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c739d1f8b1109fe6f2de5bc1ec3c7d232, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.c739d1f8b1109fe6f2de5bc1ec3c7d232, this.extendedLow.Pen.Color, this.extendedLow.Pen.DashStyle, (int) this.extendedLow.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1114) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow, this.extendedLow.Pen.Color, this.extendedLow.Pen.DashStyle, (int) this.extendedLow.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -266,7 +254,7 @@ namespace NinjaTrader.Indicator
                           if (this.extendedLevel1Visible)
                           {
                                 double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1126) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1126) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
 								{
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -275,7 +263,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1135) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1135) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -289,7 +277,7 @@ namespace NinjaTrader.Indicator
                           if (this.extendedLevel2Visible)
                           {
                                 double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1144) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1144) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -298,7 +286,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1153) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1153) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -313,7 +301,7 @@ namespace NinjaTrader.Indicator
                           {
                                 double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0;
                                 Plot plot = this.extendedLineLevel3;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1162) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.cfb105a9d24e167ceec6191571a1a8e43 + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1162) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -322,7 +310,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1171) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1171) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -335,8 +323,8 @@ namespace NinjaTrader.Indicator
                           
                           if (this.tickHeightVisible)
                           {
-                                int num4 = Convert.ToInt32((this.cfb105a9d24e167ceec6191571a1a8e43 - this.c739d1f8b1109fe6f2de5bc1ec3c7d232) / this.get_TickSize());
-                                if (this.tickHeightPosition == cee5e96d25be00bb50a036ae3849574cc.RIGHT || this.tickHeightPosition == cee5e96d25be00bb50a036ae3849574cc.BOTH)
+                                int num4 = Convert.ToInt32((this.squeezeHigh - this.squeezeLow) / this.get_TickSize());
+                                if (this.tickHeightPosition == RIGHT || this.tickHeightPosition == BOTH)
                                 {
                                   this.iText = this.DrawText(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1200) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, num4.ToString(), CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c133da4068b26ce316e9f7ed309997e74, 0, this.tickHeightColor, this.font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
                                   if (!this.dictionary2.ContainsKey(this.iText))
@@ -350,7 +338,7 @@ namespace NinjaTrader.Indicator
                                 }
                                 if (!(this.tickHeightPosition == LEFT))
                                 {
-                                      if (this.tickHeightPosition == cee5e96d25be00bb50a036ae3849574cc.BOTH)
+                                      if (this.tickHeightPosition == BOTH)
                                       {
                                       }
                                 }
@@ -419,51 +407,51 @@ namespace NinjaTrader.Indicator
             }
         
       
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundHigh, 0, this.cfb105a9d24e167ceec6191571a1a8e43, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1229));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel1, 1, this.cfb105a9d24e167ceec6191571a1a8e43 + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1308));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel2, 2, this.cfb105a9d24e167ceec6191571a1a8e43 + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1401));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel3, 3, this.cfb105a9d24e167ceec6191571a1a8e43 + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1494));
-      this.c03c1af8a08fc173794566a08a468a918(this.SoundLow, 4, this.c739d1f8b1109fe6f2de5bc1ec3c7d232, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1587));
-      this.c03c1af8a08fc173794566a08a468a918(this.SoundLevel1, 5, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1664));
-      this.c03c1af8a08fc173794566a08a468a918(this.SoundLevel2, 6, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1755));
-      this.c03c1af8a08fc173794566a08a468a918(this.SoundLevel3, 7, this.c739d1f8b1109fe6f2de5bc1ec3c7d232 - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1846));
+      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundHigh, 0, this.squeezeHigh, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1229));
+      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel1, 1, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1308));
+      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel2, 2, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1401));
+      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel3, 3, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1494));
+      this.processAlerts(this.SoundLow, 4, this.squeezeLow, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1587));
+      this.processAlerts(this.SoundLevel1, 5, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1664));
+      this.processAlerts(this.SoundLevel2, 6, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1755));
+      this.processAlerts(this.SoundLevel3, 7, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1846));
 			
-      this.CurrentValue.Set(this.dataSeries1[0]);
-      if (this.c13d059c56853219888b6d45fccc6b9e1 != CurrentBar)
+      CurrentValue.Set(dataSeries1[0]);
+      if (c13d059c56853219888b6d45fccc6b9e1 != CurrentBar)
       {
-            this.c13d059c56853219888b6d45fccc6b9e1 = CurrentBar;
-            if (this.SqueezeOn[0] == 0.0)
+            c13d059c56853219888b6d45fccc6b9e1 = CurrentBar;
+            if (SqueezeOn[0] == 0.0)
             {
-                  ++this.ced563a5e9c3c71140c2e62f63afc998a;
+                  ++barsSinceSqueeze;
             }
             else
-              this.ced563a5e9c3c71140c2e62f63afc998a = 0;
-            if (this.Squeeze[0] == 0.0)
+              barsSinceSqueeze = 0;
+            if (Squeeze[0] == 0.0)
             {
-                  ++this.c6c9ad6a793905e213eacafa1be1fb516;
+                  ++squeezeLength;
             }
             else
             {
-              this.c6c9ad6a793905e213eacafa1be1fb516 = 0;
+              squeezeLength = 0;
             }
-        }
+        
       }
-      if (this.ced563a5e9c3c71140c2e62f63afc998a > this.barsLookback)
+      if (barsSinceSqueeze > barsLookback)
       {
-            this.BarsSinceSqueeze.Set(0.0);
+            BarsSinceSqueeze.Set(0.0);
       }
       else
-        this.BarsSinceSqueeze.Set((double) this.ced563a5e9c3c71140c2e62f63afc998a);
-      this.SqueezeLength.Set((double) this.c6c9ad6a793905e213eacafa1be1fb516);
-      this.SqueezeHigh.Set(this.cfb105a9d24e167ceec6191571a1a8e43);
-      this.SqueezeLow.Set(this.c739d1f8b1109fe6f2de5bc1ec3c7d232);
+        BarsSinceSqueeze.Set((double) barsSinceSqueeze);
+      SqueezeLength.Set((double) squeezeLength);
+      SqueezeHigh.Set(squeezeHigh);
+      SqueezeLow.Set(squeezeLow);
     }
 
 	
 	
-    private void cc9a41bd2d71b489e8f4134a31abfa2e6(string cc411ee82ad01410449696e9d303287f0, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
+    private void cc9a41bd2d71b489e8f4134a31abfa2e6(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
     {
-      if (!(cc411ee82ad01410449696e9d303287f0 != cee5e96d25be00bb50a036ae3849574cc.DISABLED))
+      if (!(alertWaveFile != DISABLED))
         return;
 	
       if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
@@ -476,8 +464,8 @@ namespace NinjaTrader.Indicator
             this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
       }
       this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
-      this.c013129a8956cc8e16ff7ec447af66499(c549929c7d4f914e2cdb9a099d7a7eb21);
-      this.PlaySound(Core.get_InstallDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1954) + cc411ee82ad01410449696e9d303287f0);
+      this.sendEmail(c549929c7d4f914e2cdb9a099d7a7eb21);
+      this.PlaySound(Core.get_InstallDir() + "sounds" + alertWaveFile);
       return;
     }
 
@@ -516,7 +504,7 @@ namespace NinjaTrader.Indicator
       }
     }
 
-    private void ce3690bd0a1e9603192f7898e782b1f4f(object myObject, EventArgs eventArgs)
+    private void toggleShowBoxes(object myObject, EventArgs eventArgs)
     {
       ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
       if (toolStripMenuItem.Checked)
@@ -645,104 +633,45 @@ namespace NinjaTrader.Indicator
       Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(622), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(647));
     }
 
-    private void c013129a8956cc8e16ff7ec447af66499(string iText)
+    private void sendEmail(string message)
     {
       if (this.email.Length <= 0)
         return;
-label_1:
-      switch (5)
-      {
-        case 0:
-          goto label_1;
-        default:
-          if (1 == 0)
-          {
-            // ISSUE: method reference
-            RuntimeMethodHandle runtimeMethodHandle = __methodref (rcVolatilityBreakout.c013129a8956cc8e16ff7ec447af66499);
-          }
-          this.SendMail(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(700), this.email, this.get_Name() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(747), iText + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(760) + (string) (object) DateTime.Now + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(795) + this.get_Instrument().get_MasterInstrument().get_Name() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(822) + (string) (object) Input[0]);
-          break;
-      }
+	
+      this.SendMail("from rcVolatilityBreakout Indicator", this.email, this.get_Name() + ", ", message + (object) ", " + (string) (object) DateTime.Now + ", " + this.get_Instrument().get_MasterInstrument().get_Name() + ", " + (string) (object) Input[0]);
     }
 
-    private void c03c1af8a08fc173794566a08a468a918(string cc411ee82ad01410449696e9d303287f0, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
+    private void processAlerts(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
     {
-      if (!(cc411ee82ad01410449696e9d303287f0 != cee5e96d25be00bb50a036ae3849574cc.DISABLED))
+      if (!(alertWaveFile != DISABLED))
         return;
-label_1:
-      switch (6)
+      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
       {
-        case 0:
-          goto label_1;
-        default:
-          if (1 == 0)
+          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
+            return;
+          if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
+            return;
+          if (CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53 || CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
+            return;
+          if (!this.multiAlert)
           {
-            // ISSUE: method reference
-            RuntimeMethodHandle runtimeMethodHandle = __methodref (rcVolatilityBreakout.c03c1af8a08fc173794566a08a468a918);
+                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
           }
-          if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
-            break;
-label_5:
-          switch (6)
-          {
-            case 0:
-              goto label_5;
-            default:
-              if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-                return;
-label_7:
-              switch (2)
-              {
-                case 0:
-                  goto label_7;
-                default:
-                  if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
-                    return;
-label_9:
-                  switch (2)
-                  {
-                    case 0:
-                      goto label_9;
-                    default:
-                      if (CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53 || CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
-                        return;
-label_11:
-                      switch (7)
-                      {
-                        case 0:
-                          goto label_11;
-                        default:
-                          if (!this.multiAlert)
-                          {
-label_13:
-                            switch (6)
-                            {
-                              case 0:
-                                goto label_13;
-                              default:
-                                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
-                                break;
-                            }
-                          }
-                          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
-                          this.c013129a8956cc8e16ff7ec447af66499(c549929c7d4f914e2cdb9a099d7a7eb21);
-                          this.PlaySound(Core.get_InstallDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1954) + cc411ee82ad01410449696e9d303287f0);
-                          return;
-                      }
-                  }
-              }
-          }
+          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
+          this.sendEmail(c549929c7d4f914e2cdb9a099d7a7eb21);
+          this.PlaySound(Core.get_InstallDir() +"sounds" + alertWaveFile);
+          return;
       }
     }
 
-    private string c4152da8a89098d52e196178975c6ae4f(Color c4544fc12a8cffe1b31db6f02f2dd887e)
+    private string convertArgbToColor(Color color)
     {
-      return c4544fc12a8cffe1b31db6f02f2dd887e.ToArgb().ToString();
+      return color.ToArgb().ToString();
     }
 
-    private Color c8c61fd528f31c4e9976bfec210e23950(string c4544fc12a8cffe1b31db6f02f2dd887e)
+    private Color convertColorFromArgb(string rgb)
     {
-      return Color.FromArgb(Convert.ToInt32(c4544fc12a8cffe1b31db6f02f2dd887e));
+      return Color.FromArgb(Convert.ToInt32(rgb));
     }
 
     public class hitPanel : Panel
@@ -762,6 +691,7 @@ label_13:
       }
     }
 
+	// used for the background color of the box, but I don't think you have to do it this way
     public class XmlColor
     {
       private Color cf961a6779df9914187bdd86c52824c74 = Color.Black;
@@ -779,19 +709,7 @@ label_13:
           {
             if ((int) this.Alpha == (int) byte.MaxValue)
             {
-label_1:
-              switch (7)
-              {
-                case 0:
-                  goto label_1;
-                default:
-                  if (1 == 0)
-                  {
-                    RuntimeMethodHandle runtimeMethodHandle = __methodref (rcVolatilityBreakout.XmlColor.set_Web);
-                  }
                   this.cf961a6779df9914187bdd86c52824c74 = ColorTranslator.FromHtml(value);
-                  break;
-              }
             }
             else
               this.cf961a6779df9914187bdd86c52824c74 = Color.FromArgb((int) this.Alpha, ColorTranslator.FromHtml(value));
@@ -806,10 +724,7 @@ label_1:
       [XmlAttribute]
       public byte Alpha
       {
-        get
-        {
-          return this.cf961a6779df9914187bdd86c52824c74.A;
-        }
+        get { return this.cf961a6779df9914187bdd86c52824c74.A; }
         set
         {
           if ((int) value == (int) this.cf961a6779df9914187bdd86c52824c74.A)
@@ -853,9 +768,10 @@ label_1:
       }
     }
 
+	// class used to load wave files
     public class WaveConverter : TypeConverter
     {
-      private static string[] c881dc1ea8e7199b694d684a64842fb7d;
+      private static string[] stringArray;
 
       static WaveConverter()
       {
@@ -875,7 +791,7 @@ label_1:
     public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
     {
         string[] array;
-        if (rcVolatilityBreakout.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d == null)
+        if (stringArray == null)
         {
               string[] files = Directory.GetFiles(Core.get_InstallDir() + "sounds", "*.wav"); //SearchOption.TopDirectoryOnly);
               StringCollection stringCollection = new StringCollection();
@@ -883,11 +799,11 @@ label_1:
                 stringCollection.Add(Path.GetFileName(files[index]));
               array = new string[stringCollection.Count + 1];
               stringCollection.CopyTo(array, 1);
-              array[0] = cee5e96d25be00bb50a036ae3849574cc.DISABLED;
-              rcVolatilityBreakout.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d = array;
+              array[0] = DISABLED;
+              stringArray = array;
         }
         else
-          array = rcVolatilityBreakout.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d;
+          array = stringArray;
         return new TypeConverter.StandardValuesCollection((ICollection) array);
 	}
 
@@ -908,6 +824,7 @@ label_1:
         solidBrush.Dispose();
       }
 
+	// for possible positions for the height of the squeeze
     public class positionModeConverter : TypeConverter
     {
       public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
@@ -926,6 +843,7 @@ label_1:
       }
     }
 
+	// used for font size 
     public class sizeConverter : TypeConverter
     {
       public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
@@ -940,15 +858,7 @@ label_1:
 
       public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
       {
-        return new TypeConverter.StandardValuesCollection((ICollection) new string[6]
-        {
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2207),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2210),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2042),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2213),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2216),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2219)
-        });
+        return new TypeConverter.StandardValuesCollection((ICollection) new string[6] { "5","6","7","8","9","10" });
       }
     }
 	
