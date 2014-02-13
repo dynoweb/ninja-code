@@ -3,7 +3,7 @@
 // MVID: 44D1D67D-B887-419E-93CB-54BC561A67EC
 // Assembly location: C:\Users\rcromer\Documents\NinjaTrader 7\bin\Custom\rcVolatilityBreakout.dll
 
-using A;
+//using A;
 using NinjaTrader.Cbi;
 using NinjaTrader.Data;
 using NinjaTrader.Gui.Chart;
@@ -47,19 +47,19 @@ namespace NinjaTrader.Indicator
     private int[] intArray8_1 = new int[8];
     private int[] intArray8_2 = new int[8];
     [XmlIgnore]
-    private Plot boxOutline = new Plot(new Pen(Color.Orchard, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1974));
+    private Plot boxOutline = new Plot(new Pen(Color.Orchid, 1f), "boxOutline");
     private string email = "";
     private int barsLookback = 30;
     private bool extendedVisible = true;
     private bool showLines = true;
     [XmlIgnore]
-    private Plot extendedHigh = new Plot(new Pen(Color.Green, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1995));
+    private Plot extendedHigh = new Plot(new Pen(Color.Green, 1f), "extendedHigh");
     private bool extendedHighVisible = true;
     [XmlIgnore]
-    private Plot extendedLow = new Plot(new Pen(Color.Red, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2010));
+    private Plot extendedLow = new Plot(new Pen(Color.Red, 1f), "extendedLow");
     private bool extendedLowVisible = true;
     [XmlIgnore]
-    private Plot extendedMiddle = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2023));
+    private Plot extendedMiddle = new Plot(new Pen(Color.Gray, 1f), "extendedMiddle");
     private int extendedMiddleLineLength = 6;
     private int extendedLineLength = 20;
     private Color boxAreaColor = Color.Blue;
@@ -67,7 +67,7 @@ namespace NinjaTrader.Indicator
     private bool tickHeightVisible = true;
     private string tickHeightPosition = LEFT;
     private Color tickHeightColor = Color.Black;
-    private string fontSize = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2042);
+    private string fontSize = "7";
     private bool extendedLevel1Visible = true;
     private bool extendedLevel2Visible = true;
     private bool extendedLevel3Visible = true;
@@ -75,11 +75,11 @@ namespace NinjaTrader.Indicator
     private int extendedLevel2 = 100;
     private int extendedLevel3 = 200;
     [XmlIgnore]
-    private Plot extendedLineLevel1 = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2045));
+    private Plot extendedLineLevel1 = new Plot(new Pen(Color.Gray, 1f), "extendedLineLevel1");
     [XmlIgnore]
-    private Plot extendedLineLevel2 = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2082));
+    private Plot extendedLineLevel2 = new Plot(new Pen(Color.Gray, 1f), "extendedLineLevel2");
     [XmlIgnore]
-    private Plot extendedLineLevel3 = new Plot(new Pen(Color.Gray, 1f), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(2119));
+    private Plot extendedLineLevel3 = new Plot(new Pen(Color.Gray, 1f), "extendedLineLevel3");
     private string soundHigh = "Alert1.wav";
     private string soundLow = "Alert1.wav";
     private string soundLevel1 = "Alert1.wav";
@@ -96,7 +96,7 @@ namespace NinjaTrader.Indicator
     private Color color2;
     private Image image;
     private rcVolatilityBreakout.hitPanel myHitPanel;
-    private int c70fc78f80bfde9358a1dc14ea234aa72;
+    private int breakoutRecNumb;
     private int aBarNumber;
     private int cdcf0ce7396813d4bd126a0b9fa8fea53;
     private double squeezeHigh;
@@ -107,16 +107,16 @@ namespace NinjaTrader.Indicator
     private ILine iLine;
     private IText iText;
     private int squeezeLength;
-    private double c133da4068b26ce316e9f7ed309997e74;
-    private double c950bfc49088216da2d12e2c56be386df;
+    private double squeezeMidPoint;
+    private double squeezeRange;
     private int c13d059c56853219888b6d45fccc6b9e1;
     private bool shortLogo;
     private bool extendedMiddleVisible;
     private bool multiAlert;
-	private string LEFT = "Left";
-	private string RIGHT = "Right";
-	private string BOTH = "Both";
-	private string DISABLED = "Disabled";
+	private static string LEFT = "Left";
+	private static string RIGHT = "Right";
+	private static string BOTH = "Both";
+	private static string DISABLED = "Disabled";
 
 	protected override void Initialize()      
 	{
@@ -141,23 +141,6 @@ namespace NinjaTrader.Indicator
 	
     protected override void OnStartUp()
     {
-//      if (this.get_ChartControl() == null)
-//      {
-//label_1:
-//        switch (1)
-//        {
-//          case 0:
-//            goto label_1;
-//          default:
-//            if (1 != 0)
-//              break;
-//            // ISSUE: method reference
-//            RuntimeMethodHandle runtimeMethodHandle = __methodref (rcVolatilityBreakout.OnStartUp);
-//            break;
-//        }
-//      }
-//      else
-//      {
         //ToolStrip toolStrip = ((Control) this.ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240)] as ToolStrip;
         //this.toolStripSeparator = new ToolStripSeparator();
         //this.toolStripDropDownButton = new ToolStripDropDownButton(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629((int) byte.MaxValue));
@@ -174,7 +157,6 @@ namespace NinjaTrader.Indicator
         //toolStrip.Items.Add((ToolStripItem) this.toolStripDropDownButton);
         //this.aString = ((object) this).GetType().Name;
         //this.font = new Font(((Control) this.get_ChartControl()).Font.FontFamily, (float) Convert.ToInt16(this.fontSize));
-//      }
     }
 
     protected override void OnBarUpdate()
@@ -197,7 +179,7 @@ namespace NinjaTrader.Indicator
                         this.aBarNumber = CurrentBar;
                         this.squeezeHigh = High[0];
                         this.squeezeLow = Low[0];
-                        ++this.c70fc78f80bfde9358a1dc14ea234aa72;
+                        ++this.breakoutRecNumb;
                   }
                   if (this.Squeeze[1] == 0.0)
                   {
@@ -212,14 +194,14 @@ namespace NinjaTrader.Indicator
                         this.cdcf0ce7396813d4bd126a0b9fa8fea53 = CurrentBar;
                         if (this.aBarNumber != this.cdcf0ce7396813d4bd126a0b9fa8fea53)
                         {
-                          this.c133da4068b26ce316e9f7ed309997e74 = (this.squeezeHigh + this.squeezeLow) / 2.0;
-                          this.c950bfc49088216da2d12e2c56be386df = this.squeezeHigh - this.squeezeLow;
-                          this.iRectangle = this.DrawRectangle(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1102) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.aBarNumber, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, this.boxOutline.Pen.Color, this.boxAreaColor, this.boxAreaOpacity);
+                          this.squeezeMidPoint = (this.squeezeHigh + this.squeezeLow) / 2.0;
+                          this.squeezeRange = this.squeezeHigh - this.squeezeLow;
+                          this.iRectangle = this.DrawRectangle(CurrentBar + "rectangle" + this.breakoutRecNumb, true, CurrentBar - this.aBarNumber, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, this.boxOutline.Pen.Color, this.boxAreaColor, this.boxAreaOpacity);
                           ((IShape) this.iRectangle).Pen.DashStyle = this.boxOutline.Pen.DashStyle;
                           ((IShape) this.iRectangle).Pen.Width = this.boxOutline.Pen.Width;
                           if (this.extendedHighVisible)
                           {
-                                this.iLine = this.DrawLine(CurrentBar + "292", true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh, this.extendedHigh.Pen.Color, this.extendedHigh.Pen.DashStyle, (int) this.extendedHigh.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedHigh" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh, this.extendedHigh.Pen.Color, this.extendedHigh.Pen.DashStyle, (int) this.extendedHigh.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                   this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
                                 if (!this.showLines)
@@ -229,7 +211,7 @@ namespace NinjaTrader.Indicator
                           }
                           if (this.extendedLowVisible)
                           {
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1114) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow, this.extendedLow.Pen.Color, this.extendedLow.Pen.DashStyle, (int) this.extendedLow.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLow" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow, this.extendedLow.Pen.Color, this.extendedLow.Pen.DashStyle, (int) this.extendedLow.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -241,7 +223,7 @@ namespace NinjaTrader.Indicator
                           }
                           if (this.extendedMiddleVisible)
                           {
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1119) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c133da4068b26ce316e9f7ed309997e74, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedMiddleLineLength, this.c133da4068b26ce316e9f7ed309997e74, this.extendedMiddle.Pen.Color, this.extendedMiddle.Pen.DashStyle, (int) this.extendedMiddle.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedMiddle" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeMidPoint, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedMiddleLineLength, this.squeezeMidPoint, this.extendedMiddle.Pen.Color, this.extendedMiddle.Pen.DashStyle, (int) this.extendedMiddle.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -253,8 +235,8 @@ namespace NinjaTrader.Indicator
                           }
                           if (this.extendedLevel1Visible)
                           {
-                                double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1126) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
+                                double num4 = this.squeezeRange * (double) this.extendedLevel1 / 100.0;
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel1High" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
 								{
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -263,7 +245,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1135) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel1Low" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -276,8 +258,8 @@ namespace NinjaTrader.Indicator
 						
                           if (this.extendedLevel2Visible)
                           {
-                                double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1144) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
+                                double num4 = this.squeezeRange * (double) this.extendedLevel2 / 100.0;
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel2High" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -286,7 +268,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1153) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel2Low" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -297,11 +279,11 @@ namespace NinjaTrader.Indicator
                                 }                            
                           }
 						
-                          if (this.extendedLevel2Visible)
+                          if (this.extendedLevel3Visible)
                           {
-                                double num4 = this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0;
+                                double num4 = this.squeezeRange * (double) this.extendedLevel3 / 100.0;
                                 Plot plot = this.extendedLineLevel3;
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1162) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel3High" + breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -310,7 +292,7 @@ namespace NinjaTrader.Indicator
                                 {
                                       this.iLine.Pen.Color = Color.Transparent;
                                 }
-                                this.iLine = this.DrawLine(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1171) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel3Low" + breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
                                 if (!this.dictionary1.ContainsKey(this.iLine))
                                 {
                                       this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
@@ -323,17 +305,17 @@ namespace NinjaTrader.Indicator
                           
                           if (this.tickHeightVisible)
                           {
-                                int num4 = Convert.ToInt32((this.squeezeHigh - this.squeezeLow) / this.get_TickSize());
+                                int num4 = Convert.ToInt32((this.squeezeHigh - this.squeezeLow) / TickSize);
                                 if (this.tickHeightPosition == RIGHT || this.tickHeightPosition == BOTH)
                                 {
-                                  this.iText = this.DrawText(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1200) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, num4.ToString(), CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.c133da4068b26ce316e9f7ed309997e74, 0, this.tickHeightColor, this.font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
+                                  this.iText = this.DrawText(CurrentBar + "LText" + breakoutRecNumb, true, num4.ToString(), CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeMidPoint, 0, this.tickHeightColor, this.font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
                                   if (!this.dictionary2.ContainsKey(this.iText))
                                   {
-                                        this.dictionary2.Add(this.iText, this.iText.get_TextColor());
+                                        this.dictionary2.Add(this.iText, this.iText.TextColor);
                                   }
                                   if (!this.extendedVisible)
                                   {
-                                        this.iText.set_TextColor(Color.Transparent);
+                                        this.iText.TextColor = Color.Transparent;
                                   }
                                 }
                                 if (!(this.tickHeightPosition == LEFT))
@@ -342,7 +324,7 @@ namespace NinjaTrader.Indicator
                                       {
                                       }
                                 }
-                                this.iText = this.DrawText(this.aString + (object) cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1220) + (string) (object) this.c70fc78f80bfde9358a1dc14ea234aa72, true, num4.ToString(), CurrentBar - this.aBarNumber, this.c133da4068b26ce316e9f7ed309997e74, 0, this.tickHeightColor, this.font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
+                                this.iText = this.DrawText(CurrentBar + "RText" + breakoutRecNumb, true, num4.ToString(), CurrentBar - this.aBarNumber, this.squeezeMidPoint, 0, this.tickHeightColor, this.font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
 								
                                 if (!dictionary2.ContainsKey(iText))
                                 {
@@ -407,14 +389,14 @@ namespace NinjaTrader.Indicator
             }
         
       
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundHigh, 0, this.squeezeHigh, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1229));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel1, 1, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1308));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel2, 2, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1401));
-      this.cc9a41bd2d71b489e8f4134a31abfa2e6(this.SoundLevel3, 3, this.squeezeHigh + this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1494));
-      this.processAlerts(this.SoundLow, 4, this.squeezeLow, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1587));
-      this.processAlerts(this.SoundLevel1, 5, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel1 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1664));
-      this.processAlerts(this.SoundLevel2, 6, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel2 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1755));
-      this.processAlerts(this.SoundLevel3, 7, this.squeezeLow - this.c950bfc49088216da2d12e2c56be386df * (double) this.extendedLevel3 / 100.0, cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1846));
+      this.processAlert2(this.SoundHigh, 0, this.squeezeHigh, "squeezeHigh");
+      this.processAlert2(this.SoundLevel1, 1, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel1 / 100.0, "extendedLevel1");
+      this.processAlert2(this.SoundLevel2, 2, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel2 / 100.0, "extendedLevel2");
+      this.processAlert2(this.SoundLevel3, 3, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel3 / 100.0, "extendedLevel3");
+      this.processAlerts(this.SoundLow, 4, this.squeezeLow, "squeezeLow");
+      this.processAlerts(this.SoundLevel1, 5, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel1 / 100.0, "extendedLevel1");
+      this.processAlerts(this.SoundLevel2, 6, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel2 / 100.0, "extendedLevel2");
+      this.processAlerts(this.SoundLevel3, 7, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel3 / 100.0, "extendedLevel3");
 			
       CurrentValue.Set(dataSeries1[0]);
       if (c13d059c56853219888b6d45fccc6b9e1 != CurrentBar)
@@ -449,131 +431,131 @@ namespace NinjaTrader.Indicator
 
 	
 	
-    private void cc9a41bd2d71b489e8f4134a31abfa2e6(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
+    private void processAlert2(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
     {
-      if (!(alertWaveFile != DISABLED))
-        return;
-	
-      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-            return;
-      if (CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
-        return;
-      if (!this.multiAlert)
-      {
-            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
-      }
-      this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
-      this.sendEmail(c549929c7d4f914e2cdb9a099d7a7eb21);
-      this.PlaySound(Core.get_InstallDir() + "sounds" + alertWaveFile);
-      return;
+//      if (!(alertWaveFile != DISABLED))
+//        return;
+//	
+//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
+//          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53)
+//            return;
+//      if (CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
+//        return;
+//      if (!this.multiAlert)
+//      {
+//            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
+//      }
+//      this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
+//      this.sendEmail(message);
+//      this.PlaySound(Core.get_InstallDir() + "sounds" + alertWaveFile);
+//      return;
     }
 
 	
     private void toggleShowLines(object myObject, EventArgs eventArgs)
     {
-      ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
-      if (toolStripMenuItem.Checked)
-      {
-        using (Dictionary<ILine, Color>.Enumerator enumerator = this.dictionary1.GetEnumerator())
-        {
-          while (enumerator.MoveNext())
-            enumerator.Current.Key.Pen.Color = Color.Transparent;
-        }
-        ((Control) this.get_ChartControl()).Refresh();
-        this.myHitPanel.Refresh();
-        toolStripMenuItem.Checked = false;
-        this.showLines = false;
-      }
-      else
-      {
-        if (toolStripMenuItem.Checked)
-          return;
-            using (Dictionary<ILine, Color>.Enumerator enumerator = this.dictionary1.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-              {
-                KeyValuePair<ILine, Color> current = enumerator.Current;
-                current.Key.Pen.Color = current.Value;
-              }
-            }
-            ((Control) this.get_ChartControl()).Refresh();
-            this.myHitPanel.Refresh();
-            toolStripMenuItem.Checked = true;
-            this.showLines = true;
-      }
+//      ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
+//      if (toolStripMenuItem.Checked)
+//      {
+//        using (Dictionary<ILine, Color>.Enumerator enumerator = this.dictionary1.GetEnumerator())
+//        {
+//          while (enumerator.MoveNext())
+//            enumerator.Current.Key.Pen.Color = Color.Transparent;
+//        }
+//        ((Control) this.get_ChartControl()).Refresh();
+//        this.myHitPanel.Refresh();
+//        toolStripMenuItem.Checked = false;
+//        this.showLines = false;
+//      }
+//      else
+//      {
+//        if (toolStripMenuItem.Checked)
+//          return;
+//            using (Dictionary<ILine, Color>.Enumerator enumerator = this.dictionary1.GetEnumerator())
+//            {
+//              while (enumerator.MoveNext())
+//              {
+//                KeyValuePair<ILine, Color> current = enumerator.Current;
+//                current.Key.Pen.Color = current.Value;
+//              }
+//            }
+//            ((Control) this.get_ChartControl()).Refresh();
+//            this.myHitPanel.Refresh();
+//            toolStripMenuItem.Checked = true;
+//            this.showLines = true;
+//      }
     }
 
     private void toggleShowBoxes(object myObject, EventArgs eventArgs)
     {
-      ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
-      if (toolStripMenuItem.Checked)
-      {
-            using (List<IRectangle>.Enumerator enumerator = this.list_IRectangle.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-              {
-                IRectangle current = enumerator.Current;
-                this.color1 = ((IShape) current).get_AreaColor();
-                this.color2 = ((IShape) current).Pen.Color;
-                ((IShape) current).set_AreaColor(Color.Transparent);
-                ((IShape) current).Pen.Color = Color.Transparent;
-              }
-            }
-            using (Dictionary<IText, Color>.Enumerator enumerator = this.dictionary2.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-                enumerator.Current.Key.set_TextColor(Color.Transparent);
-            }
-            ((Control) this.get_ChartControl()).Refresh();
-            this.myHitPanel.Refresh();
-            toolStripMenuItem.Checked = false;
-            this.extendedVisible = false;
-      }
-      else
-      {
-        if (toolStripMenuItem.Checked)
-          return;
-		
-        using (List<IRectangle>.Enumerator enumerator = this.list_IRectangle.GetEnumerator())
-        {
-          while (enumerator.MoveNext())
-          {
-            IRectangle current = enumerator.Current;
-            ((IShape) current).set_AreaColor(this.color1);
-            ((IShape) current).Pen.Color = this.color2;
-          }
-        }
-		
-        using (Dictionary<IText, Color>.Enumerator enumerator = this.dictionary2.GetEnumerator())
-        {
-          while (enumerator.MoveNext())
-          {
-            KeyValuePair<IText, Color> current = enumerator.Current;
-            current.Key.set_TextColor(current.Value);
-          }
-        }
-		
-        ((Control) this.get_ChartControl()).Refresh();
-        this.myHitPanel.Refresh();
-        toolStripMenuItem.Checked = true;
-        this.extendedVisible = true;
-      }
+//      ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
+//      if (toolStripMenuItem.Checked)
+//      {
+//            using (List<IRectangle>.Enumerator enumerator = this.list_IRectangle.GetEnumerator())
+//            {
+//              while (enumerator.MoveNext())
+//              {
+//                IRectangle current = enumerator.Current;
+//                this.color1 = ((IShape) current).get_AreaColor();
+//                this.color2 = ((IShape) current).Pen.Color;
+//                ((IShape) current).set_AreaColor(Color.Transparent);
+//                ((IShape) current).Pen.Color = Color.Transparent;
+//              }
+//            }
+//            using (Dictionary<IText, Color>.Enumerator enumerator = this.dictionary2.GetEnumerator())
+//            {
+//              while (enumerator.MoveNext())
+//                enumerator.Current.Key.set_TextColor(Color.Transparent);
+//            }
+//            ((Control) this.get_ChartControl()).Refresh();
+//            this.myHitPanel.Refresh();
+//            toolStripMenuItem.Checked = false;
+//            this.extendedVisible = false;
+//      }
+//      else
+//      {
+//        if (toolStripMenuItem.Checked)
+//          return;
+//		
+//        using (List<IRectangle>.Enumerator enumerator = this.list_IRectangle.GetEnumerator())
+//        {
+//          while (enumerator.MoveNext())
+//          {
+//            IRectangle current = enumerator.Current;
+//            ((IShape) current).set_AreaColor(this.color1);
+//            ((IShape) current).Pen.Color = this.color2;
+//          }
+//        }
+//		
+//        using (Dictionary<IText, Color>.Enumerator enumerator = this.dictionary2.GetEnumerator())
+//        {
+//          while (enumerator.MoveNext())
+//          {
+//            KeyValuePair<IText, Color> current = enumerator.Current;
+//            current.Key.set_TextColor(current.Value);
+//          }
+//        }
+//		
+//        ((Control) this.get_ChartControl()).Refresh();
+//        this.myHitPanel.Refresh();
+//        toolStripMenuItem.Checked = true;
+//        this.extendedVisible = true;
+//      }
     }
 
     protected virtual void OnTermination()
     {
-      try
-      {
-          this.myHitPanel.Click -= new EventHandler(this.cd7409d0fdab3b2ac0617894a0a49bbf0);
-          this.get_ChartControl().get_ChartPanel().Controls.Remove((Control) this.myHitPanel);
-          ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240)] as ToolStrip;
-          toolStrip.Items.Remove((ToolStripItem) this.toolStripSeparator);
-          toolStrip.Items.Remove((ToolStripItem) this.toolStripDropDownButton);
-      }
-      catch (Exception ex)
-      {
-      }
+//      try
+//      {
+//          this.myHitPanel.Click -= new EventHandler(this.cd7409d0fdab3b2ac0617894a0a49bbf0);
+//          this.get_ChartControl().get_ChartPanel().Controls.Remove((Control) this.myHitPanel);
+//          ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240)] as ToolStrip;
+//          toolStrip.Items.Remove((ToolStripItem) this.toolStripSeparator);
+//          toolStrip.Items.Remove((ToolStripItem) this.toolStripDropDownButton);
+//      }
+//      catch (Exception ex)
+//      {
+//      }
     }
 
     public void logoSetup()
@@ -625,43 +607,43 @@ namespace NinjaTrader.Indicator
 
     public virtual void Plot(Graphics g, Rectangle bounds, double min, double max)
     {
-      g.DrawImage(this.image, 2, bounds.Bottom - this.image.Height - 18, this.image.Width, this.image.Height);
+//      g.DrawImage(this.image, 2, bounds.Bottom - this.image.Height - 18, this.image.Width, this.image.Height);
     }
 
     private void cd7409d0fdab3b2ac0617894a0a49bbf0(object myObject, EventArgs eventArgs)
     {
-      Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(622), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(647));
+//      Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(622), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(647));
     }
 
     private void sendEmail(string message)
     {
-      if (this.email.Length <= 0)
-        return;
-	
-      this.SendMail("from rcVolatilityBreakout Indicator", this.email, this.get_Name() + ", ", message + (object) ", " + (string) (object) DateTime.Now + ", " + this.get_Instrument().get_MasterInstrument().get_Name() + ", " + (string) (object) Input[0]);
+//      if (this.email.Length <= 0)
+//        return;
+//	
+//      this.SendMail("from rcVolatilityBreakout Indicator", this.email, this.get_Name() + ", ", message + (object) ", " + (string) (object) DateTime.Now + ", " + this.get_Instrument().get_MasterInstrument().get_Name() + ", " + (string) (object) Input[0]);
     }
 
-    private void processAlerts(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string c549929c7d4f914e2cdb9a099d7a7eb21)
+    private void processAlerts(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
     {
-      if (!(alertWaveFile != DISABLED))
-        return;
-      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
-      {
-          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-            return;
-          if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
-            return;
-          if (CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53 || CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
-            return;
-          if (!this.multiAlert)
-          {
-                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
-          }
-          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
-          this.sendEmail(c549929c7d4f914e2cdb9a099d7a7eb21);
-          this.PlaySound(Core.get_InstallDir() +"sounds" + alertWaveFile);
-          return;
-      }
+//      if (!(alertWaveFile != DISABLED))
+//        return;
+//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
+//      {
+//          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
+//            return;
+//          if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
+//            return;
+//          if (CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53 || CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
+//            return;
+//          if (!this.multiAlert)
+//          {
+//                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
+//          }
+//          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
+//          this.sendEmail(message);
+//          this.PlaySound(Core.get_InstallDir() +"sounds" + alertWaveFile);
+//          return;
+//      }
     }
 
     private string convertArgbToColor(Color color)
@@ -787,24 +769,25 @@ namespace NinjaTrader.Indicator
         return true;
       }
 
-	// returns a list of alert wav files
-    public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-    {
-        string[] array;
-        if (stringArray == null)
-        {
-              string[] files = Directory.GetFiles(Core.get_InstallDir() + "sounds", "*.wav"); //SearchOption.TopDirectoryOnly);
-              StringCollection stringCollection = new StringCollection();
-              for (int index = 0; index < files.Length; ++index)
-                stringCollection.Add(Path.GetFileName(files[index]));
-              array = new string[stringCollection.Count + 1];
-              stringCollection.CopyTo(array, 1);
-              array[0] = DISABLED;
-              stringArray = array;
-        }
-        else
-          array = stringArray;
-        return new TypeConverter.StandardValuesCollection((ICollection) array);
+		// returns a list of alert wav files
+		public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+		{
+			string[] array;
+			if (stringArray == null)
+			{
+				string[] files = Directory.GetFiles(Core.InstallDir + "sounds", "*.wav"); //SearchOption.TopDirectoryOnly);
+				StringCollection stringCollection = new StringCollection();
+				for (int index = 0; index < files.Length; ++index)
+					stringCollection.Add(Path.GetFileName(files[index]));
+				array = new string[stringCollection.Count + 1];
+				stringCollection.CopyTo(array, 1);
+				array[0] = DISABLED;
+				stringArray = array;
+			}
+			else
+			array = stringArray;
+			return new TypeConverter.StandardValuesCollection((ICollection) array);
+		}
 	}
 
     private class cb7fd7594b63cf924b3e645a1b96661fe : UITypeEditor
@@ -823,6 +806,7 @@ namespace NinjaTrader.Indicator
         e.Graphics.FillRectangle((Brush) solidBrush, e.Bounds);
         solidBrush.Dispose();
       }
+	}
 
 	// for possible positions for the height of the squeeze
     public class positionModeConverter : TypeConverter
