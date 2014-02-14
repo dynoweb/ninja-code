@@ -26,18 +26,19 @@ namespace NinjaTrader.Indicator
   [Description(".")]
   public class rcVolatilityBreakout : Indicator
   {
+	#region variables
     private int length = 20;
     private double number_2_0 = 2.0;
     private double number_1_5 = 1.5;
     private int number_20 = 20;
-    private Color red = Color.Red;	// 1
-    private Color gray = Color.Gray; // 1
-    private Color lime = Color.Lime; // 1
-    private Color darkGreen = Color.DarkGreen; // 1
-    private Color red2 = Color.Red; // 1
-    private Color maroon = Color.Maroon; // 1
-    private Color darkGreen2 = Color.DarkGreen; // 1
-    private Color darkRed = Color.DarkRed; // 1
+//    private Color red = Color.Red;	// 1
+//    private Color gray = Color.Gray; // 1
+//    private Color lime = Color.Lime; // 1
+//    private Color darkGreen = Color.DarkGreen; // 1
+//    private Color red2 = Color.Red; // 1
+//    private Color maroon = Color.Maroon; // 1
+//    private Color darkGreen2 = Color.DarkGreen; // 1
+//    private Color darkRed = Color.DarkRed; // 1
     private int number_2 = 2;
     private int number_5 = 5;
     private string aString = "aString";
@@ -87,8 +88,8 @@ namespace NinjaTrader.Indicator
     private string soundLevel3 = "Alert1.wav";
     private DataSeries dataSeries1;
     private DataSeries dataSeries2;
-    private int c84334302133d3436d40fc5c5c9cd118a;
-    private int c703c1b4d798d0f3074ba94d947ccca39;
+//    private int c84334302133d3436d40fc5c5c9cd118a;
+//    private int c703c1b4d798d0f3074ba94d947ccca39;
     private ToolStripDropDownButton toolStripDropDownButton;
     private int barsSinceSqueeze;
     private Font font;
@@ -96,9 +97,9 @@ namespace NinjaTrader.Indicator
     private Color color2;
     private Image image;
     private rcVolatilityBreakout.hitPanel myHitPanel;
-    private int breakoutRecNumb;
-    private int aBarNumber;
-    private int cdcf0ce7396813d4bd126a0b9fa8fea53;
+    private int breakoutRecNumb = 0;
+    private int aBarNumber = 0;
+    private int tempCurrentBar = 0;
     private double squeezeHigh;
     private double squeezeLow;
     private ToolStripSeparator toolStripSeparator;
@@ -109,7 +110,7 @@ namespace NinjaTrader.Indicator
     private int squeezeLength;
     private double squeezeMidPoint;
     private double squeezeRange;
-    private int c13d059c56853219888b6d45fccc6b9e1;
+    private int tempCurrentBar2;
     private bool shortLogo;
     private bool extendedMiddleVisible;
     private bool multiAlert;
@@ -117,26 +118,31 @@ namespace NinjaTrader.Indicator
 	private static string RIGHT = "Right";
 	private static string BOTH = "Both";
 	private static string DISABLED = "Disabled";
+	#endregion
 
 	protected override void Initialize()      
 	{
-      Add(new Plot(Color.Transparent, (PlotStyle) 3, "Squeeze"));  // 0 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(839)
-      Add(new Plot(Color.Transparent, (PlotStyle) 3, "SqueezeOn"));  // 1 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(854)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "PMomentumUp"));  // 2 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(873)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "PMomentumDown"));  // 3 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(896)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "NMomentumUp"));  // 4 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(923)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "NMomentumDown"));  // 5 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(946)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "CurrentValue"));  // 6 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(973)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "BarsSinceSqueeze"));  // 7 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(998)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeLength"));  // 8 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1031)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeHigh"));  // 9 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1058)
-      Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeLow"));  // 10 - cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1081)
-      dataSeries1 = new DataSeries((IndicatorBase) this);
-      dataSeries2 = new DataSeries((IndicatorBase) this);
-      CalculateOnBarClose = false;
-      Overlay = true;
-      PriceTypeSupported = false;
-      PlotsConfigurable = false;
+		Add(new Plot(Color.Transparent, (PlotStyle) 3, "Squeeze"));  
+		Add(new Plot(Color.Transparent, (PlotStyle) 3, "SqueezeOn")); 
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "PMomentumUp"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "PMomentumDown"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "NMomentumUp"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "NMomentumDown"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "CurrentValue"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "BarsSinceSqueeze"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeLength"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeHigh"));
+		Add(new Plot(Color.Transparent, (PlotStyle) 0, "SqueezeLow"));
+		
+		dataSeries1 = new DataSeries((IndicatorBase) this);
+		dataSeries2 = new DataSeries((IndicatorBase) this);
+		
+		boxOutline.Pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+		
+		CalculateOnBarClose = true;
+		Overlay = true;
+		PriceTypeSupported = false;
+		//PlotsConfigurable = false;
 	}
 	
     protected override void OnStartUp()
@@ -159,299 +165,301 @@ namespace NinjaTrader.Indicator
         //this.font = new Font(((Control) this.get_ChartControl()).Font.FontFamily, (float) Convert.ToInt16(this.fontSize));
     }
 
-    protected override void OnBarUpdate()
-    {
-      if (CurrentBar != 0)
-      {
-            double num1 = ATR(length)[0];
-            double num2 = StdDev(Close, length)[0];
-            double num3;
-            if (number_1_5 * num1 == 0.0)
-            {
-                  num3 = 1.0;
-            }
-            else
-              num3 = number_2_0 * num2 / (number_1_5 * num1);
-            if (num3 <= 1.0)
-            {
-                  if (this.Squeeze[1] != 0.0)
-                  {
-                        this.aBarNumber = CurrentBar;
-                        this.squeezeHigh = High[0];
-                        this.squeezeLow = Low[0];
-                        ++this.breakoutRecNumb;
-                  }
-                  if (this.Squeeze[1] == 0.0)
-                  {
-                        if (High[0] > this.squeezeHigh)
-                        {
-                              this.squeezeHigh = High[0];
-                        }
-                        if (Low[0] < this.squeezeLow)
-                        {
-                              this.squeezeLow = Low[0];
-                        }
-                        this.cdcf0ce7396813d4bd126a0b9fa8fea53 = CurrentBar;
-                        if (this.aBarNumber != this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-                        {
-                          this.squeezeMidPoint = (this.squeezeHigh + this.squeezeLow) / 2.0;
-                          this.squeezeRange = this.squeezeHigh - this.squeezeLow;
-                          this.iRectangle = this.DrawRectangle(CurrentBar + "rectangle" + this.breakoutRecNumb, true, CurrentBar - this.aBarNumber, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, this.boxOutline.Pen.Color, this.boxAreaColor, this.boxAreaOpacity);
-                          ((IShape) this.iRectangle).Pen.DashStyle = this.boxOutline.Pen.DashStyle;
-                          ((IShape) this.iRectangle).Pen.Width = this.boxOutline.Pen.Width;
-                          if (this.extendedHighVisible)
-                          {
-                                this.iLine = this.DrawLine(CurrentBar + "extendedHigh" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh, this.extendedHigh.Pen.Color, this.extendedHigh.Pen.DashStyle, (int) this.extendedHigh.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                  this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                if (!this.showLines)
-                                {
-                                  this.iLine.Pen.Color = Color.Transparent;
-                                }
-                          }
-                          if (this.extendedLowVisible)
-                          {
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLow" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow, this.extendedLow.Pen.Color, this.extendedLow.Pen.DashStyle, (int) this.extendedLow.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                          }
-                          if (this.extendedMiddleVisible)
-                          {
-                                this.iLine = this.DrawLine(CurrentBar + "extendedMiddle" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeMidPoint, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedMiddleLineLength, this.squeezeMidPoint, this.extendedMiddle.Pen.Color, this.extendedMiddle.Pen.DashStyle, (int) this.extendedMiddle.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                          }
-                          if (this.extendedLevel1Visible)
-                          {
-                                double num4 = this.squeezeRange * (double) this.extendedLevel1 / 100.0;
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel1High" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-								{
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel1Low" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel1.Pen.Color, this.extendedLineLevel1.Pen.DashStyle, (int) this.extendedLineLevel1.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }                            
-                          }
-						
-                          if (this.extendedLevel2Visible)
-                          {
-                                double num4 = this.squeezeRange * (double) this.extendedLevel2 / 100.0;
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel2High" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel2Low" + this.breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, this.extendedLineLevel2.Pen.Color, this.extendedLineLevel2.Pen.DashStyle, (int) this.extendedLineLevel2.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }                            
-                          }
-						
-                          if (this.extendedLevel3Visible)
-                          {
-                                double num4 = this.squeezeRange * (double) this.extendedLevel3 / 100.0;
-                                Plot plot = this.extendedLineLevel3;
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel3High" + breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeHigh + num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                                this.iLine = this.DrawLine(CurrentBar + "extendedLevel3Low" + breakoutRecNumb, true, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeLow - num4, CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53 - this.extendedLineLength, this.squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
-                                if (!this.dictionary1.ContainsKey(this.iLine))
-                                {
-                                      this.dictionary1.Add(this.iLine, this.iLine.Pen.Color);
-                                }
-                                if (!this.showLines)
-                                {
-                                      this.iLine.Pen.Color = Color.Transparent;
-                                }
-                          }
-                          
-                          if (this.tickHeightVisible)
-                          {
-                                int num4 = Convert.ToInt32((this.squeezeHigh - this.squeezeLow) / TickSize);
-                                if (this.tickHeightPosition == RIGHT || this.tickHeightPosition == BOTH)
-                                {
-                                  this.iText = this.DrawText(CurrentBar + "LText" + breakoutRecNumb, true, num4.ToString(), CurrentBar - this.cdcf0ce7396813d4bd126a0b9fa8fea53, this.squeezeMidPoint, 0, this.tickHeightColor, this.font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
-                                  if (!this.dictionary2.ContainsKey(this.iText))
-                                  {
-                                        this.dictionary2.Add(this.iText, this.iText.TextColor);
-                                  }
-                                  if (!this.extendedVisible)
-                                  {
-                                        this.iText.TextColor = Color.Transparent;
-                                  }
-                                }
-                                if (!(this.tickHeightPosition == LEFT))
-                                {
-                                      if (this.tickHeightPosition == BOTH)
-                                      {
-                                      }
-                                }
-                                this.iText = this.DrawText(CurrentBar + "RText" + breakoutRecNumb, true, num4.ToString(), CurrentBar - this.aBarNumber, this.squeezeMidPoint, 0, this.tickHeightColor, this.font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
-								
-                                if (!dictionary2.ContainsKey(iText))
-                                {
-                                      dictionary2.Add(iText, iText.TextColor);
-								}
-                                if (!extendedVisible)
-                                {
-                                	iText.TextColor = Color.Transparent;
-                                }
-                            
-                          }
-                          if (!extendedVisible)
-                          {
-                                color1 = ((IShape) iRectangle).AreaColor;
-                                color2 = ((IShape) iRectangle).Pen.Color;
-                                ((IShape) iRectangle).AreaColor = Color.Transparent;
-                                ((IShape) iRectangle).Pen.Color = Color.Transparent;
-                          }
-                          if (!this.list_IRectangle.Contains(this.iRectangle))
-                          {
-							
-                            list_IRectangle.Add(iRectangle);
-                          }
-                        }
-                    }
-                  }
-                  this.Squeeze.Set(0.0);
-                  this.SqueezeOn.Reset();
-				
-              
-            }
-            else
-            {
-              this.Squeeze.Reset();
-              this.SqueezeOn.Set(0.0);
-            }
-            this.dataSeries2.Set(Input[0] - (this.DonchianChannel(Input, this.number_20).Mean.Get(CurrentBar) + this.EMA(Input, this.number_20)[0]) / 2.0);
-            this.dataSeries1.Set(this.LinReg((IDataSeries) this.dataSeries2, this.number_20)[0]);
-            this.PMomentumUp.Set(0.0);
-            this.PMomentumDown.Set(0.0);
-            this.NMomentumUp.Set(0.0);
-            this.NMomentumDown.Set(0.0);
-            if (this.dataSeries1[0] > 0.0)
-            {
-                  if (this.dataSeries1[0] > this.dataSeries1[1])
-                  {
-                        this.PMomentumUp.Set(this.dataSeries1[0]);
-                  }
-                  else
-                  {
-                    this.PMomentumDown.Set(dataSeries1[0]);
-                  }
-              
-            }
-            else if (dataSeries1[0] > dataSeries1[1])
-            {
-              NMomentumUp.Set(dataSeries1[0]);
-            }
-            else
-            {
-              NMomentumDown.Set(dataSeries1[0]);
-            }
-        
-      
-      this.processAlert2(this.SoundHigh, 0, this.squeezeHigh, "squeezeHigh");
-      this.processAlert2(this.SoundLevel1, 1, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel1 / 100.0, "extendedLevel1");
-      this.processAlert2(this.SoundLevel2, 2, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel2 / 100.0, "extendedLevel2");
-      this.processAlert2(this.SoundLevel3, 3, this.squeezeHigh + this.squeezeRange * (double) this.extendedLevel3 / 100.0, "extendedLevel3");
-      this.processAlerts(this.SoundLow, 4, this.squeezeLow, "squeezeLow");
-      this.processAlerts(this.SoundLevel1, 5, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel1 / 100.0, "extendedLevel1");
-      this.processAlerts(this.SoundLevel2, 6, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel2 / 100.0, "extendedLevel2");
-      this.processAlerts(this.SoundLevel3, 7, this.squeezeLow - this.squeezeRange * (double) this.extendedLevel3 / 100.0, "extendedLevel3");
+	protected override void OnBarUpdate()
+	{
+		// Are there enough bars
+		if (CurrentBar < Length) return;
+
+		if (CurrentBar != 0)
+		{
+		
+			double num1 = ATR(length)[0];
+			double num2 = StdDev(Close, length)[0];
+			double num3;
 			
-      CurrentValue.Set(dataSeries1[0]);
-      if (c13d059c56853219888b6d45fccc6b9e1 != CurrentBar)
-      {
-            c13d059c56853219888b6d45fccc6b9e1 = CurrentBar;
-            if (SqueezeOn[0] == 0.0)
-            {
-                  ++barsSinceSqueeze;
-            }
-            else
-              barsSinceSqueeze = 0;
-            if (Squeeze[0] == 0.0)
-            {
-                  ++squeezeLength;
-            }
-            else
-            {
-              squeezeLength = 0;
-            }
-        
-      }
-      if (barsSinceSqueeze > barsLookback)
-      {
-            BarsSinceSqueeze.Set(0.0);
-      }
-      else
-        BarsSinceSqueeze.Set((double) barsSinceSqueeze);
-      SqueezeLength.Set((double) squeezeLength);
-      SqueezeHigh.Set(squeezeHigh);
-      SqueezeLow.Set(squeezeLow);
-    }
+			if (number_1_5 * num1 == 0.0)
+			{
+				num3 = 1.0;
+			}
+			else
+				num3 = number_2_0 * num2 / (number_1_5 * num1);
+			
+			// DEBUG ONLY, IT"S NOT SUPPOSED TO BE HERE
+			//BarsSinceSqueeze.Set(num3);
+
+			if (num3 <= 1.0)
+			{
+				if (Squeeze[1] != 0.0)
+				{
+					Print(Time + " in != 0.0 - Squeeze[1] " + Squeeze[1] + " ");
+					aBarNumber = CurrentBar;
+					squeezeHigh = High[0];
+					squeezeLow = Low[0];
+					breakoutRecNumb++;
+				}
+				
+				if (Squeeze[1] == 0.0)
+				{
+					Print(Time + " in == 0.0 - Squeeze[1] " + Squeeze[1] + " ");
+					if (High[0] > squeezeHigh)
+					{
+						squeezeHigh = High[0];
+					}
+					if (Low[0] < squeezeLow)
+					{
+						squeezeLow = Low[0];
+					}
+					
+					tempCurrentBar = CurrentBar;
+					
+					if (aBarNumber != tempCurrentBar)
+					{
+						squeezeMidPoint = (squeezeHigh + squeezeLow) / 2.0;
+						squeezeRange = squeezeHigh - squeezeLow;
+						iRectangle = DrawRectangle("rectangle" + breakoutRecNumb, AutoScale, CurrentBar - aBarNumber, squeezeHigh, CurrentBar - tempCurrentBar, squeezeLow, boxOutline.Pen.Color, boxAreaColor, boxAreaOpacity);
+						((IShape) iRectangle).Pen.DashStyle = boxOutline.Pen.DashStyle;
+						((IShape) iRectangle).Pen.Width = boxOutline.Pen.Width;
+						
+						if (extendedHighVisible)
+						{
+							iLine = DrawLine("extendedHigh" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh, extendedHigh.Pen.Color, extendedHigh.Pen.DashStyle, (int) extendedHigh.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+						}
+						
+						if (extendedLowVisible)
+						{
+							iLine = DrawLine("extendedLow" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow, extendedLow.Pen.Color, extendedLow.Pen.DashStyle, (int) extendedLow.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+						}
+						
+						if (extendedMiddleVisible)
+						{
+							iLine = DrawLine("extendedMiddle" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeMidPoint, CurrentBar - tempCurrentBar - extendedMiddleLineLength, squeezeMidPoint, extendedMiddle.Pen.Color, extendedMiddle.Pen.DashStyle, (int) extendedMiddle.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+						}
+						
+						if (extendedLevel1Visible)
+						{
+							double num4 = squeezeRange * (double) extendedLevel1 / 100.0;
+							iLine = DrawLine("extendedLevel1High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+							iLine = DrawLine("extendedLevel1Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}                            
+						}
+					
+						if (extendedLevel2Visible)
+						{
+							double num4 = squeezeRange * (double) extendedLevel2 / 100.0;
+							iLine = DrawLine("extendedLevel2High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+							iLine = DrawLine("extendedLevel2Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}                            
+						}
+					
+						if (extendedLevel3Visible)
+						{
+							double num4 = squeezeRange * (double) extendedLevel3 / 100.0;
+							Plot plot = extendedLineLevel3;
+							iLine = DrawLine("extendedLevel3High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+							iLine = DrawLine("extendedLevel3Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							if (!dictionary1.ContainsKey(iLine))
+							{
+								dictionary1.Add(iLine, iLine.Pen.Color);
+							}
+							if (!showLines)
+							{
+								iLine.Pen.Color = Color.Transparent;
+							}
+						}
+					
+						if (tickHeightVisible)
+						{
+							int num4 = Convert.ToInt32((squeezeHigh - squeezeLow) / TickSize);
+							if (tickHeightPosition == RIGHT || tickHeightPosition == BOTH)
+							{
+								iText = DrawText("LText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - tempCurrentBar, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
+								if (!dictionary2.ContainsKey(iText))
+								{
+									dictionary2.Add(iText, iText.TextColor);
+								}
+								if (!extendedVisible)
+								{
+									iText.TextColor = Color.Transparent;
+								}
+							}
+							
+							if (tickHeightPosition == LEFT || tickHeightPosition == BOTH)
+							{
+								iText = DrawText("RText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - aBarNumber, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
+								if (!dictionary2.ContainsKey(iText))
+								{
+									dictionary2.Add(iText, iText.TextColor);
+								}
+								if (!extendedVisible)
+								{
+									iText.TextColor = Color.Transparent;
+								}
+							}
+						}
+
+						if (!extendedVisible)
+						{
+							color1 = ((IShape) iRectangle).AreaColor;
+							color2 = ((IShape) iRectangle).Pen.Color;
+							((IShape) iRectangle).AreaColor = Color.Transparent;
+							((IShape) iRectangle).Pen.Color = Color.Transparent;
+						}
+						if (!this.list_IRectangle.Contains(this.iRectangle))
+						{
+							list_IRectangle.Add(iRectangle);
+						}
+					}
+				}
+				Squeeze.Set(0.0);
+				SqueezeOn.Reset();
+			}
+			else
+			{
+				Squeeze.Reset();
+				SqueezeOn.Set(0.0);
+				//Print(Time + " in else - Squeeze[0] " + Squeeze[0] + " ");
+			}
+		
+			dataSeries2.Set(Input[0] - (DonchianChannel(Input, number_20).Mean[CurrentBar] + EMA(Input, number_20)[0]) / 2.0);
+			dataSeries1.Set(LinReg((IDataSeries) dataSeries2, number_20)[0]);
+			
+			// DEBUG ONLY, IT"S NOT SUPPOSED TO BE HERE
+			//BarsSinceSqueeze.Set(dataSeries1[0]);
+			//Squeeze.Set(dataSeries2[0]);
+			//Print(Time + " DonchianChannel Mean: " + DonchianChannel(Input, number_20).Mean[CurrentBar]);
+			
+			PMomentumUp.Set(0.0);
+			PMomentumDown.Set(0.0);
+			NMomentumUp.Set(0.0);
+			NMomentumDown.Set(0.0);
+			
+			if (dataSeries1[0] > 0.0)
+			{
+				if (dataSeries1[0] > dataSeries1[1])
+				{
+					PMomentumUp.Set(dataSeries1[0]);
+				}
+				else
+				{
+					PMomentumDown.Set(dataSeries1[0]);
+				}
+			}
+			else if (dataSeries1[0] > dataSeries1[1])
+			{
+				NMomentumUp.Set(dataSeries1[0]);
+			}
+			else
+			{
+				NMomentumDown.Set(dataSeries1[0]);
+			}
+		}
+      
+		processLongAlert(SoundHigh, 0, squeezeHigh, "squeezeHigh");
+		processLongAlert(SoundLevel1, 1, squeezeHigh + squeezeRange * (double) extendedLevel1 / 100.0, "extendedLevel1");
+		processLongAlert(SoundLevel2, 2, squeezeHigh + squeezeRange * (double) extendedLevel2 / 100.0, "extendedLevel2");
+		processLongAlert(SoundLevel3, 3, squeezeHigh + squeezeRange * (double) extendedLevel3 / 100.0, "extendedLevel3");
+		processShortAlert(SoundLow, 4, squeezeLow, "squeezeLow");
+		processShortAlert(SoundLevel1, 5, squeezeLow - squeezeRange * (double) extendedLevel1 / 100.0, "extendedLevel1");
+		processShortAlert(SoundLevel2, 6, squeezeLow - squeezeRange * (double) extendedLevel2 / 100.0, "extendedLevel2");
+		processShortAlert(SoundLevel3, 7, squeezeLow - squeezeRange * (double) extendedLevel3 / 100.0, "extendedLevel3");
+			
+		CurrentValue.Set(dataSeries1[0]);
+			
+		if (tempCurrentBar2 != CurrentBar)
+		{
+			tempCurrentBar2 = CurrentBar;
+			if (SqueezeOn[0] == 0.0)
+			{
+				++barsSinceSqueeze;
+			}
+			else
+				barsSinceSqueeze = 0;
+			
+			if (Squeeze[0] == 0.0)
+			{
+				++squeezeLength;
+			}
+			else
+			{
+				squeezeLength = 0;
+			}
+		}
+
+		if (barsSinceSqueeze > barsLookback)
+		{
+			BarsSinceSqueeze.Set(0.0);
+		}
+		else
+			BarsSinceSqueeze.Set((double) barsSinceSqueeze);
+		
+		SqueezeLength.Set((double) squeezeLength);
+		SqueezeHigh.Set(squeezeHigh);
+		SqueezeLow.Set(squeezeLow);
+	}
 
 	
 	
-    private void processAlert2(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
-    {
-//      if (!(alertWaveFile != DISABLED))
-//        return;
-//	
-//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-//          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53)
-//            return;
-//      if (CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
-//        return;
-//      if (!this.multiAlert)
-//      {
-//            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
-//      }
-//      this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
-//      this.sendEmail(message);
-//      this.PlaySound(Core.get_InstallDir() + "sounds" + alertWaveFile);
-//      return;
-    }
-
-	
+	#region UnusedCode
     private void toggleShowLines(object myObject, EventArgs eventArgs)
     {
 //      ToolStripMenuItem toolStripMenuItem = myObject as ToolStripMenuItem;
@@ -623,21 +631,21 @@ namespace NinjaTrader.Indicator
 //      this.SendMail("from rcVolatilityBreakout Indicator", this.email, this.get_Name() + ", ", message + (object) ", " + (string) (object) DateTime.Now + ", " + this.get_Instrument().get_MasterInstrument().get_Name() + ", " + (string) (object) Input[0]);
     }
 
-    private void processAlerts(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
+    private void processShortAlert(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
     {
 //      if (!(alertWaveFile != DISABLED))
 //        return;
 //      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
 //      {
-//          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.cdcf0ce7396813d4bd126a0b9fa8fea53)
+//          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.tempCurrentBar)
 //            return;
 //          if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
 //            return;
-//          if (CurrentBar < this.cdcf0ce7396813d4bd126a0b9fa8fea53 || CurrentBar >= this.cdcf0ce7396813d4bd126a0b9fa8fea53 + this.extendedLineLength)
+//          if (CurrentBar < this.tempCurrentBar || CurrentBar >= this.tempCurrentBar + this.extendedLineLength)
 //            return;
 //          if (!this.multiAlert)
 //          {
-//                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.cdcf0ce7396813d4bd126a0b9fa8fea53;
+//                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.tempCurrentBar;
 //          }
 //          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
 //          this.sendEmail(message);
@@ -645,6 +653,27 @@ namespace NinjaTrader.Indicator
 //          return;
 //      }
     }
+	
+    private void processLongAlert(string alertWaveFile, int cefea6044484c3257df671c52a39f09b2, double ca2bb1244f73ff9a012a77d9ca61f445d, string message)
+    {
+//      if (!(alertWaveFile != DISABLED))
+//        return;
+//	
+//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.tempCurrentBar)
+//          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.tempCurrentBar)
+//            return;
+//      if (CurrentBar >= this.tempCurrentBar + this.extendedLineLength)
+//        return;
+//      if (!this.multiAlert)
+//      {
+//            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.tempCurrentBar;
+//      }
+//      this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
+//      this.sendEmail(message);
+//      this.PlaySound(Core.get_InstallDir() + "sounds" + alertWaveFile);
+//      return;
+    }
+
 
     private string convertArgbToColor(Color color)
     {
@@ -655,7 +684,9 @@ namespace NinjaTrader.Indicator
     {
       return Color.FromArgb(Convert.ToInt32(rgb));
     }
+	#endregion
 
+	#region SupportingClasses
     public class hitPanel : Panel
     {
       protected override CreateParams CreateParams
@@ -845,6 +876,7 @@ namespace NinjaTrader.Indicator
         return new TypeConverter.StandardValuesCollection((ICollection) new string[6] { "5","6","7","8","9","10" });
       }
     }
+	#endregion
 	
 	#region Properties
     [Editor(typeof (rcVolatilityBreakout.cb7fd7594b63cf924b3e645a1b96661fe), typeof (UITypeEditor))]
