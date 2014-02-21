@@ -26,6 +26,7 @@ namespace NinjaTrader.Indicator
   [Description("Enter the description of your new custom indicator here")]
   public class rcRSD : Indicator
   {
+	#region Variables
     private string c04f04f23b8324aa9890b66f92020cca2 = "";
     private bool cbb678590d50e8aad333db21722c4c357 = true;
     private bool recolorRetouch = true;
@@ -34,7 +35,7 @@ namespace NinjaTrader.Indicator
     private bool drawEdgePrice = true;
     private int number_2 = 2;
     private bool c24bb7194511c35c641cecf85d8a99f85 = true;
-    private string alertOnDemandSound = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901);
+    private string alertOnDemandSound = "Alert1.wav";
     private Color supplyStrong = Color.Red;
     private Color supplyWeak = Color.PaleVioletRed;
     private Color supplyRetouch = Color.Coral;
@@ -48,16 +49,16 @@ namespace NinjaTrader.Indicator
     private Color colorDarkGray = Color.DarkGray;
     private Color colorRed = Color.Red;
     private Color colorDarkSlateGray = Color.DarkSlateGray;
-    private int c9f3136213d8eee8968673aa04e061bfd = 100;
-    private int cb1bc769603738a1705086a5160497663 = 500;
+    //private int global_int_v100 = 100;
+    //private int global_int_v500 = 500;
     private double[] c747169f75a51d045c253bfc20678f7d0 = new double[4];
     private double[] cdb18564d76ec49197cb5acea61dd5a75 = new double[4];
-    private int c6f4cbf3b07e142fd13e2afb457be39d1 = 112;
-    private int cf2c2e319a306d42570a68dd163a03bea = 113;
-    private Font font1 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1034), 20f);
-    private Font font2 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1061), 12f);
-    private Font font3 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1061), 8f);
-    private Font font4 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1082), 40f);
+    private int global_int_v112 = 112;
+    private int global_int_v113 = 113;
+    //private Font font1 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1034), 20f);
+    //private Font font2 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1061), 12f);
+    private Font font3 = new Font("Arial", 8f);
+    //private Font font4 = new Font(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1082), 40f);
     private string c8e48df600e2eec7b45e17eae02afeebd = "";
     private List<rcRSD.props> listOfProperties = new List<rcRSD.props>();
     private bool c97d2cedb53c91ff0bd0cf330fc9e63e4 = true;
@@ -66,19 +67,19 @@ namespace NinjaTrader.Indicator
     [XmlIgnore]
     private Dictionary<string, double> lowZones = new Dictionary<string, double>();
     private int extendMinutes = 60;
-    private string alertOnSupplySound = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901);
+    private string alertOnSupplySound = "Alert1.wav";
     private Color textColor = Color.Black;
     private Color supplyZoneBorder = Color.Silver;
     private Color demandZoneBorder = Color.Silver;
-    private string myPeriodType = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(627);
-    private const int c4134f3c1f5b723e6eaf24e8f758fedfc = 999999;
+    private string myPeriodType = "ChartPeriod";
+    //private const int A_BIG_INT = 999999;
     private Image myImage;
     private int _periodValue;
     private bool cff627c81c2b2c7d92ceedddb396d8a34;
     private bool c48f0c1747cdba1671630acd164e5479a;
     private bool recolorWeakRetouch;
     private bool ce2384e40d6da05074ed92eac2372f952;
-    private int c2f8fb3b7a36b40b493e767d9ef62a52e;
+    //private int global_int_2;
     private bool c14f7f326a6c723aa5a14f115c4692513;
     private int c8c1734a714810a78b4d22f7dad581c53;
     private DataSeries dataSeries1;
@@ -88,20 +89,23 @@ namespace NinjaTrader.Indicator
     private Color cdab4fdd69c04ef4182a2ced6d43f9a92;
     private double cc431d32139d823e354ffc329f78c46a9;
     private double c18bb8b8c797593b820367034f7a2f763;
-    private bool c7a004ada5cc889b2e562160532bbd3cd;
-    private int c7e731ab1165e586f24aac409bd5448e7;
-    private int cc16f7f79ebca5054a8751af72d4fa952;
-    private List<rcRSD.c73d7e688e3f79162747ac07a87d9d0d5> ce98848ac05b3eb8a4526be6ad0a15bd2;
-    private int cb3cffe51ffa0a2c5bac5f35f6959306f;
+    private bool validPeriodType;   // maybe valid var name
+    private int global_int_1;
+    private int global_int_2;
+    private List<rcRSD.RSD_Drawings> list_Of_RSD_Drawings;
+    private int global_int_3;
     private DateTime c70b275c21878ae5c45a5206582435006;
     private double c3c4d0cacab89b52c96d1032861422a89;
-    private IText c2b61c1ccafe508ae3804f8b1cfe9c2da;
-    private int cf71da5f113c2fe6afc3148e31ca45827;
+    private IText iText;
+    private int global_int_4;
     private bool shortLogo;
     private bool drawFarEdgePrice;
     private bool drawZoneHeight;
     private bool extendZone;
+	#endregion
 
+	#region Properties
+	
     [Category("\tParameters")]
     [Browsable(false)]
     [XmlIgnore]
@@ -136,7 +140,7 @@ namespace NinjaTrader.Indicator
     }
 
     [GridCategory("\tParameters")]
-    [DisplayName("\tTimeframeValue")]
+    [Gui.Design.DisplayName("\tTimeframeValue")]
     [Description("")]
     public int periodValue
     {
@@ -145,7 +149,7 @@ namespace NinjaTrader.Indicator
     }
 
     [Category("DrawText")]
-    [DisplayName("MainEdgePrice")]
+    [Gui.Design.DisplayName("MainEdgePrice")]
     [Description("")]
     public bool Draw_edge_price
     {
@@ -155,7 +159,7 @@ namespace NinjaTrader.Indicator
 
     [Description("")]
     [Category("DrawText")]
-    [DisplayName("FarEdgePrice")]
+    [Gui.Design.DisplayName("FarEdgePrice")]
     public bool DrawFarEdgePrice
     {
       get { return this.drawFarEdgePrice; }
@@ -164,14 +168,14 @@ namespace NinjaTrader.Indicator
 
     [Description("")]
     [Category("DrawText")]
-    [DisplayName("ZoneHeight")]
+    [Gui.Design.DisplayName("ZoneHeight")]
     public bool DrawZoneHeight
     {
       get { return this.drawZoneHeight; }
       set { this.drawZoneHeight = value; }
     }
 
-    [DisplayName("RecolorRetouch")]
+    [Gui.Design.DisplayName("RecolorRetouch")]
     [Description("")]
     [Category("\tParameters")]
     public bool Recolor_retouch
@@ -180,7 +184,7 @@ namespace NinjaTrader.Indicator
       set { this.recolorRetouch = value; }
     }
 
-    [DisplayName("RecolorWeakRetouch")]
+    [Gui.Design.DisplayName("RecolorWeakRetouch")]
     [Description("")]
     [Category("\tParameters")]
     public bool Recolor_weak_retouch
@@ -189,7 +193,7 @@ namespace NinjaTrader.Indicator
       set { this.recolorWeakRetouch = value; }
     }
 
-    [DisplayName("NoWeakZones")]
+    [Gui.Design.DisplayName("NoWeakZones")]
     [Description("")]
     [Category("\tParameters")]
     public bool No_weak_zones
@@ -198,7 +202,7 @@ namespace NinjaTrader.Indicator
       set { this.noWeakZones = value; }
     }
 
-    [DisplayName("ExtendZone")]
+    [Gui.Design.DisplayName("ExtendZone")]
     [Description("")]
     [Category("\tParameters")]
     public bool ExtendZone
@@ -209,7 +213,7 @@ namespace NinjaTrader.Indicator
 
     [Description("")]
     [Category("\tParameters")]
-    [DisplayName("ExtendZoneMinutes")]
+    [Gui.Design.DisplayName("ExtendZoneMinutes")]
     public int ExtendMinutes
     {
       get { return this.extendMinutes; }
@@ -219,14 +223,14 @@ namespace NinjaTrader.Indicator
     [TypeConverter(typeof (rcRSD.WaveConverter))]
     [Description("")]
     [Category("Alert")]
-    [DisplayName("AlertOnDemandSound")]
+    [Gui.Design.DisplayName("AlertOnDemandSound")]
     public string AlertOnDemandSound
     {
       get { return this.alertOnDemandSound; }
       set { this.alertOnDemandSound = value; }
     }
 
-    [DisplayName("AlertOnSupplySound")]
+    [Gui.Design.DisplayName("AlertOnSupplySound")]
     [Description("")]
     [TypeConverter(typeof (rcRSD.WaveConverter))]
     [Category("Alert")]
@@ -248,9 +252,9 @@ namespace NinjaTrader.Indicator
     [XmlElement(Type = typeof (rcRSD.XmlColor))]
     [Category("Colors")]
     [Description("")]
-    public Color 
+    public Color SupplyWeak
     {
-      get { return this.; }
+      get { return this.supplyWeak; }
       set { this.supplyWeak = value; }
     }
 
@@ -318,54 +322,55 @@ namespace NinjaTrader.Indicator
     }
 
     [GridCategory("\tParameters")]
-    [DisplayName("\t\tTimeframeType")]
+    [Gui.Design.DisplayName("\t\tTimeframeType")]
     [TypeConverter(typeof (rcRSD.periodConverter))]
     public string MyPeriodType
     {
       get { return this.myPeriodType; }
       set { this.myPeriodType = value; }
     }
-
+	#endregion
+	
     public void logoSetup()
     {
-      string str1 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
-      string str2;
-      if (this.shortLogo)
-      {
-            str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(259);
-      }
-      else
-        str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
-      try
-      {
-        if (!System.IO.File.Exists(str2))
-        {
-          WebClient webClient = new WebClient();
-          if (this.shortLogo)
-            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(286), str2);
-          else
-            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(405), str2);
-        }
-        this.myImage = Image.FromFile(str2);
-      }
-      catch (Exception ex)
-      {
-        this.Print(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(516));
-      }
+//      string str1 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
+//      string str2;
+//      if (this.shortLogo)
+//      {
+//            str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(259);
+//      }
+//      else
+//        str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
+//      try
+//      {
+//        if (!System.IO.File.Exists(str2))
+//        {
+//          WebClient webClient = new WebClient();
+//          if (this.shortLogo)
+//            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(286), str2);
+//          else
+//            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(405), str2);
+//        }
+//        this.myImage = Image.FromFile(str2);
+//      }
+//      catch (Exception ex)
+//      {
+//        this.Print(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(516));
+//      }
     }
 
-    private void cd7409d0fdab3b2ac0617894a0a49bbf0(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
-    {
-      Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(549), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(574));
-    }
+//    private void cd7409d0fdab3b2ac0617894a0a49bbf0(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
+//    {
+//      Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(549), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(574));
+//    }
 
-    protected virtual void Initialize()
+    protected override void Initialize()
     {
-      if (this.myPeriodType != cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(627))
+      if (this.myPeriodType != "ChartPeriod")
       {
             if (this._periodValue <= 0)
             {
-              this.c7a004ada5cc889b2e562160532bbd3cd = false;
+              this.validPeriodType = false;
               return;
             }
             else
@@ -373,273 +378,265 @@ namespace NinjaTrader.Indicator
               this.c8c1734a714810a78b4d22f7dad581c53 = 1;
               PeriodType periodType = (PeriodType) 4;
               int num = this._periodValue;
-              if (this.myPeriodType == cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(650))
+              if (this.myPeriodType == "Minute")
               {
                     periodType = (PeriodType) 4;
               }
-              else if (this.myPeriodType == cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(663))
+              else if (this.myPeriodType == "Hour")
               {
                 periodType = (PeriodType) 4;
                 num = this._periodValue * 60;
               }
-              else if (this.myPeriodType == cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(672))
+              else if (this.myPeriodType == "Day")
               {
                     periodType = (PeriodType) 5;
               }
-              else if (this.myPeriodType == cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(679))
+              else if (this.myPeriodType == "Week")
                 periodType = (PeriodType) 6;
-              else if (this.myPeriodType == cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(688))
+              else if (this.myPeriodType == "Month")
               {
                     periodType = (PeriodType) 7;
               }
               this.Add(periodType, num);
-              this.c7a004ada5cc889b2e562160532bbd3cd = true;
+              this.validPeriodType = true;
               this.c8e48df600e2eec7b45e17eae02afeebd = this.ca47bf0e564bff4420f70c86585f8a040(this.myPeriodType) + (object) this._periodValue;
-              break;
             }
-        }
       }
       else
       {
-        if (this.get_BarsPeriod().get_Id() != 4)
+        if (BarsPeriod.Id != PeriodType.Minute)		// confirmed above PeriodType.Minute = 4
         {
-              if (this.get_BarsPeriod().get_Id() != 5)
+              if (BarsPeriod.Id != PeriodType.Day)		// ? PeriodType.Day = 5
               {
-                    if (this.get_BarsPeriod().get_Id() != 6)
+                    if (BarsPeriod.Id != PeriodType.Week)		// ? PeriodType.Week = 6
                     {
-                          if (this.get_BarsPeriod().get_Id() != 7)
+                          if (BarsPeriod.Id != PeriodType.Month)			// ? PeriodType.Month = 7
                           {
-                                this.c7a004ada5cc889b2e562160532bbd3cd = false;
+                                this.validPeriodType = false;
                           }
-                          else
                     }
-                    else
               }
-              else
         }
-        this.c8e48df600e2eec7b45e17eae02afeebd = this.c97621f0266292349d47b023891c086d5(this.get_BarsPeriod().get_Id()) + (object) this.get_BarsPeriod().get_Value();
-        this.c7a004ada5cc889b2e562160532bbd3cd = true;
+        this.c8e48df600e2eec7b45e17eae02afeebd = this.c97621f0266292349d47b023891c086d5(BarsPeriod.Id) + (object) BarsPeriod.Value;
+        this.validPeriodType = true;
       }
 
-      this.set_Overlay(true);
-      this.set_CalculateOnBarClose(false);
+      Overlay = true;
+      CalculateOnBarClose = false;
       this.dataSeries1 = new DataSeries((IndicatorBase) this, (MaximumBarsLookBack) 1);
       this.dataSeries2 = new DataSeries((IndicatorBase) this, (MaximumBarsLookBack) 1);
       this.dataSeries3 = new DataSeries((IndicatorBase) this, (MaximumBarsLookBack) 1);
-      this.ce98848ac05b3eb8a4526be6ad0a15bd2 = new List<rcRSD.c73d7e688e3f79162747ac07a87d9d0d5>();
+      this.list_Of_RSD_Drawings = new List<rcRSD.RSD_Drawings>();
     }
 
-    protected virtual void OnStartUp()
+    protected override void OnStartUp()
     {
       this.logoSetup();
-      if (!this.c7a004ada5cc889b2e562160532bbd3cd)
+      if (!this.validPeriodType)
       {
-            this.DrawTextFixed(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(699), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(710), (TextPosition) 2);
+            this.DrawTextFixed("TimeframeError", "Wrong timeframe setting", (TextPosition) 2);
       }
       else
       {
-        if (this.get_ChartControl() == null)
-          return;
-	  
-		ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
-		ToolStripSeparator toolStripSeparator1 = new ToolStripSeparator();
-		toolStripSeparator1.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(772);
-		ToolStripButton toolStripButton = new ToolStripButton(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(789));
-		toolStripButton.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(814);
-		toolStripButton.Click += new EventHandler(this.c34d62e2fefbfb9d5838fb95bc422dd2f);
-		string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(837);
-		if (this._periodValue != 0)
-		{
-			  str = this._periodValue.ToString() + str;
-		}
-		ToolStripLabel toolStripLabel = new ToolStripLabel(str + this.myPeriodType);
-		toolStripLabel.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(840);
-		toolStripLabel.ForeColor = Color.DarkGray;
-		ToolStripSeparator toolStripSeparator2 = new ToolStripSeparator();
-		toolStripSeparator2.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(859);
-		toolStrip.Items.Add((ToolStripItem) toolStripSeparator1);
-		toolStrip.Items.Add((ToolStripItem) toolStripButton);
-		toolStrip.Items.Add((ToolStripItem) toolStripSeparator2);
-		toolStrip.Items.Add((ToolStripItem) toolStripLabel);
+//		ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
+//		ToolStripSeparator toolStripSeparator1 = new ToolStripSeparator();
+//		toolStripSeparator1.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(772);
+//		ToolStripButton toolStripButton = new ToolStripButton(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(789));
+//		toolStripButton.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(814);
+//		toolStripButton.Click += new EventHandler(toolStripButtonEventHandler);
+//		string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(837);
+//		if (this._periodValue != 0)
+//		{
+//			  str = this._periodValue.ToString() + str;
+//		}
+//		ToolStripLabel toolStripLabel = new ToolStripLabel(str + this.myPeriodType);
+//		toolStripLabel.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(840);
+//		toolStripLabel.ForeColor = Color.DarkGray;
+//		ToolStripSeparator toolStripSeparator2 = new ToolStripSeparator();
+//		toolStripSeparator2.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(859);
+//		toolStrip.Items.Add((ToolStripItem) toolStripSeparator1);
+//		toolStrip.Items.Add((ToolStripItem) toolStripButton);
+//		toolStrip.Items.Add((ToolStripItem) toolStripSeparator2);
+//		toolStrip.Items.Add((ToolStripItem) toolStripLabel);
       }
     }
 
-    private void c34d62e2fefbfb9d5838fb95bc422dd2f(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
+	// ToolStripButton code
+    private void toolStripButtonEventHandler(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
     {
-      ToolStripButton toolStripButton = c113fd96257592fe24a96acf1688040b5 as ToolStripButton;
-      if (toolStripButton.Text.EndsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(878)))
-      {
-            toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894));
-            this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = false;
-            using (List<rcRSD.c73d7e688e3f79162747ac07a87d9d0d5>.Enumerator enumerator = this.ce98848ac05b3eb8a4526be6ad0a15bd2.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-              {
-                rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 current = enumerator.Current;
-                if (current.cf97ac0bed167fcb539cde5088e6c6961.get_DrawType() == 18)
-                {
-                  ChartRectangle chartRectangle = current.cf97ac0bed167fcb539cde5088e6c6961 as ChartRectangle;
-                  ((ChartShape) chartRectangle).set_AreaOpacity(0);
-                  ((ChartShape) chartRectangle).get_Pen().Color = Color.Transparent;
-                  ((ChartShape) chartRectangle).set_AreaColor(Color.Transparent);
-                }
-                if (current.c064a1026d9a70d5b924a69fb41c7db32.get_DrawType() == 23)
-                {
-                      ChartText chartText = current.c064a1026d9a70d5b924a69fb41c7db32 as ChartText;
-                      chartText.set_AreaOpacity(0);
-                      chartText.set_TextColor(Color.Transparent);
-                      chartText.get_Pen().Color = Color.Transparent;
-                      chartText.set_AreaColor(Color.Transparent);
-                }
-              }
-            }
-        
-		}
-		else
-		{
-			toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885));
-			this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = true;
-			using (List<rcRSD.c73d7e688e3f79162747ac07a87d9d0d5>.Enumerator enumerator = this.ce98848ac05b3eb8a4526be6ad0a15bd2.GetEnumerator())
-			{
-				while (enumerator.MoveNext())
-				{
-					rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 current = enumerator.Current;
-					if (current.cf97ac0bed167fcb539cde5088e6c6961.get_DrawType() == 18)
-					{
-						  ChartRectangle chartRectangle = current.cf97ac0bed167fcb539cde5088e6c6961 as ChartRectangle;
-						  ((ChartShape) chartRectangle).set_AreaOpacity(current.c5ae42acd29515b888cddbd96e6918f00);
-						  ((ChartShape) chartRectangle).get_Pen().Color = current.cc19b4e075526200d7cda803485f968fb;
-						  ((ChartShape) chartRectangle).set_AreaColor(current.c74092c112ee4cab79306f14f3564db3f);
-					}
-					if (current.c064a1026d9a70d5b924a69fb41c7db32.get_DrawType() == 23)
-					  (current.c064a1026d9a70d5b924a69fb41c7db32 as ChartText).set_TextColor(this.textColor);
-				}
-			}
-		}
-      ((Control) this.get_ChartControl()).Refresh();
+//      ToolStripButton toolStripButton = c113fd96257592fe24a96acf1688040b5 as ToolStripButton;
+//      if (toolStripButton.Text.EndsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(878)))
+//      {
+//            toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894));
+//            this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = false;
+//            using (List<rcRSD.RSD_Drawings>.Enumerator enumerator = this.list_Of_RSD_Drawings.GetEnumerator())
+//            {
+//              while (enumerator.MoveNext())
+//              {
+//                rcRSD.RSD_Drawings current = enumerator.Current;
+//                if (current.iDrawObject_1.get_DrawType() == 18)
+//                {
+//                  ChartRectangle chartRectangle = current.iDrawObject_1 as ChartRectangle;
+//                  ((ChartShape) chartRectangle).set_AreaOpacity(0);
+//                  ((ChartShape) chartRectangle).get_Pen().Color = Color.Transparent;
+//                  ((ChartShape) chartRectangle).set_AreaColor(Color.Transparent);
+//                }
+//                if (current.iDrawObject_2.get_DrawType() == 23)
+//                {
+//                      ChartText chartText = current.iDrawObject_2 as ChartText;
+//                      chartText.set_AreaOpacity(0);
+//                      chartText.set_TextColor(Color.Transparent);
+//                      chartText.get_Pen().Color = Color.Transparent;
+//                      chartText.set_AreaColor(Color.Transparent);
+//                }
+//              }
+//            }
+//        
+//		}
+//		else
+//		{
+//			toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885));
+//			this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = true;
+//			using (List<rcRSD.RSD_Drawings>.Enumerator enumerator = this.list_Of_RSD_Drawings.GetEnumerator())
+//			{
+//				while (enumerator.MoveNext())
+//				{
+//					rcRSD.RSD_Drawings current = enumerator.Current;
+//					if (current.iDrawObject_1.get_DrawType() == 18)
+//					{
+//						  ChartRectangle chartRectangle = current.iDrawObject_1 as ChartRectangle;
+//						  ((ChartShape) chartRectangle).set_AreaOpacity(current.int_3);
+//						  ((ChartShape) chartRectangle).get_Pen().Color = current.color_2;
+//						  ((ChartShape) chartRectangle).set_AreaColor(current.color_1);
+//					}
+//					if (current.iDrawObject_2.get_DrawType() == 23)
+//					  (current.iDrawObject_2 as ChartText).set_TextColor(this.textColor);
+//				}
+//			}
+//		}
+//      ((Control) this.get_ChartControl()).Refresh();
     }
 
-    protected virtual void OnBarUpdate()
+	// line 802
+    protected override void OnBarUpdate()
     {
-      if (!this.c7a004ada5cc889b2e562160532bbd3cd)
+      if (!this.validPeriodType)
       {
       }
       else
       {
         if (this.c8c1734a714810a78b4d22f7dad581c53 > 0)
         {
-              if (this.get_BarsInProgress() != this.c8c1734a714810a78b4d22f7dad581c53)
+              if (BarsInProgress != this.c8c1734a714810a78b4d22f7dad581c53)
                 return;
         }
-        if (this.get_CurrentBars()[0] < 3)
+		// switched logic, empty code block - line 835
+        if (CurrentBars[0] >= 3)
         {
-        }
-        else
-        {
-          int num = this.get_CurrentBars()[this.c8c1734a714810a78b4d22f7dad581c53];
+          int num = CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53];
           if (num < 3)
           {
                 this.dataSeries2.Set(0.0);
                 this.dataSeries3.Set(0.0);
-                break;
-            }
           }
           else
           {
-            if (this.cb3cffe51ffa0a2c5bac5f35f6959306f != num)
+            if (this.global_int_3 != num)
             {
-              this.cb3cffe51ffa0a2c5bac5f35f6959306f = num;
-              this.c7e731ab1165e586f24aac409bd5448e7 = 1;
-              this.cc16f7f79ebca5054a8751af72d4fa952 = 1;
+              this.global_int_3 = num;
+              this.global_int_1 = 1;
+              this.global_int_2 = 1;
             }
-            if (this.get_CurrentBar() <= this.get_Bars().get_Count() - 3)
+            if (CurrentBar <= Bars.Count - 3)
               return;
-                this.CountZZ(3, 2, 2);
-                this.c65bf1e4ae6cc5de46ab39a04d80cac0d();
-                this.caf6fc3b163d246ab61c6fed47b34a1f4();
-                if (!(this.alertOnDemandSound != cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901)))
-                {
-                  if (!(this.alertOnSupplySound != cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901)))
-					this.c38d9d98f35374f31b1d1fc5a2242e326();
-				}
+			
+            this.CountZZ(3, 2, 2);
+            this.c65bf1e4ae6cc5de46ab39a04d80cac0d();
+            this.caf6fc3b163d246ab61c6fed47b34a1f4();
+			// this doesn't look right - line 879
+//            if (!(this.alertOnDemandSound != "Alert1.wav"))
+//            {
+//              if (!(this.alertOnSupplySound != "Alert1.wav"))
+//				this.c38d9d98f35374f31b1d1fc5a2242e326();
+//			}
           }
         }
-      
+      }
     }
 
     private void c38d9d98f35374f31b1d1fc5a2242e326()
     {
-      rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_1 = (rcRSD.c73d7e688e3f79162747ac07a87d9d0d5) null;
-      rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_2 = (rcRSD.c73d7e688e3f79162747ac07a87d9d0d5) null;
-      for (int index = 0; index < this.ce98848ac05b3eb8a4526be6ad0a15bd2.Count; ++index)
+      rcRSD.RSD_Drawings rsdDrawings_1 = (rcRSD.RSD_Drawings) null;
+      rcRSD.RSD_Drawings rsdDrawings_2 = (rcRSD.RSD_Drawings) null;
+      for (int index = 0; index < this.list_Of_RSD_Drawings.Count; ++index)
       {
-        rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_3 = this.ce98848ac05b3eb8a4526be6ad0a15bd2[index];
-        if (c73d7e688e3f79162747ac07a87d9d0d5_3 != null)
+        rcRSD.RSD_Drawings rsdDrawings_3 = this.list_Of_RSD_Drawings[index];
+        if (rsdDrawings_3 != null)
         {
-              if (c73d7e688e3f79162747ac07a87d9d0d5_3.cf97ac0bed167fcb539cde5088e6c6961 != null)
+              if (rsdDrawings_3.iDrawObject_1 != null)
               {
-                    if (c73d7e688e3f79162747ac07a87d9d0d5_3.c5be6d778377fcf6785cd885e6f57fd9a)
+                    if (rsdDrawings_3.bool_1)
                     {
-                      if (c73d7e688e3f79162747ac07a87d9d0d5_3.cde3a95a32edd1347240184201e1a8fc4 == rcRSD.cadc1cbe590d50cdf2b50adee29668645.c550219c4ee6a522e23562e31465d2162 && c73d7e688e3f79162747ac07a87d9d0d5_3.c9d17b946231eaa00a035163f1e7972c8 == this.c7e731ab1165e586f24aac409bd5448e7)
+                      if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_2 && rsdDrawings_3.int_2 == this.global_int_1)
                       {
-                            c73d7e688e3f79162747ac07a87d9d0d5_1 = c73d7e688e3f79162747ac07a87d9d0d5_3;
+                            rsdDrawings_1 = rsdDrawings_3;
                       }
-                      if (c73d7e688e3f79162747ac07a87d9d0d5_3.cde3a95a32edd1347240184201e1a8fc4 == rcRSD.cadc1cbe590d50cdf2b50adee29668645.c80b3f0659d533013831363f110f16b30)
+                      if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_3)
                       {
-                            if (c73d7e688e3f79162747ac07a87d9d0d5_3.c9d17b946231eaa00a035163f1e7972c8 == this.cc16f7f79ebca5054a8751af72d4fa952)
+                            if (rsdDrawings_3.int_2 == this.global_int_2)
                             {
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2 = c73d7e688e3f79162747ac07a87d9d0d5_3;
+                                  rsdDrawings_2 = rsdDrawings_3;
                             }
                       }
                     }
               }
         }
-        if (c73d7e688e3f79162747ac07a87d9d0d5_1 != null)
+        if (rsdDrawings_1 != null)
         {
-              if (c73d7e688e3f79162747ac07a87d9d0d5_2 == null)
+              if (rsdDrawings_2 == null)
               {
                     continue;
               }
         }
       }
 
-      if (c73d7e688e3f79162747ac07a87d9d0d5_1 != null)
+      if (rsdDrawings_1 != null)
       {
-            double endY = ((IRectangle) c73d7e688e3f79162747ac07a87d9d0d5_1.cf97ac0bed167fcb539cde5088e6c6961).get_EndY();
-            if (this.get_Closes()[0].get_Item(0) > endY)
+            double endY = ((IRectangle) rsdDrawings_1.iDrawObject_1).EndY;
+            if (Closes[0][0] > endY)
             {
                   if (endY > 0.0)
                   {
-                        if (this.alertOnSupplySound != cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901))
+                        if (this.alertOnSupplySound != "Alert1.wav")
                         {
                           this.PlaySound(this.alertOnSupplySound);
-                          ++this.c7e731ab1165e586f24aac409bd5448e7;
+                          ++this.global_int_1;
                         }
                   }
               }
       }
-      if (c73d7e688e3f79162747ac07a87d9d0d5_2 == null)
+      if (rsdDrawings_2 == null)
         return;
-          if (this.get_Closes()[0].get_Item(0) >= ((IRectangle) c73d7e688e3f79162747ac07a87d9d0d5_2.cf97ac0bed167fcb539cde5088e6c6961).get_EndY())
-              if (!(this.alertOnDemandSound != cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901)))
+          if (Closes[0][0] >= ((IRectangle) rsdDrawings_2.iDrawObject_1).EndY)
+              if (!(this.alertOnDemandSound != "Alert1.wav"))
                 return;
                   this.PlaySound(this.alertOnDemandSound);
-                  ++this.cc16f7f79ebca5054a8751af72d4fa952;
+                  ++this.global_int_2;
                   return;
       
     }
 
     protected void CountZZ(int ExtDepth, int ExtDeviation, int ExtBackstep)
     {
-      double tickSize = this.get_TickSize();
-      IDataSeries input1 = this.get_Highs()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries input2 = this.get_Lows()[this.c8c1734a714810a78b4d22f7dad581c53];
+      double tickSize = TickSize;
+      IDataSeries input1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries input2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
       double num1 = 0.0;
       double num2 = 0.0;
-      int num3 = Math.Min(this.get_CurrentBars()[0], this.get_CurrentBars()[this.c8c1734a714810a78b4d22f7dad581c53]) - ExtDepth;
+      int num3 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]) - ExtDepth;
       for (int index1 = num3; index1 >= 0; --index1)
       {
-        double num4 = this.MIN(input2, ExtDepth).get_Item(index1);
+        double num4 = this.MIN(input2, ExtDepth)[index1];
         if (num4 == num2)
         {
           num4 = 0.0;
@@ -647,7 +644,7 @@ namespace NinjaTrader.Indicator
         else
         {
           num2 = num4;
-          if (input2.get_Item(index1) - num4 > (double) ExtDeviation * tickSize)
+          if (input2[index1] - num4 > (double) ExtDeviation * tickSize)
           {
             num4 = 0.0;
           }
@@ -657,7 +654,7 @@ namespace NinjaTrader.Indicator
             {
               if (index1 + index2 < num3)
               {
-                    double num5 = this.dataSeries3.get_Item(index1 + index2);
+                    double num5 = this.dataSeries3[index1 + index2];
                     if (num5 != 0.0 && num5 > num4)
                     {
                           this.dataSeries3.Set(index1 + index2, 0.0);
@@ -667,7 +664,7 @@ namespace NinjaTrader.Indicator
           }
         }
         this.dataSeries3.Set(index1, num4);
-        double num6 = this.MAX(input1, ExtDepth).get_Item(index1);
+        double num6 = this.MAX(input1, ExtDepth)[index1];
         if (num6 == num1)
         {
               num6 = 0.0;
@@ -675,7 +672,7 @@ namespace NinjaTrader.Indicator
         else
         {
           num1 = num6;
-          if (num6 - input1.get_Item(index1) > (double) ExtDeviation * tickSize)
+          if (num6 - input1[index1] > (double) ExtDeviation * tickSize)
           {
                 num6 = 0.0;
           }
@@ -685,7 +682,7 @@ namespace NinjaTrader.Indicator
             {
               if (index1 + index2 < num3)
               {
-                    double num5 = this.dataSeries2.get_Item(index1 + index2);
+                    double num5 = this.dataSeries2[index1 + index2];
                     if (num5 != 0.0)
                     {
                           if (num5 < num6)
@@ -697,7 +694,7 @@ namespace NinjaTrader.Indicator
             }
           }
         }
-        this.dataSeries2.set_Item(index1, num6);
+        dataSeries2.Set(index1, num6);
       }
 
 	  double num7 = -1.0;
@@ -706,8 +703,8 @@ namespace NinjaTrader.Indicator
           int num10 = -1;
           for (int index = num3; index >= 0; --index)
           {
-            double num4 = this.dataSeries3.get_Item(index);
-            double num5 = this.dataSeries2.get_Item(index);
+            double num4 = this.dataSeries3[index];
+            double num5 = this.dataSeries2[index];
             if (num4 == 0.0)
             {
                   if (num5 != 0.0)
@@ -733,7 +730,6 @@ namespace NinjaTrader.Indicator
                         if (num7 < 0.0)
                         {
                         }
-                        else
                   }
                   num7 = num5;
                   num8 = index;
@@ -751,10 +747,11 @@ namespace NinjaTrader.Indicator
                           this.dataSeries3.Set(index, 0.0);
                         }
                   }
-                  if (num4 >= num9)
-                  {
-                        if (num9 >= 0.0)
-                  }
+					// code doesn't look right
+//                  if (num4 >= num9)
+//                  {
+//                        if (num9 >= 0.0)
+//                  }
                   num9 = num4;
                   num10 = index;
                   num7 = -1.0;
@@ -765,108 +762,108 @@ namespace NinjaTrader.Indicator
 
     private void c65bf1e4ae6cc5de46ab39a04d80cac0d()
     {
-      IDataSeries idataSeries1 = this.get_Highs()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries2 = this.get_Lows()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries3 = this.get_Opens()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries4 = this.get_Closes()[this.c8c1734a714810a78b4d22f7dad581c53];
-      ITimeSeries itimeSeries = this.get_Times()[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries3 = Opens[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries4 = Closes[this.c8c1734a714810a78b4d22f7dad581c53];
+      ITimeSeries itimeSeries = Times[this.c8c1734a714810a78b4d22f7dad581c53];
       double num1 = 0.0;
       double num2 = 0.0;
       int val1_1 = 0;
       int val2 = 0;
       double num3 = 0.0;
       double num4 = 0.0;
-      int num5 = Math.Min(this.get_CurrentBars()[0], this.get_CurrentBars()[this.c8c1734a714810a78b4d22f7dad581c53]);
+      int num5 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]);
       for (int index = 0; index < num5; ++index)
       {
-        if (this.dataSeries3.get_Item(index) > 0.0)
+        if (this.dataSeries3[index] > 0.0)
         {
-              num1 = this.dataSeries3.get_Item(index);
-              num3 = this.dataSeries3.get_Item(index);
+              num1 = this.dataSeries3[index];
+              num3 = this.dataSeries3[index];
         }
       }
       for (int index = 0; index < num5; ++index)
       {
-        if (this.dataSeries2.get_Item(index) > 0.0)
+        if (this.dataSeries2[index] > 0.0)
         {
-          num2 = this.dataSeries2.get_Item(index);
-          num4 = this.dataSeries2.get_Item(index);
+          num2 = this.dataSeries2[index];
+          num4 = this.dataSeries2[index];
         }
       }
 
       for (int index = 0; index < num5; ++index)
       {
-        if (this.dataSeries2.get_Item(index) >= num4)
+        if (this.dataSeries2[index] >= num4)
         {
-              num4 = this.dataSeries2.get_Item(index);
+              num4 = this.dataSeries2[index];
               val2 = index;
         }
         else
           this.dataSeries2.Set(index, 0.0);
-        if (this.dataSeries2.get_Item(index) <= num2)
+        if (this.dataSeries2[index] <= num2)
         {
-              if (this.dataSeries3.get_Item(index) > 0.0)
+              if (this.dataSeries3[index] > 0.0)
               {
                     this.dataSeries2.Set(index, 0.0);
               }
         }
-        if (this.dataSeries3.get_Item(index) <= num3 && this.dataSeries3.get_Item(index) > 0.0)
+        if (this.dataSeries3[index] <= num3 && this.dataSeries3[index] > 0.0)
         {
-          num3 = this.dataSeries3.get_Item(index);
+          num3 = this.dataSeries3[index];
           val1_1 = index;
         }
         else
           this.dataSeries3.Set(index, 0.0);
 		  
-        if (this.dataSeries3.get_Item(index) > num1)
-          this.dataSeries3.set_Item(index, 0.0);
+        if (this.dataSeries3[index] > num1)
+          this.dataSeries3.Set(index, 0.0);
       }
 	  
-        double num6 = Math.Min(idataSeries3.get_Item(val2), idataSeries4.get_Item(val2));
-        double num7 = Math.Max(idataSeries3.get_Item(val1_1), idataSeries4.get_Item(val1_1));
+        double num6 = Math.Min(idataSeries3[val2], idataSeries4[val2]);
+        double num7 = Math.Max(idataSeries3[val1_1], idataSeries4[val1_1]);
         for (int index = Math.Max(val1_1, val2); index >= 0; --index)
         {
-            if (this.dataSeries2.get_Item(index) > num6)
+            if (this.dataSeries2[index] > num6)
             {
-                  if (this.dataSeries2.get_Item(index) != num4)
+                  if (this.dataSeries2[index] != num4)
                   {
                     this.dataSeries2.Set(index, 0.0);
                   }
             }
-            if (this.dataSeries2.get_Item(index) > 0.0)
+            if (this.dataSeries2[index] > 0.0)
             {
-                  num4 = this.dataSeries2.get_Item(index);
-                  double val1_2 = Math.Min(idataSeries4.get_Item(index), idataSeries3.get_Item(index));
+                  num4 = this.dataSeries2[index];
+                  double val1_2 = Math.Min(idataSeries4[index], idataSeries3[index]);
                   if (index > 0)
                   {
-                        val1_2 = Math.Max(val1_2, Math.Max(idataSeries2.get_Item(index - 1), idataSeries2.get_Item(index + 1)));
+                        val1_2 = Math.Max(val1_2, Math.Max(idataSeries2[index - 1], idataSeries2[index + 1]));
                   }
                   if (index > 0)
-                    val1_2 = Math.Max(val1_2, Math.Min(idataSeries3.get_Item(index - 1), idataSeries4.get_Item(index - 1)));
-                  num6 = Math.Max(val1_2, Math.Min(idataSeries3.get_Item(index + 1), idataSeries4.get_Item(index + 1)));
+                    val1_2 = Math.Max(val1_2, Math.Min(idataSeries3[index - 1], idataSeries4[index - 1]));
+                  num6 = Math.Max(val1_2, Math.Min(idataSeries3[index + 1], idataSeries4[index + 1]));
             }
 			
-            if (this.dataSeries3.get_Item(index) <= num7)
+            if (this.dataSeries3[index] <= num7)
             {
-                  if (this.dataSeries3.get_Item(index) > 0.0)
+                  if (this.dataSeries3[index] > 0.0)
                   {
-                        if (this.dataSeries3.get_Item(index) != num3)
+                        if (this.dataSeries3[index] != num3)
                         {
                               this.dataSeries3.Set(index, 0.0);
                         }
                   }
             }
-            if (this.dataSeries3.get_Item(index) > 0.0)
+            if (this.dataSeries3[index] > 0.0)
             {
-                  num3 = this.dataSeries3.get_Item(index);
-                  double val1_2 = Math.Max(idataSeries4.get_Item(index), idataSeries3.get_Item(index));
+                  num3 = this.dataSeries3[index];
+                  double val1_2 = Math.Max(idataSeries4[index], idataSeries3[index]);
                   if (index > 0)
                   {
-                        val1_2 = Math.Min(val1_2, Math.Min(idataSeries1.get_Item(index + 1), idataSeries1.get_Item(index - 1)));
+                        val1_2 = Math.Min(val1_2, Math.Min(idataSeries1[index + 1], idataSeries1[index - 1]));
                   }
                   if (index > 0)
-                    val1_2 = Math.Min(val1_2, Math.Max(idataSeries3.get_Item(index - 1), idataSeries4.get_Item(index - 1)));
-                  num7 = Math.Min(val1_2, Math.Max(idataSeries3.get_Item(index + 1), idataSeries4.get_Item(index + 1)));
+                    val1_2 = Math.Min(val1_2, Math.Max(idataSeries3[index - 1], idataSeries4[index - 1]));
+                  num7 = Math.Min(val1_2, Math.Max(idataSeries3[index + 1], idataSeries4[index + 1]));
             }
         }
     }
@@ -883,53 +880,53 @@ namespace NinjaTrader.Indicator
       int num5 = 0;
       double num6 = 0.0;
       double num7 = 0.0;
-      IDataSeries idataSeries1 = this.get_Highs()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries2 = this.get_Lows()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries3 = this.get_Opens()[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries4 = this.get_Closes()[this.c8c1734a714810a78b4d22f7dad581c53];
-      ITimeSeries itimeSeries = this.get_Times()[this.c8c1734a714810a78b4d22f7dad581c53];
-      int num8 = Math.Min(this.get_CurrentBars()[0], this.get_CurrentBars()[this.c8c1734a714810a78b4d22f7dad581c53]);
+      IDataSeries idataSeries1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries3 = Opens[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries4 = Closes[this.c8c1734a714810a78b4d22f7dad581c53];
+      ITimeSeries itimeSeries = Times[this.c8c1734a714810a78b4d22f7dad581c53];
+      int num8 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]);
       for (int index3 = 1; index3 < num8 - 1; ++index3)
       {
         int num9 = num8 - index3;
-        rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_1 = (rcRSD.c73d7e688e3f79162747ac07a87d9d0d5) null;
-        rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_2 = (rcRSD.c73d7e688e3f79162747ac07a87d9d0d5) null;
+        rcRSD.RSD_Drawings rsdDrawings_1 = (rcRSD.RSD_Drawings) null;
+        rcRSD.RSD_Drawings rsdDrawings_2 = (rcRSD.RSD_Drawings) null;
         int index4 = -1;
         int index5 = -1;
-        if (this.dataSeries2.get_Item(index3) == 0.0)
+        if (this.dataSeries2[index3] == 0.0)
         {
-            if (this.dataSeries3.get_Item(index3) == 0.0)
+            if (this.dataSeries3[index3] == 0.0)
 			{
-				for (int index6 = this.ce98848ac05b3eb8a4526be6ad0a15bd2.Count - 1; index6 >= 0; --index6)
+				for (int index6 = this.list_Of_RSD_Drawings.Count - 1; index6 >= 0; --index6)
 				{
-					rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_3 = this.ce98848ac05b3eb8a4526be6ad0a15bd2[index6];
-					if (c73d7e688e3f79162747ac07a87d9d0d5_3 != null)
+					rcRSD.RSD_Drawings rsdDrawings_3 = this.list_Of_RSD_Drawings[index6];
+					if (rsdDrawings_3 != null)
 					{
-						if (c73d7e688e3f79162747ac07a87d9d0d5_3.cf97ac0bed167fcb539cde5088e6c6961 != null && c73d7e688e3f79162747ac07a87d9d0d5_3.c5be6d778377fcf6785cd885e6f57fd9a)
+						if (rsdDrawings_3.iDrawObject_1 != null && rsdDrawings_3.bool_1)
 						{
-							if (c73d7e688e3f79162747ac07a87d9d0d5_3.cc7e06f1bdf7afedb4899f1fe08f4a254 == num9)
+							if (rsdDrawings_3.int_1 == num9)
 							{
-								this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_3.cf97ac0bed167fcb539cde5088e6c6961);
-								if (c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32 != null)
+								this.RemoveDrawObject(rsdDrawings_3.iDrawObject_1);
+								if (rsdDrawings_3.iDrawObject_2 != null)
 								{
-									if (this.highZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+									if (this.highZones.ContainsKey(rsdDrawings_3.iDrawObject_2.Tag))
 									{
-										this.highZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+										this.highZones.Remove(rsdDrawings_3.iDrawObject_2.Tag);
 									}
-									if (this.lowZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+									if (this.lowZones.ContainsKey(rsdDrawings_3.iDrawObject_2.Tag))
 									{
-										this.lowZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+										this.lowZones.Remove(rsdDrawings_3.iDrawObject_2.Tag);
 									}
-									this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_3.c064a1026d9a70d5b924a69fb41c7db32);
+									this.RemoveDrawObject(rsdDrawings_3.iDrawObject_2);
 								}
-								if (c73d7e688e3f79162747ac07a87d9d0d5_3.ce2dced7ddb532f032178192718ea35cf != null)
-								  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_3.ce2dced7ddb532f032178192718ea35cf);
-								if (c73d7e688e3f79162747ac07a87d9d0d5_3.c2b61c1ccafe508ae3804f8b1cfe9c2da != null)
+								if (rsdDrawings_3.iDrawObject_3 != null)
+								  this.RemoveDrawObject(rsdDrawings_3.iDrawObject_3);
+								if (rsdDrawings_3.iText != null)
 								{
-									this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_3.c2b61c1ccafe508ae3804f8b1cfe9c2da);
+									this.RemoveDrawObject(rsdDrawings_3.iText);
 								}
-								this.ce98848ac05b3eb8a4526be6ad0a15bd2.RemoveAt(index6);
-								c73d7e688e3f79162747ac07a87d9d0d5_3.c5be6d778377fcf6785cd885e6f57fd9a = false;
+								this.list_Of_RSD_Drawings.RemoveAt(index6);
+								rsdDrawings_3.bool_1 = false;
 							}
 						}
 					}
@@ -937,56 +934,57 @@ namespace NinjaTrader.Indicator
 			}
         }
 		// from line 1778
-        for (int index6 = 0; index6 < this.ce98848ac05b3eb8a4526be6ad0a15bd2.Count; ++index6)
+        for (int index6 = 0; index6 < this.list_Of_RSD_Drawings.Count; ++index6)
         {
-            rcRSD.c73d7e688e3f79162747ac07a87d9d0d5 c73d7e688e3f79162747ac07a87d9d0d5_3 = this.ce98848ac05b3eb8a4526be6ad0a15bd2[index6];
-            if (c73d7e688e3f79162747ac07a87d9d0d5_3 != null && c73d7e688e3f79162747ac07a87d9d0d5_3.cf97ac0bed167fcb539cde5088e6c6961 != null)
+            rcRSD.RSD_Drawings rsdDrawings_3 = this.list_Of_RSD_Drawings[index6];
+            if (rsdDrawings_3 != null && rsdDrawings_3.iDrawObject_1 != null)
             {
-                if (c73d7e688e3f79162747ac07a87d9d0d5_3.c5be6d778377fcf6785cd885e6f57fd9a)
+                if (rsdDrawings_3.bool_1)
                 {
-                    if (c73d7e688e3f79162747ac07a87d9d0d5_3.cc7e06f1bdf7afedb4899f1fe08f4a254 == num9)
+                    if (rsdDrawings_3.int_1 == num9)
                     {
-                            if (this.dataSeries2.get_Item(index3) != 0.0)
+                            if (this.dataSeries2[index3] != 0.0)
                             {
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_3.cde3a95a32edd1347240184201e1a8fc4 == rcRSD.cadc1cbe590d50cdf2b50adee29668645.c550219c4ee6a522e23562e31465d2162)
+                                  if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_2)
                                   {
-                                    c73d7e688e3f79162747ac07a87d9d0d5_1 = c73d7e688e3f79162747ac07a87d9d0d5_3;
+                                    rsdDrawings_1 = rsdDrawings_3;
                                     index4 = index6;
                                   }
                             }
-                            if (this.dataSeries3.get_Item(index3) != 0.0)
+                            if (this.dataSeries3[index3] != 0.0)
                             {
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_3.cde3a95a32edd1347240184201e1a8fc4 == rcRSD.cadc1cbe590d50cdf2b50adee29668645.c80b3f0659d533013831363f110f16b30)
+                                  if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_3)
                                   {
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2 = c73d7e688e3f79162747ac07a87d9d0d5_3;
+                                        rsdDrawings_2 = rsdDrawings_3;
                                         index5 = index6;
                                   }
                             }
-                            if (c73d7e688e3f79162747ac07a87d9d0d5_1 != null)
-                            {
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_2 != null)
-                            }
+							// line 1848
+//                            if (rsdDrawings_1 != null)
+//                            {
+//                                  if (rsdDrawings_2 != null)
+//                            }
                     }
                 }
             }
         }
 		// from line 1882
-        if (this.dataSeries2.get_Item(index3) != 0.0)
+        if (this.dataSeries2[index3] != 0.0)
         {
               bool flag1 = false;
               bool flag2 = false;
-              DateTime dateTime1 = itimeSeries.get_Item(index3);
-              DateTime dateTime2 = this.get_Times()[0].get_Item(0);
-              double val1 = Math.Min(idataSeries4.get_Item(index3), idataSeries3.get_Item(index3));
+              DateTime dateTime1 = itimeSeries[index3];
+              DateTime dateTime2 = Times[0][0];
+              double val1 = Math.Min(idataSeries4[index3], idataSeries3[index3]);
               if (index3 > 0)
               {
-                    val1 = Math.Max(val1, Math.Max(idataSeries2.get_Item(index3 - 1), idataSeries2.get_Item(index3 + 1)));
+                    val1 = Math.Max(val1, Math.Max(idataSeries2[index3 - 1], idataSeries2[index3 + 1]));
               }
               if (index3 > 0)
               {
-                    val1 = Math.Max(val1, Math.Min(idataSeries3.get_Item(index3 - 1), idataSeries4.get_Item(index3 - 1)));
+                    val1 = Math.Max(val1, Math.Min(idataSeries3[index3 - 1], idataSeries4[index3 - 1]));
               }
-              double num10 = Math.Max(val1, Math.Min(idataSeries3.get_Item(index3 + 1), idataSeries4.get_Item(index3 + 1)));
+              double num10 = Math.Max(val1, Math.Min(idataSeries3[index3 + 1], idataSeries4[index3 + 1]));
               bool flag3 = true;
               if (!this.recolorRetouch)
               {
@@ -1006,14 +1004,14 @@ namespace NinjaTrader.Indicator
                 }
                 if (!flag4)
                 {
-                      if (idataSeries1.get_Item(index6) < num10)
+                      if (idataSeries1[index6] < num10)
                       {
                         flag4 = true;
                       }
                 }
                 if (flag4)
                 {
-                      if (idataSeries1.get_Item(index6) > num10)
+                      if (idataSeries1[index6] > num10)
                       {
                             flag1 = true;
                             if (this.ce2384e40d6da05074ed92eac2372f952)
@@ -1028,37 +1026,38 @@ namespace NinjaTrader.Indicator
                 }
               }
 
-              if (c73d7e688e3f79162747ac07a87d9d0d5_1 != null && index4 >= 0)
+              if (rsdDrawings_1 != null && index4 >= 0)
               {
                     if (flag3)
                     {
-                          ((IRectangle) c73d7e688e3f79162747ac07a87d9d0d5_1.cf97ac0bed167fcb539cde5088e6c6961).get_EndY();
+						// line 2047 ?
+                          //((IRectangle) rsdDrawings_1.iDrawObject_1).EndY;
                     }
                     else
                     {
-                      this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.cf97ac0bed167fcb539cde5088e6c6961);
-                      if (c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32 != null)
+                      this.RemoveDrawObject(rsdDrawings_1.iDrawObject_1);
+                      if (rsdDrawings_1.iDrawObject_2 != null)
                       {
-                            if (this.highZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+                            if (this.highZones.ContainsKey(rsdDrawings_1.iDrawObject_2.Tag))
                             {
-                                  this.highZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+                                  this.highZones.Remove(rsdDrawings_1.iDrawObject_2.Tag);
                             }
-                            if (this.lowZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+                            if (this.lowZones.ContainsKey(rsdDrawings_1.iDrawObject_2.Tag))
                             {
-                                  this.lowZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+                                  this.lowZones.Remove(rsdDrawings_1.iDrawObject_2.Tag);
                             }
-                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32);
+                            this.RemoveDrawObject(rsdDrawings_1.iDrawObject_2);
                       }
-                      if (c73d7e688e3f79162747ac07a87d9d0d5_1.ce2dced7ddb532f032178192718ea35cf != null)
+                      if (rsdDrawings_1.iDrawObject_3 != null)
                       {
-                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.ce2dced7ddb532f032178192718ea35cf);
+                            this.RemoveDrawObject(rsdDrawings_1.iDrawObject_3);
                       }
-                      if (c73d7e688e3f79162747ac07a87d9d0d5_1.c2b61c1ccafe508ae3804f8b1cfe9c2da != null)
+                      if (rsdDrawings_1.iText != null)
                       {
-                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.c2b61c1ccafe508ae3804f8b1cfe9c2da);
+                            this.RemoveDrawObject(rsdDrawings_1.iText);
                       }
-                      this.ce98848ac05b3eb8a4526be6ad0a15bd2.RemoveAt(index4);
-                      c73d7e688e3f79162747ac07a87d9d0d5_1.c5be6d778377fcf6785cd885e6f57fd9a = false;
+                      this.list_Of_RSD_Drawings.RemoveAt(index4);
+                      rsdDrawings_1.bool_1 = false;
                       index4 = -1;
                 }
               }
@@ -1082,11 +1081,11 @@ namespace NinjaTrader.Indicator
                             num3 = 0;
                             for (int index6 = index3; index6 < num8 - 1; ++index6)
                             {
-                              if (idataSeries1.get_Item(index6 + 1) < num10)
+                              if (idataSeries1[index6 + 1] < num10)
                               {
                                     ++num11;
                               }
-                              if (idataSeries1.get_Item(index6 + 1) > this.dataSeries2.get_Item(index3))
+                              if (idataSeries1[index6 + 1] > this.dataSeries2[index3])
                               {
                                     ++num3;
                               }
@@ -1105,29 +1104,29 @@ namespace NinjaTrader.Indicator
                           }
 
 						  // line 2238
-                          if (c73d7e688e3f79162747ac07a87d9d0d5_1 != null)
+                          if (rsdDrawings_1 != null)
                           {
                                 if (index4 >= 0)
                                 {
                                       if (!flag3)
                                       {
-                                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.cf97ac0bed167fcb539cde5088e6c6961);
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32 != null)
+                                            this.RemoveDrawObject(rsdDrawings_1.iDrawObject_1);
+                                            if (rsdDrawings_1.iDrawObject_2 != null)
                                             {
-                                                  if (this.highZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
-                                                    this.highZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
-                                                  if (this.lowZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
-                                                    this.lowZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
-                                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32);
+                                                  if (this.highZones.ContainsKey(rsdDrawings_1.iDrawObject_2.Tag))
+                                                    this.highZones.Remove(rsdDrawings_1.iDrawObject_2.Tag);
+                                                  if (this.lowZones.ContainsKey(rsdDrawings_1.iDrawObject_2.Tag))
+                                                    this.lowZones.Remove(rsdDrawings_1.iDrawObject_2.Tag);
+                                                  this.RemoveDrawObject(rsdDrawings_1.iDrawObject_2);
                                             }
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_1.ce2dced7ddb532f032178192718ea35cf != null)
+                                            if (rsdDrawings_1.iDrawObject_3 != null)
                                             {
-                                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.ce2dced7ddb532f032178192718ea35cf);
+                                                  this.RemoveDrawObject(rsdDrawings_1.iDrawObject_3);
                                             }
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_1.c2b61c1ccafe508ae3804f8b1cfe9c2da != null)
-                                              this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_1.c2b61c1ccafe508ae3804f8b1cfe9c2da);
-                                            this.ce98848ac05b3eb8a4526be6ad0a15bd2.RemoveAt(index4);
-                                            c73d7e688e3f79162747ac07a87d9d0d5_1.c5be6d778377fcf6785cd885e6f57fd9a = false;
+                                            if (rsdDrawings_1.iText != null)
+                                              this.RemoveDrawObject(rsdDrawings_1.iText);
+                                            this.list_Of_RSD_Drawings.RemoveAt(index4);
+                                            rsdDrawings_1.bool_1 = false;
                                       }
                                 }
                           }
@@ -1165,34 +1164,34 @@ namespace NinjaTrader.Indicator
                                         color1 = Color.Transparent;
                                         color2 = color1;
                                   }
-                                  this.c70b275c21878ae5c45a5206582435006 = this.get_Times()[0].get_Item(0);
+                                  this.c70b275c21878ae5c45a5206582435006 = Times[0][0];
                                   if (this.extendZone)
                                   {
                                         this.c70b275c21878ae5c45a5206582435006 = this.c70b275c21878ae5c45a5206582435006.AddMinutes((double) this.extendMinutes);
                                   }
                                   IText itext1 = this.DrawText(key, false, string.Concat((object) num10), this.c70b275c21878ae5c45a5206582435006, num10, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_1 == null)
+                                  if (rsdDrawings_1 == null)
                                   {
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1 = new rcRSD.c73d7e688e3f79162747ac07a87d9d0d5();
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.cde3a95a32edd1347240184201e1a8fc4 = rcRSD.cadc1cbe590d50cdf2b50adee29668645.c550219c4ee6a522e23562e31465d2162;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.c74092c112ee4cab79306f14f3564db3f = color1;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.cc19b4e075526200d7cda803485f968fb = color1;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.c5ae42acd29515b888cddbd96e6918f00 = itext1.get_AreaOpacity();
-                                        this.ce98848ac05b3eb8a4526be6ad0a15bd2.Add(c73d7e688e3f79162747ac07a87d9d0d5_1);
+                                        rsdDrawings_1 = new rcRSD.RSD_Drawings();
+                                        rsdDrawings_1.myEnumInstance = rcRSD.myEnum.myEnumerated_2;
+                                        rsdDrawings_1.color_1 = color1;
+                                        rsdDrawings_1.color_2 = color1;
+                                        rsdDrawings_1.int_3 = itext1.AreaOpacity;
+                                        this.list_Of_RSD_Drawings.Add(rsdDrawings_1);
                                         this.highZones.Add(key, num10);
                                   }
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.c064a1026d9a70d5b924a69fb41c7db32 = (IDrawObject) itext1;
+                                  rsdDrawings_1.iDrawObject_2 = (IDrawObject) itext1;
                                   if (this.drawFarEdgePrice)
                                   {
-                                    IText itext2 = this.DrawText(key + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(935), false, string.Concat((object) this.dataSeries2.get_Item(index3)), this.c70b275c21878ae5c45a5206582435006, this.dataSeries2.get_Item(index3), 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                    c73d7e688e3f79162747ac07a87d9d0d5_1.ce2dced7ddb532f032178192718ea35cf = (IDrawObject) itext2;
+                                    IText itext2 = this.DrawText(key + "drawFarEdgePrice", false, string.Concat((object) this.dataSeries2[index3]), this.c70b275c21878ae5c45a5206582435006, this.dataSeries2[index3], 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
+                                    rsdDrawings_1.iDrawObject_3 = (IDrawObject) itext2;
                                   }
                                   if (this.drawZoneHeight)
                                   {
-                                        this.c3c4d0cacab89b52c96d1032861422a89 = (this.dataSeries2.get_Item(index3) + num10) / 2.0;
-                                        this.cf71da5f113c2fe6afc3148e31ca45827 = Convert.ToInt32(Math.Abs(this.dataSeries2.get_Item(index3) - num10) / this.get_TickSize());
-                                        this.c2b61c1ccafe508ae3804f8b1cfe9c2da = this.DrawText(key + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(938), false, string.Concat((object) this.cf71da5f113c2fe6afc3148e31ca45827), this.c70b275c21878ae5c45a5206582435006, this.c3c4d0cacab89b52c96d1032861422a89, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.c2b61c1ccafe508ae3804f8b1cfe9c2da = (IDrawObject) this.c2b61c1ccafe508ae3804f8b1cfe9c2da;
+                                        this.c3c4d0cacab89b52c96d1032861422a89 = (this.dataSeries2[index3] + num10) / 2.0;
+                                        this.global_int_4 = Convert.ToInt32(Math.Abs(this.dataSeries2[index3] - num10) / TickSize);
+                                        this.iText = this.DrawText(key + "drawZoneHeight", false, string.Concat((object) this.global_int_4), this.c70b275c21878ae5c45a5206582435006, this.c3c4d0cacab89b52c96d1032861422a89, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
+                                        rsdDrawings_1.iText = (IDrawObject) this.iText;
                                   }
                                 }
                                 string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(947) + (object) num9;
@@ -1208,19 +1207,19 @@ namespace NinjaTrader.Indicator
                                   this.c70b275c21878ae5c45a5206582435006 = dateTime2;
                                   if (this.extendZone)
                                     this.c70b275c21878ae5c45a5206582435006 = this.c70b275c21878ae5c45a5206582435006.AddMinutes((double) this.extendMinutes);
-                                  IRectangle irectangle = this.DrawRectangle(str, false, dateTime1, this.dataSeries2.get_Item(index3), this.c70b275c21878ae5c45a5206582435006, num10, color3, color1, 5);
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_1 == null)
+                                  IRectangle irectangle = this.DrawRectangle(str, false, dateTime1, this.dataSeries2[index3], this.c70b275c21878ae5c45a5206582435006, num10, color3, color1, 5);
+                                  if (rsdDrawings_1 == null)
                                   {
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1 = new rcRSD.c73d7e688e3f79162747ac07a87d9d0d5();
-                                        c73d7e688e3f79162747ac07a87d9d0d5_1.cde3a95a32edd1347240184201e1a8fc4 = rcRSD.cadc1cbe590d50cdf2b50adee29668645.c550219c4ee6a522e23562e31465d2162;
-                                        this.ce98848ac05b3eb8a4526be6ad0a15bd2.Add(c73d7e688e3f79162747ac07a87d9d0d5_1);
+                                        rsdDrawings_1 = new rcRSD.RSD_Drawings();
+                                        rsdDrawings_1.myEnumInstance = rcRSD.myEnum.myEnumerated_2;
+                                        this.list_Of_RSD_Drawings.Add(rsdDrawings_1);
                                   }
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.c74092c112ee4cab79306f14f3564db3f = color1;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.cc19b4e075526200d7cda803485f968fb = this.supplyZoneBorder;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.c5ae42acd29515b888cddbd96e6918f00 = ((IShape) irectangle).get_AreaOpacity();
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.cf97ac0bed167fcb539cde5088e6c6961 = (IDrawObject) irectangle;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.cc7e06f1bdf7afedb4899f1fe08f4a254 = num9;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_1.c9d17b946231eaa00a035163f1e7972c8 = num4;
+                                  rsdDrawings_1.color_1 = color1;
+                                  rsdDrawings_1.color_2 = this.supplyZoneBorder;
+                                  rsdDrawings_1.int_3 = ((IShape) irectangle).AreaOpacity;
+                                  rsdDrawings_1.iDrawObject_1 = (IDrawObject) irectangle;
+                                  rsdDrawings_1.int_1 = num9;
+                                  rsdDrawings_1.int_2 = num4;
 								 } 
 								 catch (Exception ex)
                                  {
@@ -1241,23 +1240,23 @@ namespace NinjaTrader.Indicator
                           }
                     }
               }
-        } // if (this.c88e5ec7985d343b005eb3a0b337af79f.get_Item(index3) != 0.0) line 1882
+        } // if (this.c88e5ec7985d343b005eb3a0b337af79f[index3] != 0.0) line 1882
 		// from line 2557
-        if (this.dataSeries3.get_Item(index3) != 0.0)
+        if (this.dataSeries3[index3] != 0.0)
         {
 // label_201:			
               bool flag1 = false;
               bool flag2 = false;
-              DateTime dateTime1 = itimeSeries.get_Item(index3);
-              DateTime dateTime2 = this.get_Times()[0].get_Item(0);
-              double val1 = Math.Max(idataSeries4.get_Item(index3), idataSeries3.get_Item(index3));
+              DateTime dateTime1 = itimeSeries[index3];
+              DateTime dateTime2 = Times[0][0];
+              double val1 = Math.Max(idataSeries4[index3], idataSeries3[index3]);
               if (index3 > 0)
               {
-                    val1 = Math.Min(val1, Math.Min(idataSeries1.get_Item(index3 + 1), idataSeries1.get_Item(index3 - 1)));
+                    val1 = Math.Min(val1, Math.Min(idataSeries1[index3 + 1], idataSeries1[index3 - 1]));
               }
               if (index3 > 0)
-                val1 = Math.Min(val1, Math.Max(idataSeries3.get_Item(index3 - 1), idataSeries4.get_Item(index3 - 1)));
-              double num10 = Math.Min(val1, Math.Max(idataSeries3.get_Item(index3 + 1), idataSeries4.get_Item(index3 + 1)));
+                val1 = Math.Min(val1, Math.Max(idataSeries3[index3 - 1], idataSeries4[index3 - 1]));
+              double num10 = Math.Min(val1, Math.Max(idataSeries3[index3 + 1], idataSeries4[index3 + 1]));
               Color color1 = this.demandStrong;
               bool flag3 = true;
               if (!this.recolorRetouch)
@@ -1271,7 +1270,6 @@ namespace NinjaTrader.Indicator
               {
                 if (index6 == 0)
                 {
-                    default:
                       if (!flag4)
                       {
                             flag3 = false;
@@ -1279,14 +1277,14 @@ namespace NinjaTrader.Indicator
                 }
                 if (!flag4)
                 {
-                      if (idataSeries2.get_Item(index6) > num10)
+                      if (idataSeries2[index6] > num10)
                       {
                             flag4 = true;
                       }
                 }
                 if (flag4)
                 {
-                      if (idataSeries2.get_Item(index6) < num10)
+                      if (idataSeries2[index6] < num10)
                       {
                             flag1 = true;
                             if (this.ce2384e40d6da05074ed92eac2372f952)
@@ -1300,39 +1298,38 @@ namespace NinjaTrader.Indicator
                       }
                 }
               }
-              if (c73d7e688e3f79162747ac07a87d9d0d5_2 != null)
+              if (rsdDrawings_2 != null)
               {
-                  default:
                     if (index5 >= 0)
                     {
                           if (flag3)
                           {
-                            ((IRectangle) c73d7e688e3f79162747ac07a87d9d0d5_2.cf97ac0bed167fcb539cde5088e6c6961).get_EndY();
+                            ((IRectangle) rsdDrawings_2.iDrawObject_1).EndY;
                           }
                           else
                           {
-                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.cf97ac0bed167fcb539cde5088e6c6961);
-                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32 != null)
+                            this.RemoveDrawObject(rsdDrawings_2.iDrawObject_1);
+                            if (rsdDrawings_2.iDrawObject_2 != null)
                             {
-                                  if (this.highZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+                                  if (this.highZones.ContainsKey(rsdDrawings_2.iDrawObject_2.Tag))
                                   {
-                                        this.highZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+                                        this.highZones.Remove(rsdDrawings_2.iDrawObject_2.Tag);
                                   }
-                                  if (this.lowZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
-                                    this.lowZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
-                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32);
+                                  if (this.lowZones.ContainsKey(rsdDrawings_2.iDrawObject_2.Tag))
+                                    this.lowZones.Remove(rsdDrawings_2.iDrawObject_2.Tag);
+                                  this.RemoveDrawObject(rsdDrawings_2.iDrawObject_2);
                             }
-                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.ce2dced7ddb532f032178192718ea35cf != null)
+                            if (rsdDrawings_2.iDrawObject_3 != null)
                             {
-                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.ce2dced7ddb532f032178192718ea35cf);
+                                  this.RemoveDrawObject(rsdDrawings_2.iDrawObject_3);
                             }
-                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.c2b61c1ccafe508ae3804f8b1cfe9c2da != null)
+                            if (rsdDrawings_2.iText != null)
                             {
-                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.c2b61c1ccafe508ae3804f8b1cfe9c2da);
+                                  this.RemoveDrawObject(rsdDrawings_2.iText);
                             }
-                            this.ce98848ac05b3eb8a4526be6ad0a15bd2.RemoveAt(index5);
+                            this.list_Of_RSD_Drawings.RemoveAt(index5);
                             index5 = -1;
-                            c73d7e688e3f79162747ac07a87d9d0d5_2.c5be6d778377fcf6785cd885e6f57fd9a = false;
+                            rsdDrawings_2.bool_1 = false;
                       }
                     }
               }
@@ -1353,9 +1350,9 @@ namespace NinjaTrader.Indicator
                                 num3 = 0;
                                 for (int index6 = index3; index6 < num8 - 1; ++index6)
                                 {
-                                  if (idataSeries2.get_Item(index6 + 1) > num10)
+                                  if (idataSeries2[index6 + 1] > num10)
                                     ++num11;
-                                  if (idataSeries2.get_Item(index6 + 1) < this.dataSeries3.get_Item(index3))
+                                  if (idataSeries2[index6 + 1] < this.dataSeries3[index3])
                                   {
                                         ++num3;
                                   }
@@ -1371,7 +1368,7 @@ namespace NinjaTrader.Indicator
 								}
                           }
 
-                          if (c73d7e688e3f79162747ac07a87d9d0d5_2 != null)
+                          if (rsdDrawings_2 != null)
                           {
 
 						  if (index5 >= 0)
@@ -1379,25 +1376,25 @@ namespace NinjaTrader.Indicator
 
 								if (!flag3)
                                       {
-                                            this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.cf97ac0bed167fcb539cde5088e6c6961);
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32 != null)
+                                            this.RemoveDrawObject(rsdDrawings_2.iDrawObject_1);
+                                            if (rsdDrawings_2.iDrawObject_2 != null)
                                             {
-                                              if (this.highZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
-                                                this.highZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
-                                              if (this.lowZones.ContainsKey(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag()))
+                                              if (this.highZones.ContainsKey(rsdDrawings_2.iDrawObject_2.Tag))
+                                                this.highZones.Remove(rsdDrawings_2.iDrawObject_2.Tag);
+                                              if (this.lowZones.ContainsKey(rsdDrawings_2.iDrawObject_2.Tag))
                                               {
-                                                    this.lowZones.Remove(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32.get_Tag());
+                                                    this.lowZones.Remove(rsdDrawings_2.iDrawObject_2.Tag);
                                               }
-                                              this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32);
+                                              this.RemoveDrawObject(rsdDrawings_2.iDrawObject_2);
                                             }
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.ce2dced7ddb532f032178192718ea35cf != null)
-                                              this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.ce2dced7ddb532f032178192718ea35cf);
-                                            if (c73d7e688e3f79162747ac07a87d9d0d5_2.c2b61c1ccafe508ae3804f8b1cfe9c2da != null)
+                                            if (rsdDrawings_2.iDrawObject_3 != null)
+                                              this.RemoveDrawObject(rsdDrawings_2.iDrawObject_3);
+                                            if (rsdDrawings_2.iText != null)
                                             {
-                                                  this.RemoveDrawObject(c73d7e688e3f79162747ac07a87d9d0d5_2.c2b61c1ccafe508ae3804f8b1cfe9c2da);
+                                                  this.RemoveDrawObject(rsdDrawings_2.iText);
                                             }
-                                            this.ce98848ac05b3eb8a4526be6ad0a15bd2.RemoveAt(index5);
-                                            c73d7e688e3f79162747ac07a87d9d0d5_2.c5be6d778377fcf6785cd885e6f57fd9a = false;
+                                            this.list_Of_RSD_Drawings.RemoveAt(index5);
+                                            rsdDrawings_2.bool_1 = false;
                                       }
                                 }
                           }
@@ -1418,7 +1415,6 @@ namespace NinjaTrader.Indicator
                                             {
                                                   color1 = this.demandRetouch;
                                             }
-                                            else
                                       }
                                 }
                                 ++num5;
@@ -1435,32 +1431,32 @@ namespace NinjaTrader.Indicator
                                         color1 = Color.Transparent;
                                         color2 = color1;
                                   }
-                                  this.c70b275c21878ae5c45a5206582435006 = this.get_Times()[0].get_Item(0);
+                                  this.c70b275c21878ae5c45a5206582435006 = Times[0][0];
                                   if (this.extendZone)
                                     this.c70b275c21878ae5c45a5206582435006 = this.c70b275c21878ae5c45a5206582435006.AddMinutes((double) this.extendMinutes);
                                   IText itext1 = this.DrawText(key, false, string.Concat((object) num10), this.c70b275c21878ae5c45a5206582435006, num10, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_2 == null)
+                                  if (rsdDrawings_2 == null)
                                   {
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2 = new rcRSD.c73d7e688e3f79162747ac07a87d9d0d5();
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.cde3a95a32edd1347240184201e1a8fc4 = rcRSD.cadc1cbe590d50cdf2b50adee29668645.c80b3f0659d533013831363f110f16b30;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.c74092c112ee4cab79306f14f3564db3f = color1;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.cc19b4e075526200d7cda803485f968fb = color1;
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.c5ae42acd29515b888cddbd96e6918f00 = itext1.get_AreaOpacity();
-                                        this.ce98848ac05b3eb8a4526be6ad0a15bd2.Add(c73d7e688e3f79162747ac07a87d9d0d5_2);
+                                        rsdDrawings_2 = new rcRSD.RSD_Drawings();
+                                        rsdDrawings_2.myEnumInstance = rcRSD.myEnum.myEnumerated_3;
+                                        rsdDrawings_2.color_1 = color1;
+                                        rsdDrawings_2.color_2 = color1;
+                                        rsdDrawings_2.int_3 = itext1.AreaOpacity;
+                                        this.list_Of_RSD_Drawings.Add(rsdDrawings_2);
                                         this.lowZones.Add(key, num10);
                                   }
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.c064a1026d9a70d5b924a69fb41c7db32 = (IDrawObject) itext1;
+                                  rsdDrawings_2.iDrawObject_2 = (IDrawObject) itext1;
                                   if (this.drawFarEdgePrice)
                                   {
-                                        IText itext2 = this.DrawText(key + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(935), false, string.Concat((object) this.dataSeries3.get_Item(index3)), this.c70b275c21878ae5c45a5206582435006, this.dataSeries3.get_Item(index3), 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.ce2dced7ddb532f032178192718ea35cf = (IDrawObject) itext2;
+                                        IText itext2 = this.DrawText(key + "drawFarEdgePrice", false, string.Concat((object) this.dataSeries3[index3]), this.c70b275c21878ae5c45a5206582435006, this.dataSeries3[index3], 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
+                                        rsdDrawings_2.iDrawObject_3 = (IDrawObject) itext2;
                                   }
                                   if (this.drawZoneHeight)
                                   {
-                                        this.c3c4d0cacab89b52c96d1032861422a89 = (this.dataSeries3.get_Item(index3) + num10) / 2.0;
-                                        this.cf71da5f113c2fe6afc3148e31ca45827 = Convert.ToInt32(Math.Abs(this.dataSeries3.get_Item(index3) - num10) / this.get_TickSize());
-                                        this.c2b61c1ccafe508ae3804f8b1cfe9c2da = this.DrawText(key + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(938), false, string.Concat((object) this.cf71da5f113c2fe6afc3148e31ca45827), this.c70b275c21878ae5c45a5206582435006, this.c3c4d0cacab89b52c96d1032861422a89, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
-                                        c73d7e688e3f79162747ac07a87d9d0d5_2.c2b61c1ccafe508ae3804f8b1cfe9c2da = (IDrawObject) this.c2b61c1ccafe508ae3804f8b1cfe9c2da;
+                                        this.c3c4d0cacab89b52c96d1032861422a89 = (this.dataSeries3[index3] + num10) / 2.0;
+                                        this.global_int_4 = Convert.ToInt32(Math.Abs(this.dataSeries3[index3] - num10) / TickSize);
+                                        this.iText = this.DrawText(key + "drawZoneHeight", false, string.Concat((object) this.global_int_4), this.c70b275c21878ae5c45a5206582435006, this.c3c4d0cacab89b52c96d1032861422a89, 0, color2, this.font3, StringAlignment.Near, Color.Transparent, Color.Transparent, 0);
+                                        rsdDrawings_2.iText = (IDrawObject) this.iText;
                                   }
                                 }
                                 string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(979) + (object) num9;
@@ -1477,20 +1473,24 @@ namespace NinjaTrader.Indicator
                                   {
                                         this.c70b275c21878ae5c45a5206582435006 = this.c70b275c21878ae5c45a5206582435006.AddMinutes((double) this.extendMinutes);
                                   }
-                                  IRectangle irectangle = this.DrawRectangle(str, false, dateTime1, this.dataSeries3.get_Item(index3), this.c70b275c21878ae5c45a5206582435006, num10, color3, color1, 5);
-                                  if (c73d7e688e3f79162747ac07a87d9d0d5_2 == null)
+                                  IRectangle irectangle = this.DrawRectangle(str, false, dateTime1, this.dataSeries3[index3], this.c70b275c21878ae5c45a5206582435006, num10, color3, color1, 5);
+                                  if (rsdDrawings_2 == null)
                                   {
-                                    c73d7e688e3f79162747ac07a87d9d0d5_2 = new rcRSD.c73d7e688e3f79162747ac07a87d9d0d5();
-                                    c73d7e688e3f79162747ac07a87d9d0d5_2.cde3a95a32edd1347240184201e1a8fc4 = rcRSD.cadc1cbe590d50cdf2b50adee29668645.c80b3f0659d533013831363f110f16b30;
-                                    this.ce98848ac05b3eb8a4526be6ad0a15bd2.Add(c73d7e688e3f79162747ac07a87d9d0d5_2);
+                                    rsdDrawings_2 = new rcRSD.RSD_Drawings();
+                                    rsdDrawings_2.myEnumInstance = rcRSD.myEnum.myEnumerated_3;
+                                    this.list_Of_RSD_Drawings.Add(rsdDrawings_2);
                                   }
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.c74092c112ee4cab79306f14f3564db3f = color1;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.cc19b4e075526200d7cda803485f968fb = this.demandZoneBorder;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.c5ae42acd29515b888cddbd96e6918f00 = ((IShape) irectangle).get_AreaOpacity();
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.cf97ac0bed167fcb539cde5088e6c6961 = (IDrawObject) irectangle;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.cc7e06f1bdf7afedb4899f1fe08f4a254 = num9;
-                                  c73d7e688e3f79162747ac07a87d9d0d5_2.c9d17b946231eaa00a035163f1e7972c8 = num5;
+                                  rsdDrawings_2.color_1 = color1;
+                                  rsdDrawings_2.color_2 = this.demandZoneBorder;
+                                  rsdDrawings_2.int_3 = ((IShape) irectangle).AreaOpacity;
+                                  rsdDrawings_2.iDrawObject_1 = (IDrawObject) irectangle;
+                                  rsdDrawings_2.int_1 = num9;
+                                  rsdDrawings_2.int_2 = num5;
                                 }
+								catch (Exception ex)
+								{
+									Print(Time + " -- 1400 -- " + ex.Message);
+								}
                             }
                           
                     }
@@ -1509,7 +1509,7 @@ namespace NinjaTrader.Indicator
                           }
                     }
               }
-        }	// if (this.dataSeries3.get_Item(index3) != 0.0) from line 2557
+        }	// if (this.dataSeries3[index3] != 0.0) from line 2557
 		// line 3222
         if (!this.get_Historical())
         {
@@ -1540,31 +1540,34 @@ namespace NinjaTrader.Indicator
           if (!this.ce2384e40d6da05074ed92eac2372f952)
           {
                 if (!this.c24bb7194511c35c641cecf85d8a99f85)
+				{
+					// do nothing - line 3282
+				}
           }
           for (int index3 = 0; index3 < num8; ++index3)
           {
-            if (idataSeries1.get_Item(index3) > num6)
+            if (idataSeries1[index3] > num6)
             {
                   if (num13 == 0)
                   {
                         num13 = index3;
                   }
             }
-            if (idataSeries1.get_Item(index3) > this.c747169f75a51d045c253bfc20678f7d0[0])
+            if (idataSeries1[index3] > this.c747169f75a51d045c253bfc20678f7d0[0])
             {
                   if (num15 == 0)
                   {
                         num15 = index3;
                   }
             }
-            if (idataSeries2.get_Item(index3) < num7)
+            if (idataSeries2[index3] < num7)
             {
                   if (num12 == 0)
                   {
                     num12 = index3;
                   }
             }
-            if (idataSeries2.get_Item(index3) < this.cdb18564d76ec49197cb5acea61dd5a75[0] && num14 == 0)
+            if (idataSeries2[index3] < this.cdb18564d76ec49197cb5acea61dd5a75[0] && num14 == 0)
             {
                   num14 = index3;
             }
@@ -1597,7 +1600,7 @@ namespace NinjaTrader.Indicator
                   num9 = num6;
                   num10 = this.cdb18564d76ec49197cb5acea61dd5a75[0];
                 }
-                IFibonacciRetracements ifibonacciRetracements = this.DrawFibonacciRetracements(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(997), false, this.get_Times()[0].get_Item(0), num10, this.get_Times()[0].get_Item(0), num9);
+                IFibonacciRetracements ifibonacciRetracements = this.DrawFibonacciRetracements(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(997), false, Times[0][0], num10, Times[0][0], num9);
                 ifibonacciRetracements.set_ExtendRight(true);
                 ifibonacciRetracements.set_ShowText(true);
           }
@@ -1609,14 +1612,14 @@ namespace NinjaTrader.Indicator
               {
                     num16 = this.cdb18564d76ec49197cb5acea61dd5a75[0];
                     num17 = this.c747169f75a51d045c253bfc20678f7d0[0];
-                    this.c850d2e969cc14b3e2045165601daa1b5 = ((char) this.c6f4cbf3b07e142fd13e2afb457be39d1).ToString();
+                    this.c850d2e969cc14b3e2045165601daa1b5 = ((char) this.global_int_v112).ToString();
                     this.cdab4fdd69c04ef4182a2ced6d43f9a92 = this.colorSeaGreen;
               }
               else
               {
                 num16 = this.c747169f75a51d045c253bfc20678f7d0[0];
                 num17 = this.cdb18564d76ec49197cb5acea61dd5a75[0];
-                this.c850d2e969cc14b3e2045165601daa1b5 = ((char) this.cf2c2e319a306d42570a68dd163a03bea).ToString();
+                this.c850d2e969cc14b3e2045165601daa1b5 = ((char) this.global_int_v113).ToString();
                 this.cdab4fdd69c04ef4182a2ced6d43f9a92 = this.colorCrimson;
                 return;
               }
@@ -1635,27 +1638,27 @@ namespace NinjaTrader.Indicator
         if (c084497bfbb8c31ec060910a94dfb4cf4.cd430f7ce3dc110608f59482c5cedaa4c == null)
         {
           Dictionary<string, int> dictionary = new Dictionary<string, int>(6);
-          string key2 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(650);
+          string key2 = "Minute";
           int num1 = 0;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key2, num1));
-          string key3 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(663);
+          string key3 = "Hour";
           int num2 = 1;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key3, num2));
-          string key4 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(672);
+          string key4 = "Day";
           int num3 = 2;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key4, num3));
-          string key5 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(679);
+          string key5 = "Week";
           int num4 = 3;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key5, num4));
-          string key6 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(688);
+          string key6 = "Month";
           int num5 = 4;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key6, num5));
-          string key7 = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(627);
+          string key7 = "ChartPeriod";
           int num6 = 5;
           // ISSUE: explicit non-virtual call
           __nonvirtual (dictionary.Add(key7, num6));
@@ -1764,26 +1767,26 @@ namespace NinjaTrader.Indicator
       }
     }
 
-    private enum cadc1cbe590d50cdf2b50adee29668645
+    private enum myEnum
     {
-      cb4d7c60ce8ce73fa8ade64e895631781,
-      c550219c4ee6a522e23562e31465d2162,
-      c80b3f0659d533013831363f110f16b30,
+      myEnumerated_1,
+      myEnumerated_2,
+      myEnumerated_3,
     }
 
-    private class c73d7e688e3f79162747ac07a87d9d0d5
+    private class RSD_Drawings
     {
-      public bool c5be6d778377fcf6785cd885e6f57fd9a = true;
-      public IDrawObject cf97ac0bed167fcb539cde5088e6c6961;
-      public IDrawObject c064a1026d9a70d5b924a69fb41c7db32;
-      public IDrawObject ce2dced7ddb532f032178192718ea35cf;
-      public IDrawObject c2b61c1ccafe508ae3804f8b1cfe9c2da;
-      public int cc7e06f1bdf7afedb4899f1fe08f4a254;
-      public int c9d17b946231eaa00a035163f1e7972c8;
-      public rcRSD.cadc1cbe590d50cdf2b50adee29668645 cde3a95a32edd1347240184201e1a8fc4;
-      public Color c74092c112ee4cab79306f14f3564db3f;
-      public Color cc19b4e075526200d7cda803485f968fb;
-      public int c5ae42acd29515b888cddbd96e6918f00;
+      public bool bool_1 = true;
+      public IDrawObject iDrawObject_1;
+      public IDrawObject iDrawObject_2;
+      public IDrawObject iDrawObject_3;
+      public IDrawObject iText;
+      public int int_1;
+      public int int_2;
+      public rcRSD.myEnum myEnumInstance;
+      public Color color_1;
+      public Color color_2;
+      public int int_3;
     }
 
     public class periodConverter : TypeConverter
@@ -1802,12 +1805,12 @@ namespace NinjaTrader.Indicator
       {
         return new TypeConverter.StandardValuesCollection((ICollection) new string[6]
         {
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(627),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(650),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(663),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(672),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(679),
-          cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(688)
+          "ChartPeriod", // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(627),
+          "Minute", // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(650),
+          "Hour", // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(663),
+          "Day", // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(672),
+          "Week", // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(679),
+          "Month"  // cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(688)
         });
       }
     }
@@ -1843,7 +1846,7 @@ namespace NinjaTrader.Indicator
 
 				  array = new string[stringCollection.Count + 1];
                   stringCollection.CopyTo(array, 1);
-                  array[0] = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901);
+                  array[0] = "Alert1.wav";
                   rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d = array;
                   break;
               
@@ -1936,3 +1939,125 @@ namespace NinjaTrader.Indicator
     }
   }
 }
+
+#region NinjaScript generated code. Neither change nor remove.
+// This namespace holds all indicators and is required. Do not change it.
+namespace NinjaTrader.Indicator
+{
+    public partial class Indicator : IndicatorBase
+    {
+        private rcRSD[] cachercRSD = null;
+
+        private static rcRSD checkrcRSD = new rcRSD();
+
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        public rcRSD rcRSD(string myPeriodType, int periodValue)
+        {
+            return rcRSD(Input, myPeriodType, periodValue);
+        }
+
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        public rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        {
+            if (cachercRSD != null)
+                for (int idx = 0; idx < cachercRSD.Length; idx++)
+                    if (cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].periodValue == periodValue && cachercRSD[idx].EqualsInput(input))
+                        return cachercRSD[idx];
+
+            lock (checkrcRSD)
+            {
+                checkrcRSD.MyPeriodType = myPeriodType;
+                myPeriodType = checkrcRSD.MyPeriodType;
+                checkrcRSD.periodValue = periodValue;
+                periodValue = checkrcRSD.periodValue;
+
+                if (cachercRSD != null)
+                    for (int idx = 0; idx < cachercRSD.Length; idx++)
+                        if (cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].periodValue == periodValue && cachercRSD[idx].EqualsInput(input))
+                            return cachercRSD[idx];
+
+                rcRSD indicator = new rcRSD();
+                indicator.BarsRequired = BarsRequired;
+                indicator.CalculateOnBarClose = CalculateOnBarClose;
+#if NT7
+                indicator.ForceMaximumBarsLookBack256 = ForceMaximumBarsLookBack256;
+                indicator.MaximumBarsLookBack = MaximumBarsLookBack;
+#endif
+                indicator.Input = input;
+                indicator.MyPeriodType = myPeriodType;
+                indicator.periodValue = periodValue;
+                Indicators.Add(indicator);
+                indicator.SetUp();
+
+                rcRSD[] tmp = new rcRSD[cachercRSD == null ? 1 : cachercRSD.Length + 1];
+                if (cachercRSD != null)
+                    cachercRSD.CopyTo(tmp, 0);
+                tmp[tmp.Length - 1] = indicator;
+                cachercRSD = tmp;
+                return indicator;
+            }
+        }
+    }
+}
+
+// This namespace holds all market analyzer column definitions and is required. Do not change it.
+namespace NinjaTrader.MarketAnalyzer
+{
+    public partial class Column : ColumnBase
+    {
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        [Gui.Design.WizardCondition("Indicator")]
+        public Indicator.rcRSD rcRSD(string myPeriodType, int periodValue)
+        {
+            return _indicator.rcRSD(Input, myPeriodType, periodValue);
+        }
+
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        public Indicator.rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        {
+            return _indicator.rcRSD(input, myPeriodType, periodValue);
+        }
+    }
+}
+
+// This namespace holds all strategies and is required. Do not change it.
+namespace NinjaTrader.Strategy
+{
+    public partial class Strategy : StrategyBase
+    {
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        [Gui.Design.WizardCondition("Indicator")]
+        public Indicator.rcRSD rcRSD(string myPeriodType, int periodValue)
+        {
+            return _indicator.rcRSD(Input, myPeriodType, periodValue);
+        }
+
+        /// <summary>
+        /// Enter the description of your new custom indicator here
+        /// </summary>
+        /// <returns></returns>
+        public Indicator.rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        {
+            if (InInitialize && input == null)
+                throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
+
+            return _indicator.rcRSD(input, myPeriodType, periodValue);
+        }
+    }
+}
+#endregion
