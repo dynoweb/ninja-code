@@ -831,7 +831,6 @@ namespace NinjaTrader.Indicator
                   if (this.dataSeries2.get_Item(index) != num4)
                   {
                     this.dataSeries2.Set(index, 0.0);
-                    goto label_46;
                   }
             }
             if (this.dataSeries2.get_Item(index) > 0.0)
@@ -1625,6 +1624,7 @@ namespace NinjaTrader.Indicator
       
     }
 
+	// something to do with periodTypes
     private string ca47bf0e564bff4420f70c86585f8a040(string c28d164b35276c984a6d18e95b394415a)
     {
       string key1;
@@ -1667,43 +1667,30 @@ namespace NinjaTrader.Indicator
         // ISSUE: explicit non-virtual call
         if (__nonvirtual (c084497bfbb8c31ec060910a94dfb4cf4.cd430f7ce3dc110608f59482c5cedaa4c.TryGetValue(key1, out num)))
         {
-label_4:
-          switch (7)
-          {
-            case 0:
-              goto label_4;
-            default:
-              if (1 == 0)
-              {
-                // ISSUE: method reference
-                RuntimeMethodHandle runtimeMethodHandle = __methodref (rcRSD.ca47bf0e564bff4420f70c86585f8a040);
-              }
               switch (num)
               {
                 case 0:
                   str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1006);
-                  goto label_15;
+                  break;
                 case 1:
                   str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1009);
-                  goto label_15;
+                  break;
                 case 2:
                   str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1012);
-                  goto label_15;
+                  break;
                 case 3:
                   str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1015);
-                  goto label_15;
+                  break;
                 case 4:
                   str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1018);
-                  goto label_15;
+                  break;
                 case 5:
                   str = "";
-                  goto label_15;
+                  break;
               }
-          }
         }
       }
       str = "";
-label_15:
       return str;
     }
 
@@ -1735,32 +1722,14 @@ label_15:
     {
       if (this.get_ChartControl() == null)
         return;
-label_1:
-      switch (2)
-      {
-        case 0:
-          goto label_1;
-        default:
-          if (1 == 0)
-          {
-            // ISSUE: method reference
-            RuntimeMethodHandle runtimeMethodHandle = __methodref (rcRSD.OnTermination);
-          }
+		
           ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
           List<ToolStripItem> list = new List<ToolStripItem>();
           foreach (ToolStripItem toolStripItem in (ArrangedElementCollection) toolStrip.Items)
           {
             if (toolStripItem.Name.StartsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1023)))
             {
-label_7:
-              switch (6)
-              {
-                case 0:
-                  goto label_7;
-                default:
                   list.Add(toolStripItem);
-                  continue;
-              }
             }
           }
           using (List<ToolStripItem>.Enumerator enumerator = list.GetEnumerator())
@@ -1770,9 +1739,7 @@ label_7:
               ToolStripItem current = enumerator.Current;
               toolStrip.Items.Remove(current);
             }
-            break;
           }
-      }
     }
 
     public virtual void Plot(Graphics g, Rectangle bounds, double min, double max)
@@ -1863,39 +1830,23 @@ label_7:
         return true;
       }
 
+	  // line 3725
       public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
       {
         string[] array;
         if (rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d == null)
         {
-label_1:
-          switch (4)
-          {
-            case 0:
-              goto label_1;
-            default:
-              if (1 == 0)
-              {
-                // ISSUE: method reference
-                RuntimeMethodHandle runtimeMethodHandle = __methodref (rcRSD.WaveConverter.GetStandardValues);
-              }
               string[] files = Directory.GetFiles(Core.get_InstallDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1105), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1124));
               StringCollection stringCollection = new StringCollection();
               for (int index = 0; index < files.Length; ++index)
                 stringCollection.Add(Path.GetFileName(files[index]));
-label_7:
-              switch (2)
-              {
-                case 0:
-                  goto label_7;
-                default:
-                  array = new string[stringCollection.Count + 1];
+
+				  array = new string[stringCollection.Count + 1];
                   stringCollection.CopyTo(array, 1);
                   array[0] = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(901);
                   rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d = array;
                   break;
-              }
-          }
+              
         }
         else
           array = rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d;
@@ -1918,19 +1869,7 @@ label_7:
         {
           if ((int) value == (int) this.c1fedf72583b28720f8114971a173cf52.A)
             return;
-label_1:
-          switch (2)
-          {
-            case 0:
-              goto label_1;
-            default:
-              if (1 == 0)
-              {
-                RuntimeMethodHandle runtimeMethodHandle = __methodref (rcRSD.XmlColor.set_Alpha);
-              }
               this.c1fedf72583b28720f8114971a173cf52 = Color.FromArgb((int) value, this.c1fedf72583b28720f8114971a173cf52);
-              break;
-          }
         }
       }
 
@@ -1947,19 +1886,7 @@ label_1:
           {
             if ((int) this.Alpha == (int) byte.MaxValue)
             {
-label_1:
-              switch (6)
-              {
-                case 0:
-                  goto label_1;
-                default:
-                  if (1 == 0)
-                  {
-                    RuntimeMethodHandle runtimeMethodHandle = __methodref (rcRSD.XmlColor.set_Web);
-                  }
                   this.c1fedf72583b28720f8114971a173cf52 = ColorTranslator.FromHtml(value);
-                  break;
-              }
             }
             else
               this.c1fedf72583b28720f8114971a173cf52 = Color.FromArgb((int) this.Alpha, ColorTranslator.FromHtml(value));
