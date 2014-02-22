@@ -66,6 +66,7 @@ namespace NinjaTrader.Indicator
     private Dictionary<string, double> highZones = new Dictionary<string, double>();
     [XmlIgnore]
     private Dictionary<string, double> lowZones = new Dictionary<string, double>();
+	private Dictionary<string, int> periodTypeStringToNumberDictionary;
     private int extendMinutes = 60;
     private string alertOnSupplySound = "Alert1.wav";
     private Color textColor = Color.Black;
@@ -74,14 +75,14 @@ namespace NinjaTrader.Indicator
     private string myPeriodType = "ChartPeriod";
     //private const int A_BIG_INT = 999999;
     private Image myImage;
-    private int _periodValue;
+    private int timeframePeriod;
     private bool cff627c81c2b2c7d92ceedddb396d8a34;
     private bool c48f0c1747cdba1671630acd164e5479a;
     private bool recolorWeakRetouch;
-    private bool ce2384e40d6da05074ed92eac2372f952;
+    private bool showFibonacci = true;	// do fib retracements?
     //private int global_int_2;
     private bool c14f7f326a6c723aa5a14f115c4692513;
-    private int c8c1734a714810a78b4d22f7dad581c53;
+    private int supplyDemandBarSeries;
     private DataSeries dataSeries1;
     private DataSeries dataSeries2;
     private DataSeries dataSeries3;
@@ -106,7 +107,7 @@ namespace NinjaTrader.Indicator
 
 	#region Properties
 	
-    [Category("\tParameters")]
+    [Category("Parameters")]
     [Browsable(false)]
     [XmlIgnore]
     [Description("")]
@@ -119,7 +120,7 @@ namespace NinjaTrader.Indicator
     }
 
     [Browsable(false)]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     [XmlIgnore]
     [Description("")]
     public List<double> LowZones
@@ -131,21 +132,13 @@ namespace NinjaTrader.Indicator
       }
     }
 
+    [GridCategory("Parameters")]
+    [Gui.Design.DisplayName("Timeframe Period")]
     [Description("")]
-    [Category("\tNinjacators")]
-    public bool ShortLogo
+    public int TimeframePeriod
     {
-      get { return this.shortLogo; }
-      set { this.shortLogo = value; }
-    }
-
-    [GridCategory("\tParameters")]
-    [Gui.Design.DisplayName("\tTimeframeValue")]
-    [Description("")]
-    public int periodValue
-    {
-      get { return this._periodValue; }
-      set { this._periodValue = Math.Max(0, value); }
+      get { return this.timeframePeriod; }
+      set { this.timeframePeriod = Math.Max(0, value); }
     }
 
     [Category("DrawText")]
@@ -177,7 +170,7 @@ namespace NinjaTrader.Indicator
 
     [Gui.Design.DisplayName("RecolorRetouch")]
     [Description("")]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     public bool Recolor_retouch
     {
       get { return this.recolorRetouch; }
@@ -186,7 +179,7 @@ namespace NinjaTrader.Indicator
 
     [Gui.Design.DisplayName("RecolorWeakRetouch")]
     [Description("")]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     public bool Recolor_weak_retouch
     {
       get { return this.recolorWeakRetouch; }
@@ -195,7 +188,7 @@ namespace NinjaTrader.Indicator
 
     [Gui.Design.DisplayName("NoWeakZones")]
     [Description("")]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     public bool No_weak_zones
     {
       get { return this.noWeakZones; }
@@ -204,7 +197,7 @@ namespace NinjaTrader.Indicator
 
     [Gui.Design.DisplayName("ExtendZone")]
     [Description("")]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     public bool ExtendZone
     {
       get { return this.extendZone; }
@@ -212,7 +205,7 @@ namespace NinjaTrader.Indicator
     }
 
     [Description("")]
-    [Category("\tParameters")]
+    [Category("Parameters")]
     [Gui.Design.DisplayName("ExtendZoneMinutes")]
     public int ExtendMinutes
     {
@@ -321,8 +314,8 @@ namespace NinjaTrader.Indicator
       set { this.demandZoneBorder = value; }
     }
 
-    [GridCategory("\tParameters")]
-    [Gui.Design.DisplayName("\t\tTimeframeType")]
+    [GridCategory("Parameters")]
+    [Gui.Design.DisplayName("TimeframeType")]
     [TypeConverter(typeof (rcRSD.periodConverter))]
     public string MyPeriodType
     {
@@ -331,80 +324,57 @@ namespace NinjaTrader.Indicator
     }
 	#endregion
 	
-    public void logoSetup()
-    {
-//      string str1 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
-//      string str2;
-//      if (this.shortLogo)
-//      {
-//            str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(259);
-//      }
-//      else
-//        str2 = Core.get_UserDataDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(240);
-//      try
-//      {
-//        if (!System.IO.File.Exists(str2))
-//        {
-//          WebClient webClient = new WebClient();
-//          if (this.shortLogo)
-//            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(286), str2);
-//          else
-//            webClient.DownloadFile(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(405), str2);
-//        }
-//        this.myImage = Image.FromFile(str2);
-//      }
-//      catch (Exception ex)
-//      {
-//        this.Print(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(516));
-//      }
-    }
-
-//    private void cd7409d0fdab3b2ac0617894a0a49bbf0(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
-//    {
-//      Process.Start(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(549), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(574));
-//    }
 
     protected override void Initialize()
     {
       if (this.myPeriodType != "ChartPeriod")
       {
-            if (this._periodValue <= 0)
+            if (this.timeframePeriod <= 0)
             {
               this.validPeriodType = false;
               return;
             }
             else
             {
-              this.c8c1734a714810a78b4d22f7dad581c53 = 1;
-              PeriodType periodType = (PeriodType) 4;
-              int num = this._periodValue;
-              if (this.myPeriodType == "Minute")
+				try {
+              supplyDemandBarSeries = 1;
+              PeriodType periodType = PeriodType.Minute;
+              int periods = timeframePeriod;
+				
+              if (myPeriodType == "Minute")
               {
-                    periodType = (PeriodType) 4;
+                    periodType = PeriodType.Minute;
               }
-              else if (this.myPeriodType == "Hour")
+              else if (myPeriodType == "Hour")
               {
-                periodType = (PeriodType) 4;
-                num = this._periodValue * 60;
+                periodType = PeriodType.Minute;
+                periods = timeframePeriod * 60;
               }
-              else if (this.myPeriodType == "Day")
+              else if (myPeriodType == "Day")
               {
-                    periodType = (PeriodType) 5;
+                    periodType = PeriodType.Day;
               }
-              else if (this.myPeriodType == "Week")
-                periodType = (PeriodType) 6;
-              else if (this.myPeriodType == "Month")
+              else if (myPeriodType == "Week")
+			{
+                periodType = PeriodType.Week;
+			}
+              else if (myPeriodType == "Month")
               {
-                    periodType = (PeriodType) 7;
+                    periodType = PeriodType.Month;
               }
-              this.Add(periodType, num);
-              this.validPeriodType = true;
-              this.c8e48df600e2eec7b45e17eae02afeebd = this.ca47bf0e564bff4420f70c86585f8a040(this.myPeriodType) + (object) this._periodValue;
+			
+              Add(periodType, periods);	// add new bar series
+              validPeriodType = true;
+              this.c8e48df600e2eec7b45e17eae02afeebd = this.ca47bf0e564bff4420f70c86585f8a040(this.myPeriodType) + (object) this.timeframePeriod;
+				} catch (Exception ex)
+				{
+					Print("Exception: " + ex.InnerException);
+				}
             }
       }
       else
       {
-        if (BarsPeriod.Id != PeriodType.Minute)		// confirmed above PeriodType.Minute = 4
+        if (BarsPeriod.Id != PeriodType.Minute)		// PeriodType.Minute = 4
         {
               if (BarsPeriod.Id != PeriodType.Day)		// ? PeriodType.Day = 5
               {
@@ -417,7 +387,7 @@ namespace NinjaTrader.Indicator
                     }
               }
         }
-        this.c8e48df600e2eec7b45e17eae02afeebd = this.c97621f0266292349d47b023891c086d5(BarsPeriod.Id) + (object) BarsPeriod.Value;
+        this.c8e48df600e2eec7b45e17eae02afeebd = this.periodTypeToString(BarsPeriod.Id) + (object) BarsPeriod.Value;
         this.validPeriodType = true;
       }
 
@@ -431,91 +401,12 @@ namespace NinjaTrader.Indicator
 
     protected override void OnStartUp()
     {
-      this.logoSetup();
       if (!this.validPeriodType)
       {
             this.DrawTextFixed("TimeframeError", "Wrong timeframe setting", (TextPosition) 2);
       }
-      else
-      {
-//		ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
-//		ToolStripSeparator toolStripSeparator1 = new ToolStripSeparator();
-//		toolStripSeparator1.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(772);
-//		ToolStripButton toolStripButton = new ToolStripButton(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(789));
-//		toolStripButton.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(814);
-//		toolStripButton.Click += new EventHandler(toolStripButtonEventHandler);
-//		string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(837);
-//		if (this._periodValue != 0)
-//		{
-//			  str = this._periodValue.ToString() + str;
-//		}
-//		ToolStripLabel toolStripLabel = new ToolStripLabel(str + this.myPeriodType);
-//		toolStripLabel.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(840);
-//		toolStripLabel.ForeColor = Color.DarkGray;
-//		ToolStripSeparator toolStripSeparator2 = new ToolStripSeparator();
-//		toolStripSeparator2.Name = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(859);
-//		toolStrip.Items.Add((ToolStripItem) toolStripSeparator1);
-//		toolStrip.Items.Add((ToolStripItem) toolStripButton);
-//		toolStrip.Items.Add((ToolStripItem) toolStripSeparator2);
-//		toolStrip.Items.Add((ToolStripItem) toolStripLabel);
-      }
     }
 
-	// ToolStripButton code
-    private void toolStripButtonEventHandler(object c113fd96257592fe24a96acf1688040b5, EventArgs cb7779bfc6870535a4a28a971830ae75f)
-    {
-//      ToolStripButton toolStripButton = c113fd96257592fe24a96acf1688040b5 as ToolStripButton;
-//      if (toolStripButton.Text.EndsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(878)))
-//      {
-//            toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894));
-//            this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = false;
-//            using (List<rcRSD.RSD_Drawings>.Enumerator enumerator = this.list_Of_RSD_Drawings.GetEnumerator())
-//            {
-//              while (enumerator.MoveNext())
-//              {
-//                rcRSD.RSD_Drawings current = enumerator.Current;
-//                if (current.iDrawObject_1.get_DrawType() == 18)
-//                {
-//                  ChartRectangle chartRectangle = current.iDrawObject_1 as ChartRectangle;
-//                  ((ChartShape) chartRectangle).set_AreaOpacity(0);
-//                  ((ChartShape) chartRectangle).get_Pen().Color = Color.Transparent;
-//                  ((ChartShape) chartRectangle).set_AreaColor(Color.Transparent);
-//                }
-//                if (current.iDrawObject_2.get_DrawType() == 23)
-//                {
-//                      ChartText chartText = current.iDrawObject_2 as ChartText;
-//                      chartText.set_AreaOpacity(0);
-//                      chartText.set_TextColor(Color.Transparent);
-//                      chartText.get_Pen().Color = Color.Transparent;
-//                      chartText.set_AreaColor(Color.Transparent);
-//                }
-//              }
-//            }
-//        
-//		}
-//		else
-//		{
-//			toolStripButton.Text = toolStripButton.Text.Replace(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(894), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(885));
-//			this.c97d2cedb53c91ff0bd0cf330fc9e63e4 = true;
-//			using (List<rcRSD.RSD_Drawings>.Enumerator enumerator = this.list_Of_RSD_Drawings.GetEnumerator())
-//			{
-//				while (enumerator.MoveNext())
-//				{
-//					rcRSD.RSD_Drawings current = enumerator.Current;
-//					if (current.iDrawObject_1.get_DrawType() == 18)
-//					{
-//						  ChartRectangle chartRectangle = current.iDrawObject_1 as ChartRectangle;
-//						  ((ChartShape) chartRectangle).set_AreaOpacity(current.int_3);
-//						  ((ChartShape) chartRectangle).get_Pen().Color = current.color_2;
-//						  ((ChartShape) chartRectangle).set_AreaColor(current.color_1);
-//					}
-//					if (current.iDrawObject_2.get_DrawType() == 23)
-//					  (current.iDrawObject_2 as ChartText).set_TextColor(this.textColor);
-//				}
-//			}
-//		}
-//      ((Control) this.get_ChartControl()).Refresh();
-    }
 
 	// line 802
     protected override void OnBarUpdate()
@@ -525,15 +416,15 @@ namespace NinjaTrader.Indicator
       }
       else
       {
-        if (this.c8c1734a714810a78b4d22f7dad581c53 > 0)
+        if (this.supplyDemandBarSeries > 0)
         {
-              if (BarsInProgress != this.c8c1734a714810a78b4d22f7dad581c53)
+              if (BarsInProgress != this.supplyDemandBarSeries)
                 return;
         }
 		// switched logic, empty code block - line 835
         if (CurrentBars[0] >= 3)
         {
-          int num = CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53];
+          int num = CurrentBars[this.supplyDemandBarSeries];
           if (num < 3)
           {
                 this.dataSeries2.Set(0.0);
@@ -551,7 +442,7 @@ namespace NinjaTrader.Indicator
               return;
 			
             this.CountZZ(3, 2, 2);
-            this.c65bf1e4ae6cc5de46ab39a04d80cac0d();
+            this.initializeTimeAndDataSeries();
             this.caf6fc3b163d246ab61c6fed47b34a1f4();
 			// this doesn't look right - line 879
 //            if (!(this.alertOnDemandSound != "Alert1.wav"))
@@ -577,11 +468,11 @@ namespace NinjaTrader.Indicator
               {
                     if (rsdDrawings_3.bool_1)
                     {
-                      if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_2 && rsdDrawings_3.int_2 == this.global_int_1)
+                      if (rsdDrawings_3.myEnumInstance == myEnum.myEnumerated_2 && rsdDrawings_3.int_2 == this.global_int_1)
                       {
                             rsdDrawings_1 = rsdDrawings_3;
                       }
-                      if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_3)
+                      if (rsdDrawings_3.myEnumInstance == myEnum.myEnumerated_3)
                       {
                             if (rsdDrawings_3.int_2 == this.global_int_2)
                             {
@@ -600,40 +491,43 @@ namespace NinjaTrader.Indicator
         }
       }
 
-      if (rsdDrawings_1 != null)
-      {
-            double endY = ((IRectangle) rsdDrawings_1.iDrawObject_1).EndY;
-            if (Closes[0][0] > endY)
-            {
-                  if (endY > 0.0)
-                  {
-                        if (this.alertOnSupplySound != "Alert1.wav")
-                        {
-                          this.PlaySound(this.alertOnSupplySound);
-                          ++this.global_int_1;
-                        }
-                  }
-              }
-      }
-      if (rsdDrawings_2 == null)
-        return;
-          if (Closes[0][0] >= ((IRectangle) rsdDrawings_2.iDrawObject_1).EndY)
-              if (!(this.alertOnDemandSound != "Alert1.wav"))
-                return;
-                  this.PlaySound(this.alertOnDemandSound);
-                  ++this.global_int_2;
-                  return;
-      
+		if (rsdDrawings_1 != null)
+		{
+			double endY = ((IRectangle) rsdDrawings_1.iDrawObject_1).EndY;
+			if (Closes[0][0] > endY)
+			{
+				if (endY > 0.0)
+				{
+					if (this.alertOnSupplySound != "Disabled")
+					{
+						this.PlaySound(this.alertOnSupplySound);
+						++this.global_int_1;
+					}
+				}
+			}
+		}
+	
+		if (rsdDrawings_2 != null)
+		{
+			if (Closes[0][0] >= ((IRectangle) rsdDrawings_2.iDrawObject_1).EndY)
+			{
+				if (this.alertOnDemandSound != "Disabled")
+				{				
+					this.PlaySound(this.alertOnDemandSound);
+					++this.global_int_2;
+				}      
+			}
+		}
     }
 
     protected void CountZZ(int ExtDepth, int ExtDeviation, int ExtBackstep)
     {
       double tickSize = TickSize;
-      IDataSeries input1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries input2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries input1 = Highs[this.supplyDemandBarSeries];
+      IDataSeries input2 = Lows[this.supplyDemandBarSeries];
       double num1 = 0.0;
       double num2 = 0.0;
-      int num3 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]) - ExtDepth;
+      int num3 = Math.Min(CurrentBars[0], CurrentBars[this.supplyDemandBarSeries]) - ExtDepth;
       for (int index1 = num3; index1 >= 0; --index1)
       {
         double num4 = this.MIN(input2, ExtDepth)[index1];
@@ -697,12 +591,12 @@ namespace NinjaTrader.Indicator
         dataSeries2.Set(index1, num6);
       }
 
-	  double num7 = -1.0;
-          int num8 = -1;
-          double num9 = -1.0;
-          int num10 = -1;
-          for (int index = num3; index >= 0; --index)
-          {
+		double num7 = -1.0;
+		int num8 = -1;
+		double num9 = -1.0;
+		int num10 = -1;
+		for (int index = num3; index >= 0; --index)
+		{
             double num4 = this.dataSeries3[index];
             double num5 = this.dataSeries2[index];
             if (num4 == 0.0)
@@ -760,20 +654,20 @@ namespace NinjaTrader.Indicator
       
     }
 
-    private void c65bf1e4ae6cc5de46ab39a04d80cac0d()
+    private void initializeTimeAndDataSeries()
     {
-      IDataSeries idataSeries1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries3 = Opens[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries4 = Closes[this.c8c1734a714810a78b4d22f7dad581c53];
-      ITimeSeries itimeSeries = Times[this.c8c1734a714810a78b4d22f7dad581c53];
+      IDataSeries idataSeries1 = Highs[this.supplyDemandBarSeries];
+      IDataSeries idataSeries2 = Lows[this.supplyDemandBarSeries];
+      IDataSeries idataSeries3 = Opens[this.supplyDemandBarSeries];
+      IDataSeries idataSeries4 = Closes[this.supplyDemandBarSeries];
+      ITimeSeries itimeSeries = Times[this.supplyDemandBarSeries];
       double num1 = 0.0;
       double num2 = 0.0;
       int val1_1 = 0;
       int val2 = 0;
       double num3 = 0.0;
       double num4 = 0.0;
-      int num5 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]);
+      int num5 = Math.Min(CurrentBars[0], CurrentBars[this.supplyDemandBarSeries]);
       for (int index = 0; index < num5; ++index)
       {
         if (this.dataSeries3[index] > 0.0)
@@ -880,12 +774,12 @@ namespace NinjaTrader.Indicator
       int num5 = 0;
       double num6 = 0.0;
       double num7 = 0.0;
-      IDataSeries idataSeries1 = Highs[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries2 = Lows[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries3 = Opens[this.c8c1734a714810a78b4d22f7dad581c53];
-      IDataSeries idataSeries4 = Closes[this.c8c1734a714810a78b4d22f7dad581c53];
-      ITimeSeries itimeSeries = Times[this.c8c1734a714810a78b4d22f7dad581c53];
-      int num8 = Math.Min(CurrentBars[0], CurrentBars[this.c8c1734a714810a78b4d22f7dad581c53]);
+      IDataSeries idataSeries1 = Highs[this.supplyDemandBarSeries];
+      IDataSeries idataSeries2 = Lows[this.supplyDemandBarSeries];
+      IDataSeries idataSeries3 = Opens[this.supplyDemandBarSeries];
+      IDataSeries idataSeries4 = Closes[this.supplyDemandBarSeries];
+      ITimeSeries itimeSeries = Times[this.supplyDemandBarSeries];
+      int num8 = Math.Min(CurrentBars[0], CurrentBars[this.supplyDemandBarSeries]);
       for (int index3 = 1; index3 < num8 - 1; ++index3)
       {
         int num9 = num8 - index3;
@@ -945,7 +839,7 @@ namespace NinjaTrader.Indicator
                     {
                             if (this.dataSeries2[index3] != 0.0)
                             {
-                                  if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_2)
+                                  if (rsdDrawings_3.myEnumInstance == myEnum.myEnumerated_2)
                                   {
                                     rsdDrawings_1 = rsdDrawings_3;
                                     index4 = index6;
@@ -953,7 +847,7 @@ namespace NinjaTrader.Indicator
                             }
                             if (this.dataSeries3[index3] != 0.0)
                             {
-                                  if (rsdDrawings_3.myEnumInstance == rcRSD.myEnum.myEnumerated_3)
+                                  if (rsdDrawings_3.myEnumInstance == myEnum.myEnumerated_3)
                                   {
                                         rsdDrawings_2 = rsdDrawings_3;
                                         index5 = index6;
@@ -1014,7 +908,7 @@ namespace NinjaTrader.Indicator
                       if (idataSeries1[index6] > num10)
                       {
                             flag1 = true;
-                            if (this.ce2384e40d6da05074ed92eac2372f952)
+                            if (this.showFibonacci)
                             {
                                   if (num1 == 0)
                                   {
@@ -1157,7 +1051,7 @@ namespace NinjaTrader.Indicator
                                 }
                                 if (this.drawEdgePrice)
                                 {
-                                  string key = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(918) + (object) num9;
+                                  string key = "EdgePrice" + (object) num9;
                                   Color color2 = this.textColor;
                                   if (!this.c97d2cedb53c91ff0bd0cf330fc9e63e4)
                                   {
@@ -1173,7 +1067,7 @@ namespace NinjaTrader.Indicator
                                   if (rsdDrawings_1 == null)
                                   {
                                         rsdDrawings_1 = new rcRSD.RSD_Drawings();
-                                        rsdDrawings_1.myEnumInstance = rcRSD.myEnum.myEnumerated_2;
+                                        rsdDrawings_1.myEnumInstance = myEnum.myEnumerated_2;
                                         rsdDrawings_1.color_1 = color1;
                                         rsdDrawings_1.color_2 = color1;
                                         rsdDrawings_1.int_3 = itext1.AreaOpacity;
@@ -1194,7 +1088,7 @@ namespace NinjaTrader.Indicator
                                         rsdDrawings_1.iText = (IDrawObject) this.iText;
                                   }
                                 }
-                                string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(947) + (object) num9;
+                                string str = "rectTag" + (object) num9;
                                 Color color3 = this.supplyZoneBorder;
                                 if (!this.c97d2cedb53c91ff0bd0cf330fc9e63e4)
                                 {
@@ -1211,7 +1105,7 @@ namespace NinjaTrader.Indicator
                                   if (rsdDrawings_1 == null)
                                   {
                                         rsdDrawings_1 = new rcRSD.RSD_Drawings();
-                                        rsdDrawings_1.myEnumInstance = rcRSD.myEnum.myEnumerated_2;
+                                        rsdDrawings_1.myEnumInstance = myEnum.myEnumerated_2;
                                         this.list_Of_RSD_Drawings.Add(rsdDrawings_1);
                                   }
                                   rsdDrawings_1.color_1 = color1;
@@ -1287,7 +1181,7 @@ namespace NinjaTrader.Indicator
                       if (idataSeries2[index6] < num10)
                       {
                             flag1 = true;
-                            if (this.ce2384e40d6da05074ed92eac2372f952)
+                            if (this.showFibonacci)
                             {
                                   if (num2 == 0)
                                   {
@@ -1304,7 +1198,8 @@ namespace NinjaTrader.Indicator
                     {
                           if (flag3)
                           {
-                            ((IRectangle) rsdDrawings_2.iDrawObject_1).EndY;
+							// not sure about this one
+                            //((IRectangle) rsdDrawings_2.iDrawObject_1).EndY;
                           }
                           else
                           {
@@ -1424,7 +1319,7 @@ namespace NinjaTrader.Indicator
                                 }
                                 if (this.drawEdgePrice)
                                 {
-                                  string key = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(962) + (object) num9;
+                                  string key = "textTag" + (object) num9;
                                   Color color2 = this.textColor;
                                   if (!this.c97d2cedb53c91ff0bd0cf330fc9e63e4)
                                   {
@@ -1438,7 +1333,7 @@ namespace NinjaTrader.Indicator
                                   if (rsdDrawings_2 == null)
                                   {
                                         rsdDrawings_2 = new rcRSD.RSD_Drawings();
-                                        rsdDrawings_2.myEnumInstance = rcRSD.myEnum.myEnumerated_3;
+                                        rsdDrawings_2.myEnumInstance = myEnum.myEnumerated_3;
                                         rsdDrawings_2.color_1 = color1;
                                         rsdDrawings_2.color_2 = color1;
                                         rsdDrawings_2.int_3 = itext1.AreaOpacity;
@@ -1459,7 +1354,7 @@ namespace NinjaTrader.Indicator
                                         rsdDrawings_2.iText = (IDrawObject) this.iText;
                                   }
                                 }
-                                string str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(979) + (object) num9;
+                                string str = "rectTag_2" + (object) num9;
                                 Color color3 = this.demandZoneBorder;
                                 if (!this.c97d2cedb53c91ff0bd0cf330fc9e63e4)
                                 {
@@ -1477,7 +1372,7 @@ namespace NinjaTrader.Indicator
                                   if (rsdDrawings_2 == null)
                                   {
                                     rsdDrawings_2 = new rcRSD.RSD_Drawings();
-                                    rsdDrawings_2.myEnumInstance = rcRSD.myEnum.myEnumerated_3;
+                                    rsdDrawings_2.myEnumInstance = myEnum.myEnumerated_3;
                                     this.list_Of_RSD_Drawings.Add(rsdDrawings_2);
                                   }
                                   rsdDrawings_2.color_1 = color1;
@@ -1511,15 +1406,16 @@ namespace NinjaTrader.Indicator
               }
         }	// if (this.dataSeries3[index3] != 0.0) from line 2557
 		// line 3222
-        if (!this.get_Historical())
+        if (!Historical)
         {
+			// it doesn't look like it does anything with str
               string str = "";
               using (Dictionary<string, double>.ValueCollection.Enumerator enumerator = this.highZones.Values.GetEnumerator())
               {
                 while (enumerator.MoveNext())
                 {
                   double current = enumerator.Current;
-                  str = str + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(994) + current.ToString();
+                  str = str + "unknownStr" + current.ToString();
                 }
               }
               using (Dictionary<string, double>.ValueCollection.Enumerator enumerator = this.lowZones.Values.GetEnumerator())
@@ -1527,7 +1423,7 @@ namespace NinjaTrader.Indicator
                 while (enumerator.MoveNext())
                 {
                   double current = enumerator.Current;
-                  str = str + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(994) + current.ToString();
+                  str = str + "unknownStr" + current.ToString();
                 }
               }
           
@@ -1537,7 +1433,7 @@ namespace NinjaTrader.Indicator
           int num13 = 0;
           int num14 = 0;
           int num15 = 0;
-          if (!this.ce2384e40d6da05074ed92eac2372f952)
+          if (!this.showFibonacci)
           {
                 if (!this.c24bb7194511c35c641cecf85d8a99f85)
 				{
@@ -1586,26 +1482,27 @@ namespace NinjaTrader.Indicator
             }
           }
 		  // line 3416
-          if (this.ce2384e40d6da05074ed92eac2372f952)
+          if (this.showFibonacci)
           {
-                double num9;
-                double num10;
+                double endY;	// endY
+                double startY;	// startY
                 if (num12 < num13)
                 {
-                      num9 = num7;
-                      num10 = this.c747169f75a51d045c253bfc20678f7d0[0];
+                      endY = num7;
+                      startY = this.c747169f75a51d045c253bfc20678f7d0[0];
                 }
                 else
                 {
-                  num9 = num6;
-                  num10 = this.cdb18564d76ec49197cb5acea61dd5a75[0];
+                  endY = num6;
+                  startY = this.cdb18564d76ec49197cb5acea61dd5a75[0];
                 }
-                IFibonacciRetracements ifibonacciRetracements = this.DrawFibonacciRetracements(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(997), false, Times[0][0], num10, Times[0][0], num9);
-                ifibonacciRetracements.set_ExtendRight(true);
-                ifibonacciRetracements.set_ShowText(true);
+                IFibonacciRetracements ifibonacciRetracements = this.DrawFibonacciRetracements("FibRetrace", false, Times[0][0], startY, Times[0][0], endY);
+                ifibonacciRetracements.ExtendRight = true;
+                ifibonacciRetracements.ShowText = true;
           }
           if (!this.c24bb7194511c35c641cecf85d8a99f85)
-			break;
+		{	//?????  I added the { }
+			
               double num16;
               double num17;
               if (num14 < num15)
@@ -1621,71 +1518,60 @@ namespace NinjaTrader.Indicator
                 num17 = this.cdb18564d76ec49197cb5acea61dd5a75[0];
                 this.c850d2e969cc14b3e2045165601daa1b5 = ((char) this.global_int_v113).ToString();
                 this.cdab4fdd69c04ef4182a2ced6d43f9a92 = this.colorCrimson;
-                return;
               }
-          
+         } 
       
     }
 
 	// something to do with periodTypes
-    private string ca47bf0e564bff4420f70c86585f8a040(string c28d164b35276c984a6d18e95b394415a)
+    private string ca47bf0e564bff4420f70c86585f8a040(string localPeriodType)
     {
       string key1;
       string str;
-      if ((key1 = c28d164b35276c984a6d18e95b394415a) != null)
+      if ((key1 = localPeriodType) != null)
       {
-        // ISSUE: reference to a compiler-generated field
-        if (c084497bfbb8c31ec060910a94dfb4cf4.cd430f7ce3dc110608f59482c5cedaa4c == null)
+        if (periodTypeStringToNumberDictionary == null)
         {
           Dictionary<string, int> dictionary = new Dictionary<string, int>(6);
           string key2 = "Minute";
           int num1 = 0;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key2, num1));
+          dictionary.Add(key2, num1);
           string key3 = "Hour";
           int num2 = 1;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key3, num2));
+          dictionary.Add(key3, num2);
           string key4 = "Day";
           int num3 = 2;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key4, num3));
+          dictionary.Add(key4, num3);
           string key5 = "Week";
           int num4 = 3;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key5, num4));
+          dictionary.Add(key5, num4);
           string key6 = "Month";
           int num5 = 4;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key6, num5));
+          dictionary.Add(key6, num5);
           string key7 = "ChartPeriod";
           int num6 = 5;
-          // ISSUE: explicit non-virtual call
-          __nonvirtual (dictionary.Add(key7, num6));
-          // ISSUE: reference to a compiler-generated field
-          c084497bfbb8c31ec060910a94dfb4cf4.cd430f7ce3dc110608f59482c5cedaa4c = dictionary;
+          dictionary.Add(key7, num6);
+          periodTypeStringToNumberDictionary = dictionary;
         }
         int num;
-        // ISSUE: reference to a compiler-generated field
-        // ISSUE: explicit non-virtual call
-        if (__nonvirtual (c084497bfbb8c31ec060910a94dfb4cf4.cd430f7ce3dc110608f59482c5cedaa4c.TryGetValue(key1, out num)))
+        if (periodTypeStringToNumberDictionary.TryGetValue(key1, out num))
         {
               switch (num)
               {
                 case 0:
-                  str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1006);
+                  str = "Minute";
                   break;
                 case 1:
-                  str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1009);
+                  str = "Hour";		// I don't think this is correct, since Hour isn't an option on Period
                   break;
                 case 2:
-                  str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1012);
+                  str = "Day";
                   break;
                 case 3:
-                  str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1015);
+                  str = "Week";
                   break;
                 case 4:
-                  str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1018);
+                  str = "Month";
                   break;
                 case 5:
                   str = "";
@@ -1697,22 +1583,22 @@ namespace NinjaTrader.Indicator
       return str;
     }
 
-    private string c97621f0266292349d47b023891c086d5(PeriodType c28d164b35276c984a6d18e95b394415a)
+    private string periodTypeToString(PeriodType localPeriodType)
     {
       string str;
-      switch (c28d164b35276c984a6d18e95b394415a - 4)
+      switch (((int) localPeriodType) - 4)
       {
         case 0:
-          str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1006);
+          str = "Minute";
           break;
         case 1:
-          str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1012);
+          str = "Day";
           break;
         case 2:
-          str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1015);
+          str = "Week";
           break;
         case 3:
-          str = cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1018);
+          str = "Month";
           break;
         default:
           str = "";
@@ -1723,26 +1609,26 @@ namespace NinjaTrader.Indicator
 
     protected virtual void OnTermination()
     {
-      if (this.get_ChartControl() == null)
-        return;
-		
-          ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
-          List<ToolStripItem> list = new List<ToolStripItem>();
-          foreach (ToolStripItem toolStripItem in (ArrangedElementCollection) toolStrip.Items)
-          {
-            if (toolStripItem.Name.StartsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1023)))
-            {
-                  list.Add(toolStripItem);
-            }
-          }
-          using (List<ToolStripItem>.Enumerator enumerator = list.GetEnumerator())
-          {
-            while (enumerator.MoveNext())
-            {
-              ToolStripItem current = enumerator.Current;
-              toolStrip.Items.Remove(current);
-            }
-          }
+//      if (this.get_ChartControl() == null)
+//        return;
+//		
+//          ToolStrip toolStrip = ((Control) this.get_ChartControl()).Controls[cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(757)] as ToolStrip;
+//          List<ToolStripItem> list = new List<ToolStripItem>();
+//          foreach (ToolStripItem toolStripItem in (ArrangedElementCollection) toolStrip.Items)
+//          {
+//            if (toolStripItem.Name.StartsWith(cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1023)))
+//            {
+//                  list.Add(toolStripItem);
+//            }
+//          }
+//          using (List<ToolStripItem>.Enumerator enumerator = list.GetEnumerator())
+//          {
+//            while (enumerator.MoveNext())
+//            {
+//              ToolStripItem current = enumerator.Current;
+//              toolStrip.Items.Remove(current);
+//            }
+//          }
     }
 
     public virtual void Plot(Graphics g, Rectangle bounds, double min, double max)
@@ -1783,7 +1669,7 @@ namespace NinjaTrader.Indicator
       public IDrawObject iText;
       public int int_1;
       public int int_2;
-      public rcRSD.myEnum myEnumInstance;
+      public myEnum myEnumInstance;
       public Color color_1;
       public Color color_2;
       public int int_3;
@@ -1817,7 +1703,7 @@ namespace NinjaTrader.Indicator
 
     public class WaveConverter : TypeConverter
     {
-      private static string[] c881dc1ea8e7199b694d684a64842fb7d;
+      private static string[] waveFiles;
 
       static WaveConverter()
       {
@@ -1837,9 +1723,9 @@ namespace NinjaTrader.Indicator
       public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
       {
         string[] array;
-        if (rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d == null)
+        if (WaveConverter.waveFiles == null)
         {
-              string[] files = Directory.GetFiles(Core.get_InstallDir() + cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1105), cee5e96d25be00bb50a036ae3849574cc.c43d8687509d9536665c509709459d629(1124));
+              string[] files = Directory.GetFiles(Core.InstallDir + "sounds", "*.wav");
               StringCollection stringCollection = new StringCollection();
               for (int index = 0; index < files.Length; ++index)
                 stringCollection.Add(Path.GetFileName(files[index]));
@@ -1847,12 +1733,12 @@ namespace NinjaTrader.Indicator
 				  array = new string[stringCollection.Count + 1];
                   stringCollection.CopyTo(array, 1);
                   array[0] = "Alert1.wav";
-                  rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d = array;
-                  break;
+                  WaveConverter.waveFiles = array;
+
               
         }
         else
-          array = rcRSD.WaveConverter.c881dc1ea8e7199b694d684a64842fb7d;
+          array = WaveConverter.waveFiles;
         return new TypeConverter.StandardValuesCollection((ICollection) array);
       }
     }
@@ -1954,32 +1840,42 @@ namespace NinjaTrader.Indicator
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public rcRSD rcRSD(string myPeriodType, int periodValue)
+        public rcRSD rcRSD(int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
-            return rcRSD(Input, myPeriodType, periodValue);
+            return rcRSD(Input, extendMinutes, extendZone, myPeriodType, no_weak_zones, recolor_retouch, recolor_weak_retouch, timeframePeriod);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        public rcRSD rcRSD(Data.IDataSeries input, int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
             if (cachercRSD != null)
                 for (int idx = 0; idx < cachercRSD.Length; idx++)
-                    if (cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].periodValue == periodValue && cachercRSD[idx].EqualsInput(input))
+                    if (cachercRSD[idx].ExtendMinutes == extendMinutes && cachercRSD[idx].ExtendZone == extendZone && cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].No_weak_zones == no_weak_zones && cachercRSD[idx].Recolor_retouch == recolor_retouch && cachercRSD[idx].Recolor_weak_retouch == recolor_weak_retouch && cachercRSD[idx].TimeframePeriod == timeframePeriod && cachercRSD[idx].EqualsInput(input))
                         return cachercRSD[idx];
 
             lock (checkrcRSD)
             {
+                checkrcRSD.ExtendMinutes = extendMinutes;
+                extendMinutes = checkrcRSD.ExtendMinutes;
+                checkrcRSD.ExtendZone = extendZone;
+                extendZone = checkrcRSD.ExtendZone;
                 checkrcRSD.MyPeriodType = myPeriodType;
                 myPeriodType = checkrcRSD.MyPeriodType;
-                checkrcRSD.periodValue = periodValue;
-                periodValue = checkrcRSD.periodValue;
+                checkrcRSD.No_weak_zones = no_weak_zones;
+                no_weak_zones = checkrcRSD.No_weak_zones;
+                checkrcRSD.Recolor_retouch = recolor_retouch;
+                recolor_retouch = checkrcRSD.Recolor_retouch;
+                checkrcRSD.Recolor_weak_retouch = recolor_weak_retouch;
+                recolor_weak_retouch = checkrcRSD.Recolor_weak_retouch;
+                checkrcRSD.TimeframePeriod = timeframePeriod;
+                timeframePeriod = checkrcRSD.TimeframePeriod;
 
                 if (cachercRSD != null)
                     for (int idx = 0; idx < cachercRSD.Length; idx++)
-                        if (cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].periodValue == periodValue && cachercRSD[idx].EqualsInput(input))
+                        if (cachercRSD[idx].ExtendMinutes == extendMinutes && cachercRSD[idx].ExtendZone == extendZone && cachercRSD[idx].MyPeriodType == myPeriodType && cachercRSD[idx].No_weak_zones == no_weak_zones && cachercRSD[idx].Recolor_retouch == recolor_retouch && cachercRSD[idx].Recolor_weak_retouch == recolor_weak_retouch && cachercRSD[idx].TimeframePeriod == timeframePeriod && cachercRSD[idx].EqualsInput(input))
                             return cachercRSD[idx];
 
                 rcRSD indicator = new rcRSD();
@@ -1990,8 +1886,13 @@ namespace NinjaTrader.Indicator
                 indicator.MaximumBarsLookBack = MaximumBarsLookBack;
 #endif
                 indicator.Input = input;
+                indicator.ExtendMinutes = extendMinutes;
+                indicator.ExtendZone = extendZone;
                 indicator.MyPeriodType = myPeriodType;
-                indicator.periodValue = periodValue;
+                indicator.No_weak_zones = no_weak_zones;
+                indicator.Recolor_retouch = recolor_retouch;
+                indicator.Recolor_weak_retouch = recolor_weak_retouch;
+                indicator.TimeframePeriod = timeframePeriod;
                 Indicators.Add(indicator);
                 indicator.SetUp();
 
@@ -2016,18 +1917,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.rcRSD rcRSD(string myPeriodType, int periodValue)
+        public Indicator.rcRSD rcRSD(int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
-            return _indicator.rcRSD(Input, myPeriodType, periodValue);
+            return _indicator.rcRSD(Input, extendMinutes, extendZone, myPeriodType, no_weak_zones, recolor_retouch, recolor_weak_retouch, timeframePeriod);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public Indicator.rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        public Indicator.rcRSD rcRSD(Data.IDataSeries input, int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
-            return _indicator.rcRSD(input, myPeriodType, periodValue);
+            return _indicator.rcRSD(input, extendMinutes, extendZone, myPeriodType, no_weak_zones, recolor_retouch, recolor_weak_retouch, timeframePeriod);
         }
     }
 }
@@ -2042,21 +1943,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.rcRSD rcRSD(string myPeriodType, int periodValue)
+        public Indicator.rcRSD rcRSD(int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
-            return _indicator.rcRSD(Input, myPeriodType, periodValue);
+            return _indicator.rcRSD(Input, extendMinutes, extendZone, myPeriodType, no_weak_zones, recolor_retouch, recolor_weak_retouch, timeframePeriod);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public Indicator.rcRSD rcRSD(Data.IDataSeries input, string myPeriodType, int periodValue)
+        public Indicator.rcRSD rcRSD(Data.IDataSeries input, int extendMinutes, bool extendZone, string myPeriodType, bool no_weak_zones, bool recolor_retouch, bool recolor_weak_retouch, int timeframePeriod)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.rcRSD(input, myPeriodType, periodValue);
+            return _indicator.rcRSD(input, extendMinutes, extendZone, myPeriodType, no_weak_zones, recolor_retouch, recolor_weak_retouch, timeframePeriod);
         }
     }
 }
