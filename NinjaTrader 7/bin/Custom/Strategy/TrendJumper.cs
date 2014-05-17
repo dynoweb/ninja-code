@@ -31,8 +31,16 @@ namespace NinjaTrader.Strategy
 	/// price. Once a stock's price trades at or above the price you have specified, 
 	/// it becomes a Market Order to buy.	
 	/// 
-	/// Testing using 23 Range CL 1/1/13 to 10/9/13 3/26 MOM 4 days since entry 
+	/// Testing using 23 Range CL 1/1/13 to 10/9/13 3/26 MOM exit 4 bars since entry 
 	/// 	1.47 PF, 24,045.00 profit, $2,550 Max DD, 433 Trades, 53.58% winning, autoexit, non-managed
+	/// 
+	/// Testing YM 2013 - 10/9 with non-managed bar count exit, optimized long and short seperately
+	///   Long  - PF 3.25, 30 Range, 4/46 MOM, 5 bars since entry $3930.00 profit, $425.00 MDD, 67.4%
+	///   Short - PF 1.69, 28 Range, 5/34 MOM, 3 bars since entry $2685.00 profit, $600.00 MDD, 60.6%
+	/// 
+	/// Testing NQ 2013 - 10/9 with non-managed bar count exit, optimized long and short seperately
+	///   Long  - PF 1.84, 18 Range, 3/30 MOM, 12 bars since entry, $8,475.00 profit, $775.00 MDD, 61.11%
+	///   Short - PF 1.17, 20 Range, 7/20 MOM, 7 bars since entry, $1,285.00 profit, $2,515.00 MDD, 56.14%
 	/// 
     /// </summary>
     [Description("This strategy is based on concepts from the TJFreeAUDUSD strategy by Troy TJ Noonan, developer PremierTraderUniversity")]
@@ -126,7 +134,7 @@ namespace NinjaTrader.Strategy
 			{
 				if (tj.LongEntry.ContainsValue(0)) 
 				{
-					EnterLong();
+					//EnterLong();
 					/*
 					DrawArrowUp(CurrentBar.ToString()+"LE", 0, Low[0] - 10 * TickSize, Color.Green);
 					//this.EnterLongLimit(Close[0] - entryOffsetTics * TickSize);
