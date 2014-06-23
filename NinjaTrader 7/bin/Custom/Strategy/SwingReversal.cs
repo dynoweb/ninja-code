@@ -49,29 +49,30 @@ namespace NinjaTrader.Strategy
 		int oSLevel = -95;
 		int oSReset = -50;
 		int pctRLen = 75;
-		private int sinceEntry = 0;
+		//private int sinceEntry = 0;
 		double stopMult = 1.5;
 		double tgt1Mult = 1.5;
 		double tgt2Mult = 3.3;
 		int trailLength = 3;
-//        private int eMA1Len = 15; //50; // Default setting for Trailing Stop
-//        private int eMA2Len = 200; // Default setting for Trend Filter
-//        private int entryOffsetTics = 0; // Default setting for EntryOffsetTics
-//        private int mOM1Len = 4; // Default setting for MOM1Len
-//        private int mOM2Len = 24; // 9; // Default setting for MOM2Len
-//        private int stopOffsetTics = 12; // Default setting for StopOffsetTics
-//        private double tgt1X = 1.75; // Default setting for Tgt1X
-//        private double tgt2X = 2.0; // Default setting for Tgt2X
-//        private double tgt3X = 4.5; // Default setting for Tgt3X
-//        private int trailLen = 9; // Default setting for TrailLen
-        // User defined variables (add any user defined variables below)
+
+		// User defined variables (add any user defined variables below)
 		PTUActiveSwingReversal asr = null;
-		IOrder entryLongOrder = null;
-		IOrder entryShortOrder = null;
+		
+		IOrder entryOrder = null;
+		IOrder limitOrder = null;
+		IOrder stopOrder = null;
+		
 		int orderSize = 1;
 		
 		double limitPrice = 0;
 		double stopPrice = 0;
+		
+		int startHour = 0;
+		int startMinute = 0;
+		int stopHour = 24;
+		int stopMinute = 0;
+		
+		//int dayOfWeek = 1;
 			
         #endregion
 
@@ -85,38 +86,11 @@ namespace NinjaTrader.Strategy
 			Add(asr);
 			Add(PitColor(Color.Black, 80000, 25, 160000));
 			
-			Print(Time + " -->> MachineId: " + NinjaTrader.Cbi.License.MachineId);
+			//Print(Time + " -->> MachineId: " + NinjaTrader.Cbi.License.MachineId);
 			
-			
-//			Add(EMA(EMA1Len));
-//			Add(EMA(EMA2Len));
-//			Add(DonchianChannel(MOM1Len));
-//			Add(DonchianChannel(MOM2Len));
-//			//Add(DonchianChannel(TrailLen));
-//			
-//			//Add(HMARick(55,50));
-//			
-//			EMA(EMA1Len).Plots[0].Pen.Color = Color.DarkGray;
-//			EMA(EMA2Len).Plots[0].Pen.Color = Color.DarkBlue;
-//
-//			DonchianChannel(MOM1Len).AutoScale = false;
-//			DonchianChannel(MOM1Len).Plots[0].Pen.DashStyle = DashStyle.Dash;
-//			DonchianChannel(MOM1Len).Plots[0].Pen.Color = Color.DarkCyan;	// mean
-//			DonchianChannel(MOM1Len).Plots[1].Pen.Color = Color.Transparent;		// top plot
-//			DonchianChannel(MOM1Len).Plots[2].Pen.Color = Color.Transparent;		// bottom plot
-//			DonchianChannel(MOM1Len).PaintPriceMarkers = false;
-//			
-//			DonchianChannel(MOM2Len).AutoScale = false;
-//			DonchianChannel(MOM2Len).Plots[0].Pen.DashStyle = DashStyle.Dash;
-//			DonchianChannel(MOM2Len).Plots[0].Pen.Color = Color.DarkRed;	// mean
-//			DonchianChannel(MOM2Len).Plots[1].Pen.Color = Color.Transparent;		// top plot
-//			DonchianChannel(MOM2Len).Plots[2].Pen.Color = Color.Transparent;		// bottom plot
-//			DonchianChannel(MOM2Len).PaintPriceMarkers = false;
-			
-			ExitOnClose = true;
+			//ExitOnClose = true;
             CalculateOnBarClose = true;
-			if (SinceEntry == 0)
-				Unmanaged = true;
+			Unmanaged = true;
         }
 
         /// <summary>
@@ -124,154 +98,196 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
-			//DrawArrowUp(CurrentBar.ToString()+"momo", 0, High[0] + 10 * TickSize, Color.Aquamarine);
-			//if (Position.MarketPosition != MarketPosition.Long)
 			//double approxEntry = Instrument.MasterInstrument.Round2TickSize(Position.AvgPrice);
+			Print(Time + " BarsSinceSession: " + Bars.BarsSinceSession + " - " + ((entryOrder==null) ? "" : entryOrder.OrderState.ToString()));
+
+			// If it's Monday, do not trade.
+			//if (Time[0].DayOfWeek == DayOfWeek.Wednesday)
+        	//	return;
+
 			
-			
-			
-			
-			if (Position.MarketPosition != MarketPosition.Flat
-				&& BarsSinceEntry() >= SinceEntry
-				&& SinceEntry > 0) 
+			// Trade Start Time filter
+			if (ToTime(Time[0]) < ToTime(StartHour, StartMinute, 0)
+				|| ToTime(Time[0]) >= ToTime(StopHour, StopMinute, 0)
+				)
 			{
-				if (Position.MarketPosition == MarketPosition.Long)
-				{
-					this.ExitLong();
-				}
-				if (Position.MarketPosition == MarketPosition.Short)
-				{
-					this.ExitShort();
-				}
-			}
-			else			
+				CandleOutlineColor = Color.Black;
+				
+				if (Close[0] < Open[0])
+					BarColor = Color.Black;
+				else
+					BarColor = Color.White;
+
+				//CancelWorkingOrders();				
+				//return;
+			}			
+			
+			// Sets the bar color to its default color as defined in the chart properties dialog
+			BarColor = Color.Empty;
+			
 			if (Position.MarketPosition == MarketPosition.Flat)
 			{
 				if (asr.Entry.ContainsValue(0))
 				{
-					// Trade Start Time filter
-					int hour = 8;
-					int minute = 0;
-					if (ToTime(Time[0]) < ToTime(hour, minute, 0))
-					{
-						CancelWorkingOrders();
-						return;
-					}
-					
+					// Long Trade Condition
 					if (asr.Entry[0] > asr.Stop[0]) 
 					{
-						DrawArrowUp(CurrentBar.ToString()+"LE", 0, Low[0] - 10 * TickSize, Color.Green);
+						//DrawArrowUp(CurrentBar.ToString()+"LE", 0, Low[0] - 10 * TickSize, Color.Green);
 
-						if (SinceEntry > 0)
-						{
-							EnterLong();
-						} 
-						else
-						{
-							//this.EnterLongLimit(Close[0] - entryOffsetTics * TickSize);
-							entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
-								asr.Entry[0], asr.Entry[0], "dayTrade", "LongStopLimit");
-							
-							stopPrice = asr.Stop[0];
-							limitPrice = asr.Target1[0];
+						if (entryOrder == null)
+						{							
+							Print(Time + " Creating new order");
+							entryOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
+								asr.Entry[0], asr.Entry[0], "entry", "Buy Long");
 						}
 					} 
+					
+					// Short Trade Condition
 					if (asr.Entry[0] < asr.Stop[0]) 
 					{
-						DrawArrowDown(CurrentBar.ToString()+"SE", 0, High[0] + 10 * TickSize, Color.Red);
+						//DrawArrowDown(CurrentBar.ToString()+"SE", 0, High[0] + 10 * TickSize, Color.Red);
 						
-						if (SinceEntry > 0)
+						if (entryOrder == null)
 						{
-							EnterShort();
-						} 
-						else
-						{
-							entryShortOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
-								asr.Entry[0], asr.Entry[0], "dayTrade", "Sell Short");
-							
-							stopPrice = asr.Stop[0];
-							limitPrice = asr.Target1[0];
+							Print(Time + " Creating new order");
+							entryOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
+									asr.Entry[0], asr.Entry[0], "entry", "Sell Short");
 						}
 					} 
 				}
-				else	// cancel opening order
+			}
+			
+			if (asr.AStop.ContainsValue(0) && asr.ATgt1.ContainsValue(0))
+			{
+				if (Position.MarketPosition != MarketPosition.Flat)
 				{
-					CancelWorkingOrders();
+					if (stopOrder.StopPrice != asr.AStop[0])
+						ChangeOrder(stopOrder, stopOrder.Quantity, asr.ATgt1[0], asr.AStop[0]);
 				}
+			}
+			
+			if (!asr.Target1.ContainsValue(0) && !asr.ATgt1.ContainsValue(0)) 
+			{
+				CancelWorkingOrders();
 			}
         }
 		
 		private void CancelWorkingOrders()
 		{
-			if (entryLongOrder != null && entryLongOrder.OrderState == OrderState.Working)  
+			if (entryOrder != null)
 			{
-				//Print(Time + " Canceling order, state: " + entryLongOrder.OrderState);
-				CancelOrder(entryLongOrder);
-			}
-			
-			if (entryShortOrder != null && entryShortOrder.OrderState == OrderState.Working)  
-			{
-				//Print(Time + " Canceling order, state: " + entryShortOrder.OrderState);
-				CancelOrder(entryShortOrder);
+				if (entryOrder.OrderState == OrderState.Working)  
+				{
+					DrawDot(CurrentBar+"mid", false, 0, Median[0], Color.Blue);
+					Print(Time + " Cancelling working order, state: " + entryOrder.OrderState);
+					CancelOrder(entryOrder);
+				}
 			}
 		}
 		
 		#region OnExecution
 		protected override void OnExecution(IExecution execution)
 		{
-			// we are just counting bars until exit, no need for stops
-			if (SinceEntry > 0) 
+			if (execution.Name == "Exit on close")
 			{
+				Print(Time + " " + execution.Name);
+				//entryOrder = null;
+				if (entryOrder != null)
+					CancelOrder(entryOrder);
+				if (limitOrder != null)
+					CancelOrder(limitOrder);
+				if (stopOrder != null)
+					CancelOrder(stopOrder);
+				
 				return;
 			}
 			
 			if (execution.Order == null)
 			{
-				if (execution.Name == "Exit on close")
-				{
-					//Print(Time + " " + execution.Name);
-					return;
-				}
 				Print(Time + " " + execution);
 				Print(Time + " -->> OnExecution.Order is null");
 				return;
-			}
+			}						
 			
-			
+			Print(Time + " --- execution: " + execution);
+			Print(Time + " --- execution.Order: " + execution.Order);
 			
 			if (execution.Order.OrderState == OrderState.Filled)
 			{
+				stopPrice = asr.Stop.ContainsValue(0) ? asr.Stop[0] : asr.AStop[0];
+				limitPrice = asr.Target1.ContainsValue(0) ? asr.Target1[0] : asr.ATgt1[0];
+				
 				//enableTrade = false; // limit 1 trade / day
 				if (execution.Order.OrderAction == OrderAction.Buy)
 				{
-					//if (UseTarget2 == 1)
-					//	limitPrice = asr.LongTgt2[0];
-					
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
-					SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice - 1 * TickSize, 0, "closeDayTrade", "Close Long Limit");
-					//if (EnableStops == 1)
-						SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "closeDayTrade", "Close Long Stop");
+					
+					limitPrice = limitPrice - 1 * TickSize;
+					
+					limitOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, 0, "exitTrigger1", "ATgt1");
+					stopOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "exitTrigger1", "AStop");
 				}
 				
 				if (execution.Order.OrderAction == OrderAction.Sell)
 				{					
-					//if (UseTarget2 == 1)
-					//	limitPrice = asr.ShortTgt2[0];
-					
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
-					SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, limitPrice + 1 * TickSize, 0, "closeDayTrade", "Close Short Limit");
-					//if (EnableStops == 1)
-						SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "closeDayTrade", "Close Short Stop");
+					
+					limitPrice = limitPrice + 1 * TickSize;
+					
+					limitOrder = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, limitPrice, 0, "exitTrigger1", "ATgt1");
+					stopOrder = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "exitTrigger1", "AStop");
 				}
+				
+				if (execution.Order.Name == limitOrder.Name || execution.Order.Name == stopOrder.Name)
+				{
+					entryOrder = null;
+					limitOrder = null;
+					stopOrder = null;
+				}				
 			} 
-			else 
-			{
-				Print(Time + " execution.Order: " + execution.Order.ToString());
-			}
 				
 		}
 		#endregion		
 		
+		protected override void OnOrderUpdate(IOrder order)
+		{
+			Print(order.ToString());
+			
+			if (entryOrder != null && entryOrder == order)
+			{
+				if (order.OrderState == OrderState.Cancelled)
+				{
+					DrawDot(CurrentBar+"cancelled", false, 0, Median[0], Color.Red);
+					
+					if (limitOrder != null && limitOrder.OrderState == OrderState.Working)
+						CancelOrder(limitOrder);
+
+					if (stopOrder != null && stopOrder.OrderState == OrderState.Working)
+						CancelOrder(stopOrder);
+					
+					entryOrder = null;
+				}
+			}
+			
+			if (limitOrder != null && limitOrder == order)
+			{
+				if (order.OrderState == OrderState.Cancelled)
+				{
+					DrawDot(CurrentBar+"lo", false, 0, Median[0]+2*TickSize, Color.Pink);
+					limitOrder = null;
+				}
+			}
+			
+			if (stopOrder != null && stopOrder == order)
+			{
+				if (order.OrderState == OrderState.Cancelled)
+				{
+					DrawDot(CurrentBar+"so", false, 0, Median[0]-2*TickSize, Color.Purple);
+					stopOrder = null;
+				}
+			}
+		}
+
 
         #region Properties
         [Description("Entry multiplier")]
@@ -354,7 +370,39 @@ namespace NinjaTrader.Strategy
             set { oSReset = value; }
         }
 
-		
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int StartHour
+        {
+            get { return startHour; }
+            set { startHour = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int StartMinute
+        {
+            get { return startMinute; }
+            set { startMinute = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int StopHour
+        {
+            get { return stopHour; }
+            set { stopHour = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int StopMinute
+        {
+            get { return stopMinute; }
+            set { stopMinute = value; }
+        }
+
+/*		
         [Description("")]
         [GridCategory("Parameters")]
         public int SinceEntry
@@ -362,7 +410,7 @@ namespace NinjaTrader.Strategy
             get { return sinceEntry; }
             set { sinceEntry = Math.Max(0, value); }
         }
-
+*/
         #endregion
     }
 }
