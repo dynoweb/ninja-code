@@ -42,6 +42,8 @@ namespace NinjaTrader.Strategy
 	/// Test SI 2013-6/15/2014 - 1.1, -5, -50, -95, -50, 50, 7, 0, 10, 0, 1.2, 1.8, 3.3, 3 - Range: 8, PF: 1.13, Net: $18,025, MaxDD: -$9,470, Trades: 705, % Profitable: 69%
 	/// Test SI 2013-6/15/2014 - 1.3, -5, -50, -95, -50, 50, 6, 0, 10, 0, 0.6, 1.0, 3.3, 6 - Range: 8, PF: 1.15, Net: $13,160, MaxDD: -$6,795, Trades: 768, % Profitable: 79%
 	/// Test SI 2013-6/15/2014 - 1.3, -5, -50, -95, -50, 50, 7, 0, 10, 0, 1.0, 1.0, 3.3, 6 - Range: 8, PF: 1.16, Net: $12,890, MaxDD: -$9,045, Trades: 662, % Profitable: 80.97%
+	/// The following includes day filter
+	/// Test SI 2013-6/15/2014 - 1.4, -5, -50, -95, -50, 50, 7, 0, 9, 0, 1.0, 2.6, 3.3, 3 - Range: 8, PF: 1.34, Net: $25,245, MaxDD: -$5,825, Trades: 321, % Profitable: 65.11%
     /// </summary>
     [Description("This strategy is based on concepts from the PTUActiveSwingReversal strategy by Troy TJ Noonan, developer PremierTraderUniversity")]
     public class SwingReversal : Strategy
@@ -49,17 +51,21 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables - Values optimized so far for 8 Range SI bars
 		//EntryMult, StopMult, Tgt1Mult, Tgt2Mult, TrailLength, false, PctRLen, OBLevel, OBReset, OSLevel, OSReset
-		double entryMult = 0.3; 
+		double entryMult = 1.4; 
 		int oBLevel = -5;
 		int oBReset = -50;
 		int oSLevel = -95;
 		int oSReset = -50;
 		int pctRLen = 50;
 		//private int sinceEntry = 0;
+		int startHour = 7;
+		int startMinute = 0;
+		int stopHour = 9;
+		int stopMinute = 0;
 		double stopMult = 1.0;
-		double tgt1Mult = 1.4;
+		double tgt1Mult = 2.6;
 		double tgt2Mult = 3.3;
-		int trailLength = 6;
+		int trailLength = 3;
 
 		// User defined variables (add any user defined variables below)
 		PTUActiveSwingReversal asr = null;
@@ -73,12 +79,8 @@ namespace NinjaTrader.Strategy
 		double limitPrice = 0;
 		double stopPrice = 0;
 		
-		int startHour = 7;
-		int startMinute = 0;
-		int stopHour = 10;
-		int stopMinute = 0;
 		
-		bool skipDay = false;
+		bool skipDay = true;
 		bool useTimeFilter = true;		
 		bool debug = false;
 			
@@ -113,7 +115,7 @@ namespace NinjaTrader.Strategy
 				debug = true;
 			
 			// If it's a particular day of the week, do not trade.
-			if (skipDay && Time[0].DayOfWeek == DayOfWeek.Wednesday)
+			if (skipDay && Time[0].DayOfWeek == DayOfWeek.Friday)
         		return;
 			
 			if (useTimeFilter)
