@@ -35,7 +35,13 @@ namespace NinjaTrader.Strategy
 	/// Test 1/1/14 -> 6/18/14, 0.8, -5, -50, -95, -50, 75, 0, 1.5, 1.5, 3.3, 3 - PF 1.17, profit: $10,185 ,MaxDD -$6985, Percent Profitable 69.27%
 	/// - Change, added order canceling feature if indicator stopped showing entry, also pulled in target 1 by one tick to match indicator expectations on trade triggered
 	/// Test 1/1/14 -> 6/18/14, 0.8, -5, -50, -95, -50, 75, 0, 1.5, 1.6, 3.3, 3 - PF 1.14, profit: $8,425 ,MaxDD -$7,480, Percent Profitable 68.57%
-	/// 
+	///   - 2014 - 7am - 10am and exclude Wed - best results
+	/// Test 1/1/13-6/22/13 - semi automated
+	/// 	0.3, -5, -50, -95, -50, 50, 7, 0, 10, 0, 0.9, 1.8, 3.3, 8 - time and day filter disabled
+	/// 	$6400 net, -7k long, +13.4k short, 11k max dd, 1.03 PF, 57.66% profitable
+	/// Test SI 2013-6/15/2014 - 1.1, -5, -50, -95, -50, 50, 7, 0, 10, 0, 1.2, 1.8, 3.3, 3 - Range: 8, PF: 1.13, Net: $18,025, MaxDD: -$9,470, Trades: 705, % Profitable: 69%
+	/// Test SI 2013-6/15/2014 - 1.3, -5, -50, -95, -50, 50, 6, 0, 10, 0, 0.6, 1.0, 3.3, 6 - Range: 8, PF: 1.15, Net: $13,160, MaxDD: -$6,795, Trades: 768, % Profitable: 79%
+	/// Test SI 2013-6/15/2014 - 1.3, -5, -50, -95, -50, 50, 7, 0, 10, 0, 1.0, 1.0, 3.3, 6 - Range: 8, PF: 1.16, Net: $12,890, MaxDD: -$9,045, Trades: 662, % Profitable: 80.97%
     /// </summary>
     [Description("This strategy is based on concepts from the PTUActiveSwingReversal strategy by Troy TJ Noonan, developer PremierTraderUniversity")]
     public class SwingReversal : Strategy
@@ -43,17 +49,17 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables - Values optimized so far for 8 Range SI bars
 		//EntryMult, StopMult, Tgt1Mult, Tgt2Mult, TrailLength, false, PctRLen, OBLevel, OBReset, OSLevel, OSReset
-		double entryMult = 0.8; 
+		double entryMult = 0.3; 
 		int oBLevel = -5;
 		int oBReset = -50;
 		int oSLevel = -95;
 		int oSReset = -50;
-		int pctRLen = 75;
+		int pctRLen = 50;
 		//private int sinceEntry = 0;
-		double stopMult = 1.5;
-		double tgt1Mult = 1.5;
+		double stopMult = 1.0;
+		double tgt1Mult = 1.4;
 		double tgt2Mult = 3.3;
-		int trailLength = 3;
+		int trailLength = 6;
 
 		// User defined variables (add any user defined variables below)
 		PTUActiveSwingReversal asr = null;
@@ -67,12 +73,14 @@ namespace NinjaTrader.Strategy
 		double limitPrice = 0;
 		double stopPrice = 0;
 		
-		int startHour = 0;
+		int startHour = 7;
 		int startMinute = 0;
-		int stopHour = 24;
+		int stopHour = 10;
 		int stopMinute = 0;
 		
-		//int dayOfWeek = 1;
+		bool skipDay = false;
+		bool useTimeFilter = true;		
+		bool debug = false;
 			
         #endregion
 
@@ -88,7 +96,7 @@ namespace NinjaTrader.Strategy
 			
 			//Print(Time + " -->> MachineId: " + NinjaTrader.Cbi.License.MachineId);
 			
-			//ExitOnClose = true;
+			ExitOnClose = true;
             CalculateOnBarClose = true;
 			Unmanaged = true;
         }
@@ -99,28 +107,33 @@ namespace NinjaTrader.Strategy
         protected override void OnBarUpdate()
         {
 			//double approxEntry = Instrument.MasterInstrument.Round2TickSize(Position.AvgPrice);
-			Print(Time + " BarsSinceSession: " + Bars.BarsSinceSession + " - " + ((entryOrder==null) ? "" : entryOrder.OrderState.ToString()));
+			//Print(Time + " BarsSinceSession: " + Bars.BarsSinceSession + " - " + ((entryOrder==null) ? "" : entryOrder.OrderState.ToString()));
 
-			// If it's Monday, do not trade.
-			//if (Time[0].DayOfWeek == DayOfWeek.Wednesday)
-        	//	return;
-
+			if ("5AD739B4C0E47F971481410E730B8938" == NinjaTrader.Cbi.License.MachineId)
+				debug = true;
 			
-			// Trade Start Time filter
-			if (ToTime(Time[0]) < ToTime(StartHour, StartMinute, 0)
-				|| ToTime(Time[0]) >= ToTime(StopHour, StopMinute, 0)
-				)
+			// If it's a particular day of the week, do not trade.
+			if (skipDay && Time[0].DayOfWeek == DayOfWeek.Wednesday)
+        		return;
+			
+			if (useTimeFilter)
 			{
-				CandleOutlineColor = Color.Black;
-				
-				if (Close[0] < Open[0])
-					BarColor = Color.Black;
-				else
-					BarColor = Color.White;
+				// Trade Start Time filter
+				if (ToTime(Time[0]) < ToTime(StartHour, StartMinute, 0)
+					|| ToTime(Time[0]) >= ToTime(StopHour, StopMinute, 0)
+					)
+				{
+					CandleOutlineColor = Color.Black;
+					
+					if (Close[0] < Open[0])
+						BarColor = Color.Black;
+					else
+						BarColor = Color.White;
 
-				//CancelWorkingOrders();				
-				//return;
-			}			
+					CancelWorkingOrders();				
+					return;
+				}			
+			}
 			
 			// Sets the bar color to its default color as defined in the chart properties dialog
 			BarColor = Color.Empty;
@@ -136,7 +149,7 @@ namespace NinjaTrader.Strategy
 
 						if (entryOrder == null)
 						{							
-							Print(Time + " Creating new order");
+							//Print(Time + " Creating new order");
 							entryOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
 								asr.Entry[0], asr.Entry[0], "entry", "Buy Long");
 						}
@@ -149,7 +162,7 @@ namespace NinjaTrader.Strategy
 						
 						if (entryOrder == null)
 						{
-							Print(Time + " Creating new order");
+							//Print(Time + " Creating new order");
 							entryOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
 									asr.Entry[0], asr.Entry[0], "entry", "Sell Short");
 						}
@@ -178,8 +191,8 @@ namespace NinjaTrader.Strategy
 			{
 				if (entryOrder.OrderState == OrderState.Working)  
 				{
-					DrawDot(CurrentBar+"mid", false, 0, Median[0], Color.Blue);
-					Print(Time + " Cancelling working order, state: " + entryOrder.OrderState);
+					//DrawDot(CurrentBar+"mid", false, 0, Median[0], Color.Blue);
+					//Print(Time + " Cancelling working order, state: " + entryOrder.OrderState);
 					CancelOrder(entryOrder);
 				}
 			}
@@ -188,20 +201,20 @@ namespace NinjaTrader.Strategy
 		#region OnExecution
 		protected override void OnExecution(IExecution execution)
 		{
-			if (execution.Name == "Exit on close")
-			{
-				Print(Time + " " + execution.Name);
-				//entryOrder = null;
-				if (entryOrder != null)
-					CancelOrder(entryOrder);
-				if (limitOrder != null)
-					CancelOrder(limitOrder);
-				if (stopOrder != null)
-					CancelOrder(stopOrder);
-				
-				return;
-			}
-			
+//			if (execution.Name == "Exit on close")
+//			{
+//				Print(Time + " " + execution.Name);
+//				//entryOrder = null;
+//				if (entryOrder != null)
+//					CancelOrder(entryOrder);
+//				if (limitOrder != null)
+//					CancelOrder(limitOrder);
+//				if (stopOrder != null)
+//					CancelOrder(stopOrder);
+//				
+//				return;
+//			}
+//			
 			if (execution.Order == null)
 			{
 				Print(Time + " " + execution);
@@ -209,8 +222,8 @@ namespace NinjaTrader.Strategy
 				return;
 			}						
 			
-			Print(Time + " --- execution: " + execution);
-			Print(Time + " --- execution.Order: " + execution.Order);
+			if (false) Print(Time + " --- execution: " + execution);
+			if (false) Print(Time + " --- execution.Order: " + execution.Order);
 			
 			if (execution.Order.OrderState == OrderState.Filled)
 			{
@@ -218,7 +231,7 @@ namespace NinjaTrader.Strategy
 				limitPrice = asr.Target1.ContainsValue(0) ? asr.Target1[0] : asr.ATgt1[0];
 				
 				//enableTrade = false; // limit 1 trade / day
-				if (execution.Order.OrderAction == OrderAction.Buy)
+				if (execution.Order.Name == "Buy Long")
 				{
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					
@@ -228,7 +241,7 @@ namespace NinjaTrader.Strategy
 					stopOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "exitTrigger1", "AStop");
 				}
 				
-				if (execution.Order.OrderAction == OrderAction.Sell)
+				if (execution.Order.Name == "Sell Short")
 				{					
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					
@@ -238,7 +251,15 @@ namespace NinjaTrader.Strategy
 					stopOrder = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "exitTrigger1", "AStop");
 				}
 				
-				if (execution.Order.Name == limitOrder.Name || execution.Order.Name == stopOrder.Name)
+				if (execution.Order.Name == "Exit on close")
+				{	
+					//Print(Time + " resetting entryOrder for - Exit on close");
+					entryOrder = null;
+					limitOrder = null;
+					stopOrder = null;
+				}
+				
+				if (execution.Order.Name == "ATgt1" || execution.Order.Name == "AStop")
 				{
 					entryOrder = null;
 					limitOrder = null;
@@ -251,13 +272,13 @@ namespace NinjaTrader.Strategy
 		
 		protected override void OnOrderUpdate(IOrder order)
 		{
-			Print(order.ToString());
+			if (false) Print(order.ToString());
 			
 			if (entryOrder != null && entryOrder == order)
 			{
 				if (order.OrderState == OrderState.Cancelled)
 				{
-					DrawDot(CurrentBar+"cancelled", false, 0, Median[0], Color.Red);
+					//DrawDot(CurrentBar+"cancelled", false, 0, Median[0], Color.Red);
 					
 					if (limitOrder != null && limitOrder.OrderState == OrderState.Working)
 						CancelOrder(limitOrder);
@@ -273,7 +294,7 @@ namespace NinjaTrader.Strategy
 			{
 				if (order.OrderState == OrderState.Cancelled)
 				{
-					DrawDot(CurrentBar+"lo", false, 0, Median[0]+2*TickSize, Color.Pink);
+					//DrawDot(CurrentBar+"lo", false, 0, Median[0]+2*TickSize, Color.Pink);
 					limitOrder = null;
 				}
 			}
@@ -282,7 +303,7 @@ namespace NinjaTrader.Strategy
 			{
 				if (order.OrderState == OrderState.Cancelled)
 				{
-					DrawDot(CurrentBar+"so", false, 0, Median[0]-2*TickSize, Color.Purple);
+					//DrawDot(CurrentBar+"so", false, 0, Median[0]-2*TickSize, Color.Purple);
 					stopOrder = null;
 				}
 			}
