@@ -66,6 +66,9 @@ namespace NinjaTrader.Strategy
 		double tgt1Mult = 2.6;
 		double tgt2Mult = 3.3;
 		int trailLength = 3;
+		bool useDayFilter = false;
+		bool useReverseTradeLogic = true;
+		bool useTimeFilter = false;		
 
 		// User defined variables (add any user defined variables below)
 		PTUActiveSwingReversal asr = null;
@@ -79,9 +82,6 @@ namespace NinjaTrader.Strategy
 		double limitPrice = 0;
 		double stopPrice = 0;
 		
-		
-		bool skipDay = true;
-		bool useTimeFilter = true;		
 		bool debug = false;
 			
         #endregion
@@ -115,10 +115,10 @@ namespace NinjaTrader.Strategy
 				debug = true;
 			
 			// If it's a particular day of the week, do not trade.
-			if (skipDay && Time[0].DayOfWeek == DayOfWeek.Friday)
+			if (UseDayFilter && Time[0].DayOfWeek == DayOfWeek.Friday)
         		return;
 			
-			if (useTimeFilter)
+			if (UseTimeFilter)
 			{
 				// Trade Start Time filter
 				if (ToTime(Time[0]) < ToTime(StartHour, StartMinute, 0)
@@ -152,8 +152,16 @@ namespace NinjaTrader.Strategy
 						if (entryOrder == null)
 						{							
 							//Print(Time + " Creating new order");
-							entryOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
-								asr.Entry[0], asr.Entry[0], "entry", "Buy Long");
+							if (UseReverseTradeLogic)
+							{
+								entryOrder = SubmitOrder(0, OrderAction.Sell, OrderType.StopLimit, orderSize, 
+									asr.Entry[0], asr.Entry[0], "entry", "Sell Short");
+							}
+							else
+							{
+								entryOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
+									asr.Entry[0], asr.Entry[0], "entry", "Buy Long");
+							}
 						}
 					} 
 					
@@ -165,8 +173,16 @@ namespace NinjaTrader.Strategy
 						if (entryOrder == null)
 						{
 							//Print(Time + " Creating new order");
-							entryOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
+							if (UseReverseTradeLogic)
+							{
+								entryOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
+									asr.Entry[0], asr.Entry[0], "entry", "Buy Long");
+							}
+							else
+							{
+								entryOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
 									asr.Entry[0], asr.Entry[0], "entry", "Sell Short");
+							}
 						}
 					} 
 				}
@@ -177,7 +193,16 @@ namespace NinjaTrader.Strategy
 				if (Position.MarketPosition != MarketPosition.Flat)
 				{
 					if (stopOrder.StopPrice != asr.AStop[0])
-						ChangeOrder(stopOrder, stopOrder.Quantity, asr.ATgt1[0], asr.AStop[0]);
+					{
+							if (UseReverseTradeLogic)
+							{
+								ChangeOrder(stopOrder, stopOrder.Quantity, asr.AStop[0], asr.ATgt1[0]);
+							}
+							else
+							{
+								ChangeOrder(stopOrder, stopOrder.Quantity, asr.ATgt1[0], asr.AStop[0]);
+							}
+					}
 				}
 			}
 			
@@ -229,8 +254,16 @@ namespace NinjaTrader.Strategy
 			
 			if (execution.Order.OrderState == OrderState.Filled)
 			{
-				stopPrice = asr.Stop.ContainsValue(0) ? asr.Stop[0] : asr.AStop[0];
-				limitPrice = asr.Target1.ContainsValue(0) ? asr.Target1[0] : asr.ATgt1[0];
+				if (UseReverseTradeLogic)
+				{
+					limitPrice = asr.Stop.ContainsValue(0) ? asr.Stop[0] : asr.AStop[0];
+					stopPrice = asr.Target1.ContainsValue(0) ? asr.Target1[0] : asr.ATgt1[0];
+				}
+				else
+				{
+					stopPrice = asr.Stop.ContainsValue(0) ? asr.Stop[0] : asr.AStop[0];
+					limitPrice = asr.Target1.ContainsValue(0) ? asr.Target1[0] : asr.ATgt1[0];
+				}
 				
 				//enableTrade = false; // limit 1 trade / day
 				if (execution.Order.Name == "Buy Long")
@@ -424,7 +457,29 @@ namespace NinjaTrader.Strategy
             get { return stopMinute; }
             set { stopMinute = value; }
         }
-
+        [Description("")]
+        [GridCategory("Parameters")]
+        public bool UseDayFilter
+        {
+            get { return useDayFilter; }
+            set { useDayFilter = value; }
+        }
+		
+        [Description("")]
+        [GridCategory("Parameters")]
+        public bool UseReverseTradeLogic
+        {
+            get { return useReverseTradeLogic; }
+            set { useReverseTradeLogic = value; }
+        }
+		
+        [Description("")]
+        [GridCategory("Parameters")]
+        public bool UseTimeFilter
+        {
+            get { return useTimeFilter; }
+            set { useTimeFilter = value; }
+        }
 /*		
         [Description("")]
         [GridCategory("Parameters")]

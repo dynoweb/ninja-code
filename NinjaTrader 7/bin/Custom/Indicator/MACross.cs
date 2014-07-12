@@ -20,7 +20,15 @@ public enum TimeframeType {Short, Medium, Long}
 namespace NinjaTrader.Indicator
 {
     /// <summary>
-    /// To be used in the market analyzer to indicate number of periods since the fast crossed the slow MA. Negative reflects periods since the fast crossed below the slow MA.
+	/// Version 1.0
+	/// Jan 23rd 2014
+	/// Written by Rick Cromer 
+	/// rick_cromer@hotmail.com
+	/// https://www.bigmiketrading.com/
+	/// 
+    /// To be used in the market analyzer to indicate the number of periods since the fast 
+	/// crossed the slow MA. Negative numbers reflect periods since the fast crossed below 
+	/// the slow MA.
     /// </summary>
     [Description("To be used in the market analyzer to indicate number of periods since the fast crossed the slow MA. Negative reflects periods since the fast crossed below the slow MA.")]
     public class MACross : Indicator
@@ -38,8 +46,8 @@ namespace NinjaTrader.Indicator
 		    private int slowPeriod;
 			private int fastPeriod;
 			private int direction = 1;  // 1=up, -1=down
-			private IntSeries crossedAgo;
-			private IntSeries crossedDirection;
+			private DataSeries crossedAgo;
+			private DataSeries crossedDirection;
         #endregion
 
         /// <summary>
@@ -49,14 +57,12 @@ namespace NinjaTrader.Indicator
         {
             Add(new Plot(Color.FromKnownColor(KnownColor.Blue), PlotStyle.Line, "FastPlot"));
             Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "SlowPlot"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedAgoPlot"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.Black), PlotStyle.Line, "CrossedDirectionPlot"));
 
 			Plots[0].Pen.Width = 2;
 			Plots[1].Pen.Width = 2;
 			
-			crossedAgo = new IntSeries(this);
-			crossedDirection = new IntSeries(this);
+			crossedAgo = new DataSeries(this);
+			crossedDirection = new DataSeries(this);
 						
 			if (timeframe == TimeframeType.Short)
 			{
@@ -93,10 +99,7 @@ namespace NinjaTrader.Indicator
             // plot below by replacing 'Close[0]' with your own formula.
             FastPlot.Set(emaValue);
             SlowPlot.Set(smaValue);
-			//CrossedAgo.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
-			//CrossedDirection.Set(direction);
-			CrossedAgoPlot.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
-			CrossedDirectionPlot.Set(direction);
+
 			crossedAgo.Set(calcLastCross(EMA(fastPeriod), SMA(slowPeriod)));
 			crossedDirection.Set(direction);
         }
@@ -147,28 +150,14 @@ namespace NinjaTrader.Indicator
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries CrossedAgoPlot
-        {
-            get { return Values[2]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries CrossedDirectionPlot
-        {
-            get { return Values[3]; }
-        }
-		
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public IntSeries CrossedAgo
+        public DataSeries CrossedAgo
         {
             get { return crossedAgo; }
         }
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public IntSeries CrossedDirection
+        public DataSeries CrossedDirection
         {
             get { return crossedDirection; }
         }

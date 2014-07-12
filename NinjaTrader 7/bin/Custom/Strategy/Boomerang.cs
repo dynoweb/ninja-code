@@ -29,7 +29,7 @@ namespace NinjaTrader.Strategy
 		private int threshold = 60;
 		
 		int profitTarget = 12;
-		int stopLoss = 10;
+		int stopLoss = 9;
 
 		
         // User defined variables (add any user defined variables below)
@@ -51,6 +51,7 @@ namespace NinjaTrader.Strategy
 		int trend = 0;	// -1 - short, 0 - neutral, 1 - long		
 		bool onlyLongs = true;
 		int trendStartBar = 0;
+		double priceEst = 0.0;  // used to estimate where the signal line will be before that bar is created
 		
         #endregion
 
@@ -142,8 +143,8 @@ namespace NinjaTrader.Strategy
 			}
 
 			
-			bool tradingEnabled = true;
-			if (false)
+			bool tradingEnabled = false;
+			if (true)
 			{
 				if (ToTime(Time[0]) >= 83000 && ToTime(Time[0]) <= 143000) 
 				//if (ToTime(Time[0]) >= 103000 && ToTime(Time[0]) <= 143000) 	// worse time
@@ -155,7 +156,7 @@ namespace NinjaTrader.Strategy
 				}
 			}	
 
-			
+			// This is when boomerange starts painting entry spots (blue dots)
 			if (CrossAbove(signal, slowSignal, 1))
 			{
 				//BackColorAll = Color.PaleTurquoise;
@@ -185,6 +186,8 @@ namespace NinjaTrader.Strategy
 						//DrawText(CurrentBar + "L", "L", 0, Low[0] - 4 * TickSize, Color.Green);
 					}
 					
+					// his 6 bar look back period starts before he would enter a trade
+					//   CrossAbove(signal, slowSignal, 6)
 					if (CrossAbove(signal, dynamicTrend, lookBackPeriod))
 					{
 						if (FirstTickOfBar)
@@ -192,21 +195,22 @@ namespace NinjaTrader.Strategy
 							//Print(Time + " Cross Above");
 							//DrawText(CurrentBar + "L", "C", 0, Low[0] - 2 * TickSize, Color.Green);
 						}
-						
+						priceEst = priceTrigger[0] + ((priceTrigger[0] - priceTrigger[2])/2);
 						if (tradesInTrend < maxTradesPerTrend)
 						{
 							// has been ignored since the stop price is 
 							// less than or equal to the close price of the current bar. 
 							if (priceTrigger[0] > dynamicTrend[0])
 							{
-								DrawDot(CurrentBar + "dot1", true, 0, priceTrigger[0], Color.Green);
-								if (Close[0] > priceTrigger[0])
+								DrawDot(CurrentBar + "dot1", true, 0, priceEst, Color.Green);
+								if (Close[0] > priceEst)
 								{
-									EnterLongLimit(priceTrigger[0]);
+									EnterLongLimit(priceEst);
 								}
 								else
 								{
-									EnterLongStop(priceTrigger[0]);
+									//EnterLong();
+									EnterLongStop(priceEst);
 								}
 							//	tradesInTrend++;
 							//	DrawText(CurrentBar + (" " + tradesInTrend), " " + tradesInTrend, 0, Low[0] - 2 * TickSize, Color.Black);
@@ -214,8 +218,8 @@ namespace NinjaTrader.Strategy
 						}
 						else
 						{					
-							if (FirstTickOfBar)
-								DrawText(CurrentBar + "M", "M", 0, Low[0] - 2 * TickSize, Color.Green);
+							//if (FirstTickOfBar)
+							DrawText(CurrentBar + "M", "M", 0, Low[0] - 2 * TickSize, Color.Green);
 						}
 					}
 				}
@@ -228,14 +232,19 @@ namespace NinjaTrader.Strategy
 					{
 						//Print(Time + " Cross Below");
 						//DrawText(CurrentBar + "S", "C", 0, HighestBar(High, 10) + 2 * TickSize, Color.Red);
+						priceEst = 2 * priceTrigger[0] + priceTrigger[1];
 						if (tradesInTrend < maxTradesPerTrend)
 						{
-							DrawDot(CurrentBar + "dot2", false, 0, priceTrigger[0], Color.Red);
-							if (tradingEnabled && Close[0] >= priceTrigger[0])
-							{
-								EnterShort();
+							DrawDot(CurrentBar + "dot2", false, 0, priceEst, Color.Red);
+							//if (tradingEnabled && Close[0] >= priceTrigger[0])
+							//{
+							if (Close[0] < priceEst)
+								EnterShortLimit(priceEst);
+							else
+								EnterShortStop(priceEst);
+							//EnterShort();
 							//	tradesInTrend++;
-							}
+							//}
 						}
 						else
 						{					

@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.15</Version>
+  <Version>7.0.1000.18</Version>
   <Layout>
     <ChartData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <ActionColorSerialize>n:AntiqueWhite</ActionColorSerialize>
@@ -7,8 +7,8 @@
       <AlwaysOnTop>false</AlwaysOnTop>
       <AxisColorSerialize>n:Black</AxisColorSerialize>
       <BackColorSerialize>n:White</BackColorSerialize>
-      <BarMarginRight>20</BarMarginRight>
-      <BarSpaceIntern>11</BarSpaceIntern>
+      <BarMarginRight>30</BarMarginRight>
+      <BarSpaceIntern>12</BarSpaceIntern>
       <BuyColorSerialize>n:Honeydew</BuyColorSerialize>
       <ChartCursor>CrossHair</ChartCursor>
       <ChartObjectSelection>true</ChartObjectSelection>
@@ -35,7 +35,7 @@
       <HighlightColorSerialize>n:PaleGoldenrod</HighlightColorSerialize>
       <HorizontalGridLines>true</HorizontalGridLines>
       <HorizontalGridLinesPenSerializable>
-        <Color>n:AppWorkspace</Color>
+        <Color>n:ControlLight</Color>
         <DashStyle>Solid</DashStyle>
         <Width>1</Width>
       </HorizontalGridLinesPenSerializable>
@@ -120,11 +120,11 @@
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -136,7 +136,7 @@
           <Enabled>true</Enabled>
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
           <Lines />
           <LinesConfigurable>true</LinesConfigurable>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -173,69 +173,6 @@
       </Indicator>
     </Indicator0>
     <Indicator1>
-      <ClassName>NinjaTrader.Indicator.TickCounter</ClassName>
-      <Input>
-        <PriceType>Close</PriceType>
-      </Input>
-      <BarsSeriesIdx>0</BarsSeriesIdx>
-      <Indicator>
-        <TickCounter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-          <AutoScale>true</AutoScale>
-          <BarsPeriods>
-            <Period>
-              <BasePeriodType>Minute</BasePeriodType>
-              <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
-              <MarketDataType>Last</MarketDataType>
-              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-              <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
-              <Value2>1</Value2>
-            </Period>
-          </BarsPeriods>
-          <CalculateOnBarClose>false</CalculateOnBarClose>
-          <DisableScaleBuffer>false</DisableScaleBuffer>
-          <Displacement>0</Displacement>
-          <DisplayInDataBox>false</DisplayInDataBox>
-          <DrawOnPricePanel>true</DrawOnPricePanel>
-          <Enabled>true</Enabled>
-          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-          <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
-          <Lines />
-          <LinesConfigurable>true</LinesConfigurable>
-          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>TickCounter</Name>
-          <Overlay>true</Overlay>
-          <PaintPriceMarkers>true</PaintPriceMarkers>
-          <Panel>-2</Panel>
-          <PanelUI>-1</PanelUI>
-          <Plots>
-            <Plot>
-              <Max>1.7976931348623157E+308</Max>
-              <Min>-1.7976931348623157E+308</Min>
-              <Name>Dummy</Name>
-              <PenSerializable>
-                <Color>n:Orange</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <PlotStyle>Line</PlotStyle>
-            </Plot>
-          </Plots>
-          <PlotsConfigurable>false</PlotsConfigurable>
-          <ScaleJustification>Right</ScaleJustification>
-          <SelectedSeries>0</SelectedSeries>
-          <SessionBreakLines>true</SessionBreakLines>
-          <VerticalGridLines>true</VerticalGridLines>
-          <ZOrder>30005</ZOrder>
-          <CountDown>true</CountDown>
-          <ShowPercent>false</ShowPercent>
-        </TickCounter>
-      </Indicator>
-    </Indicator1>
-    <Indicator2>
       <ClassName>NinjaTrader.Indicator.EMA</ClassName>
       <Input>
         <PriceType>Close</PriceType>
@@ -249,11 +186,11 @@
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -265,7 +202,7 @@
           <Enabled>true</Enabled>
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
           <Lines />
           <LinesConfigurable>true</LinesConfigurable>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -296,8 +233,8 @@
           <Period>15</Period>
         </EMA>
       </Indicator>
-    </Indicator2>
-    <Indicator3>
+    </Indicator1>
+    <Indicator2>
       <ClassName>NinjaTrader.Indicator.MACDRick2</ClassName>
       <Input>
         <PriceType>Close</PriceType>
@@ -311,11 +248,11 @@
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -327,7 +264,7 @@
           <Enabled>true</Enabled>
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
           <Lines>
             <Line>
               <Name>Zero line</Name>
@@ -402,13 +339,11 @@
           <Slow>20</Slow>
           <Smooth>30</Smooth>
           <Opacity>25</Opacity>
-          <BackgroundLongColor />
-          <BackgroundShortColor />
           <EnableBackgroundColor>true</EnableBackgroundColor>
         </MACDRick2>
       </Indicator>
-    </Indicator3>
-    <Indicator4>
+    </Indicator2>
+    <Indicator3>
       <ClassName>NinjaTrader.Indicator.HMARick</ClassName>
       <Input>
         <PriceType>Close</PriceType>
@@ -422,11 +357,11 @@
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -438,7 +373,7 @@
           <Enabled>true</Enabled>
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
           <Lines />
           <LinesConfigurable>true</LinesConfigurable>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -466,7 +401,7 @@
           <SessionBreakLines>true</SessionBreakLines>
           <VerticalGridLines>true</VerticalGridLines>
           <ZOrder>10002</ZOrder>
-          <Threshold>50</Threshold>
+          <Threshold>100</Threshold>
           <NeutralColor />
           <NeutralColorSerialize>n:DarkGray</NeutralColorSerialize>
           <UpColor />
@@ -476,11 +411,11 @@
           <Plot0Width>2</Plot0Width>
           <Plot0Style>Line</Plot0Style>
           <Dash0Style>Solid</Dash0Style>
-          <Period>55</Period>
+          <Period>150</Period>
         </HMARick>
       </Indicator>
-    </Indicator4>
-    <Indicator5>
+    </Indicator3>
+    <Indicator4>
       <ClassName>NinjaTrader.Indicator.StochasticsCycles</ClassName>
       <Input>
         <PriceType>Close</PriceType>
@@ -494,11 +429,11 @@
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Volume</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
-              <Value>610</Value>
+              <Value>1</Value>
               <Value2>1</Value2>
             </Period>
           </BarsPeriods>
@@ -510,7 +445,7 @@
           <Enabled>true</Enabled>
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
-          <InstrumentsSerializable>CL 10-13 Nymex</InstrumentsSerializable>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
           <Lines>
             <Line>
               <Name>Lower</Name>
@@ -593,15 +528,441 @@
           <PeriodK>5</PeriodK>
           <Smooth>2</Smooth>
           <SelectedMAType>HMARick</SelectedMAType>
-          <TrendBars>55</TrendBars>
+          <TrendBars>150</TrendBars>
           <Threshold>50</Threshold>
         </StochasticsCycles>
       </Indicator>
+    </Indicator4>
+    <Indicator5>
+      <ClassName>NinjaTrader.Indicator.ncatABCDWave</ClassName>
+      <Input>
+        <PriceType>Close</PriceType>
+      </Input>
+      <BarsSeriesIdx>0</BarsSeriesIdx>
+      <Indicator>
+        <ncatABCDWave xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>true</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>true</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>ncatABCDWave</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>false</PaintPriceMarkers>
+          <Panel>-2</Panel>
+          <PanelUI>-1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Swing</Name>
+              <PenSerializable>
+                <Color>n:DarkViolet</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Swing Relations 1</Name>
+              <PenSerializable>
+                <Color>n:DarkViolet</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Swing Relations 2</Name>
+              <PenSerializable>
+                <Color>n:DarkViolet</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>ABCD Wave Bullish</Name>
+              <PenSerializable>
+                <Color>n:Lime</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>ABCD Wave Bearish</Name>
+              <PenSerializable>
+                <Color>n:Red</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Ideal Fibonacci Wave Bullish</Name>
+              <PenSerializable>
+                <Color>n:Lime</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Ideal Fibonacci Wave Bearish</Name>
+              <PenSerializable>
+                <Color>n:Red</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Ideal Price Time Wave Bullish</Name>
+              <PenSerializable>
+                <Color>n:Lime</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Ideal Price Time Wave Bearish</Name>
+              <PenSerializable>
+                <Color>n:Red</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>4</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>ABCD Relations</Name>
+              <PenSerializable>
+                <Color>n:DarkSlateGray</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>true</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>10004</ZOrder>
+          <ShortLogo>true</ShortLogo>
+          <FontSize>7</FontSize>
+          <_iextMaxBars>5000</_iextMaxBars>
+          <IextHL_MinSwing>20</IextHL_MinSwing>
+          <_bextShowHistoryPatterns>true</_bextShowHistoryPatterns>
+          <_bextDrawZZLine>false</_bextDrawZZLine>
+          <_bextDrawZZRelations>false</_bextDrawZZRelations>
+          <BextABCD>Both Side</BextABCD>
+          <BextI_ABCD>Disabled</BextI_ABCD>
+          <BextIT_ABCD>Disabled</BextIT_ABCD>
+          <Sound>Alert1.wav</Sound>
+          <CextABCDDescColor Web="Black" />
+        </ncatABCDWave>
+      </Indicator>
     </Indicator5>
+    <Indicator6>
+      <ClassName>NinjaTrader.Indicator.ncatRSD</ClassName>
+      <Input>
+        <PriceType>Close</PriceType>
+      </Input>
+      <BarsSeriesIdx>0</BarsSeriesIdx>
+      <Indicator>
+        <ncatRSD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>true</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>true</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>false</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>ncatRSD</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>false</PaintPriceMarkers>
+          <Panel>-2</Panel>
+          <PanelUI>-1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Dummy</Name>
+              <PenSerializable>
+                <Color>n:Orange</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>false</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>30003</ZOrder>
+          <ShortLogo>true</ShortLogo>
+          <periodValue>0</periodValue>
+          <Draw_edge_price>false</Draw_edge_price>
+          <DrawFarEdgePrice>false</DrawFarEdgePrice>
+          <DrawZoneHeight>false</DrawZoneHeight>
+          <Recolor_retouch>true</Recolor_retouch>
+          <Recolor_weak_retouch>true</Recolor_weak_retouch>
+          <No_weak_zones>true</No_weak_zones>
+          <ExtendZone>false</ExtendZone>
+          <ExtendMinutes>15</ExtendMinutes>
+          <AlertOnDemandSound>Alert1.wav</AlertOnDemandSound>
+          <AlertOnSupplySound>Alert1.wav</AlertOnSupplySound>
+          <SupplyStrong Web="Red" />
+          <SupplyWeak Web="PaleVioletRed" />
+          <SupplyRetouch Web="Coral" />
+          <DemandStrong Web="Green" />
+          <DemandWeak Web="Olive" />
+          <DemandRetouch Web="Chartreuse" />
+          <TextColor Web="Black" />
+          <SupplyZoneBorder Web="Silver" />
+          <DemandZoneBorder Web="Silver" />
+          <MyPeriodType>ChartPeriod</MyPeriodType>
+        </ncatRSD>
+      </Indicator>
+    </Indicator6>
+    <Indicator7>
+      <ClassName>NinjaTrader.Indicator.rcVolatilityBreakout</ClassName>
+      <Input>
+        <PriceType>Close</PriceType>
+      </Input>
+      <BarsSeriesIdx>0</BarsSeriesIdx>
+      <Indicator>
+        <rcVolatilityBreakout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>false</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>true</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable>PCLN Default</InstrumentsSerializable>
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>rcVolatilityBreakout</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>true</PaintPriceMarkers>
+          <Panel>-2</Panel>
+          <PanelUI>-1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>Squeeze</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SqueezeOn</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>PMomentumUp</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>PMomentumDown</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>NMomentumUp</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>NMomentumDown</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CurrentValue</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>BarsSinceSqueeze</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SqueezeLength</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SqueezeHigh</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SqueezeLow</Name>
+              <PenSerializable>
+                <Color>n:Transparent</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Dot</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>false</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>10004</ZOrder>
+        </rcVolatilityBreakout>
+      </Indicator>
+    </Indicator7>
   </Indicators>
   <Panels>
     <Panel0>
-      <HeightRatio>0.635789473684211</HeightRatio>
+      <HeightRatio>0.6</HeightRatio>
       <Index>0</Index>
       <Maximized>False</Maximized>
       <AutoScaleDateRangeTypeRight>ScreenDateRange</AutoScaleDateRangeTypeRight>
@@ -609,8 +970,8 @@
       <AutoScaleMarginTypeRight>Percent</AutoScaleMarginTypeRight>
       <AutoScaleMarginUpperRight>3</AutoScaleMarginUpperRight>
       <YAxisRangeTypeRight>Automatic</YAxisRangeTypeRight>
-      <FixedPanelMaxRight>108.11742</FixedPanelMaxRight>
-      <FixedPanelMinRight>105.98258</FixedPanelMinRight>
+      <FixedPanelMaxRight>1331.935434</FixedPanelMaxRight>
+      <FixedPanelMinRight>1002.574566</FixedPanelMinRight>
       <YAxisScalingTypeRight>Linear</YAxisScalingTypeRight>
       <HorizontalGridLinesIntervalRight>0</HorizontalGridLinesIntervalRight>
       <HorizontalGridLinesIntervalTypeRight>Points</HorizontalGridLinesIntervalTypeRight>
@@ -634,7 +995,7 @@
       <YAxisScalingTypeOver>Linear</YAxisScalingTypeOver>
     </Panel0>
     <Panel1>
-      <HeightRatio>0.151578947368421</HeightRatio>
+      <HeightRatio>0.2</HeightRatio>
       <Index>1</Index>
       <Maximized>False</Maximized>
       <AutoScaleDateRangeTypeRight>ScreenDateRange</AutoScaleDateRangeTypeRight>
@@ -642,8 +1003,8 @@
       <AutoScaleMarginTypeRight>Percent</AutoScaleMarginTypeRight>
       <AutoScaleMarginUpperRight>3</AutoScaleMarginUpperRight>
       <YAxisRangeTypeRight>Automatic</YAxisRangeTypeRight>
-      <FixedPanelMaxRight>103.871739130434</FixedPanelMaxRight>
-      <FixedPanelMinRight>-6.04565217391303</FixedPanelMinRight>
+      <FixedPanelMaxRight>104.240941672975</FixedPanelMaxRight>
+      <FixedPanelMinRight>-0.652116820105721</FixedPanelMinRight>
       <YAxisScalingTypeRight>Linear</YAxisScalingTypeRight>
       <HorizontalGridLinesIntervalRight>0</HorizontalGridLinesIntervalRight>
       <HorizontalGridLinesIntervalTypeRight>Points</HorizontalGridLinesIntervalTypeRight>
@@ -667,7 +1028,7 @@
       <YAxisScalingTypeOver>Linear</YAxisScalingTypeOver>
     </Panel1>
     <Panel2>
-      <HeightRatio>0.233684210526316</HeightRatio>
+      <HeightRatio>0.2</HeightRatio>
       <Index>2</Index>
       <Maximized>False</Maximized>
       <AutoScaleDateRangeTypeRight>ScreenDateRange</AutoScaleDateRangeTypeRight>
@@ -675,8 +1036,8 @@
       <AutoScaleMarginTypeRight>Percent</AutoScaleMarginTypeRight>
       <AutoScaleMarginUpperRight>3</AutoScaleMarginUpperRight>
       <YAxisRangeTypeRight>Automatic</YAxisRangeTypeRight>
-      <FixedPanelMaxRight>0.258577321405188</FixedPanelMaxRight>
-      <FixedPanelMinRight>-0.502374416428755</FixedPanelMinRight>
+      <FixedPanelMaxRight>66.678890073096</FixedPanelMaxRight>
+      <FixedPanelMinRight>-27.1168073421643</FixedPanelMinRight>
       <YAxisScalingTypeRight>Linear</YAxisScalingTypeRight>
       <HorizontalGridLinesIntervalRight>0</HorizontalGridLinesIntervalRight>
       <HorizontalGridLinesIntervalTypeRight>Points</HorizontalGridLinesIntervalTypeRight>
@@ -705,13 +1066,13 @@
       <Bars>
         <BarsData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AutoScale>true</AutoScale>
-          <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;2.56666666666667&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
+          <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;3&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
           <DisplayInDataBox>true</DisplayInDataBox>
           <LongExecutionColorSerialize>n:Blue</LongExecutionColorSerialize>
           <PaintPriceMarker>true</PaintPriceMarker>
           <Panel>0</Panel>
           <PanelUI>1</PanelUI>
-          <PlotExecutions>MarkersOnly</PlotExecutions>
+          <PlotExecutions>TextAndMarker</PlotExecutions>
           <PlotSessionBreaks>true</PlotSessionBreaks>
           <PositionPenLooserSerializable>
             <Color>n:Crimson</Color>

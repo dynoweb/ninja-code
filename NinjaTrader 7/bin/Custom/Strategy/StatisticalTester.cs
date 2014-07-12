@@ -38,7 +38,6 @@ namespace NinjaTrader.Strategy
         protected override void Initialize()
         {
 			//Add(new NetVolDoublerAlert());
-			Print("Date,open,high,low,close,sessionLow,sessionHigh");
             CalculateOnBarClose = true;			
         }
 
@@ -47,6 +46,9 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
+			if (CurrentBar == 1)
+				Print("Date,open,high,low,close,sessionLow,sessionHigh");
+
 			if (Bars.BarsSinceSession == 100000000)
 			{
 				double value = StdDev(High, 100)[0];

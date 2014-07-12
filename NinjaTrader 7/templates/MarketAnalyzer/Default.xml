@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.11</Version>
+  <Version>7.0.1000.18</Version>
   <AlertsEnabled>True</AlertsEnabled>
   <AlwaysOnTop>False</AlwaysOnTop>
   <AutoSortEnabled>True</AutoSortEnabled>
@@ -100,84 +100,6 @@
       </Column>
     </Column1>
     <Column2>
-      <ClassName>NinjaTrader.MarketAnalyzer.BidPrice</ClassName>
-      <Width>74</Width>
-      <Column>
-        <BidPrice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <AlertConditions />
-          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
-          <BackColorSerialize>x:0</BackColorSerialize>
-          <BarColorSerialize>n:Lime</BarColorSerialize>
-          <BarGraphGrowthType>Center</BarGraphGrowthType>
-          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
-          <BarGraphReferenceValue>0</BarGraphReferenceValue>
-          <CalculateOnBarClose>false</CalculateOnBarClose>
-          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
-          <CellConditions />
-          <ColumnType>Regular</ColumnType>
-          <DataSeriesConfigurable>false</DataSeriesConfigurable>
-          <DataTypeSerializable>double</DataTypeSerializable>
-          <FilterConditions />
-          <ForeColorSerialize>x:0</ForeColorSerialize>
-          <FormatDecimals>2</FormatDecimals>
-          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>BidPrice</Name>
-          <Period>
-            <BasePeriodType>Minute</BasePeriodType>
-            <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
-            <MarketDataType>Last</MarketDataType>
-            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-            <ReversalType>Tick</ReversalType>
-            <Value>1</Value>
-            <Value2>1</Value2>
-          </Period>
-          <PriceType>Close</PriceType>
-          <RequiresBars>true</RequiresBars>
-          <ShowInTotalRow>false</ShowInTotalRow>
-        </BidPrice>
-      </Column>
-    </Column2>
-    <Column3>
-      <ClassName>NinjaTrader.MarketAnalyzer.AskPrice</ClassName>
-      <Width>74</Width>
-      <Column>
-        <AskPrice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <AlertConditions />
-          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
-          <BackColorSerialize>x:0</BackColorSerialize>
-          <BarColorSerialize>n:Lime</BarColorSerialize>
-          <BarGraphGrowthType>Center</BarGraphGrowthType>
-          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
-          <BarGraphReferenceValue>0</BarGraphReferenceValue>
-          <CalculateOnBarClose>false</CalculateOnBarClose>
-          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
-          <CellConditions />
-          <ColumnType>Regular</ColumnType>
-          <DataSeriesConfigurable>false</DataSeriesConfigurable>
-          <DataTypeSerializable>double</DataTypeSerializable>
-          <FilterConditions />
-          <ForeColorSerialize>x:0</ForeColorSerialize>
-          <FormatDecimals>2</FormatDecimals>
-          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>AskPrice</Name>
-          <Period>
-            <BasePeriodType>Minute</BasePeriodType>
-            <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
-            <MarketDataType>Last</MarketDataType>
-            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-            <ReversalType>Tick</ReversalType>
-            <Value>1</Value>
-            <Value2>1</Value2>
-          </Period>
-          <PriceType>Close</PriceType>
-          <RequiresBars>true</RequiresBars>
-          <ShowInTotalRow>false</ShowInTotalRow>
-        </AskPrice>
-      </Column>
-    </Column3>
-    <Column4>
       <ClassName>NinjaTrader.MarketAnalyzer.LastPrice</ClassName>
       <Width>74</Width>
       <Column>
@@ -215,8 +137,8 @@
           <ShowInTotalRow>false</ShowInTotalRow>
         </LastPrice>
       </Column>
-    </Column4>
-    <Column5>
+    </Column2>
+    <Column3>
       <ClassName>NinjaTrader.MarketAnalyzer.NetChange</ClassName>
       <Width>74</Width>
       <Column>
@@ -270,12 +192,12 @@
           <Unit>Percent</Unit>
         </NetChange>
       </Column>
-    </Column5>
-    <Column6>
-      <ClassName>NinjaTrader.MarketAnalyzer.DailyVolume</ClassName>
+    </Column3>
+    <Column4>
+      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
       <Width>74</Width>
       <Column>
-        <DailyVolume xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
           <AltBarColorSerialize>n:Red</AltBarColorSerialize>
           <BackColorSerialize>x:0</BackColorSerialize>
@@ -287,56 +209,17 @@
           <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
           <CellConditions />
           <ColumnType>Regular</ColumnType>
-          <DataSeriesConfigurable>false</DataSeriesConfigurable>
-          <DataTypeSerializable>double</DataTypeSerializable>
-          <FilterConditions />
-          <ForeColorSerialize>x:0</ForeColorSerialize>
-          <FormatDecimals>2</FormatDecimals>
-          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>DailyVolume</Name>
-          <Period>
-            <BasePeriodType>Minute</BasePeriodType>
-            <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
-            <MarketDataType>Last</MarketDataType>
-            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-            <ReversalType>Tick</ReversalType>
-            <Value>1</Value>
-            <Value2>1</Value2>
-          </Period>
-          <PriceType>Close</PriceType>
-          <RequiresBars>true</RequiresBars>
-          <ShowInTotalRow>false</ShowInTotalRow>
-        </DailyVolume>
-      </Column>
-    </Column6>
-    <Column7>
-      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
-      <Width>74</Width>
-      <Column>
-        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <AlertConditions />
-          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
-          <BackColorSerialize>x:0</BackColorSerialize>
-          <BarColorSerialize>n:Lime</BarColorSerialize>
-          <BarGraphGrowthType>LeftToRight</BarGraphGrowthType>
-          <BarGraphGrowthMaxValue>60</BarGraphGrowthMaxValue>
-          <BarGraphReferenceValue>25</BarGraphReferenceValue>
-          <CalculateOnBarClose>false</CalculateOnBarClose>
-          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
-          <CellConditions />
-          <ColumnType>BarGraph</ColumnType>
           <DataSeriesConfigurable>true</DataSeriesConfigurable>
           <DataTypeSerializable>double</DataTypeSerializable>
           <FilterConditions />
           <ForeColorSerialize>x:0</ForeColorSerialize>
           <FormatDecimals>2</FormatDecimals>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>ADX(14)</Name>
+          <Name>Short Cross Ago</Name>
           <Period>
             <BasePeriodType>Minute</BasePeriodType>
             <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
+            <Id>Day</Id>
             <MarketDataType>Last</MarketDataType>
             <PointAndFigurePriceType>Close</PointAndFigurePriceType>
             <ReversalType>Tick</ReversalType>
@@ -347,24 +230,24 @@
           <RequiresBars>true</RequiresBars>
           <ShowInTotalRow>false</ShowInTotalRow>
           <BarsBack>50</BarsBack>
-          <DataSeriesName>ADX</DataSeriesName>
+          <DataSeriesName>CrossedAgo</DataSeriesName>
         </IndicatorColumn>
       </Column>
-      <IndicatorClassName>NinjaTrader.Indicator.ADX</IndicatorClassName>
+      <IndicatorClassName>NinjaTrader.Indicator.MACross</IndicatorClassName>
       <IndicatorInput>
         <PriceType>Close</PriceType>
       </IndicatorInput>
-      <IndicatorColumnName>ADX(14)</IndicatorColumnName>
-      <IndicatorDataSeriesName>ADX</IndicatorDataSeriesName>
+      <IndicatorColumnName>Short Cross Ago</IndicatorColumnName>
+      <IndicatorDataSeriesName>CrossedAgo</IndicatorDataSeriesName>
       <Indicator>
-        <ADX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MACross xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-          <AutoScale>true</AutoScale>
+          <AutoScale>false</AutoScale>
           <BarsPeriods>
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Minute</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
@@ -381,40 +264,54 @@
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
           <InstrumentsSerializable />
-          <Lines>
-            <Line>
-              <Name>Lower</Name>
-              <PenSerializable>
-                <Color>n:DarkViolet</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>25</Value>
-            </Line>
-            <Line>
-              <Name>Upper</Name>
-              <PenSerializable>
-                <Color>n:YellowGreen</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>75</Value>
-            </Line>
-          </Lines>
+          <Lines />
           <LinesConfigurable>true</LinesConfigurable>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>ADX</Name>
-          <Overlay>false</Overlay>
-          <PaintPriceMarkers>true</PaintPriceMarkers>
-          <Panel>1</Panel>
-          <PanelUI>2</PanelUI>
+          <Name>MACross</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>false</PaintPriceMarkers>
+          <Panel>0</Panel>
+          <PanelUI>1</PanelUI>
           <Plots>
             <Plot>
               <Max>1.7976931348623157E+308</Max>
               <Min>-1.7976931348623157E+308</Min>
-              <Name>ADX</Name>
+              <Name>FastPlot</Name>
               <PenSerializable>
-                <Color>n:Cyan</Color>
+                <Color>n:Blue</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SlowPlot</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedAgo</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedDirection</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
                 <DashStyle>Solid</DashStyle>
                 <Width>1</Width>
               </PenSerializable>
@@ -426,9 +323,444 @@
           <SelectedSeries>0</SelectedSeries>
           <SessionBreakLines>true</SessionBreakLines>
           <VerticalGridLines>true</VerticalGridLines>
-          <ZOrder>10130</ZOrder>
-          <Period>14</Period>
-        </ADX>
+          <ZOrder>0</ZOrder>
+          <Timeframe>Short</Timeframe>
+        </MACross>
+      </Indicator>
+    </Column4>
+    <Column5>
+      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
+      <Width>74</Width>
+      <Column>
+        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AlertConditions />
+          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
+          <BackColorSerialize>x:0</BackColorSerialize>
+          <BarColorSerialize>n:Lime</BarColorSerialize>
+          <BarGraphGrowthType>Center</BarGraphGrowthType>
+          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
+          <BarGraphReferenceValue>0</BarGraphReferenceValue>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
+          <CellConditions>
+            <CellCondition>
+              <BackColorSerialize>x:0</BackColorSerialize>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>n:Red</ForeColorSerialize>
+              <Text>Down</Text>
+              <Value>-1</Value>
+            </CellCondition>
+            <CellCondition>
+              <BackColorSerialize>x:0</BackColorSerialize>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>x:0</ForeColorSerialize>
+              <Text>Up</Text>
+              <Value>1</Value>
+            </CellCondition>
+          </CellConditions>
+          <ColumnType>Regular</ColumnType>
+          <DataSeriesConfigurable>true</DataSeriesConfigurable>
+          <DataTypeSerializable>double</DataTypeSerializable>
+          <FilterConditions />
+          <ForeColorSerialize>x:0</ForeColorSerialize>
+          <FormatDecimals>2</FormatDecimals>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>Short Cross Dir</Name>
+          <Period>
+            <BasePeriodType>Minute</BasePeriodType>
+            <BasePeriodValue>1</BasePeriodValue>
+            <Id>Day</Id>
+            <MarketDataType>Last</MarketDataType>
+            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+            <ReversalType>Tick</ReversalType>
+            <Value>1</Value>
+            <Value2>1</Value2>
+          </Period>
+          <PriceType>Close</PriceType>
+          <RequiresBars>true</RequiresBars>
+          <ShowInTotalRow>false</ShowInTotalRow>
+          <BarsBack>50</BarsBack>
+          <DataSeriesName>CrossedDirection</DataSeriesName>
+        </IndicatorColumn>
+      </Column>
+      <IndicatorClassName>NinjaTrader.Indicator.MACross</IndicatorClassName>
+      <IndicatorInput>
+        <PriceType>Close</PriceType>
+      </IndicatorInput>
+      <IndicatorColumnName>Short Cross Dir</IndicatorColumnName>
+      <IndicatorDataSeriesName>CrossedDirection</IndicatorDataSeriesName>
+      <Indicator>
+        <MACross xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>false</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable />
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>MACross</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>true</PaintPriceMarkers>
+          <Panel>0</Panel>
+          <PanelUI>1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>FastPlot</Name>
+              <PenSerializable>
+                <Color>n:Blue</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SlowPlot</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedAgo</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedDirection</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>true</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>0</ZOrder>
+          <Timeframe>Short</Timeframe>
+        </MACross>
+      </Indicator>
+    </Column5>
+    <Column6>
+      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
+      <Width>74</Width>
+      <Column>
+        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AlertConditions />
+          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
+          <BackColorSerialize>x:0</BackColorSerialize>
+          <BarColorSerialize>n:Lime</BarColorSerialize>
+          <BarGraphGrowthType>Center</BarGraphGrowthType>
+          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
+          <BarGraphReferenceValue>0</BarGraphReferenceValue>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
+          <CellConditions />
+          <ColumnType>Regular</ColumnType>
+          <DataSeriesConfigurable>true</DataSeriesConfigurable>
+          <DataTypeSerializable>double</DataTypeSerializable>
+          <FilterConditions />
+          <ForeColorSerialize>x:0</ForeColorSerialize>
+          <FormatDecimals>2</FormatDecimals>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>Med Cross Ago</Name>
+          <Period>
+            <BasePeriodType>Minute</BasePeriodType>
+            <BasePeriodValue>1</BasePeriodValue>
+            <Id>Day</Id>
+            <MarketDataType>Last</MarketDataType>
+            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+            <ReversalType>Tick</ReversalType>
+            <Value>1</Value>
+            <Value2>1</Value2>
+          </Period>
+          <PriceType>Close</PriceType>
+          <RequiresBars>true</RequiresBars>
+          <ShowInTotalRow>false</ShowInTotalRow>
+          <BarsBack>50</BarsBack>
+          <DataSeriesName>CrossedAgo</DataSeriesName>
+        </IndicatorColumn>
+      </Column>
+      <IndicatorClassName>NinjaTrader.Indicator.MACross</IndicatorClassName>
+      <IndicatorInput>
+        <PriceType>Close</PriceType>
+      </IndicatorInput>
+      <IndicatorColumnName>Med Cross Ago</IndicatorColumnName>
+      <IndicatorDataSeriesName>CrossedAgo</IndicatorDataSeriesName>
+      <Indicator>
+        <MACross xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>false</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable />
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>MACross</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>false</PaintPriceMarkers>
+          <Panel>0</Panel>
+          <PanelUI>1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>FastPlot</Name>
+              <PenSerializable>
+                <Color>n:Blue</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SlowPlot</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedAgo</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedDirection</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>true</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>0</ZOrder>
+          <Timeframe>Medium</Timeframe>
+        </MACross>
+      </Indicator>
+    </Column6>
+    <Column7>
+      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
+      <Width>74</Width>
+      <Column>
+        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AlertConditions />
+          <AltBarColorSerialize>n:Red</AltBarColorSerialize>
+          <BackColorSerialize>x:0</BackColorSerialize>
+          <BarColorSerialize>n:Lime</BarColorSerialize>
+          <BarGraphGrowthType>Center</BarGraphGrowthType>
+          <BarGraphGrowthMaxValue>1000</BarGraphGrowthMaxValue>
+          <BarGraphReferenceValue>0</BarGraphReferenceValue>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
+          <CellConditions>
+            <CellCondition>
+              <BackColorSerialize>x:0</BackColorSerialize>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>x:0</ForeColorSerialize>
+              <Text>Up</Text>
+              <Value>1</Value>
+            </CellCondition>
+            <CellCondition>
+              <BackColorSerialize>x:0</BackColorSerialize>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>n:Red</ForeColorSerialize>
+              <Text>Down</Text>
+              <Value>-1</Value>
+            </CellCondition>
+          </CellConditions>
+          <ColumnType>Regular</ColumnType>
+          <DataSeriesConfigurable>true</DataSeriesConfigurable>
+          <DataTypeSerializable>double</DataTypeSerializable>
+          <FilterConditions />
+          <ForeColorSerialize>x:0</ForeColorSerialize>
+          <FormatDecimals>2</FormatDecimals>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>Med Cross Dir</Name>
+          <Period>
+            <BasePeriodType>Minute</BasePeriodType>
+            <BasePeriodValue>1</BasePeriodValue>
+            <Id>Day</Id>
+            <MarketDataType>Last</MarketDataType>
+            <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+            <ReversalType>Tick</ReversalType>
+            <Value>1</Value>
+            <Value2>1</Value2>
+          </Period>
+          <PriceType>Close</PriceType>
+          <RequiresBars>true</RequiresBars>
+          <ShowInTotalRow>false</ShowInTotalRow>
+          <BarsBack>50</BarsBack>
+          <DataSeriesName>CrossedDirection</DataSeriesName>
+        </IndicatorColumn>
+      </Column>
+      <IndicatorClassName>NinjaTrader.Indicator.MACross</IndicatorClassName>
+      <IndicatorInput>
+        <PriceType>Close</PriceType>
+      </IndicatorInput>
+      <IndicatorColumnName>Med Cross Dir</IndicatorColumnName>
+      <IndicatorDataSeriesName>CrossedDirection</IndicatorDataSeriesName>
+      <Indicator>
+        <MACross xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>false</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable />
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>MACross</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>false</PaintPriceMarkers>
+          <Panel>0</Panel>
+          <PanelUI>1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>FastPlot</Name>
+              <PenSerializable>
+                <Color>n:Blue</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>SlowPlot</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>2</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedAgo</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>CrossedDirection</Name>
+              <PenSerializable>
+                <Color>n:Black</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>true</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>0</ZOrder>
+          <Timeframe>Medium</Timeframe>
+        </MACross>
       </Indicator>
     </Column7>
     <Column8>
@@ -447,32 +779,11 @@
           <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
           <CellConditions>
             <CellCondition>
-              <BackColorSerialize>n:LightGreen</BackColorSerialize>
-              <Condition>Greater</Condition>
-              <ForeColorSerialize>x:0</ForeColorSerialize>
-              <Text>Overbought</Text>
-              <Value>100</Value>
-            </CellCondition>
-            <CellCondition>
-              <BackColorSerialize>n:LightCoral</BackColorSerialize>
-              <Condition>Less</Condition>
-              <ForeColorSerialize>n:White</ForeColorSerialize>
-              <Text>Oversold</Text>
-              <Value>-100</Value>
-            </CellCondition>
-            <CellCondition>
-              <BackColorSerialize>n:Lime</BackColorSerialize>
-              <Condition>Greater</Condition>
-              <ForeColorSerialize>x:0</ForeColorSerialize>
-              <Text>Way Overbought</Text>
-              <Value>200</Value>
-            </CellCondition>
-            <CellCondition>
               <BackColorSerialize>n:Red</BackColorSerialize>
-              <Condition>Less</Condition>
-              <ForeColorSerialize>x:0</ForeColorSerialize>
-              <Text>Way Oversold</Text>
-              <Value>-200</Value>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>n:White</ForeColorSerialize>
+              <Text>Short Stopped</Text>
+              <Value>0</Value>
             </CellCondition>
           </CellConditions>
           <ColumnType>Regular</ColumnType>
@@ -482,11 +793,11 @@
           <ForeColorSerialize>x:0</ForeColorSerialize>
           <FormatDecimals>2</FormatDecimals>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>CCI(14)</Name>
+          <Name>Short Stops</Name>
           <Period>
             <BasePeriodType>Minute</BasePeriodType>
             <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
+            <Id>Day</Id>
             <MarketDataType>Last</MarketDataType>
             <PointAndFigurePriceType>Close</PointAndFigurePriceType>
             <ReversalType>Tick</ReversalType>
@@ -497,24 +808,24 @@
           <RequiresBars>true</RequiresBars>
           <ShowInTotalRow>false</ShowInTotalRow>
           <BarsBack>50</BarsBack>
-          <DataSeriesName>CCI</DataSeriesName>
+          <DataSeriesName>ShortCrossedAgo</DataSeriesName>
         </IndicatorColumn>
       </Column>
-      <IndicatorClassName>NinjaTrader.Indicator.CCI</IndicatorClassName>
+      <IndicatorClassName>NinjaTrader.Indicator.rcStops</IndicatorClassName>
       <IndicatorInput>
         <PriceType>Close</PriceType>
       </IndicatorInput>
-      <IndicatorColumnName>CCI(14)</IndicatorColumnName>
-      <IndicatorDataSeriesName>CCI</IndicatorDataSeriesName>
+      <IndicatorColumnName>Short Stops</IndicatorColumnName>
+      <IndicatorDataSeriesName>ShortCrossedAgo</IndicatorDataSeriesName>
       <Indicator>
-        <CCI xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <rcStops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
           <AutoScale>true</AutoScale>
           <BarsPeriods>
             <Period>
               <BasePeriodType>Minute</BasePeriodType>
               <BasePeriodValue>1</BasePeriodValue>
-              <Id>Minute</Id>
+              <Id>Day</Id>
               <MarketDataType>Last</MarketDataType>
               <PointAndFigurePriceType>Close</PointAndFigurePriceType>
               <ReversalType>Tick</ReversalType>
@@ -531,57 +842,11 @@
           <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
           <HorizontalGridLines>true</HorizontalGridLines>
           <InstrumentsSerializable />
-          <Lines>
-            <Line>
-              <Name>Level 2</Name>
-              <PenSerializable>
-                <Color>n:DarkGray</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>200</Value>
-            </Line>
-            <Line>
-              <Name>Level 1</Name>
-              <PenSerializable>
-                <Color>n:DarkGray</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>100</Value>
-            </Line>
-            <Line>
-              <Name>Zero line</Name>
-              <PenSerializable>
-                <Color>n:DarkGray</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>0</Value>
-            </Line>
-            <Line>
-              <Name>Level -1</Name>
-              <PenSerializable>
-                <Color>n:DarkGray</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>-100</Value>
-            </Line>
-            <Line>
-              <Name>Level -2</Name>
-              <PenSerializable>
-                <Color>n:DarkGray</Color>
-                <DashStyle>Solid</DashStyle>
-                <Width>1</Width>
-              </PenSerializable>
-              <Value>-200</Value>
-            </Line>
-          </Lines>
+          <Lines />
           <LinesConfigurable>true</LinesConfigurable>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>CCI</Name>
-          <Overlay>false</Overlay>
+          <Name>rcStops</Name>
+          <Overlay>true</Overlay>
           <PaintPriceMarkers>true</PaintPriceMarkers>
           <Panel>0</Panel>
           <PanelUI>1</PanelUI>
@@ -589,9 +854,20 @@
             <Plot>
               <Max>1.7976931348623157E+308</Max>
               <Min>-1.7976931348623157E+308</Min>
-              <Name>CCI</Name>
+              <Name>LongStopLoss</Name>
               <PenSerializable>
-                <Color>n:Orange</Color>
+                <Color>n:Firebrick</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>ShortStopLoss</Name>
+              <PenSerializable>
+                <Color>n:DarkViolet</Color>
                 <DashStyle>Solid</DashStyle>
                 <Width>1</Width>
               </PenSerializable>
@@ -604,15 +880,15 @@
           <SessionBreakLines>true</SessionBreakLines>
           <VerticalGridLines>true</VerticalGridLines>
           <ZOrder>0</ZOrder>
-          <Period>14</Period>
-        </CCI>
+          <LookbackPeriod>5</LookbackPeriod>
+        </rcStops>
       </Indicator>
     </Column8>
     <Column9>
-      <ClassName>NinjaTrader.MarketAnalyzer.TimeLastTick</ClassName>
+      <ClassName>NinjaTrader.MarketAnalyzer.IndicatorColumn</ClassName>
       <Width>80</Width>
       <Column>
-        <TimeLastTick xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <IndicatorColumn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <AlertConditions />
           <AltBarColorSerialize>n:Red</AltBarColorSerialize>
           <BackColorSerialize>x:0</BackColorSerialize>
@@ -622,19 +898,27 @@
           <BarGraphReferenceValue>0</BarGraphReferenceValue>
           <CalculateOnBarClose>false</CalculateOnBarClose>
           <CalculateOnBarCloseConfigurable>true</CalculateOnBarCloseConfigurable>
-          <CellConditions />
+          <CellConditions>
+            <CellCondition>
+              <BackColorSerialize>n:Red</BackColorSerialize>
+              <Condition>Equals</Condition>
+              <ForeColorSerialize>n:White</ForeColorSerialize>
+              <Text>Long Stopped</Text>
+              <Value>0</Value>
+            </CellCondition>
+          </CellConditions>
           <ColumnType>Regular</ColumnType>
-          <DataSeriesConfigurable>false</DataSeriesConfigurable>
-          <DataTypeSerializable>string</DataTypeSerializable>
+          <DataSeriesConfigurable>true</DataSeriesConfigurable>
+          <DataTypeSerializable>double</DataTypeSerializable>
           <FilterConditions />
           <ForeColorSerialize>x:0</ForeColorSerialize>
           <FormatDecimals>2</FormatDecimals>
           <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-          <Name>TimeLastTick</Name>
+          <Name>Long Stops</Name>
           <Period>
             <BasePeriodType>Minute</BasePeriodType>
             <BasePeriodValue>1</BasePeriodValue>
-            <Id>Minute</Id>
+            <Id>Day</Id>
             <MarketDataType>Last</MarketDataType>
             <PointAndFigurePriceType>Close</PointAndFigurePriceType>
             <ReversalType>Tick</ReversalType>
@@ -644,8 +928,82 @@
           <PriceType>Close</PriceType>
           <RequiresBars>true</RequiresBars>
           <ShowInTotalRow>false</ShowInTotalRow>
-        </TimeLastTick>
+          <BarsBack>50</BarsBack>
+          <DataSeriesName>LongCrossedAgo</DataSeriesName>
+        </IndicatorColumn>
       </Column>
+      <IndicatorClassName>NinjaTrader.Indicator.rcStops</IndicatorClassName>
+      <IndicatorInput>
+        <PriceType>Close</PriceType>
+      </IndicatorInput>
+      <IndicatorColumnName>Long Stops</IndicatorColumnName>
+      <IndicatorDataSeriesName>LongCrossedAgo</IndicatorDataSeriesName>
+      <Indicator>
+        <rcStops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+          <AutoScale>true</AutoScale>
+          <BarsPeriods>
+            <Period>
+              <BasePeriodType>Minute</BasePeriodType>
+              <BasePeriodValue>1</BasePeriodValue>
+              <Id>Day</Id>
+              <MarketDataType>Last</MarketDataType>
+              <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+              <ReversalType>Tick</ReversalType>
+              <Value>1</Value>
+              <Value2>1</Value2>
+            </Period>
+          </BarsPeriods>
+          <CalculateOnBarClose>false</CalculateOnBarClose>
+          <DisableScaleBuffer>false</DisableScaleBuffer>
+          <Displacement>0</Displacement>
+          <DisplayInDataBox>true</DisplayInDataBox>
+          <DrawOnPricePanel>true</DrawOnPricePanel>
+          <Enabled>true</Enabled>
+          <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+          <HorizontalGridLines>true</HorizontalGridLines>
+          <InstrumentsSerializable />
+          <Lines />
+          <LinesConfigurable>true</LinesConfigurable>
+          <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+          <Name>rcStops</Name>
+          <Overlay>true</Overlay>
+          <PaintPriceMarkers>true</PaintPriceMarkers>
+          <Panel>0</Panel>
+          <PanelUI>1</PanelUI>
+          <Plots>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>LongStopLoss</Name>
+              <PenSerializable>
+                <Color>n:Firebrick</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+            <Plot>
+              <Max>1.7976931348623157E+308</Max>
+              <Min>-1.7976931348623157E+308</Min>
+              <Name>ShortStopLoss</Name>
+              <PenSerializable>
+                <Color>n:DarkViolet</Color>
+                <DashStyle>Solid</DashStyle>
+                <Width>1</Width>
+              </PenSerializable>
+              <PlotStyle>Line</PlotStyle>
+            </Plot>
+          </Plots>
+          <PlotsConfigurable>true</PlotsConfigurable>
+          <ScaleJustification>Right</ScaleJustification>
+          <SelectedSeries>0</SelectedSeries>
+          <SessionBreakLines>true</SessionBreakLines>
+          <VerticalGridLines>true</VerticalGridLines>
+          <ZOrder>0</ZOrder>
+          <LookbackPeriod>5</LookbackPeriod>
+        </rcStops>
+      </Indicator>
     </Column9>
   </Columns>
 </NinjaTrader>

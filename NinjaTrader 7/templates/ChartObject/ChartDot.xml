@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.14</Version>
+  <Version>7.0.1000.18</Version>
   <Default>
     <ChartDot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AutoScale>false</AutoScale>
@@ -14,12 +14,12 @@
       <ScaleJustification>Right</ScaleJustification>
       <Selectable>true</Selectable>
       <SeparateZOrder>false</SeparateZOrder>
-      <Y>469.542735483871</Y>
-      <Tag>4</Tag>
-      <Time>2013-09-05T19:06:14</Time>
-      <VisibleOnInstrument>ZC 12-13</VisibleOnInstrument>
+      <Y>171.82649960161</Y>
+      <Tag>A</Tag>
+      <Time>2014-02-13T15:00:00</Time>
+      <VisibleOnInstrument>EOG</VisibleOnInstrument>
       <ZOrder>0</ZOrder>
-      <ColorSerialize>n:Red</ColorSerialize>
+      <ColorSerialize>n:Blue</ColorSerialize>
     </ChartDot>
   </Default>
 </NinjaTrader>

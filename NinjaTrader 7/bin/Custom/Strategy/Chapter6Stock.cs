@@ -40,12 +40,16 @@ namespace NinjaTrader.Strategy
 	/// Conditions: dP=10, eAXB=6, lTP=23, lO=true, lVT=5, pT=250, vP=10 - 5 day period
 	/// Results: PF=1.82, Net=68,714.09, Trades=779, AvgTrade=88.21, MaxDD=905.46 - w/ $15.5k Commission
 	/// 
-	/// Test - Using 9/15/99 - 1/1/2013 - NASDAQ 100
-	/// /// SVN rev x - 11/15/2013
+	/// Test - Using 9/15/99 - 1/1/2013 - NASDAQ 100 - no exit if close above DC
+	/// /// SVN rev 62 - 11/15/2013
 	/// Conditions: dP=8, eAXB=9, lTP=70, lO=true, lVT=3.2, pT=0, vP=14 - 1 day period
 	/// Results: PF=1.57, Net=281,577.08, Trades=3085, AvgTrade=91.27, MaxDD=2514.09 - includes $61.638.30 Commission
 	/// Conditions: dP=8, eAXB=9, lTP=70, lO=true, lVT=3.8, pT=0, vP=16 - 1 day period
 	/// Results: PF=1.63, Net=264,427.02, Trades=2610, AvgTrade=101.31, MaxDD=2442.50 - includes $52,147.80 Commission
+	/// w/ exit if close above DC was added 
+	/// Results: PF=1.59, Net=229,884.14, Trades=2642, AvgTrade=87.01, MaxDD=2325.23 - includes $57,787.16 Commission
+	/// w/ exit if close above DC was added and optimized for 250,300,350 profit (300 best with results below)
+	/// Results: PF=1.46, Net=152,689.89, Trades=2856, AvgTrade=53.46, MaxDD=1960.34 - includes $57,062.88 Commission
 	/// 
     /// </summary>
     [Description("Trades daily time period stocks, based on Chapter 5 of the book Building Reliable Trading Systems. Note when running live make sure to set the the 'Stop & target submission' property to ByStrategyPosition")]
@@ -59,7 +63,9 @@ namespace NinjaTrader.Strategy
         private bool longOnly = true; // Default setting for LongOnly
 		private double lowVolatilityThreshold = 3.8;  // 2.8 or 2.9 seem more like the book
         private double profitTarget = 0; // Default setting for ProfitTarget, based on a $5000 investment
-		private int volPeriod = 16;	// the book showed 20, but 9-10 seems more like his website is using
+		private int volPeriod = 16;	// the book showed 20, but 8-9 seems more like his website is using
+		
+		bool debugOn = false;
 		// User defined variables (add any user defined variables below)
 
 		private bool forceReversalShort = false;	// looks for a short signal before enabling the long signal
@@ -88,7 +94,6 @@ namespace NinjaTrader.Strategy
 			Add(DonchianChannelClose(donchianPeriod));			
 			Add(SMARick(LongerTermPeriod));
 			// Instrument.MasterInstrument.Name
-			Print("Initializing Strategy for " + Instrument.FullName);
         }
 
         /// <summary>
@@ -99,6 +104,9 @@ namespace NinjaTrader.Strategy
 			// Checks to make sure we have at least x or more bars
 			if (CurrentBar < LongerTermPeriod)
         		return;
+			
+			if (CurrentBar == LongerTermPeriod)
+				Print("Initializing Strategy for " + Instrument.FullName);
 
 			// EXIT CODE			
 			if (Position.MarketPosition == MarketPosition.Long)
@@ -114,6 +122,7 @@ namespace NinjaTrader.Strategy
 				
 				// Exit if short reversal detected
 				if (ExitAfterXBars == 0 && DonchianPeriod != 0 
+				//if (DonchianPeriod != 0 
 					&& Close[0] > MAX(Close, DonchianPeriod)[1]
 					)
 				{
@@ -136,10 +145,10 @@ namespace NinjaTrader.Strategy
 							Print(Time + " " + Instrument.FullName + " Entered long today at open. Enter Good til Canceled sell limit order at 156.82.");
 						}
 						else
-							if (false) Print(Time + " excluded for low volatility " + ((StdDev(Close, volPeriod)[0]/Close[0]) * 100));
+							if (debugOn) Print(Time + " excluded for low volatility " + ((StdDev(Close, volPeriod)[0]/Close[0]) * 100));
 					}
 					else
-						if (false) Print(Time + " excluded for longTermTrend");
+						if (debugOn) Print(Time + " excluded for longTermTrend");
 				}
 			}
 			
@@ -165,18 +174,18 @@ namespace NinjaTrader.Strategy
 		{
 			int Period = volPeriod;
 			double stdDevValue = StdDev(Close, Period)[0];
-			//Print (Time + " stdDev percent of price " + ((stdDevValue/Close[0]) * 100));
+			if (debugOn) Print (Time + " stdDev percent of price " + ((stdDevValue/Close[0]) * 100));
 			double stdDevPercentOfPrice = (stdDevValue/Close[0]) * 100;
 			Color colour = Color.Yellow;
 			if (stdDevPercentOfPrice >= 2) 
 			{
 				colour = Color.Red;
 			}
-			else if (stdDevPercentOfPrice >= 3) 
+			else if (stdDevPercentOfPrice >= 2.5) 
 			{
 				colour = Color.Green;
 			}
-			else if (stdDevPercentOfPrice >= 4) 
+			else if (stdDevPercentOfPrice >= 3.5) 
 			{		
 				colour = Color.Black;
 			}
@@ -186,9 +195,9 @@ namespace NinjaTrader.Strategy
 		
 		private int calcShares(int investment)
 		{
-			return (int) Math.Floor(investment/Close[0]);
-//			Print(Time + " shares: " + i);
-//			return 1; 
+			int shares = (int) Math.Floor(investment/Close[0]);
+			if (debugOn) Print(Time + " shares: " + shares);
+			return shares; 
 		}
 
 		// OnOrderUpdate() - Called when a strategy generated order changes state
@@ -198,7 +207,7 @@ namespace NinjaTrader.Strategy
 			{
 				if (order.OrderState == OrderState.Filled)
 				{
-					Print(Time + " order placed");
+					if (debugOn) Print(Time + " order filled");
 					//Print(Time + " entryLongOrder: " + order.ToString());
 					//entryLongOrder = null;
 				}
@@ -289,6 +298,14 @@ namespace NinjaTrader.Strategy
         {
             get { return lowVolatilityThreshold; }
             set { lowVolatilityThreshold = Math.Max(0, value); }
+        }
+
+        [Description("Debug On")]
+        [GridCategory("Parameters")]
+        public bool DebugOn
+        {
+            get { return debugOn; }
+            set { debugOn = value; }
         }
 
         [Description("Trade only longs")]
