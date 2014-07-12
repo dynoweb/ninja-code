@@ -493,8 +493,6 @@ namespace NinjaTrader.Strategy
 			
         }
 
-		// ███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
-		
 		#region daily pnl
 		
 		// avoid the next trade entry but know to close the open one

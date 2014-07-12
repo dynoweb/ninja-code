@@ -24,10 +24,14 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables
         private int enableStops = 0; 
-        private int useTarget2 = 1; 
         private int tradeSize = 50000; 
+        private int useTarget2 = 1; 
+		
         // User defined variables (add any user defined variables below)
+		private OpeningRangeBreakout orb = null;
 		private bool enableTrade = false;
+		IOrder entryLongOrder = null;
+		IOrder entryShortOrder = null;
         #endregion
 
         /// <summary>
@@ -35,11 +39,18 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
-			//Add(OpeningRangeBreakout(5));
+			Add(OpeningRangeBreakout(5));
 			
 			// Triggers the exit on close function 30 seconds prior to session end 
     		ExitOnClose = true;
     		ExitOnCloseSeconds = 60;
+			
+			// Applies to managed trades only
+			//EntriesPerDirection = 2;
+			//EntryHandling = EntryHandling.UniqueEntries;
+			
+			Unmanaged = true;
+			TimeInForce = Cbi.TimeInForce.Day;
 
             CalculateOnBarClose = true;
         }
@@ -53,16 +64,29 @@ namespace NinjaTrader.Strategy
 			if (BarsInProgress != 0)
 		    	return;
 			
-			//OpeningRangeBreakout orb = OpeningRangeBreakout(5);
-			ATR(5)[0];
+			// If it's Friday, do not trade.
+//		    if (Time[0].DayOfWeek == DayOfWeek.Friday)
+//        		return;
+
+			// Don't enter new trades after 9am CST
+			if (ToTime(Time[0]) >= 90000)
+			{
+				if (entryLongOrder  != null) CancelOrder(entryLongOrder);
+				if (entryShortOrder != null) CancelOrder(entryShortOrder);
+				entryLongOrder = null;
+				entryShortOrder = null;
+				return;
+			}
 			
 			if (Bars.FirstBarOfSession) 
+			{
+				//Print(Time + " first bar of session");
 				enableTrade = true;
+				entryLongOrder = null;
+				entryShortOrder = null;
+				return; // wait until second bar before considering a trade
+			}
 			
-			double longEntry = CurrentPrice() + (ATR(5)[0] * 0.5);
-			double shortEntry = CurrentPrice() - (ATR(5)[0] * 0.5);
-			//Print(Time + " orb.LongEntry[0]: " + orb.LongEntry[0]);
-			 
 			// Buy Limit Order
 			// A Buy Limit Order is an order to buy a specified number of shares of a 
 			// stock at a designated price or lower, at a price that is below the current 
@@ -74,45 +98,88 @@ namespace NinjaTrader.Strategy
 			// price. Once a stock's price trades at or above the price you have specified, 
 			// it becomes a Market Order to buy.
 			
-			if (Position.MarketPosition == MarketPosition.Flat)
+			orb = OpeningRangeBreakout(5);
+			
+			if (Position.MarketPosition == MarketPosition.Flat && enableTrade)
 			{
 				int shares = calcShares(TradeSize);
 
-				Print(Time + "  GetCurrentBid() @ " + GetCurrentBid() 
-					+ "  EnterLongStop @ " + orb.LongEntry[0] 
-					+ "  EnterShortStop @ " + orb.ShortEntry[0]);
-				
-				if (GetCurrentBid() < orb.LongEntry[0])
+				if (entryLongOrder == null && (Time[0].DayOfWeek == DayOfWeek.Friday || Time[0].DayOfWeek == DayOfWeek.Tuesday))
 				{
-					this.EnterLongStop(shares, orb.LongEntry[0]);
+					if (GetCurrentBid() < orb.LongEntry[0])
+					{
+						entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, shares, orb.LongEntry[0], orb.LongEntry[0], "dayTrade", "LongStopLimit");
+					} 
+					else
+					{
+						entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, shares, orb.LongEntry[0], 0, "dayTrade", "LongLimit");
+					}
 				}
-				if (GetCurrentBid() > orb.ShortEntry[0])
+				
+				if (entryShortOrder == null && (Time[0].DayOfWeek == DayOfWeek.Monday || Time[0].DayOfWeek == DayOfWeek.Tuesday))
 				{
-					this.EnterShortStop(shares, orb.ShortEntry[0]);
+					if (GetCurrentBid() > orb.ShortEntry[0])
+					{
+						//this.DrawDot(CurrentBar + "shortstop", true, 0, orb.ShortEntry[0], Color.Cyan);
+						entryShortOrder = SubmitOrder(0, OrderAction.Sell, OrderType.StopLimit, shares, orb.ShortEntry[0], orb.ShortEntry[0], "dayTrade", "ShortStopLimit");
+					}
+					else
+					{		
+						//this.DrawDot(CurrentBar + "shortlimit", true, 0, orb.ShortEntry[0], Color.Black);
+						entryShortOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, shares, orb.ShortEntry[0], 0, "dayTrade", "ShortStopLimit");
+					}
 				}
 			}
-			else
+        }
+		
+		protected override void OnExecution(IExecution execution)
+		{
+			double limitPrice = 0;
+			double stopPrice = 0;
+			
+			if (execution.Order == null)
 			{
-				enableTrade = false;
-//				if (Position.MarketPosition == MarketPosition.Long)
-//				{
-//					this.ExitLongLimit(orb.LongTarget1[0]);
-//					if (UseTarget2 == 1)
-//						this.ExitLongLimit(orb.LongTarget2[0]);
-//					if (EnableStops == 1)
-//						this.ExitLongStop(orb.LongStop[0]);
-//				} 
-//				else
-//				{
-//					this.ExitShortLimit(orb.ShortTarget1[0]);
-//					if (UseTarget2 == 1)
-//						this.ExitShortLimit(orb.ShortTarget2[0]);
-//					if (EnableStops == 1)
-//						this.ExitShortStop(orb.ShortStop[0]);
-//				}
+				//Print(Time + " -->> OnExecution.Order is null");
+				return;
 			}
 			
-        }
+			
+			
+			if (execution.Order.OrderState == OrderState.Filled)
+			{
+				enableTrade = false; // limit 1 trade / day
+				if (execution.Order.OrderAction == OrderAction.Buy)
+				{
+					stopPrice = orb.LongStop[0];
+					limitPrice = orb.LongTarget1[0];
+					if (UseTarget2 == 1)
+						limitPrice = orb.LongTarget2[0];
+					
+					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, 0, "closeDayTrade", "Close Long Limit");
+					if (EnableStops == 1)
+						SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "closeDayTrade", "Close Long Stop");
+				}
+				
+				if (execution.Order.OrderAction == OrderAction.Sell)
+				{
+					stopPrice = orb.ShortStop[0];
+					limitPrice = orb.ShortTarget1[0];
+					if (UseTarget2 == 1)
+						limitPrice = orb.ShortTarget2[0];
+					
+					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, limitPrice, 0, "closeDayTrade", "Close Short Limit");
+					if (EnableStops == 1)
+						SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 0, stopPrice, "closeDayTrade", "Close Short Stop");
+				}
+			} 
+			else 
+			{
+				Print(Time + " execution.Order: " + execution.Order.ToString());
+			}
+				
+		}
 		
 		private int calcShares(int investment)
 		{

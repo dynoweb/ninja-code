@@ -42,6 +42,8 @@ namespace NinjaTrader.Strategy
 	///   Long  - PF 1.84, 18 Range, 3/30 MOM, 12 bars since entry, $8,475.00 profit, $775.00 MDD, 61.11%
 	///   Short - PF 1.17, 20 Range, 7/20 MOM, 7 bars since entry, $1,285.00 profit, $2,515.00 MDD, 56.14%
 	/// 
+	/// Testing ES 2013-6/9/2014 with 1 target at 2 had PF of 1.2 - $5797.50 Net, $3500 MDD, 56.72% profitable - w/ commission 
+	/// 
     /// </summary>
     [Description("This strategy is based on concepts from the TJFreeAUDUSD strategy by Troy TJ Noonan, developer PremierTraderUniversity")]
     public class TrendJumper : Strategy
@@ -51,11 +53,11 @@ namespace NinjaTrader.Strategy
         private int eMA1Len = 15; //50; // Default setting for Trailing Stop
         private int eMA2Len = 200; // Default setting for Trend Filter
         private int entryOffsetTics = 0; // Default setting for EntryOffsetTics
-        private int mOM1Len = 3; // Default setting for MOM1Len
-        private int mOM2Len = 26; // 9; // Default setting for MOM2Len
+        private int mOM1Len = 4; // Default setting for MOM1Len
+        private int mOM2Len = 24; // 9; // Default setting for MOM2Len
 		private int sinceEntry = 4;
-        private int stopOffsetTics = 0; // Default setting for StopOffsetTics
-        private double tgt1X = 1.5; // Default setting for Tgt1X
+        private int stopOffsetTics = 12; // Default setting for StopOffsetTics
+        private double tgt1X = 1.75; // Default setting for Tgt1X
         private double tgt2X = 2.0; // Default setting for Tgt2X
         private double tgt3X = 4.5; // Default setting for Tgt3X
         private int trailLen = 9; // Default setting for TrailLen
@@ -65,6 +67,9 @@ namespace NinjaTrader.Strategy
 		IOrder entryShortOrder = null;
 		int orderSize = 1;
 		
+		double limitPrice = 0;
+		double stopPrice = 0;
+			
         #endregion
 
         /// <summary>
@@ -103,7 +108,8 @@ namespace NinjaTrader.Strategy
 			
 			ExitOnClose = true;
             CalculateOnBarClose = true;
-		//	Unmanaged = true;
+			if (SinceEntry == 0)
+				Unmanaged = true;
         }
 
         /// <summary>
@@ -116,8 +122,11 @@ namespace NinjaTrader.Strategy
 			//double approxEntry = Instrument.MasterInstrument.Round2TickSize(Position.AvgPrice);
 			
 			
+			
+			
 			if (Position.MarketPosition != MarketPosition.Flat
-				&& BarsSinceEntry() >= SinceEntry) 
+				&& BarsSinceEntry() >= SinceEntry
+				&& SinceEntry > 0) 
 			{
 				if (Position.MarketPosition == MarketPosition.Long)
 				{
@@ -134,33 +143,51 @@ namespace NinjaTrader.Strategy
 			{
 				if (tj.LongEntry.ContainsValue(0)) 
 				{
-					//EnterLong();
-					/*
 					DrawArrowUp(CurrentBar.ToString()+"LE", 0, Low[0] - 10 * TickSize, Color.Green);
-					//this.EnterLongLimit(Close[0] - entryOffsetTics * TickSize);
-					entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
-						tj.LongEntry[0], tj.LongEntry[0], "dayTrade", "LongStopLimit");
-					*/
+
+					if (SinceEntry > 0)
+					{
+						EnterLong();
+					} 
+					else
+					{
+						//this.EnterLongLimit(Close[0] - entryOffsetTics * TickSize);
+						entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
+							tj.LongEntry[0], tj.LongEntry[0], "dayTrade", "LongStopLimit");
+						
+						stopPrice = tj.LongStop[0];
+						limitPrice = tj.LongTgt1[0];
+					}
 				} 
 				if (tj.ShortEntry.ContainsValue(0)) 
 				{
-					EnterShort();
-					/*
 					DrawArrowDown(CurrentBar.ToString()+"SE", 0, High[0] + 10 * TickSize, Color.Red);
-					entryShortOrder = SubmitOrder(0, OrderAction.Sell, OrderType.StopLimit, orderSize, 
-						tj.ShortEntry[0], tj.ShortEntry[0], "dayTrade", "ShortStopLimit");
-					*/
-
+					
+					if (SinceEntry > 0)
+					{
+						EnterShort();
+					} 
+					else
+					{
+						entryShortOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, orderSize, 
+							tj.ShortEntry[0], tj.ShortEntry[0], "dayTrade", "Sell Short");
+						
+						stopPrice = tj.ShortStop[0];
+						limitPrice = tj.ShortTgt1[0];
+					}
 				} 
 			}
         }
 		
-		/*
+		
 		#region OnExecution
 		protected override void OnExecution(IExecution execution)
 		{
-			double limitPrice = 0;
-			double stopPrice = 0;
+			// we are just counting bars until exit, no need for stops
+			if (SinceEntry > 0) 
+			{
+				return;
+			}
 			
 			if (execution.Order == null)
 			{
@@ -175,8 +202,6 @@ namespace NinjaTrader.Strategy
 				//enableTrade = false; // limit 1 trade / day
 				if (execution.Order.OrderAction == OrderAction.Buy)
 				{
-					stopPrice = tj.LongStop[0];
-					limitPrice = tj.LongTgt1[0];
 					//if (UseTarget2 == 1)
 					//	limitPrice = tj.LongTgt2[0];
 					
@@ -187,9 +212,7 @@ namespace NinjaTrader.Strategy
 				}
 				
 				if (execution.Order.OrderAction == OrderAction.Sell)
-				{
-					stopPrice = tj.ShortStop[0];
-					limitPrice = tj.ShortTgt1[0];
+				{					
 					//if (UseTarget2 == 1)
 					//	limitPrice = tj.ShortTgt2[0];
 					
@@ -206,7 +229,7 @@ namespace NinjaTrader.Strategy
 				
 		}
 		#endregion		
-		*/
+		
 
         #region Properties
         [Description("Trailing Stop")]

@@ -1,19 +1,19 @@
 <NinjaTrader>
-  <Version>7.0.1000.11</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.Bollinger</ClassName>
   <Default>
     <Bollinger xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>true</AutoScale>
+      <AutoScale>false</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
           <BasePeriodValue>1</BasePeriodValue>
-          <Id>Tick</Id>
+          <Id>Day</Id>
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>64</Value>
+          <Value>1</Value>
           <Value2>1</Value2>
         </Period>
       </BarsPeriods>
@@ -25,13 +25,13 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>NQ 03-13 Globex</InstrumentsSerializable>
+      <InstrumentsSerializable>CAM Default</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
       <Name>Bollinger</Name>
       <Overlay>true</Overlay>
-      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <PaintPriceMarkers>false</PaintPriceMarkers>
       <Panel>-2</Panel>
       <PanelUI>-1</PanelUI>
       <Plots>
@@ -40,8 +40,8 @@
           <Min>-1.7976931348623157E+308</Min>
           <Name>Upper band</Name>
           <PenSerializable>
-            <Color>n:Chartreuse</Color>
-            <DashStyle>Solid</DashStyle>
+            <Color>n:Teal</Color>
+            <DashStyle>Dash</DashStyle>
             <Width>1</Width>
           </PenSerializable>
           <PlotStyle>Line</PlotStyle>
@@ -51,7 +51,7 @@
           <Min>-1.7976931348623157E+308</Min>
           <Name>Middle band</Name>
           <PenSerializable>
-            <Color>n:Cyan</Color>
+            <Color>n:Gainsboro</Color>
             <DashStyle>Solid</DashStyle>
             <Width>1</Width>
           </PenSerializable>
@@ -62,8 +62,8 @@
           <Min>-1.7976931348623157E+308</Min>
           <Name>Lower band</Name>
           <PenSerializable>
-            <Color>n:Chartreuse</Color>
-            <DashStyle>Solid</DashStyle>
+            <Color>n:DarkCyan</Color>
+            <DashStyle>Dash</DashStyle>
             <Width>1</Width>
           </PenSerializable>
           <PlotStyle>Line</PlotStyle>

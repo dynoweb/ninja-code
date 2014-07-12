@@ -26,6 +26,9 @@ namespace NinjaTrader.Indicator
 			private double priorHigh = 0;
 			private double priorLow = Double.MaxValue;
 			private int donchianPeriod = 22;
+			private int smaPeriod = 100;
+			private Color upColor = Color.Green;
+			private Color downColor = Color.Red;
         #endregion
 
         /// <summary>
@@ -40,8 +43,10 @@ namespace NinjaTrader.Indicator
 			Add(new Plot(Color.SlateBlue, "UpperDonchian"));
 			Add(new Plot(Color.SlateBlue, "LowerDonchian"));
 			Add(new Plot(Color.Green, "Trend"));
-
-            
+			
+			Plots[6].Pen.Width = 2;
+			Plots[6].Pen.Color = Color.Gray;
+			
 			Overlay				= true;			
         }
 
@@ -50,6 +55,34 @@ namespace NinjaTrader.Indicator
         /// </summary>
         protected override void OnBarUpdate()
         {
+			// Code for SMA 100 line
+			if (CurrentBar == 0)
+				Trend.Set(Input[0]);
+			else
+			{
+				double last = Trend[1] * Math.Min(CurrentBar, smaPeriod);
+
+				if (CurrentBar >= smaPeriod)
+				{
+					Trend.Set((last + Input[0] - Input[smaPeriod]) / Math.Min(CurrentBar, smaPeriod));
+					
+					if (CountIf(delegate {return Trend[0] > Trend[1];}, 15) == 15)
+					//if (Rising(Trend))
+					{
+						PlotColors[6][0] = upColor;
+					}
+					else if (CountIf(delegate {return Trend[0] < Trend[1];}, 15) == 15)
+					{
+						PlotColors[6][0] = downColor;
+					}
+					
+				}
+				else
+					Trend.Set((last + Input[0]) / (Math.Min(CurrentBar, smaPeriod) + 1));
+				
+			}
+
+			// Code for other indicators
 			if (CurrentBar < 5)
 				return;
 			
@@ -126,6 +159,13 @@ namespace NinjaTrader.Indicator
         public DataSeries LowerDonchian
         {
             get { return Values[5]; }
+        }
+
+        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        public DataSeries Trend
+        {
+            get { return Values[6]; }
         }
 
         #endregion
