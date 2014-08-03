@@ -32,6 +32,9 @@ namespace NinjaTrader.Strategy
 	/// - 1/14/2013 - Replay testing from CL 02-13, 1 min bars, from 11/17/2012 - 1/12/2013 - 20,true,35,10,7,2,0,30, $3,470.00
 	/// - 3/23/2013 - YM 8/18 TF 8/13 ES 5/12 channel curve fitted
 	/// 
+	/// Update Release
+	/// - 8/3/2014 - increased the starting contracts to 5 and decreased the number of reversals to 1. Big Mike released.
+	/// 
 	/// Changes
     /// </summary>
     [Description("Uses CL to jump in a breakout from a Range using unmanaged order methods. Currently based on 20, 1 Min Periods")]
@@ -40,8 +43,22 @@ namespace NinjaTrader.Strategy
         #region Variables
 
 		// Exposed variables
-       // private int abeProfitTrigger = 20; // ATM Strategy Variables - sets stop loss to B/E when price moves to this target
+       // ATM Strategy Variables - sets stop loss to B/E when price moves to this target
 		private bool breakEvenLast = false;
+		private int channelMax = 35;
+		private int channelMin = 5;
+		private bool enableSummary = true;
+		private int extendPeriod = 0;	
+		private int hour = 5; // CST
+		private int maxReversals = 1;		
+		private int minute = 0;
+		private int period = 60;
+		private int sessionHighLow = 0;
+		private double stdDevMax = 0.09;
+		private bool useTrailing = false;
+		
+       // private int abeProfitTrigger = 20; // ATM Strategy Variables - sets stop loss to B/E when price moves to this target
+		/*private bool breakEvenLast = false;
 		private int channelMax = 45;
 		private int channelMin = 15;
 		private bool enableSummary = true;
@@ -53,7 +70,7 @@ namespace NinjaTrader.Strategy
 		private int sessionHighLow = 0;
 		private bool useTrailing = false;
 		private double stdDevMax = 0.06;
-		/*
+		*//*
 		// Optimized for FDAX 1 min
 		private bool breakEvenLast = false;
 		private int channelMax = 60;
@@ -78,7 +95,7 @@ namespace NinjaTrader.Strategy
 		private	Font textFont = new Font("Arial",8,FontStyle.Regular);
 		
         // User defined variables (add any user defined variables below)
-        private int startQty = 1; // Start Order Qty, converts to new Qty after reversal
+        private static int startQty = 5; // Starting Order Qty for the day, converts to new Qty after reversal
 		private int qty = 1;
 		private int tradeCount = 0;
 		private double shortStop = 0;
@@ -150,13 +167,13 @@ namespace NinjaTrader.Strategy
 			double limitPrice = 0;
 			double stopPrice = 0;
 			
-			DateTime exp = new DateTime(2014, 1, 1);
+			DateTime exp = new DateTime(2020, 1, 1);
 			if (BarsPeriod.Id != PeriodType.Minute || ToDay(Time[0]) > ToDay(exp))
 				return;
 
 			// If it's Friday, do not trade.
-		    if (Time[0].DayOfWeek == DayOfWeek.Friday)
-        		return;
+		    //if (Time[0].DayOfWeek == DayOfWeek.Tuesday)
+        	//	return;
 
 			// reset variables at the start of each day
 			if (Bars.BarsSinceSession == 1)
