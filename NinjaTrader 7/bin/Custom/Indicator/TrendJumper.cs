@@ -101,7 +101,7 @@ namespace NinjaTrader.Indicator
 
 			//Print(Time + " " + CurrentBar + " " + crossedAboveBarNumber + " " + crossedBelowBarNumber);
 			
-			double barHeight = High[0] - Low[0]; // Range()[0]; //
+			double barHeight = Range()[0]; //High[0] - Low[0]; // 
 			
 			PlotColors[0][0] = Color.DarkBlue;
 			PlotColors[1][0] = Color.DarkBlue;
@@ -118,17 +118,17 @@ namespace NinjaTrader.Indicator
 			{				
 				LongEntry.Set(High[0] + entryOffsetTicks * TickSize);
 				LongStop.Set(Low[0] - stopOffsetTicks * TickSize);
-				LongTgt1.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt1X * barHeight * TickSize));
-				LongTgt2.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt2X * barHeight * TickSize));
-				LongTgt3.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt3X * barHeight * TickSize));
+				LongTgt1.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt1X * barHeight));
+				LongTgt2.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt2X * barHeight));
+				LongTgt3.Set(High[0] + Instrument.MasterInstrument.Round2TickSize(tgt3X * barHeight));
 			}
 			if (isShortSignal())
 			{
 				ShortEntry.Set(Low[0] - entryOffsetTicks * TickSize);
 				ShortStop.Set(High[0] + stopOffsetTicks * TickSize);
-				ShortTgt1.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt1X * barHeight * TickSize));
-				ShortTgt2.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt2X * barHeight * TickSize));
-				ShortTgt3.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt3X * barHeight * TickSize));
+				ShortTgt1.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt1X * barHeight));
+				ShortTgt2.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt2X * barHeight));
+				ShortTgt3.Set(Low[0] - Instrument.MasterInstrument.Round2TickSize(tgt3X * barHeight));
 			}
 
 		}
