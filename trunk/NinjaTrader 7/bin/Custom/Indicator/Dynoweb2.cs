@@ -332,53 +332,53 @@ namespace NinjaTrader.Indicator
 {
     public partial class Indicator : IndicatorBase
     {
-        private TrendJumper[] cacheTrendJumper = null;
+        private Dynoweb2[] cacheDynoweb2 = null;
 
-        private static TrendJumper checkTrendJumper = new TrendJumper();
+        private static Dynoweb2 checkDynoweb2 = new Dynoweb2();
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public TrendJumper TrendJumper(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Dynoweb2 Dynoweb2(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
-            return TrendJumper(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
+            return Dynoweb2(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public TrendJumper TrendJumper(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Dynoweb2 Dynoweb2(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
-            if (cacheTrendJumper != null)
-                for (int idx = 0; idx < cacheTrendJumper.Length; idx++)
-                    if (cacheTrendJumper[idx].EMA1Len == eMA1Len && cacheTrendJumper[idx].EMA2Len == eMA2Len && cacheTrendJumper[idx].LengthFast == lengthFast && cacheTrendJumper[idx].LengthSlow == lengthSlow && Math.Abs(cacheTrendJumper[idx].Tgt1X - tgt1X) <= double.Epsilon && Math.Abs(cacheTrendJumper[idx].Tgt2X - tgt2X) <= double.Epsilon && Math.Abs(cacheTrendJumper[idx].Tgt3X - tgt3X) <= double.Epsilon && cacheTrendJumper[idx].EqualsInput(input))
-                        return cacheTrendJumper[idx];
+            if (cacheDynoweb2 != null)
+                for (int idx = 0; idx < cacheDynoweb2.Length; idx++)
+                    if (cacheDynoweb2[idx].EMA1Len == eMA1Len && cacheDynoweb2[idx].EMA2Len == eMA2Len && cacheDynoweb2[idx].LengthFast == lengthFast && cacheDynoweb2[idx].LengthSlow == lengthSlow && Math.Abs(cacheDynoweb2[idx].Tgt1X - tgt1X) <= double.Epsilon && Math.Abs(cacheDynoweb2[idx].Tgt2X - tgt2X) <= double.Epsilon && Math.Abs(cacheDynoweb2[idx].Tgt3X - tgt3X) <= double.Epsilon && cacheDynoweb2[idx].EqualsInput(input))
+                        return cacheDynoweb2[idx];
 
-            lock (checkTrendJumper)
+            lock (checkDynoweb2)
             {
-                checkTrendJumper.EMA1Len = eMA1Len;
-                eMA1Len = checkTrendJumper.EMA1Len;
-                checkTrendJumper.EMA2Len = eMA2Len;
-                eMA2Len = checkTrendJumper.EMA2Len;
-                checkTrendJumper.LengthFast = lengthFast;
-                lengthFast = checkTrendJumper.LengthFast;
-                checkTrendJumper.LengthSlow = lengthSlow;
-                lengthSlow = checkTrendJumper.LengthSlow;
-                checkTrendJumper.Tgt1X = tgt1X;
-                tgt1X = checkTrendJumper.Tgt1X;
-                checkTrendJumper.Tgt2X = tgt2X;
-                tgt2X = checkTrendJumper.Tgt2X;
-                checkTrendJumper.Tgt3X = tgt3X;
-                tgt3X = checkTrendJumper.Tgt3X;
+                checkDynoweb2.EMA1Len = eMA1Len;
+                eMA1Len = checkDynoweb2.EMA1Len;
+                checkDynoweb2.EMA2Len = eMA2Len;
+                eMA2Len = checkDynoweb2.EMA2Len;
+                checkDynoweb2.LengthFast = lengthFast;
+                lengthFast = checkDynoweb2.LengthFast;
+                checkDynoweb2.LengthSlow = lengthSlow;
+                lengthSlow = checkDynoweb2.LengthSlow;
+                checkDynoweb2.Tgt1X = tgt1X;
+                tgt1X = checkDynoweb2.Tgt1X;
+                checkDynoweb2.Tgt2X = tgt2X;
+                tgt2X = checkDynoweb2.Tgt2X;
+                checkDynoweb2.Tgt3X = tgt3X;
+                tgt3X = checkDynoweb2.Tgt3X;
 
-                if (cacheTrendJumper != null)
-                    for (int idx = 0; idx < cacheTrendJumper.Length; idx++)
-                        if (cacheTrendJumper[idx].EMA1Len == eMA1Len && cacheTrendJumper[idx].EMA2Len == eMA2Len && cacheTrendJumper[idx].LengthFast == lengthFast && cacheTrendJumper[idx].LengthSlow == lengthSlow && Math.Abs(cacheTrendJumper[idx].Tgt1X - tgt1X) <= double.Epsilon && Math.Abs(cacheTrendJumper[idx].Tgt2X - tgt2X) <= double.Epsilon && Math.Abs(cacheTrendJumper[idx].Tgt3X - tgt3X) <= double.Epsilon && cacheTrendJumper[idx].EqualsInput(input))
-                            return cacheTrendJumper[idx];
+                if (cacheDynoweb2 != null)
+                    for (int idx = 0; idx < cacheDynoweb2.Length; idx++)
+                        if (cacheDynoweb2[idx].EMA1Len == eMA1Len && cacheDynoweb2[idx].EMA2Len == eMA2Len && cacheDynoweb2[idx].LengthFast == lengthFast && cacheDynoweb2[idx].LengthSlow == lengthSlow && Math.Abs(cacheDynoweb2[idx].Tgt1X - tgt1X) <= double.Epsilon && Math.Abs(cacheDynoweb2[idx].Tgt2X - tgt2X) <= double.Epsilon && Math.Abs(cacheDynoweb2[idx].Tgt3X - tgt3X) <= double.Epsilon && cacheDynoweb2[idx].EqualsInput(input))
+                            return cacheDynoweb2[idx];
 
-                TrendJumper indicator = new TrendJumper();
+                Dynoweb2 indicator = new Dynoweb2();
                 indicator.BarsRequired = BarsRequired;
                 indicator.CalculateOnBarClose = CalculateOnBarClose;
 #if NT7
@@ -396,11 +396,11 @@ namespace NinjaTrader.Indicator
                 Indicators.Add(indicator);
                 indicator.SetUp();
 
-                TrendJumper[] tmp = new TrendJumper[cacheTrendJumper == null ? 1 : cacheTrendJumper.Length + 1];
-                if (cacheTrendJumper != null)
-                    cacheTrendJumper.CopyTo(tmp, 0);
+                Dynoweb2[] tmp = new Dynoweb2[cacheDynoweb2 == null ? 1 : cacheDynoweb2.Length + 1];
+                if (cacheDynoweb2 != null)
+                    cacheDynoweb2.CopyTo(tmp, 0);
                 tmp[tmp.Length - 1] = indicator;
-                cacheTrendJumper = tmp;
+                cacheDynoweb2 = tmp;
                 return indicator;
             }
         }
@@ -417,18 +417,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.TrendJumper TrendJumper(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Indicator.Dynoweb2 Dynoweb2(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
-            return _indicator.TrendJumper(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
+            return _indicator.Dynoweb2(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public Indicator.TrendJumper TrendJumper(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Indicator.Dynoweb2 Dynoweb2(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
-            return _indicator.TrendJumper(input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
+            return _indicator.Dynoweb2(input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
         }
     }
 }
@@ -443,21 +443,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.TrendJumper TrendJumper(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Indicator.Dynoweb2 Dynoweb2(int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
-            return _indicator.TrendJumper(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
+            return _indicator.Dynoweb2(Input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
         }
 
         /// <summary>
         /// Enter the description of your new custom indicator here
         /// </summary>
         /// <returns></returns>
-        public Indicator.TrendJumper TrendJumper(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
+        public Indicator.Dynoweb2 Dynoweb2(Data.IDataSeries input, int eMA1Len, int eMA2Len, int lengthFast, int lengthSlow, double tgt1X, double tgt2X, double tgt3X)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.TrendJumper(input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
+            return _indicator.Dynoweb2(input, eMA1Len, eMA2Len, lengthFast, lengthSlow, tgt1X, tgt2X, tgt3X);
         }
     }
 }
