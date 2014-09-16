@@ -24,13 +24,13 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables
         private double target1 = 1.0; // Default setting for Target1
-        private double target2 = 1.5; // Default setting for Target2
-        private double target3 = 2.0; // Default setting for Target3
+        private double target2 = 5.0; // Default setting for Target2
+        private double target3 = 7.5; // Default setting for Target3
 		
-			int ema1 = 14;
+			int ema1 = 13;
 			int ema2 = 28;
-			int lengthFast = 2;
-			int lengthSlow = 6;
+			int lengthFast = 5;
+			int lengthSlow = 8;
 			
         // User defined variables (add any user defined variables below)
 		Dynoweb2 dw;	// my indicator for this strategy
@@ -72,8 +72,9 @@ namespace NinjaTrader.Strategy
 			dw.Plots[11].Pen.DashStyle = DashStyle.Solid;
 			dw.Plots[11].PlotStyle = PlotStyle.Line;
 			dw.Plots[12].Pen.Color = Color.Fuchsia;
-			Add(dw);
-			Add(PitColor(Color.Black, 83000, 25, 161500));
+			dw.AutoScale = false;
+			//Add(dw);
+			//Add(PitColor(Color.Black, 83000, 25, 161500));
 			
 			Font labelFont = new Font("Arial", 12, FontStyle.Bold);
 			String label = Name + " " + Instrument.FullName +				
@@ -81,9 +82,9 @@ namespace NinjaTrader.Strategy
 				"\nTickSize: " + Instrument.MasterInstrument.TickSize +
 				" TickValue: $" + Instrument.MasterInstrument.PointValue * Instrument.MasterInstrument.TickSize; 
 			
-			//Add(BMTChartLabel(Color.DarkBlue, labelFont, Color.Yellow, 25, label, TextPosition.TopRight));
+			Add(BMTChartLabel(Color.DarkBlue, labelFont, Color.Yellow, 25, label, TextPosition.TopRight));
 			
-			Add(this.RicksChartLabel(Color.DarkBlue, Color.Yellow, label, labelFont, 25, TextPosition.TopLeft));
+			//Add(RicksChartLabel(Color.DarkBlue, Color.Yellow, labelFont, 25, label, TextPosition.TopLeft));
 			
 			ExitOnClose = true;
             CalculateOnBarClose = true;
@@ -111,7 +112,11 @@ namespace NinjaTrader.Strategy
 				// reset these each day
 				tradeCount = 0;
 				dayNetBalance = 0;
-        		return;
+				if (Position.MarketPosition == MarketPosition.Flat)	// manage trades if still in a trade
+				{
+					// Don't enter new trades after 2pm
+        			return;
+				}
 			}
 
 			
@@ -192,12 +197,23 @@ namespace NinjaTrader.Strategy
 			if (entryLongOrder != null && entryLongOrder.OrderState == OrderState.Filled)
 			{
 				//Print(Time + " checking if stop adjustment is required");
+				stopPrice = Instrument.MasterInstrument.Round2TickSize(dw.TrailingStop[HighestBar(dw.TrailingStop, BarsSinceEntry())]);
+				if (openExecution.Quantity > 1					
+					&& closeOrderStop2 != null
+					&& closeOrderStop2.StopPrice > openExecution.Order.AvgFillPrice)
+				{
+					//Print(Time + " target1 adjustment has already been made, checking if additional stop adjustment is required");
+					if (stopPrice > closeOrderStop2.StopPrice)
+					{
+						//Print(Time + " setting stop to trail at " + stopPrice);
+						ChangeOrder(closeOrderStop2, closeOrderStop2.Quantity, 0, stopPrice);
+					}
+				}
 				if (openExecution.Quantity > 2					
 					&& closeOrderStop3 != null
 					&& closeOrderStop3.StopPrice > openExecution.Order.AvgFillPrice)
 				{
 					//Print(Time + " target1 adjustment has already been made, checking if additional stop adjustment is required");
-					stopPrice = Instrument.MasterInstrument.Round2TickSize(dw.TrailingStop[HighestBar(dw.TrailingStop, BarsSinceEntry())]);
 					if (stopPrice > closeOrderStop3.StopPrice)
 					{
 						//Print(Time + " setting stop to trail at " + stopPrice);
@@ -205,16 +221,35 @@ namespace NinjaTrader.Strategy
 					}
 				}
 			}
+			else
+			{
+				if (entryLongOrder != null && entryLongOrder.OrderState != OrderState.Filled)
+				{
+					//Print(Time + " "  + entryLongOrder.OrderState);
+				}
+			}
 			
 			if (entryShortOrder != null && entryShortOrder.OrderState == OrderState.Filled)
 			{
+				stopPrice = Instrument.MasterInstrument.Round2TickSize(dw.TrailingStop[LowestBar(dw.TrailingStop, BarsSinceEntry())]);
 				//Print(Time + " checking if stop adjustment is required");
+				if (openExecution.Quantity > 1					
+					&& closeOrderStop2 != null
+					&& closeOrderStop2.StopPrice < openExecution.Order.AvgFillPrice)
+				{
+					//Print(Time + " target1 adjustment has already been made, checking if additional stop adjustment is required");
+					if (stopPrice < closeOrderStop2.StopPrice)
+					{
+						//Print(Time + " setting stop to trail at " + stopPrice);
+						ChangeOrder(closeOrderStop2, closeOrderStop2.Quantity, 0, stopPrice);
+					}
+				}
+				
 				if (openExecution.Quantity > 2					
 					&& closeOrderStop3 != null
 					&& closeOrderStop3.StopPrice < openExecution.Order.AvgFillPrice)
 				{
 					//Print(Time + " target1 adjustment has already been made, checking if additional stop adjustment is required");
-					stopPrice = Instrument.MasterInstrument.Round2TickSize(dw.TrailingStop[LowestBar(dw.TrailingStop, BarsSinceEntry())]);
 					if (stopPrice < closeOrderStop3.StopPrice)
 					{
 						//Print(Time + " setting stop to trail at " + stopPrice);
@@ -222,29 +257,6 @@ namespace NinjaTrader.Strategy
 					}
 				}
 			}
-//			
-//			
-//			
-//			double highSinceOpen = High[HighestBar(High, BarsSinceEntry())];
-//			//double lowSinceOpen = Low[LowestBar(Low, BarsSinceEntry())];
-//
-//			// if this is true, then the stop moves up
-//			if (highSinceOpen > entryLongOrder.AvgFillPrice + 10)
-//			{
-//				
-//				stopPrice = Math.Max(entryLongOrder.AvgFillPrice + 1, HighestBar(dw.TrailingStop, BarsSinceEntry()));
-//				ChangeOrder(closeOrderStop2, closeOrderStop2.Quantity, closeOrderStop2.LimitPrice, stopPrice);
-//			}
-//			
-
-			// Change long close order to close if stop trigger (closed below channel)
-    		//if (null != closeOrderLongStop)
-			//{
-			//	if (closeOrderLong == null
-			//		&& Low[0] < channelLow
-			//		&& barNumberSinceFilled != barNumberSinceFilled
-			//		)
-			//}
 		}
 		
 		
