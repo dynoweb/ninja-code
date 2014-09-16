@@ -1,9 +1,3 @@
-// Type: NinjaTrader.Indicator.rcVolatilityBreakout
-// Assembly: rcVolatilityBreakout, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null
-// MVID: 44D1D67D-B887-419E-93CB-54BC561A67EC
-// Assembly location: C:\Users\rcromer\Documents\NinjaTrader 7\bin\Custom\rcVolatilityBreakout.dll
-
-//using A;
 using NinjaTrader.Cbi;
 using NinjaTrader.Data;
 using NinjaTrader.Gui.Chart;
@@ -108,10 +102,10 @@ namespace NinjaTrader.Indicator
 	{
 		Add(new Plot(Color.Transparent, PlotStyle.Dot, "Squeeze"));  
 		Add(new Plot(Color.Transparent, PlotStyle.Dot, "SqueezeOn")); 
-		Add(new Plot(Color.Transparent, PlotStyle.Dot, "PMomentumUp"));
-		Add(new Plot(Color.Transparent, PlotStyle.Dot, "PMomentumDown"));
-		Add(new Plot(Color.Transparent, PlotStyle.Dot, "NMomentumUp"));
-		Add(new Plot(Color.Transparent, PlotStyle.Dot, "NMomentumDown"));
+		Add(new Plot(Color.Green, PlotStyle.Dot, "PMomentumUp"));
+		Add(new Plot(Color.Red, PlotStyle.Dot, "PMomentumDown"));
+		Add(new Plot(Color.Blue, PlotStyle.Dot, "NMomentumUp"));
+		Add(new Plot(Color.Pink, PlotStyle.Dot, "NMomentumDown"));
 		Add(new Plot(Color.Transparent, PlotStyle.Dot, "CurrentValue"));
 		Add(new Plot(Color.Transparent, PlotStyle.Dot, "BarsSinceSqueeze"));
 		Add(new Plot(Color.Transparent, PlotStyle.Dot, "SqueezeLength"));
@@ -125,7 +119,7 @@ namespace NinjaTrader.Indicator
 		
 		CalculateOnBarClose = true;
 		Overlay = true;
-		PlotsConfigurable = false;	// Hides the plots from the indicator configuration diagram
+		PlotsConfigurable = true;	// Hides the plots from the indicator configuration diagram
 	}
 	
 	protected override void OnBarUpdate()
@@ -654,14 +648,14 @@ namespace NinjaTrader.Indicator
 //      set { this.boxOutline = value; }
 //    }
 //
-//    [Description("Volatility Strength")]
-//    [GridCategory("Consolidation box")]
-//    public int Length
-//    {
-//      get { return this.length; }
-//      set { this.length = Math.Max(1, value); }
-//    }
-//
+    [Description("Volatility Strength")]
+    [GridCategory("Consolidation box")]
+    public int Length
+    {
+      get { return this.length; }
+      set { this.length = Math.Max(1, value); }
+    }
+
 //    [Description("")]
 //    [Category("Alert")]
 //    public string Email
@@ -954,27 +948,30 @@ namespace NinjaTrader.Indicator
         /// .
         /// </summary>
         /// <returns></returns>
-        public rcVolatilityBreakout rcVolatilityBreakout()
+        public rcVolatilityBreakout rcVolatilityBreakout(int length)
         {
-            return rcVolatilityBreakout(Input);
+            return rcVolatilityBreakout(Input, length);
         }
 
         /// <summary>
         /// .
         /// </summary>
         /// <returns></returns>
-        public rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input)
+        public rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input, int length)
         {
             if (cachercVolatilityBreakout != null)
                 for (int idx = 0; idx < cachercVolatilityBreakout.Length; idx++)
-                    if (cachercVolatilityBreakout[idx].EqualsInput(input))
+                    if (cachercVolatilityBreakout[idx].Length == length && cachercVolatilityBreakout[idx].EqualsInput(input))
                         return cachercVolatilityBreakout[idx];
 
             lock (checkrcVolatilityBreakout)
             {
+                checkrcVolatilityBreakout.Length = length;
+                length = checkrcVolatilityBreakout.Length;
+
                 if (cachercVolatilityBreakout != null)
                     for (int idx = 0; idx < cachercVolatilityBreakout.Length; idx++)
-                        if (cachercVolatilityBreakout[idx].EqualsInput(input))
+                        if (cachercVolatilityBreakout[idx].Length == length && cachercVolatilityBreakout[idx].EqualsInput(input))
                             return cachercVolatilityBreakout[idx];
 
                 rcVolatilityBreakout indicator = new rcVolatilityBreakout();
@@ -985,6 +982,7 @@ namespace NinjaTrader.Indicator
                 indicator.MaximumBarsLookBack = MaximumBarsLookBack;
 #endif
                 indicator.Input = input;
+                indicator.Length = length;
                 Indicators.Add(indicator);
                 indicator.SetUp();
 
@@ -1009,18 +1007,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.rcVolatilityBreakout rcVolatilityBreakout()
+        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(int length)
         {
-            return _indicator.rcVolatilityBreakout(Input);
+            return _indicator.rcVolatilityBreakout(Input, length);
         }
 
         /// <summary>
         /// .
         /// </summary>
         /// <returns></returns>
-        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input)
+        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input, int length)
         {
-            return _indicator.rcVolatilityBreakout(input);
+            return _indicator.rcVolatilityBreakout(input, length);
         }
     }
 }
@@ -1035,21 +1033,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.rcVolatilityBreakout rcVolatilityBreakout()
+        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(int length)
         {
-            return _indicator.rcVolatilityBreakout(Input);
+            return _indicator.rcVolatilityBreakout(Input, length);
         }
 
         /// <summary>
         /// .
         /// </summary>
         /// <returns></returns>
-        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input)
+        public Indicator.rcVolatilityBreakout rcVolatilityBreakout(Data.IDataSeries input, int length)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.rcVolatilityBreakout(input);
+            return _indicator.rcVolatilityBreakout(input, length);
         }
     }
 }
