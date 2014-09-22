@@ -46,7 +46,7 @@ namespace NinjaTrader.Indicator
         #region Variables
         // Wizard generated variables
             private int period = 14; // Default setting for Period
-            private double treshold = 0.35; // Default setting for Period
+            private double threshold = 0.35; // Default setting for Period
 	        private Color _backColorTrend = Color.Transparent;
 	        private Color _backColorChop = Color.Silver;
 
@@ -59,7 +59,7 @@ namespace NinjaTrader.Indicator
         protected override void Initialize()
         {
             Add(new Plot(Color.FromKnownColor(KnownColor.Indigo), PlotStyle.Line, "VHFLine"));
-			Add(new Line(System.Drawing.Color.Red,Treshold,"Treshold"));
+			Add(new Line(System.Drawing.Color.Red,Threshold,"Threshold"));
 			Plots[0].Pen = new Pen(Color.Indigo, 2); 
 			Lines[0].Pen = new Pen(Color.Red, 2);
 
@@ -87,10 +87,13 @@ namespace NinjaTrader.Indicator
 
 			VHFLine.Set(Numerator/Denominator);
 
-			if (VHFLine[0] < Treshold)
+			if (VHFLine[0] < Threshold)
 				BackColor = _backColorChop;
 			else 
 				BackColor = _backColorTrend;
+			
+//			if (Lines[0].Value != Threshold)
+//				Lines[0].Value= Threshold;
         }
 
         #region Properties
@@ -109,12 +112,12 @@ namespace NinjaTrader.Indicator
             set { period = Math.Max(1, value); }
         }
 		
-        [Description("Period over which VHF is calculated")]
+        [Description("Volatility Threshold")]
         [Category("Parameters")]
-        public double Treshold
+        public double Threshold
         {
-            get { return treshold; }
-            set { treshold = Math.Max(0, value); }
+            get { return threshold; }
+            set { threshold = Math.Max(0, value); }
         }
 		
         [XmlIgnore]
@@ -168,32 +171,32 @@ namespace NinjaTrader.Indicator
         /// Vertical Horizontal Filter - trendiness indicator
         /// </summary>
         /// <returns></returns>
-        public VHF VHF(int period, double treshold)
+        public VHF VHF(int period, double threshold)
         {
-            return VHF(Input, period, treshold);
+            return VHF(Input, period, threshold);
         }
 
         /// <summary>
         /// Vertical Horizontal Filter - trendiness indicator
         /// </summary>
         /// <returns></returns>
-        public VHF VHF(Data.IDataSeries input, int period, double treshold)
+        public VHF VHF(Data.IDataSeries input, int period, double threshold)
         {
             if (cacheVHF != null)
                 for (int idx = 0; idx < cacheVHF.Length; idx++)
-                    if (cacheVHF[idx].Period == period && Math.Abs(cacheVHF[idx].Treshold - treshold) <= double.Epsilon && cacheVHF[idx].EqualsInput(input))
+                    if (cacheVHF[idx].Period == period && Math.Abs(cacheVHF[idx].Threshold - threshold) <= double.Epsilon && cacheVHF[idx].EqualsInput(input))
                         return cacheVHF[idx];
 
             lock (checkVHF)
             {
                 checkVHF.Period = period;
                 period = checkVHF.Period;
-                checkVHF.Treshold = treshold;
-                treshold = checkVHF.Treshold;
+                checkVHF.Threshold = threshold;
+                threshold = checkVHF.Threshold;
 
                 if (cacheVHF != null)
                     for (int idx = 0; idx < cacheVHF.Length; idx++)
-                        if (cacheVHF[idx].Period == period && Math.Abs(cacheVHF[idx].Treshold - treshold) <= double.Epsilon && cacheVHF[idx].EqualsInput(input))
+                        if (cacheVHF[idx].Period == period && Math.Abs(cacheVHF[idx].Threshold - threshold) <= double.Epsilon && cacheVHF[idx].EqualsInput(input))
                             return cacheVHF[idx];
 
                 VHF indicator = new VHF();
@@ -205,7 +208,7 @@ namespace NinjaTrader.Indicator
 #endif
                 indicator.Input = input;
                 indicator.Period = period;
-                indicator.Treshold = treshold;
+                indicator.Threshold = threshold;
                 Indicators.Add(indicator);
                 indicator.SetUp();
 
@@ -230,18 +233,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.VHF VHF(int period, double treshold)
+        public Indicator.VHF VHF(int period, double threshold)
         {
-            return _indicator.VHF(Input, period, treshold);
+            return _indicator.VHF(Input, period, threshold);
         }
 
         /// <summary>
         /// Vertical Horizontal Filter - trendiness indicator
         /// </summary>
         /// <returns></returns>
-        public Indicator.VHF VHF(Data.IDataSeries input, int period, double treshold)
+        public Indicator.VHF VHF(Data.IDataSeries input, int period, double threshold)
         {
-            return _indicator.VHF(input, period, treshold);
+            return _indicator.VHF(input, period, threshold);
         }
     }
 }
@@ -256,21 +259,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.VHF VHF(int period, double treshold)
+        public Indicator.VHF VHF(int period, double threshold)
         {
-            return _indicator.VHF(Input, period, treshold);
+            return _indicator.VHF(Input, period, threshold);
         }
 
         /// <summary>
         /// Vertical Horizontal Filter - trendiness indicator
         /// </summary>
         /// <returns></returns>
-        public Indicator.VHF VHF(Data.IDataSeries input, int period, double treshold)
+        public Indicator.VHF VHF(Data.IDataSeries input, int period, double threshold)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.VHF(input, period, treshold);
+            return _indicator.VHF(input, period, threshold);
         }
     }
 }
