@@ -55,7 +55,7 @@ namespace NinjaTrader.Indicator
 			nom			= new DataSeries(this);
             fastK       = new DataSeries(this);
 			
-			Print("Type: " + BarsPeriod.BasePeriodType + " value: " + BarsPeriods[1].Value);
+			//Print("Type: " + BarsPeriod.BasePeriodType + " value: " + BarsPeriods[1].Value);
 			Add(PeriodType.Tick, BarsPeriods[1].Value);
 		}
 
