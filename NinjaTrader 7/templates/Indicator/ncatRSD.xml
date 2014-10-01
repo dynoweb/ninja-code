@@ -1,0 +1,80 @@
+<NinjaTrader>
+  <Version>7.0.1000.16</Version>
+  <ClassName>NinjaTrader.Indicator.ncatRSD</ClassName>
+  <Default>
+    <ncatRSD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+      <AutoScale>false</AutoScale>
+      <BarsPeriods>
+        <Period>
+          <BasePeriodType>Minute</BasePeriodType>
+          <BasePeriodValue>1</BasePeriodValue>
+          <Id>Day</Id>
+          <MarketDataType>Last</MarketDataType>
+          <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+          <ReversalType>Tick</ReversalType>
+          <Value>1</Value>
+          <Value2>1</Value2>
+        </Period>
+      </BarsPeriods>
+      <CalculateOnBarClose>true</CalculateOnBarClose>
+      <DisableScaleBuffer>false</DisableScaleBuffer>
+      <Displacement>0</Displacement>
+      <DisplayInDataBox>false</DisplayInDataBox>
+      <DrawOnPricePanel>true</DrawOnPricePanel>
+      <Enabled>false</Enabled>
+      <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+      <HorizontalGridLines>true</HorizontalGridLines>
+      <InstrumentsSerializable>NSC Default</InstrumentsSerializable>
+      <Lines />
+      <LinesConfigurable>true</LinesConfigurable>
+      <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+      <Name>ncatRSD</Name>
+      <Overlay>true</Overlay>
+      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <Panel>-2</Panel>
+      <PanelUI>-1</PanelUI>
+      <Plots>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Dummy</Name>
+          <PenSerializable>
+            <Color>n:Orange</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>1</Width>
+          </PenSerializable>
+          <PlotStyle>Line</PlotStyle>
+        </Plot>
+      </Plots>
+      <PlotsConfigurable>false</PlotsConfigurable>
+      <ScaleJustification>Right</ScaleJustification>
+      <SelectedSeries>0</SelectedSeries>
+      <SessionBreakLines>true</SessionBreakLines>
+      <VerticalGridLines>true</VerticalGridLines>
+      <ZOrder>0</ZOrder>
+      <ShortLogo>true</ShortLogo>
+      <periodValue>0</periodValue>
+      <Draw_edge_price>false</Draw_edge_price>
+      <DrawFarEdgePrice>false</DrawFarEdgePrice>
+      <DrawZoneHeight>false</DrawZoneHeight>
+      <Recolor_retouch>true</Recolor_retouch>
+      <Recolor_weak_retouch>false</Recolor_weak_retouch>
+      <No_weak_zones>true</No_weak_zones>
+      <ExtendZone>false</ExtendZone>
+      <ExtendMinutes>60</ExtendMinutes>
+      <AlertOnDemandSound>Disabled</AlertOnDemandSound>
+      <AlertOnSupplySound>Disabled</AlertOnSupplySound>
+      <SupplyStrong Web="Red" />
+      <SupplyWeak Web="PaleVioletRed" />
+      <SupplyRetouch Web="Coral" />
+      <DemandStrong Web="Green" />
+      <DemandWeak Web="Olive" />
+      <DemandRetouch Web="Chartreuse" />
+      <TextColor Web="Black" />
+      <SupplyZoneBorder Web="Silver" />
+      <DemandZoneBorder Web="Silver" />
+      <MyPeriodType>ChartPeriod</MyPeriodType>
+    </ncatRSD>
+  </Default>
+</NinjaTrader>
