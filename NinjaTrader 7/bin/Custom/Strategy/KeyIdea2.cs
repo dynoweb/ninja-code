@@ -99,6 +99,17 @@ namespace NinjaTrader.Strategy
             CalculateOnBarClose = true;
 			ExitOnClose = false;
 			IncludeCommission = false;
+			
+			Font labelFont = new Font("Arial", 12, FontStyle.Bold);
+			String label = Name + " " + Instrument.FullName +				
+				"\n" + Instrument.MasterInstrument.Description +
+				"\nTickSize: " + Instrument.MasterInstrument.TickSize +
+				" TickValue: $" + Instrument.MasterInstrument.PointValue * Instrument.MasterInstrument.TickSize; 
+			
+			//Add(BMTChartLabel(Color.DarkBlue, labelFont, Color.Yellow, 25, label, TextPosition.TopRight));
+			
+			Add(RicksChartLabel(Color.DarkBlue, Color.Yellow, labelFont, 25, label, TextPosition.TopLeft));
+
         }
 
         /// <summary>
