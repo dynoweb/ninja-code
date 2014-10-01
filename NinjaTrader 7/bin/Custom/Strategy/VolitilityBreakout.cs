@@ -42,7 +42,8 @@ namespace NinjaTrader.Strategy
 
             //SetStopLoss("", CalculationMode.Percent, stopLossPercentage, false);
             //SetProfitTarget("", CalculationMode.Percent, profitPercentage);
-			vbo = rcVolatilityBreakout();
+			int length = 20;
+			vbo = rcVolatilityBreakout(length);
 			
 			Add(vbo);
 			vbo.AutoScale = false;	
