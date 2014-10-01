@@ -1,0 +1,169 @@
+<NinjaTrader>
+  <Version>7.0.1000.16</Version>
+  <ClassName>NinjaTrader.Indicator.ncatABCDWave</ClassName>
+  <Default>
+    <ncatABCDWave xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+      <AutoScale>false</AutoScale>
+      <BarsPeriods>
+        <Period>
+          <BasePeriodType>Minute</BasePeriodType>
+          <BasePeriodValue>1</BasePeriodValue>
+          <Id>Day</Id>
+          <MarketDataType>Last</MarketDataType>
+          <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+          <ReversalType>Tick</ReversalType>
+          <Value>1</Value>
+          <Value2>1</Value2>
+        </Period>
+      </BarsPeriods>
+      <CalculateOnBarClose>true</CalculateOnBarClose>
+      <DisableScaleBuffer>false</DisableScaleBuffer>
+      <Displacement>0</Displacement>
+      <DisplayInDataBox>false</DisplayInDataBox>
+      <DrawOnPricePanel>true</DrawOnPricePanel>
+      <Enabled>false</Enabled>
+      <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+      <HorizontalGridLines>true</HorizontalGridLines>
+      <InstrumentsSerializable>NSC Default</InstrumentsSerializable>
+      <Lines />
+      <LinesConfigurable>true</LinesConfigurable>
+      <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+      <Name>ncatABCDWave</Name>
+      <Overlay>true</Overlay>
+      <PaintPriceMarkers>false</PaintPriceMarkers>
+      <Panel>-2</Panel>
+      <PanelUI>-1</PanelUI>
+      <Plots>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Swing</Name>
+          <PenSerializable>
+            <Color>n:DarkViolet</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>1</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Swing Relations 1</Name>
+          <PenSerializable>
+            <Color>n:DarkViolet</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>1</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Swing Relations 2</Name>
+          <PenSerializable>
+            <Color>n:DarkViolet</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>1</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>ABCD Wave Bullish</Name>
+          <PenSerializable>
+            <Color>n:Lime</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>ABCD Wave Bearish</Name>
+          <PenSerializable>
+            <Color>n:Red</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Ideal Fibonacci Wave Bullish</Name>
+          <PenSerializable>
+            <Color>n:Lime</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Ideal Fibonacci Wave Bearish</Name>
+          <PenSerializable>
+            <Color>n:Red</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Ideal Price Time Wave Bullish</Name>
+          <PenSerializable>
+            <Color>n:Lime</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>Ideal Price Time Wave Bearish</Name>
+          <PenSerializable>
+            <Color>n:Red</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>4</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+        <Plot>
+          <Max>1.7976931348623157E+308</Max>
+          <Min>-1.7976931348623157E+308</Min>
+          <Name>ABCD Relations</Name>
+          <PenSerializable>
+            <Color>n:DarkSlateGray</Color>
+            <DashStyle>Solid</DashStyle>
+            <Width>2</Width>
+          </PenSerializable>
+          <PlotStyle>Dot</PlotStyle>
+        </Plot>
+      </Plots>
+      <PlotsConfigurable>true</PlotsConfigurable>
+      <ScaleJustification>Right</ScaleJustification>
+      <SelectedSeries>0</SelectedSeries>
+      <SessionBreakLines>true</SessionBreakLines>
+      <VerticalGridLines>true</VerticalGridLines>
+      <ZOrder>10006</ZOrder>
+      <ShortLogo>true</ShortLogo>
+      <FontSize>7</FontSize>
+      <_iextMaxBars>5000</_iextMaxBars>
+      <IextHL_MinSwing>20</IextHL_MinSwing>
+      <_bextShowHistoryPatterns>true</_bextShowHistoryPatterns>
+      <_bextDrawZZLine>false</_bextDrawZZLine>
+      <_bextDrawZZRelations>false</_bextDrawZZRelations>
+      <BextABCD>Both Side</BextABCD>
+      <BextI_ABCD>Disabled</BextI_ABCD>
+      <BextIT_ABCD>Disabled</BextIT_ABCD>
+      <Sound>Disabled</Sound>
+      <CextABCDDescColor Web="Black" />
+    </ncatABCDWave>
+  </Default>
+</NinjaTrader>
