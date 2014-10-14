@@ -16,17 +16,18 @@ using NinjaTrader.Strategy;
 namespace NinjaTrader.Strategy
 {
     /// <summary>
-    /// Convert from @Bounty's bot tradestation to NinjaTrade by Rick Cromer (dynoweb)  Based on 15 min CL bars
+    /// Based on 15 min CL bars. Converted from @Bounty's tradestation BOT to NinjaTrader by Rick Cromer (dynoweb)  
     /// </summary>
     [Description("Convert from @Bounty's bot tradestation to NinjaTrade by Rick Cromer (dynoweb)  Based on 15 min CL bars")]
-    public class VolumeSpike : Strategy
+    public class VolumeSpikeNT : Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int lookback = 48; // Default setting for Lookback
+        private int lookback = 10; // Default setting for Lookback
         private int maxDailyEntries = 1; // Default setting for MaxDailyEntries
-        private int stopTime = 150000; // Default setting for StopTime
-        private double vpFactor = 0.800; // Default setting for VpFactor
+        private int stopTime = 145000; // Default setting for StopTime -- 2:50 PM CST
+		private int startTime = 080000; // 8:00 AM CST
+		private double vpFactor = 0.8; // Default setting for VpFactor
         // User defined variables (add any user defined variables below)
 		double threshold = 0;
 		int vpHigh = 0;
@@ -34,8 +35,9 @@ namespace NinjaTrader.Strategy
 		int tradeCount = 0;
 		int orderQty = 1;
 		// misc
-		IOrder entryLongOrder = null;
-		IOrder entryShortOrder = null;
+		IOrder longOrder = null;
+		IOrder shortOrder = null;
+		IOrder closeOrder = null;
         #endregion
 
         /// <summary>
@@ -47,8 +49,8 @@ namespace NinjaTrader.Strategy
 			
 			ClearOutputWindow();
 			
-			EntriesPerDirection = 1; 
-			EntryHandling = EntryHandling.AllEntries;
+			// to allow both long and short open orders
+			Unmanaged = true;
 			
 			TraceOrders = true;
 			
@@ -67,85 +69,72 @@ namespace NinjaTrader.Strategy
 				vpHigh = 0;
 				vpLow = 999999;
 				tradeCount = 0;
-				
-				if (entryLongOrder != null)
-				{
-//					CancelOrder(entryLongOrder);
-//					entryLongOrder = null;
-				}
-				if (entryShortOrder != null)
-				{
-//					CancelOrder(entryShortOrder);
-//					entryShortOrder = null;
-				}
 			}
 			
-			threshold = VpFactor * MAX(Volume, Lookback)[0];
-			//Print(Time + " threshold: " +  threshold + " MaxVol: " + MAX(Volume, Lookback)[0]);
-			
-			// collect values
+			threshold = VpFactor * MAX(Volume, Lookback)[2];
+
 			if (Volume[0] < Volume[1] 
 				&& Volume[1] > threshold 
 				&& tradeCount < MaxDailyEntries
 				&& ToTime(Time[0]) < stopTime) 
 			{
-				if (Position.MarketPosition == MarketPosition.Flat)
+				if (Position.MarketPosition == MarketPosition.Flat
+					&& ToTime(Time[0]) <= stopTime && ToTime(Time[0]) >= startTime)
 				{
 					Print(Time + " GetCurrentBid: " + GetCurrentBid() 
 						+ " MAX: " + MAX(High, 2)[0]
 						+ " MIN: " + MIN(Low, 2)[0]);
 					
-					entryLongOrder = EnterLongStop(0, false, orderQty, MAX(High, 2)[0], "LE");
+					shortOrder = 
+						SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, orderQty, 0,  MIN(Low, 2)[0], "OCO_ID", "SE");  
+					DrawDot(CurrentBar + "short", true, 0, MIN(Low, 2)[0], Color.Red);
+					
+					longOrder = 
+						SubmitOrder(0, OrderAction.Buy, OrderType.Stop, orderQty, 0,  MAX(High, 2)[0], "OCO_ID", "LE");  
 					DrawDot(CurrentBar + "long", true, 0, MAX(High, 2)[0], Color.Blue);
 					
-					if (GetCurrentBid() <= MIN(Low, 2)[0])
-					{
-						entryShortOrder = EnterShort(0, orderQty, "SE");
-						DrawDot(CurrentBar + "short", true, 0, MIN(Low, 2)[0], Color.Pink);
-					} 
-					else
-					{
-						entryShortOrder = EnterShortStop(0, false, orderQty, MIN(Low, 2)[0], "SE");
-						//entryShortOrder = EnterShortStop(orderQty, MIN(Low, 2)[0], "SE");
-						DrawDot(CurrentBar + "short", true, 0, MIN(Low, 2)[0], Color.Red);
-					}
 				}
 			}
 			
 			if (ToTime(Time[0]) >= stopTime)
 			{
-				if (Position.MarketPosition == MarketPosition.Long)
-					ExitLong(orderQty, "Time Exit", "LE");	
-				if (Position.MarketPosition == MarketPosition.Short)
-					ExitShort(orderQty, "Time Exit", "SE");	
+				if (longOrder != null && longOrder.OrderState == OrderState.Filled)
+				{
+					closeOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Market, longOrder.Quantity, 0,0, "", "LE");
+				}
+					
+				if (shortOrder != null && shortOrder.OrderState == OrderState.Filled)
+				{
+					closeOrder = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, shortOrder.Quantity, 0,0, "", "SE");
+				}
 			}
         }
 		
 		protected override void OnOrderUpdate(IOrder order)
 		{
-			if (entryLongOrder != null && entryLongOrder == order)
+			if (longOrder != null && longOrder == order)
 			{
-				//Print(Time + " " + order);
 				if (order.OrderState == OrderState.Filled)
 				{
-					if (entryShortOrder != null)
-						CancelOrder(entryShortOrder);
-					//entryShortOrder = null;
-					//entryLongOrder = null;
 					tradeCount++;
 				}
 			}
 			
-			if (entryShortOrder != null && entryShortOrder == order)
+			if (shortOrder != null && shortOrder == order)
 			{
-				//Print(Time + " " + order);
 				if (order.OrderState == OrderState.Filled)
 				{
-					if (entryLongOrder != null)
-						CancelOrder(entryLongOrder);
-					//entryShortOrder = null;
-					//entryLongOrder = null;
 					tradeCount++;
+				}
+			}
+			
+			if (closeOrder != null && closeOrder == order)
+			{
+				if (order.OrderState == OrderState.Filled)
+				{
+					closeOrder = null;
+					longOrder = null;
+					shortOrder = null;
 				}
 			}
 		}
