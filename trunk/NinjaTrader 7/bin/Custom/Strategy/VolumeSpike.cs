@@ -19,7 +19,7 @@ namespace NinjaTrader.Strategy
     /// Based on 15 min CL bars. Converted from @Bounty's tradestation BOT to NinjaTrader by Rick Cromer (dynoweb)  
     /// </summary>
     [Description("Convert from @Bounty's bot tradestation to NinjaTrade by Rick Cromer (dynoweb)  Based on 15 min CL bars")]
-    public class VolumeSpikeNT : Strategy
+    public class VolumeSpike : Strategy
     {
         #region Variables
         // Wizard generated variables
