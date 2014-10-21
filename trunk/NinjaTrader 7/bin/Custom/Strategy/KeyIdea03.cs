@@ -17,6 +17,52 @@ using PriceActionSwing.Base;
 namespace NinjaTrader.Strategy
 {
     /// <summary>
+	/// Strategy Details
+	/// On the price action swing indicator. 
+	///   When we get a: "HL" we want to buy 1 tick above the candle. 
+	///   When we get a: "LH" we want to sell tick below the candle. 
+	///  If the candle that follows a LH or HL is an inside candle compared to the prior candle. Of course the 
+	///  trade would not have been picked up and filled yet - and we will want to move the order above/below that 
+	///  inside candle depending on trade direction.
+	/// 
+	/// The PriceActionSwing seems to be quite straight forward to obtain the swings. Its simply this:
+	/// 
+	/// UP Swing:
+	/// High[0] > High[1] && Low[0] >= Low[1] // this is just saying a candle has a higher high and not a lower low. Thus up.
+	/// 
+	/// DOWN Swing:
+	/// Low[0] < Low[1] && High[0] <= High[1] // this is just saying a candle has a lower low and not a higher high. Thus down.
+	/// We ignore all inside and outside candles to determine swing direction.
+	/// 
+	/// INSIDE Candle:
+	/// High[0] <= High[1] && Low[0] >=Low[1]
+	/// 
+	/// OUTSIDE Candle:
+	/// High[0] > High[1] && Low[0] <Low[1]
+	/// 
+	/// So if we can use the above information to determine if a Swing is up or Down. Then the next step is working out if we have a:
+	/// Swing Higher Low (HL - for a Long): Compared to PRIOR Swing down /or/
+	/// Swing Lower High (LH - for a Short): Compared to PRIOR Swing up
+	/// 
+	/// Stop loss goes under Lh for shorts and Hl for longs,
+	/// If a setup occurs the opposite direction when in a trade, close out and enter the other direction 
+	/// when entry point is touched(reverse).
+	/// 
+	/// And for the target I see you've done a 3 bar exit, that's interesting as I've never looked at that concept, 
+	/// only thing is it has nothing to do with market psychology. I know static targets don't help either. I can 
+	/// give you a peice of code I wrote for predictive volatility which you can set targets at, just between us 
+	/// though. If we did that option for targets, then do you think it's a good idea to come to break even plus 
+	/// commissions after trade goes 50% towards target?
+	/// 
+	/// These ideas could be merged, have an option to choose 3 bar exit on or off plus my predictive volatility target.
+	/// 
+	/// Up to you what you think about reversing a trade if an opposing one sets up and technically triggers? 
+	/// With stop loss risk placed where mentioned above.
+	/// 
+	/// Primary thing I believe to be true is being professional risk controllers vs profit Takers. Profit comes naturally
+	/// 
+	/// 
+	/// 
     /// Used to test new key trading ideas - this should be used only as a template.
 	/// 
 	/// Step 1: KeyIdea or trade idea 
@@ -47,15 +93,15 @@ namespace NinjaTrader.Strategy
 	/// 					Random Exit
 	/// 	
     /// </summary>
-    [Description("KeyIdea3 is based on a strategy by BigMikeTrading.com member techoli, it uses FDAX 15 min bars - sample image starts on 10/6/14")]
+    [Description("uses FDAX 15 min bars, based on a strategy by BigMikeTrading.com member techoli, sample image starts on 10/6/14")]
     public class KeyIdea03 : Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int iparm1 = 3; // Default setting for Iparm1
+        private int iparm1 = 30; // Default setting for Iparm1
         private int iparm2 = 1; // Default setting for Iparm2
         private double dparm1 = 0.009; // Default setting for Dparm1
-        private double dparm2 = 0.009; // Default setting for Dparm2
+        private double dparm2 = 0.9; // Default setting for Dparm2
         private int period1 = 30; // Default setting for Period1
         private int period2 = 27; // Default setting for Period2
         // User defined variables (add any user defined variables below)
@@ -124,6 +170,7 @@ namespace NinjaTrader.Strategy
 						ExitShort();
 				}
 			}
+				
         }
 
 		private void updateState()
@@ -152,6 +199,8 @@ namespace NinjaTrader.Strategy
 			bool bull = false;
 			if (pas.GannSwing[0] == Low[0] && higherLow)
 			{
+				SetStopLoss(CalculationMode.Price, Low[0] - 2 * TickSize);
+				DrawDiamond(CurrentBar + "bull", false, 0, Low[0] - 2 * TickSize, Color.Green);
 				bull = true;
 			}
 			return bull;
@@ -162,6 +211,8 @@ namespace NinjaTrader.Strategy
 			bool bear = false;
 			if (pas.GannSwing[0] == High[0] && lowerHigh)
 			{
+				SetStopLoss(CalculationMode.Price, High[0] + 2 * TickSize);
+				DrawDiamond(CurrentBar + "bearStop", false, 0, High[0] + 2 * TickSize, Color.Red);
 				bear = true;
 			}
 			return bear;
