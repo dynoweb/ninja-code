@@ -46,24 +46,27 @@ namespace NinjaTrader.Strategy
 	/// 					Random Exit
 	/// 	
     /// </summary>
-    [Description("CL 17 Range Bars")]
+    [Description("CL 20 Range Bars - 8/16/2011 start of CL tick data")]
     public class KeyIdea04 : Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int iparm1 = 1; // Default setting for Iparm1
+        private int iparm1 = 0; // Default setting for Iparm1  ---- exit after x bars
         private int iparm2 = 1; // Default setting for Iparm2
-        private double dparm1 = 4.0; // Default setting for Dparm1
-        private double dparm2 = 0.00; // Default setting for Dparm2
+        private double dparm1 = 7.0; // Default setting for Dparm1
+        private double dparm2 = 0.01; // Default setting for Dparm2 --- profit target
+		private double ratched = 0.02;
         private int period1 = 10; // Default setting for Period1
         private int period2 = 27; // Default setting for Period2
+		private bool isMo = true;
+		private bool is2nd = false;
         // User defined variables (add any user defined variables below)
 		
 		// ATRTrailing parms
 		ATRTrailing atr = null;
-		double atrTimes = 4.0; 
+		double atrTimes = 3.0; 
 		int atrPeriod = 10; 
-		double ratched = 0.00;
+		//double ratched = 0.00;
 		
 		//  KeltnerChannel parms
 		KeltnerChannel kc = null;
@@ -78,14 +81,18 @@ namespace NinjaTrader.Strategy
 
         /// <summary>
         /// This method is used to configure the strategy and is called once before any strategy method is called.
+		/// 
+		/// I was thinking that MOMO could have not atr ratched but use a stop place where the
+		/// prior atr stop was, for example, if a short momo, use the lower blue level as the 
+		/// max high to trigger a sell.
         /// </summary>
         protected override void Initialize()
         {
 			atrTimes = dparm1;
 			atrPeriod = period1;
-			ratched = 0;
+			//ratched = 0;
 			
-			atr = ATRTrailing(atrTimes, atrPeriod, ratched);
+			atr = ATRTrailing(atrTimes, Period1, Ratched);
 			Add(atr);
 			
 			kc = KeltnerChannel(offsetMultiplier, keltnerPeriod);
@@ -94,7 +101,7 @@ namespace NinjaTrader.Strategy
 			dc = DonchianChannel(donchianPeriod);
 			dc.Displacement = 2;
 			dc.PaintPriceMarkers = false;
-			//Add(dc);
+			Add(dc);
 			
             SetProfitTarget("", CalculationMode.Percent, dparm2);
             SetStopLoss("", CalculationMode.Percent, dparm2, false);
@@ -102,7 +109,7 @@ namespace NinjaTrader.Strategy
 
             CalculateOnBarClose = true;
 			ExitOnClose = false;
-			IncludeCommission = false;
+			IncludeCommission = true;
         }
 
         /// <summary>
@@ -201,36 +208,59 @@ namespace NinjaTrader.Strategy
 			*/
 			if (Position.MarketPosition == MarketPosition.Flat) 
 			{
+				SetStopLoss(CalculationMode.Ticks, 1000);
 				if (isBull())
 				{
-					//DrawDot(CurrentBar + "Bull", true, 0, kc.Midline[0], Color.Blue);
-					EnterLongStop(kc.Midline[0]);
-					/*
-					if (Low[0] > dc.Upper[2])
-					{
-						//EnterLong();
-					}
-					else
+					if (Is2nd && Close[0] < kc.Midline[0])
 					{
 						//DrawDot(CurrentBar + "Bull", true, 0, kc.Midline[0], Color.Blue);
 						EnterLongStop(kc.Midline[0]);
-					}
-					*/
+					}					
+					if (IsMo && Low[0] > dc.Upper[2])
+					{
+						EnterLong();
+					}					
 				}
 				if (isBear())
 				{
-					//DrawDot(CurrentBar + "Bear", true, 0, kc.Midline[0], Color.Red);
-					EnterShortStop(kc.Midline[0]);
+					if (Is2nd && Close[0] > kc.Midline[0])
+					{
+						//DrawDot(CurrentBar + "Bear", true, 0, kc.Midline[0], Color.Red);
+						EnterShortStop(kc.Midline[0]);
+					}
+					if (IsMo && High[0] < dc.Lower[2])
+					{
+						EnterShort();
+					}					
 				}
 			} 
 			else
 			{
 				if (Iparm1 > 0 && BarsSinceEntry() >= Iparm1)
 				{
-					if (isLong() && !atr.Upper.ContainsValue(0))
+					if (isLong())
 						ExitLong();
-					if (isShort() && !atr.Lower.ContainsValue(0))
+					if (isShort())
 						ExitShort();
+				}
+				
+				if (isLong())
+				{
+//						if (!atr.Upper.ContainsValue(0))
+//						{
+//							ExitLong();
+//						}
+//						else 
+//						{
+					SetStopLoss(CalculationMode.Price, atr.Upper[0]);
+							//DrawDiamond(CurrentBar + "Stop", true, 0, atr.Upper[0], Color.Black);
+//						}
+				}
+				if (isShort())// && !atr.Lower.ContainsValue(0))
+				{
+					SetStopLoss(CalculationMode.Price, atr.Lower[0]);
+						//DrawDiamond(CurrentBar + "Stop", true, 0, atr.Lower[0], Color.Black);
+						//ExitShort();
 				}
 			}
         }
@@ -248,7 +278,7 @@ namespace NinjaTrader.Strategy
 		private bool isBear()
 		{
 			//if (LowestBar(Low, period2) == 0 && Close[0] < Close[1])
-			if (atr.Lower.ContainsValue(0)) // > High[0])
+			if (atr.Lower.ContainsValue(0))
 			{
 				return true;
 			}
@@ -327,6 +357,31 @@ namespace NinjaTrader.Strategy
             get { return dparm2; }
             set { dparm2 = Math.Max(0.000, value); }
         }
+
+        [Description("Mo Entries")]
+        [GridCategory("Parameters")]
+        public bool IsMo
+        {
+            get { return isMo; }
+            set { isMo = value; }
+        }
+
+        [Description("2nd Chance")]
+        [GridCategory("Parameters")]
+        public bool Is2nd
+        {
+            get { return is2nd; }
+            set { is2nd = value; }
+        }
+		
         #endregion
+        [Description("")]
+        [GridCategory("Parameters")]
+        public double Ratched
+        {
+            get { return ratched; }
+            set { ratched = Math.Max(0.000, value); }
+        }
+
     }
 }
