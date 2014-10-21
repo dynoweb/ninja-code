@@ -307,6 +307,7 @@ namespace NinjaTrader.Indicator
                     CalculateSwingGann(swingHigh, swingLow, swingCurrent, swingProperties, upFlip,
                         swingHighs, dnFlip, swingLows, decimalPlaces, DoubleBottom, LowerLow, 
                         HigherLow, DoubleTop, LowerHigh, HigherHigh, GannSwing);
+					Print(Time + " LowerHigh: " + LowerHigh[0] + " HigherHigh: " + HigherHigh[0]);	// xxxxxxxxxxxxxxxxx RICK ADDED xxxxxxxxxxxxxxxxx
                     break;
                 case SwingStyle.Ticks:
                     CalculateSwingTicks(swingHigh, swingLow, swingCurrent, swingProperties,
