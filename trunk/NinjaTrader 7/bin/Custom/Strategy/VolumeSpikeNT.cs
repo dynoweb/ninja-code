@@ -47,11 +47,11 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int lookback = 10; // Default setting for Lookback
-        private int maxDailyEntries = 1; // Default setting for MaxDailyEntries
-        private int stopTime = 145000; // Default setting for StopTime -- 2:50 PM CST
+        private int lookback = 10; 
+        private int maxDailyEntries = 1;
 		private int startTime = 170000; // 05:00 PM CST
-		private double vpFactor = 0.8; // Default setting for VpFactor
+        private int stopTime = 145000; // 02:50 PM CST
+		private double vpFactor = 0.8;
         // User defined variables (add any user defined variables below)
 		double threshold = 0;
 		int vpHigh = 0;
