@@ -79,8 +79,8 @@ namespace NinjaTrader.Indicator
     private Color color2;
     private Image image;
     private int breakoutRecNumb = 0;
-    private int aBarNumber = 0;
-    private int tempCurrentBar = 0;
+    private int startBarNumber = 0;
+    private int endBarNumber = 0;
     private double squeezeHigh;
     private double squeezeLow;
     private IRectangle iRectangle;
@@ -126,7 +126,9 @@ namespace NinjaTrader.Indicator
 	{
 		// Are there enough bars
 		if (CurrentBar < length) return;
-
+		try {
+			bool debug = false; //CurrentBar == 33;
+			
 		if (CurrentBar != 0)
 		{
 		
@@ -145,16 +147,16 @@ namespace NinjaTrader.Indicator
 			{
 				if (Squeeze[1] != 0.0)
 				{
-					Print(Time + " in != 0.0 - Squeeze[1] " + Squeeze[1] + " ");
-					aBarNumber = CurrentBar;
+					startBarNumber = CurrentBar;
 					squeezeHigh = High[0];
 					squeezeLow = Low[0];
-					breakoutRecNumb++;
+					++breakoutRecNumb;
+					if (debug) Print(Time + " in != 0.0 - Squeeze[1] " + Squeeze[1] + "  breakoutRecNumb: " + breakoutRecNumb);
 				}
 				
 				if (Squeeze[1] == 0.0)
 				{
-					Print(Time + " in == 0.0 - Squeeze[1] " + Squeeze[1] + " ");
+					//Print(Time + " in == 0.0 - Squeeze[1] " + Squeeze[1] + " ");
 					if (High[0] > squeezeHigh)
 					{
 						squeezeHigh = High[0];
@@ -164,30 +166,49 @@ namespace NinjaTrader.Indicator
 						squeezeLow = Low[0];
 					}
 					
-					tempCurrentBar = CurrentBar;
+					endBarNumber = CurrentBar;
 					
-					if (aBarNumber != tempCurrentBar)
+					if (startBarNumber != endBarNumber)
 					{
 						squeezeMidPoint = (squeezeHigh + squeezeLow) / 2.0;
 						squeezeRange = squeezeHigh - squeezeLow;
-						iRectangle = DrawRectangle("rectangle" + breakoutRecNumb, AutoScale, CurrentBar - aBarNumber, squeezeHigh, CurrentBar - tempCurrentBar, squeezeLow, boxOutline.Pen.Color, boxAreaColor, boxAreaOpacity);
-						((IShape) iRectangle).Pen.DashStyle = boxOutline.Pen.DashStyle;
-						((IShape) iRectangle).Pen.Width = boxOutline.Pen.Width;
+						if (debug) Print("breakoutRecNumb: " + breakoutRecNumb + " startBarNumber: " + startBarNumber + " endBarNumber: " + endBarNumber + " squeezeHigh: " + squeezeHigh + " squeezeLow: " + squeezeLow );
+
+						iRectangle = DrawRectangle("rectangle" + breakoutRecNumb, AutoScale, CurrentBar - startBarNumber, squeezeHigh, CurrentBar - endBarNumber, squeezeLow, boxOutline.Pen.Color, boxAreaColor, boxAreaOpacity);
+						//iRectangle = DrawRectangle("r" +breakoutRecNumb, 5, squeezeHigh, 0, squeezeLow, Color.Green);
+
+						if (debug) Print("307");
+						if (iRectangle == null)
+						{
+							if (debug) Print("iRectangle is null");
+						}
+						else
+							{
+							iRectangle.Pen.DashStyle = boxOutline.Pen.DashStyle;
+							iRectangle.Pen.Width = boxOutline.Pen.Width;
+							}
 						
+					if (debug) Print("309");
 						if (extendedHighVisible)
 						{
-							iLine = DrawLine("extendedHigh" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh, extendedHigh.Pen.Color, extendedHigh.Pen.DashStyle, (int) extendedHigh.Pen.Width);
+							iLine = DrawLine("extendedHigh" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeHigh, CurrentBar - endBarNumber - extendedLineLength, squeezeHigh, extendedHigh.Pen.Color, extendedHigh.Pen.DashStyle, (int) extendedHigh.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 								dictionary1.Add(iLine, iLine.Pen.Color);
 							if (!showLines)
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}
+							}
 						}
+				if (debug) Print("51");
 						
 						if (extendedLowVisible)
 						{
-							iLine = DrawLine("extendedLow" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow, extendedLow.Pen.Color, extendedLow.Pen.DashStyle, (int) extendedLow.Pen.Width);
+							iLine = DrawLine("extendedLow" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeLow, CurrentBar - endBarNumber - extendedLineLength, squeezeLow, extendedLow.Pen.Color, extendedLow.Pen.DashStyle, (int) extendedLow.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -195,12 +216,15 @@ namespace NinjaTrader.Indicator
 							if (!showLines)
 							{
 								iLine.Pen.Color = Color.Transparent;
+							}
 							}
 						}
 						
 						if (extendedMiddleVisible)
 						{
-							iLine = DrawLine("extendedMiddle" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeMidPoint, CurrentBar - tempCurrentBar - extendedMiddleLineLength, squeezeMidPoint, extendedMiddle.Pen.Color, extendedMiddle.Pen.DashStyle, (int) extendedMiddle.Pen.Width);
+							iLine = DrawLine("extendedMiddle" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeMidPoint, CurrentBar - endBarNumber - extendedMiddleLineLength, squeezeMidPoint, extendedMiddle.Pen.Color, extendedMiddle.Pen.DashStyle, (int) extendedMiddle.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -208,13 +232,17 @@ namespace NinjaTrader.Indicator
 							if (!showLines)
 							{
 								iLine.Pen.Color = Color.Transparent;
+							}
 							}
 						}
 						
+				if (debug) Print("32");
 						if (extendedLevel1Visible)
 						{
 							double num4 = squeezeRange * (double) extendedLevel1 / 100.0;
-							iLine = DrawLine("extendedLevel1High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							iLine = DrawLine("extendedLevel1High" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeHigh + num4, CurrentBar - endBarNumber - extendedLineLength, squeezeHigh + num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -223,7 +251,10 @@ namespace NinjaTrader.Indicator
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}
-							iLine = DrawLine("extendedLevel1Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							}
+							iLine = DrawLine("extendedLevel1Low" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeLow - num4, CurrentBar - endBarNumber - extendedLineLength, squeezeLow - num4, extendedLineLevel1.Pen.Color, extendedLineLevel1.Pen.DashStyle, (int) extendedLineLevel1.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -232,12 +263,15 @@ namespace NinjaTrader.Indicator
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}                            
+							}
 						}
 					
 						if (extendedLevel2Visible)
 						{
 							double num4 = squeezeRange * (double) extendedLevel2 / 100.0;
-							iLine = DrawLine("extendedLevel2High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							iLine = DrawLine("extendedLevel2High" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeHigh + num4, CurrentBar - endBarNumber - extendedLineLength, squeezeHigh + num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -246,7 +280,10 @@ namespace NinjaTrader.Indicator
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}
-							iLine = DrawLine("extendedLevel2Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							}
+							iLine = DrawLine("extendedLevel2Low" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeLow - num4, CurrentBar - endBarNumber - extendedLineLength, squeezeLow - num4, extendedLineLevel2.Pen.Color, extendedLineLevel2.Pen.DashStyle, (int) extendedLineLevel2.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -255,13 +292,17 @@ namespace NinjaTrader.Indicator
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}                            
+							}
 						}
 					
+				if (debug) Print("33");
 						if (extendedLevel3Visible)
 						{
 							double num4 = squeezeRange * (double) extendedLevel3 / 100.0;
 							Plot plot = extendedLineLevel3;
-							iLine = DrawLine("extendedLevel3High" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeHigh + num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							iLine = DrawLine("extendedLevel3High" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeHigh + num4, CurrentBar - endBarNumber - extendedLineLength, squeezeHigh + num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -270,7 +311,10 @@ namespace NinjaTrader.Indicator
 							{
 								iLine.Pen.Color = Color.Transparent;
 							}
-							iLine = DrawLine("extendedLevel3Low" + breakoutRecNumb, AutoScale, CurrentBar - tempCurrentBar, squeezeLow - num4, CurrentBar - tempCurrentBar - extendedLineLength, squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							}
+							iLine = DrawLine("extendedLevel3Low" + breakoutRecNumb, AutoScale, CurrentBar - endBarNumber, squeezeLow - num4, CurrentBar - endBarNumber - extendedLineLength, squeezeLow - num4, plot.Pen.Color, plot.Pen.DashStyle, (int) plot.Pen.Width);
+							if (iLine != null)
+							{
 							if (!dictionary1.ContainsKey(iLine))
 							{
 								dictionary1.Add(iLine, iLine.Pen.Color);
@@ -278,6 +322,7 @@ namespace NinjaTrader.Indicator
 							if (!showLines)
 							{
 								iLine.Pen.Color = Color.Transparent;
+							}
 							}
 						}
 					
@@ -286,7 +331,9 @@ namespace NinjaTrader.Indicator
 							int num4 = Convert.ToInt32((squeezeHigh - squeezeLow) / TickSize);
 							if (tickHeightPosition == RIGHT || tickHeightPosition == BOTH)
 							{
-								iText = DrawText("LText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - tempCurrentBar, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
+								iText = DrawText("LText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - endBarNumber, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Near, Color.Transparent, Color.Transparent, 1);
+							if (iLine != null)
+							{
 								if (!dictionary2.ContainsKey(iText))
 								{
 									dictionary2.Add(iText, iText.TextColor);
@@ -295,11 +342,14 @@ namespace NinjaTrader.Indicator
 								{
 									iText.TextColor = Color.Transparent;
 								}
+							}
 							}
 							
 							if (tickHeightPosition == LEFT || tickHeightPosition == BOTH)
 							{
-								iText = DrawText("RText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - aBarNumber, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
+								iText = DrawText("RText" + breakoutRecNumb, AutoScale, num4.ToString(), CurrentBar - startBarNumber, squeezeMidPoint, 0, tickHeightColor, font, StringAlignment.Far, Color.Transparent, Color.Transparent, 1);
+							if (iLine != null)
+							{
 								if (!dictionary2.ContainsKey(iText))
 								{
 									dictionary2.Add(iText, iText.TextColor);
@@ -309,7 +359,9 @@ namespace NinjaTrader.Indicator
 									iText.TextColor = Color.Transparent;
 								}
 							}
+							}
 						}
+				if (debug) Print("4");
 
 						if (!extendedVisible)
 						{
@@ -318,10 +370,13 @@ namespace NinjaTrader.Indicator
 							((IShape) iRectangle).AreaColor = Color.Transparent;
 							((IShape) iRectangle).Pen.Color = Color.Transparent;
 						}
+							if (iLine != null)
+							{
 						if (!this.list_IRectangle.Contains(this.iRectangle))
 						{
 							list_IRectangle.Add(iRectangle);
 						}
+							}
 					}
 				}
 				Squeeze.Set(0.0);
@@ -329,6 +384,7 @@ namespace NinjaTrader.Indicator
 			}
 			else
 			{
+				if (debug) Print("5");
 				Squeeze.Reset();
 				SqueezeOn.Set(0.0);
 			}
@@ -361,7 +417,8 @@ namespace NinjaTrader.Indicator
 				NMomentumDown.Set(dataSeries1[0]);
 			}
 		}
-      
+      				if (debug) Print("6");
+
 		processLongAlert(soundHigh, 0, squeezeHigh, "squeezeHigh");
 		processLongAlert(soundLevel1, 1, squeezeHigh + squeezeRange * (double) extendedLevel1 / 100.0, "extendedLevel1");
 		processLongAlert(soundLevel2, 2, squeezeHigh + squeezeRange * (double) extendedLevel2 / 100.0, "extendedLevel2");
@@ -392,6 +449,7 @@ namespace NinjaTrader.Indicator
 				squeezeLength = 0;
 			}
 		}
+				if (debug) Print("7");
 
 		if (barsSinceSqueeze > barsLookback)
 		{
@@ -403,6 +461,12 @@ namespace NinjaTrader.Indicator
 		SqueezeLength.Set((double) squeezeLength);
 		SqueezeHigh.Set(squeezeHigh);
 		SqueezeLow.Set(squeezeLow);
+		} catch (Exception ex) 
+			{
+				Print("Exception thrown " + ex.Message);
+				Print(ex.StackTrace);
+			}
+
 	}
 
 	
@@ -423,15 +487,15 @@ namespace NinjaTrader.Indicator
 //        return;
 //      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar)
 //      {
-//          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.tempCurrentBar)
+//          if (this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.endBarNumber)
 //            return;
 //          if (Close[1] <= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] > ca2bb1244f73ff9a012a77d9ca61f445d)
 //            return;
-//          if (CurrentBar < this.tempCurrentBar || CurrentBar >= this.tempCurrentBar + this.extendedLineLength)
+//          if (CurrentBar < this.endBarNumber || CurrentBar >= this.endBarNumber + this.extendedLineLength)
 //            return;
 //          if (!this.multiAlert)
 //          {
-//                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.tempCurrentBar;
+//                this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.endBarNumber;
 //          }
 //          this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
 //          this.sendEmail(message);
@@ -445,14 +509,14 @@ namespace NinjaTrader.Indicator
 //      if (!(alertWaveFile != DISABLED))
 //        return;
 //	
-//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.tempCurrentBar)
-//          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.tempCurrentBar)
+//      if (this.intArray8_1[cefea6044484c3257df671c52a39f09b2] == CurrentBar || this.intArray8_2[cefea6044484c3257df671c52a39f09b2] == this.endBarNumber)
+//          if (Close[1] >= ca2bb1244f73ff9a012a77d9ca61f445d || Close[0] < ca2bb1244f73ff9a012a77d9ca61f445d || CurrentBar < this.endBarNumber)
 //            return;
-//      if (CurrentBar >= this.tempCurrentBar + this.extendedLineLength)
+//      if (CurrentBar >= this.endBarNumber + this.extendedLineLength)
 //        return;
 //      if (!this.multiAlert)
 //      {
-//            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.tempCurrentBar;
+//            this.intArray8_2[cefea6044484c3257df671c52a39f09b2] = this.endBarNumber;
 //      }
 //      this.intArray8_1[cefea6044484c3257df671c52a39f09b2] = CurrentBar;
 //      this.sendEmail(message);
