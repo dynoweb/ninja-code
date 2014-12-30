@@ -57,16 +57,18 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables
         private double dparm1 = 0.92; // Default setting for Dparm1
-        private double dparm2 = 0.85; // Default setting for Dparm2
+        private double dparm2 = 0.82; // Default setting for Dparm2
         private double dparm3 = 0.75; // Default setting for Dparm2
         
 		private int iparm1 = 100; // Default setting for Iparm1  
         private int iparm2 = 100; // Default setting for Iparm2
         private int iparm3 = 100; // Default setting for Iparm2
 
+        private int period1 = 0; // Default setting for Period1
+        private int period2 = 30; // Default setting for Period2
+        private int period3 = 15; // Default setting for Period2
+
 		private double ratched = 0.68;
-        private int period1 = 3; // Default setting for Period1
-        private int period2 = 6; // Default setting for Period2
 		private bool isMo = true;
 		private bool is2nd = false;
         // User defined variables (add any user defined variables below)
@@ -300,7 +302,7 @@ namespace NinjaTrader.Strategy
 				if (closeOrder3Limit == null) 
 				{
 					stopPrice = 0;
-					limitPrice = (buyOrder3.AvgFillPrice/Dparm3) * 1.5; // (1.0 + Period2/100.0); //1.5;
+					limitPrice = (buyOrder3.AvgFillPrice/Dparm3) * (1.0 + Period3/100.0);
 					DrawDot(CurrentBar + "limitPricex", false, 0, limitPrice, Color.Lime);
 					closeOrder3Limit = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose3", "Close Long Limit3");
 					
@@ -364,7 +366,7 @@ namespace NinjaTrader.Strategy
         public int Period1
         {
             get { return period1; }
-            set { period1 = Math.Max(1, value); }
+            set { period1 = Math.Max(-50, value); }
         }
 
         [Description("")]
@@ -372,7 +374,15 @@ namespace NinjaTrader.Strategy
         public int Period2
         {
             get { return period2; }
-            set { period2 = Math.Max(1, value); }
+            set { period2 = Math.Max(-50, value); }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int Period3
+        {
+            get { return period3; }
+            set { period3 = Math.Max(-50, value); }
         }
 
         [Description("")]
