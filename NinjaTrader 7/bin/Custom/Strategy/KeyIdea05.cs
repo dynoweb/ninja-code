@@ -10,17 +10,13 @@ using NinjaTrader.Data;
 using NinjaTrader.Indicator;
 using NinjaTrader.Gui.Chart;
 using NinjaTrader.Strategy;
+using PriceActionSwingOscillator.Utility;
 #endregion
 
 // This namespace holds all strategies and is required. Do not change it.
 namespace NinjaTrader.Strategy
 {
     /// <summary>
-	/// This strategy establishes 3 ETF positions based on TrendStregth.  It appears to use about 
-	/// a 15% trailing stop and three exit levels.
-	/// 
-	/// Use SSO as the default ETF
-	/// 
     /// Used to test new key trading ideas - this should be used only as a template.
 	/// 
 	/// Step 1: KeyIdea or trade idea 
@@ -51,16 +47,16 @@ namespace NinjaTrader.Strategy
 	/// 					Random Exit
 	/// 	
     /// </summary>
-    [Description("Daily ETFs - Based on MarketGuage Country ETFs")]
+    [Description("The idea went bust when I found out that the indicator repainted to look smarter")]
     public class KeyIdea05 : Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int iparm1 = 0; // Default setting for Iparm1  ---- exit after x bars
-        private int iparm2 = 1; // Default setting for Iparm2
-        private double dparm1 = 7.0; // Default setting for Dparm1
-        private double dparm2 = 0.15; // Default setting for Dparm2 --- trailing stop
-		private double ratched = 0.02;
+        private int iparm1 = 7; // Default setting for Iparm1
+        private int iparm2 = 5; // Default setting for Iparm2
+        private double dparm1 = 150; // Default setting for Dparm1
+        private double dparm2 = 100; // Default setting for Dparm2
+		private double ratched = 0.05;
         private int period1 = 10; // Default setting for Period1
         private int period2 = 27; // Default setting for Period2
 		private bool isMo = true;
@@ -68,73 +64,46 @@ namespace NinjaTrader.Strategy
         // User defined variables (add any user defined variables below)
 		
 		// ATRTrailing parms
-//		ATRTrailing atr = null;
-//		double atrTimes = 3.0; 
-//		int atrPeriod = 10; 
-//		//double ratched = 0.00;
-//		
-//		//  KeltnerChannel parms
-//		KeltnerChannel kc = null;
-//		double offsetMultiplier = 1.5;
-//		int keltnerPeriod = 10; 
-//		
-//		// DonchianChannel parms
-//		DonchianChannel dc = null;
-//		int donchianPeriod = 20;
+		ATRTrailing atr = null;
+		double atrTimes = 3.5; 
+		int atrPeriod = 10; 
+		
+		//  KeltnerChannel parms
+		KeltnerChannel kc = null;
+		double offsetMultiplier = 1.5;
+		int keltnerPeriod = 10; 
+		
+		// DonchianChannel parms
+		DonchianChannel dc = null;
+		int donchianPeriod = 20;
+		
+		NinjaTrader.Indicator.PriceActionSwingOscillator so = null;
 		
         #endregion
 
         /// <summary>
         /// This method is used to configure the strategy and is called once before any strategy method is called.
 		/// 
-		/// I was thinking that MOMO could have not atr ratched but use a stop place where the
-		/// prior atr stop was, for example, if a short momo, use the lower blue level as the 
-		/// max high to trigger a sell.
         /// </summary>
         protected override void Initialize()
         {
-			// Americas
-			Add("EWZ", PeriodType.Day, 1);
-			Add("EWW", PeriodType.Day, 1);
-//			
-//			// Europe
-			Add("EWU", PeriodType.Day, 1);
-			Add("EWG", PeriodType.Day, 1);
-//	
-//			// Middle East
-//			Add("EGPT", PeriodType.Day, 1);
-//			
-//			// Asia
-//			Add("FXI", PeriodType.Day, 1);
-//			Add("EWJ", PeriodType.Day, 1);
-//			
-//			// Alternative
-//			Add("EFZ", PeriodType.Day, 1);
-//			Add("TMF", PeriodType.Day, 1);
+			int dtbStrength = Iparm1;
+			int swingSize = Iparm2;
+			atrTimes = dparm1;
+			atrPeriod = period1;
 			
-//			atrTimes = dparm1;
-//			atrPeriod = period1;
-			//ratched = 0;
+			so  = PriceActionSwingOscillator(dtbStrength, swingSize, SwingTypes.Standard);
+			Add(so);
 			
-			Add(TSI(3, 14));
+			atr = ATRTrailing(atrTimes, Period1, Ratched);
+			//Add(atr);
 			
-//			atr = ATRTrailing(atrTimes, Period1, Ratched);
-//			Add(atr);
-//			
-//			kc = KeltnerChannel(offsetMultiplier, keltnerPeriod);
-//			Add(kc);
-//			
-//			dc = DonchianChannel(donchianPeriod);
-//			dc.Displacement = 2;
-//			dc.PaintPriceMarkers = false;
-//			Add(dc);
-			
-            SetProfitTarget("", CalculationMode.Percent, dparm2);
-            SetStopLoss("", CalculationMode.Percent, dparm2, false);
+            SetProfitTarget("", CalculationMode.Ticks, dparm1);
+            SetStopLoss("", CalculationMode.Ticks, dparm2, false);
             //SetTrailStop("", CalculationMode.Percent, dparm2, false);
 
             CalculateOnBarClose = true;
-			ExitOnClose = false;
+			ExitOnClose = true;
 			IncludeCommission = true;
         }
 
@@ -143,71 +112,105 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()			
         {
-		    // Checks if OnBarUpdate() is called from an update on the primary Bars
-			//if (BarsInProgress == 0)
-			
-				if (isBestLong(BarsInProgress))
+			// If it's Monday, do not trade.
+    		//if (Time[0].DayOfWeek == DayOfWeek.Thursday)
+
+			if (ToTime(Time[0]) > 120000)
+				//|| ToTime(Time[0]) < 50000
+			{
+				if (isShort())
 				{
-					if (Position.MarketPosition == MarketPosition.Short)
+					ExitShort();
+				}
+				if (isLong())
+				{
+					ExitLong();
+				}
+				return;
+			}
+
+//			if (Position.MarketPosition == MarketPosition.Flat) 
+//			{
+				//SetStopLoss(CalculationMode.Ticks, 1000);
+				if (isBull())
+				{
+					//DrawDot(CurrentBar + "Bull", true, 0, High[0] + 2 * TickSize, Color.Blue);
+					if (isShort())
 					{
 						ExitShort();
-					}					
-					if (Position.MarketPosition == MarketPosition.Flat)
-					{
-						EnterLong("Long " + Instrument.FullName);						
-					} 
+					}
+					if (isFlat()) 
+						EnterLong();
+					//}					
 				}
-				
-				if (isBestShort(BarsInProgress))
+				if (isBear())
 				{
-					if (Position.MarketPosition == MarketPosition.Long)
+					//DrawDot(CurrentBar + "Bear", true, 0, Low[0] - 2 * TickSize, Color.Red);
+					if (isLong())
 					{
 						ExitLong();
 					}
-					if (Position.MarketPosition == MarketPosition.Flat)
-					{
-						EnterShort("Short " + Instrument.FullName);						
-					}
-				} 
-			
-				
-        }
+					if (isFlat()) 
+						EnterShort();
+				}
 
-		private bool isBestLong(int i) 
+        }
+		
+		protected override void OnOrderUpdate(IOrder order)
 		{
-			bool best = true;
-			if (i != 0 && TSI(BarsArray[i], 3, 14)[0] < TSI(BarsArray[0], 3, 14)[0])
-			{
-				best = false;
-			}
-			if (i != 1 && TSI(BarsArray[i], 3, 14)[0] < TSI(BarsArray[1], 3, 14)[0])
-			{
-				best = false;
-			}
-			if (i != 2 && TSI(BarsArray[i], 3, 14)[0] < TSI(BarsArray[2], 3, 14)[0])
-			{
-				best = false;			
-			}
-			if (i > 2)
-				return false;
-				
-			return best;
+//			if (entryOrder != null && entryOrder == order)
+//			{
+//				Print(order.ToString());
+//				if (order.OrderState == OrderState.Filled)
+//					entryOrder = null;
+//			}
 		}
 		
-		private bool isBestShort(int i) 
+		protected override void OnTermination()
 		{
-			bool best = true;
-			if (i != 0 && TSI(BarsArray[i], 3, 14)[0] > TSI(BarsArray[0], 3, 14)[0])
-				best = false;
-			if (i != 1 && TSI(BarsArray[i], 3, 14)[0] > TSI(BarsArray[1], 3, 14)[0])
-				best = false;
-			if (i != 2 && TSI(BarsArray[i], 3, 14)[0] > TSI(BarsArray[2], 3, 14)[0])
+			// Clean up your resources here
+		}
+ 
+		private bool isBull()
+		{
+			if (so.VHigh.ContainsValue(0))
 			{
-				best = false;			
+				return true;
 			}
-			if (i > 2)
+			return false;
+		}
+		
+		private bool isBear()
+		{
+			if (so.VLow.ContainsValue(0))
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		private bool isFlat()
+		{
+			if (Position.MarketPosition == MarketPosition.Flat)
+				return true;
+			else
 				return false;
-			return best;
+		}
+		
+		private bool isLong()
+		{
+			if (Position.MarketPosition == MarketPosition.Long)
+				return true;
+			else
+				return false;
+		}
+		
+		private bool isShort()
+		{
+			if (Position.MarketPosition == MarketPosition.Short)
+				return true;
+			else
+				return false;
 		}
 		
         #region Properties
@@ -259,9 +262,30 @@ namespace NinjaTrader.Strategy
             set { dparm2 = Math.Max(0.000, value); }
         }
 
-		
-        #endregion
+        [Description("Mo Entries")]
+        [GridCategory("Parameters")]
+        public bool IsMo
+        {
+            get { return isMo; }
+            set { isMo = value; }
+        }
 
+        [Description("2nd Chance")]
+        [GridCategory("Parameters")]
+        public bool Is2nd
+        {
+            get { return is2nd; }
+            set { is2nd = value; }
+        }
+		
+        [Description("")]
+        [GridCategory("Parameters")]
+        public double Ratched
+        {
+            get { return ratched; }
+            set { ratched = Math.Max(0.000, value); }
+        }
+
+        #endregion
     }
-    
 }
