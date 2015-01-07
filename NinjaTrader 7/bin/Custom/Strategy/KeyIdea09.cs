@@ -208,8 +208,8 @@ namespace NinjaTrader.Strategy
         private int period2 = 30; // Default setting for Period2
         private int period3 = 15; // Default setting for Period2
 
-		private int startTime = 500; // 940;  // start of trading hhmm
-		private int stopTime = 1330;  // end of trading hhmm
+		private int startTime = 730;  // start of trading hhmm
+		private int stopTime = 1230;  // end of trading hhmm
 		
 		private double ratched = 0.68;
 		private bool isMo = true;
@@ -299,7 +299,7 @@ namespace NinjaTrader.Strategy
     		Unmanaged = true;
 
 			// set to true to trace orders in the output window, used for debugging, normally set this to false
-			TraceOrders = true;
+			TraceOrders = false;
 			EntriesPerDirection = 2;
 			//EntryHandling = EntryHandling.UniqueEntries;
 			BarsRequired = 22;
@@ -316,7 +316,8 @@ namespace NinjaTrader.Strategy
 			// reset variables at the start of each day
 			if (Bars.BarsSinceSession == 1)
 			{
-				Print(Time + " =======================");
+				if (TraceOrders == true)
+					Print(Time + " =======================");
 				ResetTrade();
 			}
 			
@@ -325,10 +326,12 @@ namespace NinjaTrader.Strategy
 			{
 				if (buyOrder1 != null)
 				{
-					Print(Time + " off hours buyOrder1: " + buyOrder1);
+					if (TraceOrders == true)
+						Print(Time + " off hours buyOrder1: " + buyOrder1);
 					if (buyOrder1.OrderState == OrderState.Filled && closeOrderLong1 == null)
 					{
-						Print(Time + " delayed closing ");
+						if (TraceOrders == true)
+							Print(Time + " delayed closing ");
 						if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 						{
 							closeOrderLong1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CTB1");
@@ -336,11 +339,15 @@ namespace NinjaTrader.Strategy
 					}
 					else if (buyOrder1.OrderState == OrderState.Working)
 					{
-						Print(Time + " Cancelling off hours working order: " + buyOrder1);
+						if (TraceOrders == true)
+							Print(Time + " Cancelling off hours working order: " + buyOrder1);
 						CancelOrder(buyOrder1);
 						buyOrder1 = null;
-					} else {
-						Print(Time + " else " + buyOrder1);
+					} 
+					else 
+					{
+						if (TraceOrders == true)
+							Print(Time + " else " + buyOrder1);
 					}
 				}
 				return;
@@ -358,8 +365,11 @@ namespace NinjaTrader.Strategy
 					buyOrder1 = null;
 					ResetTrade();
 				} 
-				if (buyOrder1 != null && buyOrder1.OrderState != OrderState.Working)
-					Print(Time + " #2 " + buyOrder1);
+				if (TraceOrders == true)
+				{
+					if (buyOrder1 != null && buyOrder1.OrderState != OrderState.Working)
+						Print(Time + " #2 " + buyOrder1);
+				}
 				
 				return;		// no trade time
 			}
@@ -373,16 +383,21 @@ namespace NinjaTrader.Strategy
 				{
 					DrawDot(CurrentBar + "b1c", false, 0, limitPrice, Color.DarkGray);
 					ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
-					Print(Time + " changeOrder - limitPrice: " + limitPrice);
+					if (TraceOrders == true)
+						Print(Time + " changeOrder - limitPrice: " + limitPrice);
 				}
 				else if (buyOrder1 == null)
 				{
 					DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
 					buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
-					Print(Time + " submitOrder: " + buyOrder1);
+					if (TraceOrders == true)
+						Print(Time + " submitOrder: " + buyOrder1);
 				}
 				else
-					Print(Time + " OrderState: " + buyOrder1.OrderState);
+				{
+					if (TraceOrders == true)
+						Print(Time + " OrderState: " + buyOrder1.OrderState);
+				}
 			}
 			
 			if (hma.TrendSet[0] == 0) // consolidation
@@ -417,15 +432,19 @@ namespace NinjaTrader.Strategy
 //					else
 //						Print(Time + " OrderState: " +order1.OrderState);
 //				}
-				if (buyOrder1 != null)
-				{
-					if (buyOrder1.OrderState != OrderState.Working)
-						Print(Time + " OrderState: " + buyOrder1.OrderState);
-					if (buyOrder1.OrderState == OrderState.Cancelled) 
-						buyOrder1 = null;
-				}
+					if (buyOrder1 != null)
+					{
+						if (TraceOrders == true)
+						{
+							if (buyOrder1.OrderState != OrderState.Working)
+								Print(Time + " OrderState: " + buyOrder1.OrderState);
+						}
+						if (buyOrder1.OrderState == OrderState.Cancelled) 
+							buyOrder1 = null;
+					}
+				
 			}
-        //}
+        //} 
 
 
 		
@@ -446,8 +465,11 @@ namespace NinjaTrader.Strategy
 				return;
 			}
 			
-			//Print(Time + " execution: " + execution.ToString());
-			Print(Time + " execution.Order: " + execution.Order.ToString());
+			if (TraceOrders)
+			{
+				Print(Time + " execution: " + execution.ToString());
+				Print(Time + " execution.Order: " + execution.Order.ToString());
+			}
 			
 			// ============================================
 			// New long order placed, now set stops/limits
