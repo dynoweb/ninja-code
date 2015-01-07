@@ -208,7 +208,7 @@ namespace NinjaTrader.Strategy
         private int period2 = 30; // Default setting for Period2
         private int period3 = 15; // Default setting for Period2
 
-		private int startTime = 730;  // start of trading hhmm
+		private int startTime = 850;  // start of trading hhmm
 		private int stopTime = 1230;  // end of trading hhmm
 		
 		private double ratched = 0.68;
@@ -228,17 +228,29 @@ namespace NinjaTrader.Strategy
 		IOrder sellOrder2 = null;
 		IOrder sellOrder3 = null;
 
-		IOrder closeOrderLimit1 = null;
-		IOrder closeOrderLimit2 = null;
-		IOrder closeOrderLimit3 = null;
+		IOrder closeLongOrderLimit1 = null;
+		IOrder closeLongOrderLimit2 = null;
+		IOrder closeLongOrderLimit3 = null;
 		
-		IOrder closeOrderLongStop1 = null;
-		IOrder closeOrderLongStop2 = null;
-		IOrder closeOrderLongStop3 = null;
+		IOrder closeLongOrderStop1 = null;
+		IOrder closeLongOrderStop2 = null;
+		IOrder closeLongOrderStop3 = null;
 		
-		IOrder closeOrderLong1 = null;
-		IOrder closeOrderLong2 = null;
-		IOrder closeOrderLong3 = null;
+		IOrder closeLongOrder1 = null;
+		IOrder closeLongOrder2 = null;
+		IOrder closeLongOrder3 = null;
+		
+		IOrder closeShortOrderLimit1 = null;
+		IOrder closeShortOrderLimit2 = null;
+		IOrder closeShortOrderLimit3 = null;
+		
+		IOrder closeShortOrderStop1 = null;
+		IOrder closeShortOrderStop2 = null;
+		IOrder closeShortOrderStop3 = null;
+		
+		IOrder closeShortOrder1 = null;
+		IOrder closeShortOrder2 = null;
+		IOrder closeShortOrder3 = null;
 		
 		double limitPrice = 0;
 		double stopPrice = 0;
@@ -318,62 +330,40 @@ namespace NinjaTrader.Strategy
 			{
 				if (TraceOrders == true)
 					Print(Time + " =======================");
-				ResetTrade();
+				ResetTrades();
 			}
 			
 
 			if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100))
 			{
-				if (buyOrder1 != null)
-				{
-					if (TraceOrders == true)
-						Print(Time + " off hours buyOrder1: " + buyOrder1);
-					if (buyOrder1.OrderState == OrderState.Filled && closeOrderLong1 == null)
-					{
-						if (TraceOrders == true)
-							Print(Time + " delayed closing ");
-						if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
-						{
-							closeOrderLong1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CTB1");
-						}
-					}
-					else if (buyOrder1.OrderState == OrderState.Working)
-					{
-						if (TraceOrders == true)
-							Print(Time + " Cancelling off hours working order: " + buyOrder1);
-						CancelOrder(buyOrder1);
-						buyOrder1 = null;
-					} 
-					else 
-					{
-						if (TraceOrders == true)
-							Print(Time + " else " + buyOrder1);
-					}
-				}
+				ShutDownOrders();
 				return;
 			}
 			
 			// No Trade zone
-			if ((ToTime(Time[0]) >= 800 * 100) && (ToTime(Time[0]) <= 900 * 100))
+//			if ((ToTime(Time[0]) >= 800 * 100) && (ToTime(Time[0]) <= 900 * 100))
+//			{
+//				CancelWorkingOrders();
+//				return;		// no trade time
+//			}
+
+			// Doing a little clean up here, if this happens, I really should find out where
+			// it's not cleaning up the order
+			if (buyOrder1 != null)
 			{
-				if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
-				{
-					Print(Time + " #0 " + buyOrder1);
-					CancelOrder(buyOrder1);
-					Print(Time + " cancel buyOrder1");
-					Print(Time + " #1 " + buyOrder1);
-					buyOrder1 = null;
-					ResetTrade();
-				} 
 				if (TraceOrders == true)
 				{
-					if (buyOrder1 != null && buyOrder1.OrderState != OrderState.Working)
-						Print(Time + " #2 " + buyOrder1);
+					if (buyOrder1.OrderState != OrderState.Working)
+						Print(Time + " OrderState: " + buyOrder1.OrderState);
 				}
-				
-				return;		// no trade time
+				if (buyOrder1.OrderState == OrderState.Cancelled) 
+					buyOrder1 = null;
 			}
 			
+			
+			// ============================================
+			// New long order placement
+			// ============================================
 			if (hma.TrendSet[0] == 1) //  uptrend
 			{
 				limitPrice = Low[0] - EntryB1 * TickSize;
@@ -381,14 +371,14 @@ namespace NinjaTrader.Strategy
 				
 				if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
 				{
-					DrawDot(CurrentBar + "b1c", false, 0, limitPrice, Color.DarkGray);
+					DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
 					ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
 					if (TraceOrders == true)
 						Print(Time + " changeOrder - limitPrice: " + limitPrice);
 				}
 				else if (buyOrder1 == null)
 				{
-					DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
+					DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
 					buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
 					if (TraceOrders == true)
 						Print(Time + " submitOrder: " + buyOrder1);
@@ -400,6 +390,29 @@ namespace NinjaTrader.Strategy
 				}
 			}
 			
+			// ============================================
+			// New Short order placement
+			// ============================================
+			if (hma.TrendSet[0] == -1) //  downtrend
+			{
+				limitPrice = High[0] + EntryS1 * TickSize;
+				stopPrice = limitPrice;
+				
+				if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+				{
+					DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
+					ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
+				}
+				else if (sellOrder1 == null)
+				{
+					DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
+					sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
+				}
+			}
+			
+			// ============================================
+			// Market Flat, cancel working orders
+			// ============================================
 			if (hma.TrendSet[0] == 0) // consolidation
 			{
 				if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
@@ -414,37 +427,7 @@ namespace NinjaTrader.Strategy
 				}
 			}
 				
-//				if (hma.TrendSet[0] == -1) //  downtrend
-//				{
-//					limitPrice = High[0] + EntryS1 * TickSize;
-//					stopPrice = limitPrice;
-//					
-//					if (order1 != null && Position.MarketPosition == MarketPosition.Flat)  //  (order1.OrderState == OrderState.Working || order1.OrderState == OrderState.Cancelled))
-//					{
-//						DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
-//						ChangeOrder(order1, order1.Quantity, limitPrice, stopPrice);
-//					}
-//					else if (order1 == null)
-//					{
-//						DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
-//						order1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
-//					}
-//					else
-//						Print(Time + " OrderState: " +order1.OrderState);
-//				}
-					if (buyOrder1 != null)
-					{
-						if (TraceOrders == true)
-						{
-							if (buyOrder1.OrderState != OrderState.Working)
-								Print(Time + " OrderState: " + buyOrder1.OrderState);
-						}
-						if (buyOrder1.OrderState == OrderState.Cancelled) 
-							buyOrder1 = null;
-					}
-				
-			}
-        //} 
+		}
 
 
 		
@@ -456,12 +439,8 @@ namespace NinjaTrader.Strategy
 			if (execution.Order == null)
 			{
 				Print(Time + " -->> OnExecution.Order is null");
-				
-				buyOrder1 = null;
-				closeOrderLimit1 = null;
-				closeOrderLongStop1 = null;
+				ResetTrades();
 				Print(Time + " executed/reset on close");
-				
 				return;
 			}
 			
@@ -478,29 +457,29 @@ namespace NinjaTrader.Strategy
 			{
 				//Print(Time + " buyOrder1: " + buyOrder1);
 				
-				if (closeOrderLimit1 == null) 
+				if (closeLongOrderLimit1 == null) 
 				{
 					limitPrice = 0;
 					stopPrice = buyOrder1.AvgFillPrice - 10 * TickSize;
 					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
-					closeOrderLongStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CSB1");
+					closeLongOrderStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CSB1");
 
 					stopPrice = 0;
 					limitPrice = buyOrder1.AvgFillPrice + 5 * TickSize;
 					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
-					closeOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CLB1");
+					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
 				} 
 			} 
 
 			if (buyOrder2 != null && buyOrder2 == execution.Order)
 			{
 				//Print(Time + " buyOrder2: " + buyOrder2);
-				if (closeOrderLimit2 == null) 
+				if (closeLongOrderLimit2 == null) 
 				{
 					stopPrice = 0;
 					limitPrice = (buyOrder2.AvgFillPrice/Dparm2) * (1.0 + Period2/100.0);
 					DrawDot(CurrentBar + "limitPricex", false, 0, limitPrice, Color.Lime);
-					closeOrderLimit2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose2", "Close Long Limit2");
+					closeLongOrderLimit2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "Close Long Limit2");
 					
 					//barNumberSinceFilled = CurrentBar;
 				} 
@@ -509,70 +488,165 @@ namespace NinjaTrader.Strategy
 			if (buyOrder3 != null && buyOrder3 == execution.Order)
 			{
 				//Print(Time + " buyOrder3: " + buyOrder3);
-				if (closeOrderLimit3 == null) 
+				if (closeLongOrderLimit3 == null) 
 				{
 					stopPrice = 0;
 					limitPrice = (buyOrder3.AvgFillPrice/Dparm3) * (1.0 + Period3/100.0);
 					DrawDot(CurrentBar + "limitPricex", false, 0, limitPrice, Color.Lime);
-					closeOrderLimit3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose3", "Close Long Limit3");
+					closeLongOrderLimit3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "Close Long Limit3");
 					
 					//barNumberSinceFilled = CurrentBar;
 				} 
 			} 
 
+			// ============================================
+			// New short order placed, now set stops/limits
+			// ============================================
+			if (sellOrder1 != null && sellOrder1 == execution.Order)
+			{
+				//Print(Time + " sellOrder1: " + sellOrder1);
+				
+				if (closeShortOrderLimit1 == null) 
+				{
+					limitPrice = 0;
+					stopPrice = sellOrder1.AvgFillPrice + 10 * TickSize;
+					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
+
+					stopPrice = 0;
+					limitPrice = sellOrder1.AvgFillPrice - 5 * TickSize;
+					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
+				} 
+			} 
+
+			
 			// ===================================================
 			//   Trade hit Long limit, no more trades for the day
 			// ===================================================
-			if (closeOrderLimit1 != null && closeOrderLimit1 == execution.Order)
+			if (closeLongOrderLimit1 != null && closeLongOrderLimit1 == execution.Order)
 			{
 				//ResetTrade();
 				buyOrder1 = null;
-				closeOrderLimit1 = null;
-				closeOrderLongStop1 = null;
-				Print(Time + " closeOrderLimit1 executed/reset");
+				closeLongOrderLimit1 = null;
+				closeLongOrderStop1 = null;
+				Print(Time + " closeLongOrderLimit1 executed/reset");
 			}			
 				
-			if (closeOrderLongStop1 != null && closeOrderLongStop1 == execution.Order)
+			if (closeLongOrderStop1 != null && closeLongOrderStop1 == execution.Order)
 			{
 				//ResetTrade();
 				buyOrder1 = null;
-				closeOrderLimit1 = null;
-				closeOrderLongStop1 = null;
-				Print(Time + " closeOrderLongStop1 executed/reset");
+				closeLongOrderLimit1 = null;
+				closeLongOrderStop1 = null;
+				Print(Time + " closeLongOrderStop1 executed/reset");
 			}			
 			
-			if (closeOrderLong1 != null && closeOrderLong1 == execution.Order)
+			if (closeLongOrder1 != null && closeLongOrder1 == execution.Order)
 			{
 				//ResetTrade();
 				buyOrder1 = null;
-				closeOrderLimit1 = null;
-				closeOrderLongStop1 = null;
-				closeOrderLong1 = null;
-				Print(Time + " closeOrderLong1 executed/reset");
+				closeLongOrderLimit1 = null;
+				closeLongOrderStop1 = null;
+				closeLongOrder1 = null;
+				Print(Time + " closeLongOrder1 executed/reset");
 			}			
 
-			if (closeOrderLimit2 != null && closeOrderLimit2 == execution.Order)
+			if (closeLongOrderLimit2 != null && closeLongOrderLimit2 == execution.Order)
 			{
 				//ResetTrade();
 				buyOrder2 = null;
-				closeOrderLimit2 = null;
+				closeLongOrderLimit2 = null;
 			}			
 
-			if (closeOrderLimit3 != null && closeOrderLimit3 == execution.Order)
+			if (closeLongOrderLimit3 != null && closeLongOrderLimit3 == execution.Order)
 			{
 				//ResetTrade();
 				buyOrder3 = null;
-				closeOrderLimit3 = null;
+				closeLongOrderLimit3 = null;
 			}			
 
 		}
-		
-		private void ResetTrade()
+
+		private void ShutDownOrders()
 		{
-			//buyOrder1 = null;
-			closeOrderLimit1 = null;
-			closeOrderLongStop1 = null;
-			closeOrderLong1 = null;
+			if (buyOrder1 != null)
+			{
+//				if (TraceOrders == true)
+//					Print(Time + " off hours buyOrder1: " + buyOrder1);
+				if (buyOrder1.OrderState == OrderState.Filled && closeLongOrder1 == null)
+				{
+//					if (TraceOrders == true)
+//						Print(Time + " delayed closing ");
+					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
+					{
+						closeLongOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CTB1");
+					}
+				}
+				else if (buyOrder1.OrderState == OrderState.Working)
+				{
+//					if (TraceOrders == true)
+//						Print(Time + " Cancelling off hours working order: " + buyOrder1);
+					CancelOrder(buyOrder1);
+					buyOrder1 = null;
+				} 
+//				else 
+//				{
+//					if (TraceOrders == true)
+//						Print(Time + " else " + buyOrder1);
+//				}
+			}
+		}
+		
+		private void CancelWorkingOrders()
+		{
+			CancelWorkingOrder(buyOrder1);
+			CancelWorkingOrder(buyOrder2);
+			CancelWorkingOrder(buyOrder3);
+			buyOrder1 = null;
+			buyOrder2 = null;
+			buyOrder3 = null;
+			ResetTrades();
+		}
+		
+		/// <summary>
+		/// Cancels the IOrder passed into the method, remember to null out IOrder
+		/// </summary>
+		/// <param name="order"></param>
+		private void CancelWorkingOrder(IOrder order)
+		{
+			if (order != null && order.OrderState == OrderState.Working)
+			{
+				CancelOrder(order);
+			}
+		}
+		
+		private void ResetTrades()
+		{
+			ResetTrade1();
+			ResetTrade2();
+			ResetTrade3();
+		}
+		
+		private void ResetTrade1()
+		{
+			buyOrder1 = null;
+			closeLongOrderLimit1 = null;
+			closeLongOrderStop1 = null;
+			closeLongOrder1 = null;
+			
+			sellOrder1 = null;
+			closeShortOrderLimit1 = null;
+			closeShortOrderStop1 = null;
+			closeShortOrder1 = null;
+		}
+		
+		private void ResetTrade2()
+		{
+		}
+		
+		private void ResetTrade3()
+		{
 		}
 		
         #region Properties
