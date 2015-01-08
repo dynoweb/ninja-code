@@ -47,11 +47,22 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-        private int lookback = 10; 
-        private int maxDailyEntries = 1;
+
+        private int lookback = 12; // Default setting for Lookback
+        private int maxDailyEntries = 1; // Default setting for MaxDailyEntries
+//        private int stopTime = 145000; // Default setting for StopTime -- 2:50 PM CST
+
+//        private int lookback = 10; 
+//        private int maxDailyEntries = 1;
+
+
+//		private int startTime = 070000; // 07:00 AM CST
+//		private double vpFactor = 1.0; // Default setting for VpFactor
+
 		private int startTime = 170000; // 05:00 PM CST
         private int stopTime = 145000; // 02:50 PM CST
 		private double vpFactor = 0.8;
+
         // User defined variables (add any user defined variables below)
 		double threshold = 0;
 		int vpHigh = 0;
@@ -59,9 +70,12 @@ namespace NinjaTrader.Strategy
 		int tradeCount = 0;
 		int orderQty = 1;
 		// misc
-		IOrder longOrder = null;
-		IOrder shortOrder = null;
-		IOrder closeOrder = null;
+		// Example array initialization 
+		//int[] bitBucket = new int[10];
+		//int[] bitBucket = { 0,0,0,0,0,0,0,0,0,0,0 };
+		IOrder[] longOrder = new IOrder[5];
+		IOrder[] shortOrder = new IOrder[5];
+		IOrder[] closeOrder = new IOrder[5];
         #endregion
 
         /// <summary>
@@ -102,65 +116,72 @@ namespace NinjaTrader.Strategy
 			// that would be 5 PM to 2:50 PM CST 
 			if (Volume[0] < Volume[1] 
 				&& Volume[1] > threshold 
-				&& tradeCount < MaxDailyEntries
-				&& ((ToTime(Time[0]) > startTime) || (ToTime(Time[0]) < stopTime)))
+				
+				&& ((ToTime(Time[0]) > startTime) && (ToTime(Time[0]) < stopTime)))
 			{
-				if (Position.MarketPosition == MarketPosition.Flat)
+				if (//Position.MarketPosition == MarketPosition.Flat &&
+					tradeCount < MaxDailyEntries)
 				{
 					Print(Time + " GetCurrentBid: " + GetCurrentBid() 
 						+ " MAX: " + MAX(High, 2)[0]
 						+ " MIN: " + MIN(Low, 2)[0]);
 					
-					shortOrder = 
-						SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, orderQty, 0,  MIN(Low, 2)[0], "OCO_ID", "SE");  
+					shortOrder[tradeCount] = 
+						SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, orderQty, 0,  MIN(Low, 2)[0], "OCO_ID", "SE"+tradeCount);  
 					DrawDot(CurrentBar + "short", true, 0, MIN(Low, 2)[0], Color.Red);
 					
-					longOrder = 
-						SubmitOrder(0, OrderAction.Buy, OrderType.Stop, orderQty, 0,  MAX(High, 2)[0], "OCO_ID", "LE");  
+					longOrder[tradeCount] = 
+						SubmitOrder(0, OrderAction.Buy, OrderType.Stop, orderQty, 0,  MAX(High, 2)[0], "OCO_ID", "LE"+tradeCount);  
 					DrawDot(CurrentBar + "long", true, 0, MAX(High, 2)[0], Color.Blue);
 					
 				}
 			}
 			
-			if (ToTime(Time[0]) >= stopTime && ToTime(Time[0]) <= startTime)
+			if (ToTime(Time[0]) >= stopTime || ToTime(Time[0]) <= startTime)
 			{
-				if (longOrder != null && longOrder.OrderState == OrderState.Filled)
+				for (int i = 0; i < maxDailyEntries; i++)
 				{
-					closeOrder = SubmitOrder(0, OrderAction.Sell, OrderType.Market, longOrder.Quantity, 0,0, "", "LE");
-				}
-					
-				if (shortOrder != null && shortOrder.OrderState == OrderState.Filled)
-				{
-					closeOrder = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, shortOrder.Quantity, 0,0, "", "SE");
+					if (longOrder[i] != null && longOrder[i].OrderState == OrderState.Filled)
+					{
+						closeOrder[i] = SubmitOrder(0, OrderAction.Sell, OrderType.Market, longOrder[i].Quantity, 0,0, "", "LE"+i);
+					}
+						
+					if (shortOrder[i] != null && shortOrder[i].OrderState == OrderState.Filled)
+					{
+						closeOrder[i] = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, shortOrder[i].Quantity, 0,0, "", "SE"+i);
+					}
 				}
 			}
         }
 		
 		protected override void OnOrderUpdate(IOrder order)
 		{
-			if (longOrder != null && longOrder == order)
+			for (int i = 0; i < maxDailyEntries; i++)
 			{
-				if (order.OrderState == OrderState.Filled)
+				if (longOrder[i] != null && longOrder[i] == order)
 				{
-					tradeCount++;
+					if (order.OrderState == OrderState.Filled)
+					{
+						tradeCount++;
+					}
 				}
-			}
-			
-			if (shortOrder != null && shortOrder == order)
-			{
-				if (order.OrderState == OrderState.Filled)
+				
+				if (shortOrder[i] != null && shortOrder[i] == order)
 				{
-					tradeCount++;
+					if (order.OrderState == OrderState.Filled)
+					{
+						tradeCount++;
+					}
 				}
-			}
 			
-			if (closeOrder != null && closeOrder == order)
-			{
-				if (order.OrderState == OrderState.Filled)
+				if (closeOrder[i] != null && closeOrder[i] == order)
 				{
-					closeOrder = null;
-					longOrder = null;
-					shortOrder = null;
+					if (order.OrderState == OrderState.Filled)
+					{
+						closeOrder[i] = null;
+						longOrder[i] = null;
+						shortOrder[i] = null;
+					}
 				}
 			}
 		}
@@ -176,12 +197,12 @@ namespace NinjaTrader.Strategy
             set { lookback = Math.Max(1, value); }
         }
 
-		[Description("")]
+		[Description("Max of 5")]
         [GridCategory("Parameters")]
         public int MaxDailyEntries
         {
             get { return maxDailyEntries; }
-            set { maxDailyEntries = Math.Max(1, value); }
+            set { maxDailyEntries = Math.Min(Math.Max(1, value), 5); }
         }
 
         [Description("HHMMSS (CST) 170000 = 5PM CST")]

@@ -17,7 +17,7 @@ using NinjaTrader.Strategy;
 namespace NinjaTrader.Strategy
 {
     
-        [Description("Martingale framework created by Trader PARDS with entry exit signals created by Quantismo .")]
+        [Description("Uses 6E 300 Ticks - Martingale framework created by Trader PARDS with entry exit signals created by Quantismo.")]
         public class MartingaleQuantshort : Strategy
         {
 // VARIABLES $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$        
