@@ -188,7 +188,7 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-		private int atrBucket = 2;
+		private int atrBucket = 6;
 		
 		private int entryB1 = 2;  // Buy x ticks pullback
 		private int entryB2 = 1;  // Buy x ticks pullback
@@ -202,8 +202,8 @@ namespace NinjaTrader.Strategy
         private double dparm2 = 0.82; // Default setting for Dparm2
         private double dparm3 = 0.75; // Default setting for Dparm2
         
-		private int iparm1 = 100; // Default setting for Iparm1  
-        private int iparm2 = 100; // Default setting for Iparm2
+		private int iparm1 = 5; // Default setting for Target  
+        private int iparm2 = 20; // Default setting for Stop
         private int iparm3 = 100; // Default setting for Iparm2
 
         private int period1 = 30; // Default setting for Period1
@@ -342,7 +342,8 @@ namespace NinjaTrader.Strategy
 			
 
 			if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100)
-				|| (atr[0] < AtrBucket || atr[0] > (AtrBucket + 1))
+				//|| (atr[0] < AtrBucket || atr[0] > (AtrBucket + 1))
+				|| (atr[0] < 2 || atr[0] > 6)
 				)
 			{
 				ShutDownOrders();
@@ -399,27 +400,33 @@ namespace NinjaTrader.Strategy
 				}
 	
 				// Second Long Contract 
-				limitPrice = Low[0] - (EntryB1 + EntryB2) * TickSize;
-				stopPrice = limitPrice;
-				if (buyOrder2 != null && buyOrder2.OrderState == OrderState.Working)
+				if (Qty2 > 0)
 				{
-					ChangeOrder(buyOrder2, buyOrder2.Quantity, limitPrice, stopPrice);
-				}
-				else if (buyOrder2 == null)
-				{
-					buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "B2");
+					limitPrice = Low[0] - (EntryB1 + EntryB2) * TickSize;
+					stopPrice = limitPrice;
+					if (buyOrder2 != null && buyOrder2.OrderState == OrderState.Working)
+					{
+						ChangeOrder(buyOrder2, buyOrder2.Quantity, limitPrice, stopPrice);
+					}
+					else if (buyOrder2 == null)
+					{
+						buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "B2");
+					}
 				}
 				
 				// Third Long Contract 
-				limitPrice = Low[0] - (EntryB1 + EntryB2 + EntryB3) * TickSize;
-				stopPrice = limitPrice;
-				if (buyOrder3 != null && buyOrder3.OrderState == OrderState.Working)
+				if (Qty3 > 0)
 				{
-					ChangeOrder(buyOrder3, buyOrder3.Quantity, limitPrice, stopPrice);
-				}
-				else if (buyOrder3 == null)
-				{
-					buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "B3");
+					limitPrice = Low[0] - (EntryB1 + EntryB2 + EntryB3) * TickSize;
+					stopPrice = limitPrice;
+					if (buyOrder3 != null && buyOrder3.OrderState == OrderState.Working)
+					{
+						ChangeOrder(buyOrder3, buyOrder3.Quantity, limitPrice, stopPrice);
+					}
+					else if (buyOrder3 == null)
+					{
+						buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "B3");
+					}
 				}
 				
 			}
@@ -540,13 +547,13 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit1 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder1.AvgFillPrice - 10 * TickSize;
+					stopPrice = buyOrder1.AvgFillPrice - iparm2 * TickSize;
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CSB1");
 
 					stopPrice = 0;
-					limitPrice = buyOrder1.AvgFillPrice + 5 * TickSize;
+					limitPrice = buyOrder1.AvgFillPrice + iparm1 * TickSize;
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
@@ -558,12 +565,12 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit2 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder2.AvgFillPrice - (10 - EntryS2) * TickSize;
+					stopPrice = buyOrder2.AvgFillPrice - (iparm2 - EntryS2) * TickSize;
 					closeLongOrderStop2 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "CSB2");
 
 					stopPrice = 0;
-					limitPrice = buyOrder2.AvgFillPrice + (5 + EntryS2) * TickSize;
+					limitPrice = buyOrder2.AvgFillPrice + (iparm1 + EntryS2) * TickSize;
 					closeLongOrderLimit2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "CLB2");
 				} 
@@ -574,12 +581,12 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit3 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder3.AvgFillPrice - (10 - EntryS2 - EntryS3) * TickSize;
+					stopPrice = buyOrder3.AvgFillPrice - (iparm2 - EntryS2 - EntryS3) * TickSize;
 					closeLongOrderStop3 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "CSB3");
 
 					stopPrice = 0;
-					limitPrice = buyOrder3.AvgFillPrice + (5 + EntryS2 + EntryS3) * TickSize;
+					limitPrice = buyOrder3.AvgFillPrice + (iparm1 + EntryS2 + EntryS3) * TickSize;
 					closeLongOrderLimit3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "CLB3");
 				}
@@ -595,13 +602,13 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit1 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder1.AvgFillPrice + 10 * TickSize;
+					stopPrice = sellOrder1.AvgFillPrice + iparm2 * TickSize;
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
 
 					stopPrice = 0;
-					limitPrice = sellOrder1.AvgFillPrice - 5 * TickSize;
+					limitPrice = sellOrder1.AvgFillPrice - iparm1 * TickSize;
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
@@ -613,12 +620,12 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit2 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder2.AvgFillPrice + (10 - EntryS2) * TickSize;
+					stopPrice = sellOrder2.AvgFillPrice + (iparm2 - EntryS2) * TickSize;
 					closeLongOrderStop2 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS2", "CSS2");
 
 					stopPrice = 0;
-					limitPrice = sellOrder2.AvgFillPrice - (5 + EntryS2) * TickSize;
+					limitPrice = sellOrder2.AvgFillPrice - (iparm1 + EntryS2) * TickSize;
 					closeShortOrderLimit2 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS2", "CLS2");
 				} 
@@ -629,12 +636,12 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit3 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder3.AvgFillPrice + (10 - EntryS2 - EntryS3) * TickSize;
+					stopPrice = sellOrder3.AvgFillPrice + (iparm2 - EntryS2 - EntryS3) * TickSize;
 					closeLongOrderStop3 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS3", "CSS3");
 
 					stopPrice = 0;
-					limitPrice = sellOrder3.AvgFillPrice - (5 + EntryS2 + EntryS3) * TickSize;
+					limitPrice = sellOrder3.AvgFillPrice - (iparm1 + EntryS2 + EntryS3) * TickSize;
 					closeShortOrderLimit3 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS3", "CLS3");
 				} 
