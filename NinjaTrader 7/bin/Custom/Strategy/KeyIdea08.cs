@@ -56,27 +56,31 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-        private double dparm1 = 0.92; // Default setting for Dparm1
-        private double dparm2 = 0.82; // Default setting for Dparm2
-        private double dparm3 = 0.75; // Default setting for Dparm2
+        private double dparm1 = 0.9; // Default setting for Dparm1
+        private double dparm2 = 0.92; // Default setting for Dparm2
+        private double dparm3 = 0.85; // Default setting for Dparm2
         
 		private int iparm1 = 100; // Default setting for Iparm1  
         private int iparm2 = 100; // Default setting for Iparm2
-        private int iparm3 = 100; // Default setting for Iparm2
+        private int iparm3 = 0; // Default setting for Iparm2
 
-        private int period1 = 0; // Default setting for Period1
-        private int period2 = 30; // Default setting for Period2
-        private int period3 = 15; // Default setting for Period2
+        private int period1 = 9; // Default setting for Period1
+        private int period2 = 25; // Default setting for Period2
+        private int period3 = 35; // Default setting for Period2
+		
+		private double profitTarget1 = 1.07;
+		private double profitTarget2 = 1.02;
+		private double profitTarget3 = 1.1;
 
-		private double ratched = 0.68;
-		private bool isMo = true;
-		private bool is2nd = false;
-        // User defined variables (add any user defined variables below)
-		double monthHigh;
-		double monthLow;
+		// User defined variables (add any user defined variables below)
+		double high1;
+		double high2;
+		double high3;
+		
 		IOrder buyOrder1 = null;
 		IOrder buyOrder2 = null;
 		IOrder buyOrder3 = null;
+		
 		IOrder closeOrder1Limit = null;
 		IOrder closeOrder2Limit = null;
 		IOrder closeOrder3Limit = null;
@@ -147,41 +151,50 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()			
         {
-			monthHigh = High[HighestBar(High, 22)];
-			monthLow = Low[LowestBar(Low, 22)];
 
 		/// Rules:
 		///  - if 8% below 22 day high, add to position
 		///  - if 16% below 22 day high, add 3x to position
 		///  - if 10% profit, close 50%, if 20% close 50% again
 
-			qty = Iparm1;
+			try
+			{
 			stopPrice = 0;
+			qty = Iparm1;
 
-			if (buyOrder1 == null) // || buyOrder1.OrderState != OrderState.Filled)
+			if (qty > 0)
 			{
-				limitPrice = Instrument.MasterInstrument.Round2TickSize(monthHigh * Dparm1);
-				DrawDot(CurrentBar + "Long_limitPrice", false, 0, limitPrice, Color.Black);
-				if (Close[0] <= limitPrice) 
-					buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy1", "Buy1");
-				else
+				high1 = High[HighestBar(High, Period1)];
+				limitPrice = high1 * Dparm1;
+
+				if (buyOrder1 == null) // || buyOrder1.OrderState != OrderState.Filled)
 				{
-					buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy1", "Buy1");
-				}
-			} 
-			else
-			{
-				if (buyOrder1.OrderState != OrderState.Filled)
-				{
-					limitPrice = monthHigh * Dparm1;
+					//limitPrice = Instrument.MasterInstrument.Round2TickSize(monthHigh * Dparm1);
+					DrawDot(CurrentBar + "Long_limitPrice", false, 0, limitPrice, Color.Black);
 					if (Close[0] <= limitPrice) 
 						buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy1", "Buy1");
 					else
 					{
-						if (limitPrice != buyOrder1.LimitPrice) 
+						buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy1", "Buy1");
+					}
+				} 
+				else
+				{
+					if (buyOrder1.OrderState != OrderState.Filled)
+					{
+						//limitPrice = monthHigh * Dparm1;
+						if (Close[0] <= limitPrice) 
+						{						
+							CancelOrder(buyOrder1);
+							buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy1", "Buy1");
+						}
+						else
 						{
-							DrawDot(CurrentBar + "Long_limitPrice", false, 0, limitPrice, Color.Black);
-							ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
+							if (limitPrice != buyOrder1.LimitPrice) 
+							{
+								DrawDot(CurrentBar + "Long_limitPrice", false, 0, limitPrice, Color.Black);
+								ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
+							}
 						}
 					}
 				}
@@ -189,65 +202,80 @@ namespace NinjaTrader.Strategy
 			
 
 			qty = Iparm2;
-			limitPrice = monthHigh * Dparm2;
 			
-			if (buyOrder2 == null) 
+			if (qty > 0)
 			{
-				DrawDot(CurrentBar + "Long_limitPriceX", false, 0, limitPrice, Color.Gray);
-				if (Close[0] <= limitPrice) 
-					buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy2", "Buy2");
-				else
+				high2 = High[HighestBar(High, Period2)];
+				limitPrice = high2 * Dparm2;
+
+				if (buyOrder2 == null) 
 				{
-					buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy2", "Buy2");
-				}
-			} 
-			else
-			{
-				if (buyOrder2.OrderState != OrderState.Filled)
-				{
+					DrawDot(CurrentBar + "Long_limitPriceX", false, 0, limitPrice, Color.Gray);
 					if (Close[0] <= limitPrice) 
 						buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy2", "Buy2");
 					else
 					{
-						if (limitPrice != buyOrder2.LimitPrice) 
+						buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy2", "Buy2");
+					}
+				} 
+				else
+				{
+					if (buyOrder2.OrderState != OrderState.Filled)
+					{
+						if (Close[0] <= limitPrice) 
+							buyOrder2 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy2", "Buy2");
+						else
 						{
-							DrawDot(CurrentBar + "Long_limitPriceX", false, 0, limitPrice, Color.Gray);
-							ChangeOrder(buyOrder2, buyOrder2.Quantity, limitPrice, stopPrice);
+							if (limitPrice != buyOrder2.LimitPrice) 
+							{
+								DrawDot(CurrentBar + "Long_limitPriceX", false, 0, limitPrice, Color.Gray);
+								ChangeOrder(buyOrder2, buyOrder2.Quantity, limitPrice, stopPrice);
+							}
 						}
 					}
 				}
 			}
-			
+
 			qty = Iparm3;
-			limitPrice = monthHigh * Dparm3;
 			
-			if (buyOrder3 == null) 
+			if (qty > 0)
 			{
-				DrawDot(CurrentBar + "Long_limitPrice3", false, 0, limitPrice, Color.Yellow);
-				if (Close[0] <= limitPrice) 
-					buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy3", "Buy3");
-				else
+				high3 = High[HighestBar(High, Period3)];
+				limitPrice = high3 * Dparm3;
+
+				if (buyOrder3 == null) 
 				{
-					buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy3", "Buy3");
-				}
-			} 
-			else
-			{
-				if (buyOrder3.OrderState != OrderState.Filled)
-				{
+					DrawDot(CurrentBar + "Long_limitPrice3", false, 0, limitPrice, Color.Yellow);
 					if (Close[0] <= limitPrice) 
 						buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy3", "Buy3");
 					else
 					{
-						if (limitPrice != buyOrder3.LimitPrice) 
+						buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy3", "Buy3");
+					}
+				} 
+				else
+				{
+					if (buyOrder3.OrderState != OrderState.Filled)
+					{
+						if (Close[0] <= limitPrice) 
+							buyOrder3 = SubmitOrder(0, OrderAction.Buy, OrderType.Market, qty, limitPrice, stopPrice, orderPrefix + "ocoBuy3", "Buy3");
+						else
 						{
-							DrawDot(CurrentBar + "Long_limitPrice3", false, 0, limitPrice, Color.Yellow);
-							ChangeOrder(buyOrder3, buyOrder3.Quantity, limitPrice, stopPrice);
+							if (limitPrice != buyOrder3.LimitPrice) 
+							{
+								DrawDot(CurrentBar + "Long_limitPrice3", false, 0, limitPrice, Color.Yellow);
+								ChangeOrder(buyOrder3, buyOrder3.Quantity, limitPrice, stopPrice);
+							}
 						}
 					}
 				}
 			}
 			
+			} catch (Exception ex) 
+			{
+				Print(Time + " " + ex.Message);
+				Print(ex.StackTrace);
+			}
         }
 
 
@@ -274,7 +302,7 @@ namespace NinjaTrader.Strategy
 				if (closeOrder1Limit == null) 
 				{
 					stopPrice = 0;
-					limitPrice = (buyOrder1.AvgFillPrice/Dparm1) * (1.0 + Period1/100.0);
+					limitPrice = buyOrder1.AvgFillPrice * ProfitTarget1;
 					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeOrder1Limit = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "Close Long Limit1");
 					
@@ -288,7 +316,7 @@ namespace NinjaTrader.Strategy
 				if (closeOrder2Limit == null) 
 				{
 					stopPrice = 0;
-					limitPrice = (buyOrder2.AvgFillPrice/Dparm2) * (1.0 + Period2/100.0);
+					limitPrice = buyOrder2.AvgFillPrice * ProfitTarget2;
 					DrawDot(CurrentBar + "limitPricex", false, 0, limitPrice, Color.Lime);
 					closeOrder2Limit = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose2", "Close Long Limit2");
 					
@@ -302,7 +330,7 @@ namespace NinjaTrader.Strategy
 				if (closeOrder3Limit == null) 
 				{
 					stopPrice = 0;
-					limitPrice = (buyOrder3.AvgFillPrice/Dparm3) * (1.0 + Period3/100.0);
+					limitPrice = buyOrder3.AvgFillPrice * ProfitTarget3;
 					DrawDot(CurrentBar + "limitPricex", false, 0, limitPrice, Color.Lime);
 					closeOrder3Limit = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose3", "Close Long Limit3");
 					
@@ -383,6 +411,30 @@ namespace NinjaTrader.Strategy
         {
             get { return period3; }
             set { period3 = Math.Max(-50, value); }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public double ProfitTarget1
+        {
+            get { return profitTarget1; }
+            set { profitTarget1 = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public double ProfitTarget2
+        {
+            get { return profitTarget2; }
+            set { profitTarget2 = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public double ProfitTarget3
+        {
+            get { return profitTarget3; }
+            set { profitTarget3 = value; }
         }
 
         [Description("")]
