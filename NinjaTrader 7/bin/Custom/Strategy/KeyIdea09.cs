@@ -188,7 +188,7 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         // Wizard generated variables
-		private int atrBucket = 6;
+		private int atrBucket = 3;
 		
 		private int entryB1 = 2;  // Buy x ticks pullback
 		private int entryB2 = 1;  // Buy x ticks pullback
@@ -198,14 +198,16 @@ namespace NinjaTrader.Strategy
 		private int entryS2 = 1;  // Sell x ticks pullback
 		private int entryS3 = 1;  // Sell x ticks pullback
 
-		private double dparm1 = 0.92; // Default setting for Dparm1
-        private double dparm2 = 0.82; // Default setting for Dparm2
-        private double dparm3 = 0.75; // Default setting for Dparm2
+//		private double dparm1 = 0.92; // Default setting for Dparm1
+//        private double dparm2 = 0.82; // Default setting for Dparm2
+//        private double dparm3 = 0.75; // Default setting for Dparm2
         
 		private int iparm1 = 5; // Default setting for Target  
         private int iparm2 = 20; // Default setting for Stop
         private int iparm3 = 100; // Default setting for Iparm2
 
+		private bool optimizedTargets = true;
+		
         private int period1 = 30; // Default setting for Period1
         private int period2 = 30; // Default setting for Period2
         private int period3 = 15; // Default setting for Period2
@@ -213,15 +215,18 @@ namespace NinjaTrader.Strategy
 		private int startTime = 850;  // start of trading hhmm
 		private int stopTime = 1230;  // end of trading hhmm
 		
-		private double ratched = 0.68;
-		private bool isMo = true;
-		private bool is2nd = false;
+//		private double ratched = 0.68;
+//		private bool isMo = true;
+//		private bool is2nd = false;
 		
 		int qty1 = 1;
 		int qty2 = 1;
 		int qty3 = 1;
 
 		// User defined variables (add any user defined variables below)
+		int target = 0;
+		int stop = 0;
+		
 		IOrder buyOrder1 = null;
 		IOrder buyOrder2 = null;
 		IOrder buyOrder3 = null;
@@ -276,7 +281,6 @@ namespace NinjaTrader.Strategy
 		
 		HMARick hma = null;
 		ATR atr = null;
-		int atrBucketSize = 1;
 		
         #endregion
 
@@ -294,6 +298,7 @@ namespace NinjaTrader.Strategy
 			// Indicator Setup
 			// ---------------
 			hma = HMARick(Period1, 200);
+			hma.PaintPriceMarkers = false;			
 			Add(hma);
 			
 			Add(PitColor(Color.Black, 83000, 25, 161500));
@@ -323,6 +328,7 @@ namespace NinjaTrader.Strategy
             //SetStopLoss("", CalculationMode.Percent, dparm2, false);
             //SetTrailStop("", CalculationMode.Percent, dparm2, false);
 			
+			//Slippage = 2;
 			BarsRequired = 22;
             CalculateOnBarClose = true;		// Onbar update happens only on the start of a new bar vrs each tick
 			ExitOnClose = true;				// Closes open positions at the end of the session
@@ -345,12 +351,48 @@ namespace NinjaTrader.Strategy
 			
 
 			if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100)
-				//|| (atr[0] < AtrBucket || atr[0] > (AtrBucket + 1))
-				|| (atr[0] < 2 || atr[0] > 6)
+				//|| (atr[0] < AtrBucket * 0.5 || atr[0] > (AtrBucket * 0.5 + 0.5))
+				|| (atr[0] < 0.5 || atr[0] > 6)
 				)
 			{
 				ShutDownOrders();
 				return;
+			}
+			
+			if (OptimizedTargets)
+			{
+				int bucket = (int) Math.Truncate(atr[0]/0.5);
+				switch (bucket) {
+					case 0: // not trading	
+						target = iparm1;
+						stop = iparm2;
+						break;
+					case 1:
+						target = 3;
+						stop = 6;
+						break;
+					case 2:
+						target = 3;
+						stop = 8;
+						break;
+					case 3:
+						target = 3;
+						stop = 12;
+						break;
+					case 4:
+						target = 4;
+						stop = 12;
+						break;
+					default:
+						target = iparm1;
+						stop = iparm2;
+						break;
+				}
+			} 
+			else
+			{
+				target = iparm1;
+				stop = iparm2;
 			}
 			
 			// No Trade zone
@@ -377,7 +419,7 @@ namespace NinjaTrader.Strategy
 			// ============================================
 			// New long order placement
 			// ============================================
-			if (hma.TrendSet[0] == 1) //  uptrend
+			if (hma.TrendSet[0] == 1 && sellOrder1 == null) //  uptrend
 			{
 				if (Qty1 > 0)
 				{
@@ -440,7 +482,7 @@ namespace NinjaTrader.Strategy
 			// ============================================
 			// New Short order placement
 			// ============================================
-			if (hma.TrendSet[0] == -1) //  downtrend
+			if (hma.TrendSet[0] == -1 && buyOrder1 == null) //  downtrend
 			{
 				limitPrice = High[0] + EntryS1 * TickSize;
 				stopPrice = limitPrice;
@@ -553,13 +595,13 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit1 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder1.AvgFillPrice - iparm2 * TickSize;
+					stopPrice = buyOrder1.AvgFillPrice - stop * TickSize;
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CSB1");
 
 					stopPrice = 0;
-					limitPrice = buyOrder1.AvgFillPrice + iparm1 * TickSize;
+					limitPrice = buyOrder1.AvgFillPrice + target * TickSize;
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
@@ -571,12 +613,12 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit2 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder2.AvgFillPrice - (iparm2 - EntryS2) * TickSize;
+					stopPrice = buyOrder2.AvgFillPrice - (stop - EntryS2) * TickSize;
 					closeLongOrderStop2 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "CSB2");
 
 					stopPrice = 0;
-					limitPrice = buyOrder2.AvgFillPrice + (iparm1 + EntryS2) * TickSize;
+					limitPrice = buyOrder2.AvgFillPrice + (target + EntryS2) * TickSize;
 					closeLongOrderLimit2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "CLB2");
 				} 
@@ -587,12 +629,12 @@ namespace NinjaTrader.Strategy
 				if (closeLongOrderLimit3 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = buyOrder3.AvgFillPrice - (iparm2 - EntryS2 - EntryS3) * TickSize;
+					stopPrice = buyOrder3.AvgFillPrice - (stop - EntryS2 - EntryS3) * TickSize;
 					closeLongOrderStop3 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "CSB3");
 
 					stopPrice = 0;
-					limitPrice = buyOrder3.AvgFillPrice + (iparm1 + EntryS2 + EntryS3) * TickSize;
+					limitPrice = buyOrder3.AvgFillPrice + (target + EntryS2 + EntryS3) * TickSize;
 					closeLongOrderLimit3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "CLB3");
 				}
@@ -608,13 +650,13 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit1 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder1.AvgFillPrice + iparm2 * TickSize;
+					stopPrice = sellOrder1.AvgFillPrice + stop * TickSize;
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
 
 					stopPrice = 0;
-					limitPrice = sellOrder1.AvgFillPrice - iparm1 * TickSize;
+					limitPrice = sellOrder1.AvgFillPrice - target * TickSize;
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
@@ -626,12 +668,12 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit2 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder2.AvgFillPrice + (iparm2 - EntryS2) * TickSize;
+					stopPrice = sellOrder2.AvgFillPrice + (stop - EntryS2) * TickSize;
 					closeLongOrderStop2 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS2", "CSS2");
 
 					stopPrice = 0;
-					limitPrice = sellOrder2.AvgFillPrice - (iparm1 + EntryS2) * TickSize;
+					limitPrice = sellOrder2.AvgFillPrice - (target + EntryS2) * TickSize;
 					closeShortOrderLimit2 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS2", "CLS2");
 				} 
@@ -642,12 +684,12 @@ namespace NinjaTrader.Strategy
 				if (closeShortOrderLimit3 == null) 
 				{
 					limitPrice = 0;
-					stopPrice = sellOrder3.AvgFillPrice + (iparm2 - EntryS2 - EntryS3) * TickSize;
+					stopPrice = sellOrder3.AvgFillPrice + (stop - EntryS2 - EntryS3) * TickSize;
 					closeLongOrderStop3 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS3", "CSS3");
 
 					stopPrice = 0;
-					limitPrice = sellOrder3.AvgFillPrice - (iparm1 + EntryS2 + EntryS3) * TickSize;
+					limitPrice = sellOrder3.AvgFillPrice - (target + EntryS2 + EntryS3) * TickSize;
 					closeShortOrderLimit3 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS3", "CLS3");
 				} 
@@ -908,13 +950,20 @@ namespace NinjaTrader.Strategy
 			closeShortOrder3 = null;
 		}
 		
+		protected override void OnTermination()
+		{
+			// Clean up your resources here
+			Print("ATR Range used: " + (AtrBucket * 0.5) + " to " + (AtrBucket * 0.5 + 0.5));
+		}
+ 
+		
         #region Properties
         [Description("")]
         [GridCategory("Parameters")]
         public int AtrBucket
         {
             get { return atrBucket; }
-            set { atrBucket = Math.Max(0, value); }
+            set { atrBucket = value; }
         }
 
         [Description("")]
@@ -991,6 +1040,14 @@ namespace NinjaTrader.Strategy
 
         [Description("")]
         [GridCategory("Parameters")]
+        public bool OptimizedTargets
+        {
+            get { return optimizedTargets; }
+            set { optimizedTargets = value; }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
         public int Period1
         {
             get { return period1; }
@@ -1013,29 +1070,29 @@ namespace NinjaTrader.Strategy
             set { period3 = Math.Max(-50, value); }
         }
 
-        [Description("")]
-        [GridCategory("Parameters")]
-        public double Dparm1
-        {
-            get { return dparm1; }
-            set { dparm1 = Math.Max(0.000, value); }
-        }
-
-        [Description("")]
-        [GridCategory("Parameters")]
-        public double Dparm2
-        {
-            get { return dparm2; }
-            set { dparm2 = Math.Max(0.000, value); }
-        }
-
-        [Description("")]
-        [GridCategory("Parameters")]
-        public double Dparm3
-        {
-            get { return dparm3; }
-            set { dparm3 = Math.Max(0.000, value); }
-        }
+//        [Description("")]
+//        [GridCategory("Parameters")]
+//        public double Dparm1
+//        {
+//            get { return dparm1; }
+//            set { dparm1 = Math.Max(0.000, value); }
+//        }
+//
+//        [Description("")]
+//        [GridCategory("Parameters")]
+//        public double Dparm2
+//        {
+//            get { return dparm2; }
+//            set { dparm2 = Math.Max(0.000, value); }
+//        }
+//
+//        [Description("")]
+//        [GridCategory("Parameters")]
+//        public double Dparm3
+//        {
+//            get { return dparm3; }
+//            set { dparm3 = Math.Max(0.000, value); }
+//        }
 
         [Description("")]
         [GridCategory("Parameters")]
