@@ -291,6 +291,8 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
+			// Indicator Setup
+			// ---------------
 			hma = HMARick(Period1, 200);
 			Add(hma);
 			
@@ -310,21 +312,22 @@ namespace NinjaTrader.Strategy
 //			dc.PaintPriceMarkers = false;
 //			Add(dc);
 			
+    		Unmanaged = true;				// Use unmanaged order methods
+			// Methods BarsSinceEntry() and BarsSinceExit() are usuable in Unmanaged orders
+
+			// Managed Properties
+			// --------------------
+			//EntriesPerDirection = 2;
+			//EntryHandling = EntryHandling.UniqueEntries;
             //SetProfitTarget("", CalculationMode.Percent, dparm2);
             //SetStopLoss("", CalculationMode.Percent, dparm2, false);
             //SetTrailStop("", CalculationMode.Percent, dparm2, false);
 			
-			// Use unmanaged order methods
-    		Unmanaged = true;
-
-			// set to true to trace orders in the output window, used for debugging, normally set this to false
-			TraceOrders = false;
-			EntriesPerDirection = 2;
-			//EntryHandling = EntryHandling.UniqueEntries;
 			BarsRequired = 22;
-            CalculateOnBarClose = true;
-			ExitOnClose = true;
-			IncludeCommission = true;
+            CalculateOnBarClose = true;		// Onbar update happens only on the start of a new bar vrs each tick
+			ExitOnClose = true;				// Closes open positions at the end of the session
+			IncludeCommission = true;		// Commissions are used in the calculation of the profit/loss
+			TraceOrders = false;			// Trace orders in the output window, used for debugging, normally false
         }
 
         /// <summary>
@@ -376,27 +379,30 @@ namespace NinjaTrader.Strategy
 			// ============================================
 			if (hma.TrendSet[0] == 1) //  uptrend
 			{
-				limitPrice = Low[0] - EntryB1 * TickSize;
-				stopPrice = limitPrice;
-				
-				if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
+				if (Qty1 > 0)
 				{
-					//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
-					ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
-					if (TraceOrders == true)
-						Print(Time + " changeOrder - limitPrice: " + limitPrice);
-				}
-				else if (buyOrder1 == null)
-				{
-					//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
-					buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
-					if (TraceOrders == true)
-						Print(Time + " submitOrder: " + buyOrder1);
-				}
-				else
-				{
-					if (TraceOrders == true)
-						Print(Time + " OrderState: " + buyOrder1.OrderState);
+					limitPrice = Low[0] - EntryB1 * TickSize;
+					stopPrice = limitPrice;
+					
+					if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
+					{
+						//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
+						ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
+						if (TraceOrders == true)
+							Print(Time + " changeOrder - limitPrice: " + limitPrice);
+					}
+					else if (buyOrder1 == null)
+					{
+						//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
+						buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
+						if (TraceOrders == true)
+							Print(Time + " submitOrder: " + buyOrder1);
+					}
+					else
+					{
+						if (TraceOrders == true)
+							Print(Time + " OrderState: " + buyOrder1.OrderState);
+					}
 				}
 	
 				// Second Long Contract 
@@ -708,7 +714,8 @@ namespace NinjaTrader.Strategy
 //						Print(Time + " delayed closing ");
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose1", "CTB1");
+						closeLongOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CTB1");
 					}
 				}
 				else if (buyOrder1.OrderState == OrderState.Working)
@@ -731,7 +738,8 @@ namespace NinjaTrader.Strategy
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder2 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder2.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose2", "CTB2");
+						closeLongOrder2 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder2.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseB2", "CTB2");
 					}
 				}
 				else if (buyOrder2.OrderState == OrderState.Working)
@@ -747,7 +755,8 @@ namespace NinjaTrader.Strategy
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder3 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder3.Quantity, limitPrice, stopPrice, orderPrefix + "ocoClose3", "CTB3");
+						closeLongOrder3 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder3.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseB3", "CTB3");
 					}
 				}
 				else if (buyOrder3.OrderState == OrderState.Working)
@@ -764,8 +773,8 @@ namespace NinjaTrader.Strategy
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, sellOrder1.Quantity, 
-							limitPrice, stopPrice, orderPrefix + "ocoClose1", "CTS1");
+						closeLongOrder1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, sellOrder1.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CTS1");
 					}
 				}
 				else if (sellOrder1.OrderState == OrderState.Working)
@@ -781,8 +790,8 @@ namespace NinjaTrader.Strategy
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder2 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, sellOrder2.Quantity, 
-							limitPrice, stopPrice, orderPrefix + "ocoClose2", "CTS2");
+						closeLongOrder2 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, sellOrder2.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseS2", "CTS2");
 					}
 				}
 				else if (sellOrder2.OrderState == OrderState.Working)
@@ -798,8 +807,8 @@ namespace NinjaTrader.Strategy
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
-						closeLongOrder3 = SubmitOrder(0, OrderAction.Sell, OrderType.Market, sellOrder3.Quantity, 
-							limitPrice, stopPrice, orderPrefix + "ocoClose3", "CTS3");
+						closeLongOrder3 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, sellOrder3.Quantity, 
+							limitPrice, stopPrice, orderPrefix + "ocoCloseS3", "CTS3");
 					}
 				}
 				else if (sellOrder3.OrderState == OrderState.Working)
@@ -810,6 +819,19 @@ namespace NinjaTrader.Strategy
 			}
 			
 		}
+		
+		protected override void OnOrderUpdate(IOrder order)
+		{
+			if (buyOrder1 != null && buyOrder1 == order)
+			{
+				//Print(order.ToString());
+				if (order.OrderState == OrderState.Cancelled)
+				{
+					buyOrder1 = null;
+				}
+			}
+		}
+
 		
 		private void CancelWorkingOrders()
 		{
