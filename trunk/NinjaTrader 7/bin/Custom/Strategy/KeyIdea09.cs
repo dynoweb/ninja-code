@@ -198,10 +198,6 @@ namespace NinjaTrader.Strategy
 		private int entryS2 = 1;  // Sell x ticks pullback
 		private int entryS3 = 1;  // Sell x ticks pullback
 
-//		private double dparm1 = 0.92; // Default setting for Dparm1
-//        private double dparm2 = 0.82; // Default setting for Dparm2
-//        private double dparm3 = 0.75; // Default setting for Dparm2
-        
 		private int iparm1 = 5; // Default setting for Target  
         private int iparm2 = 20; // Default setting for Stop
         private int iparm3 = 100; // Default setting for Iparm2
@@ -214,10 +210,6 @@ namespace NinjaTrader.Strategy
 
 		private int startTime = 850;  // start of trading hhmm
 		private int stopTime = 1230;  // end of trading hhmm
-		
-//		private double ratched = 0.68;
-//		private bool isMo = true;
-//		private bool is2nd = false;
 		
 		int qty1 = 1;
 		int qty2 = 1;
@@ -563,7 +555,6 @@ namespace NinjaTrader.Strategy
 			}
 				
 		}
-
 
 		
 		protected override void OnExecution(IExecution execution)
