@@ -30,9 +30,9 @@ namespace NinjaTrader.Indicator
         /// </summary>
         protected override void Initialize()
         {
-            Add(new Plot(new Pen(Color.FromKnownColor(KnownColor.LawnGreen), 2), PlotStyle.Line, "Mean"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.White), PlotStyle.Line, "Upper"));
-            Add(new Plot(Color.FromKnownColor(KnownColor.White), PlotStyle.Line, "Lower"));
+            Add(new Plot(new Pen(Color.FromKnownColor(KnownColor.DarkSlateBlue), 2), PlotStyle.Line, "Mean"));
+            Add(new Plot(Color.FromKnownColor(KnownColor.SteelBlue), PlotStyle.Line, "Upper"));
+            Add(new Plot(Color.FromKnownColor(KnownColor.SteelBlue), PlotStyle.Line, "Lower"));
 			Displacement = 2;
 
             Overlay				= true;
