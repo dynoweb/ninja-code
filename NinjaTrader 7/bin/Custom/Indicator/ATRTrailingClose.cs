@@ -21,8 +21,8 @@ namespace NinjaTrader.Indicator
     /// ATRTrailing.
     /// </summary>
     [Description("Wilder’s Volatility System, developed by and named after Welles Wilder, is a volatility index made up of the ongoing calculated average, the True Range. The consideration of the True Range means that days with a low trading range (little difference between daily high and low), but still showing a clear price difference to the previous day")]
-    [Gui.Design.DisplayName("ATRTrailing")]
-    public class ATRTrailing : Indicator
+    [Gui.Design.DisplayName("ATRTrailingClose")]
+    public class ATRTrailingClose : Indicator
     {
         #region Variables
 		private double ATRTimes		= 4;
@@ -47,8 +47,8 @@ namespace NinjaTrader.Indicator
         /// </summary>
         protected override void Initialize()
         {
-            Add(new Plot(Color.Orchid, PlotStyle.Dot, "ATR Trailing Dn"));
-			Add(new Plot(Color.DodgerBlue, PlotStyle.Dot, "ATR Trailing Up"));
+            Add(new Plot(Color.Red, PlotStyle.Dot, "ATR Trailing Dn"));
+			Add(new Plot(Color.Blue, PlotStyle.Dot, "ATR Trailing Up"));
             CalculateOnBarClose		= true;	// Call 'OnBarUpdate' only as a bar closes
             Overlay					= true;	// Plots the indicator on top of price
 			Plotset = new DataSeries(this);
@@ -88,7 +88,7 @@ namespace NinjaTrader.Indicator
 					Plotset.Set(SigClose - Bars.Instrument.MasterInstrument.Round2TickSize((ratchedval*(ATRTimes*ATR(period)[0]))));
 				}
 			
-			if(Sideset[1] == 1 && Low[1] <= Plotset[1])   
+			if(Sideset[1] == 1 && Close[1] <= Plotset[1])   
 			
 				{
 					Sideset.Set(0);
@@ -98,17 +98,17 @@ namespace NinjaTrader.Indicator
 					Lower.Set(Plotset[0]);    
 				}
 			
-			if( Sideset[1] == 1 && Low[1] > Plotset[1])
+			if( Sideset[1] == 1 && Close[1] > Plotset[1])
 				{
 					Sideset.Set(1);
-					SigClose = MAX(High,(period))[0];
+					SigClose = MAX(Close,(period))[0];
 					Plotset.Set(SigClose - Bars.Instrument.MasterInstrument.Round2TickSize((ratchedval*(ATRTimes*ATR(period)[0]))));
 					if (Plotset[1] > Plotset[0])
 						Plotset.Set(Plotset[1]);   
 					Upper.Set(Plotset[0]);
 				}
 			
-			if(Sideset[1] == 0 && High[1] >= Plotset[1])  
+			if(Sideset[1] == 0 && Close[1] >= Plotset[1])  
 				{
 					Sideset.Set(1);
 					SigClose = High[1];
@@ -116,10 +116,10 @@ namespace NinjaTrader.Indicator
 					Plotset.Set(SigClose - Bars.Instrument.MasterInstrument.Round2TickSize((ratchedval*(ATRTimes*ATR(period)[0]))));
 					Upper.Set(Plotset[0]);      
 				}
-			if(Sideset[1] == 0  && High[1] < Plotset[1])
+			if(Sideset[1] == 0  && Close[1] < Plotset[1])
 				{
 					Sideset.Set(0);
-					SigClose = MIN(Low,(period))[0];
+					SigClose = MIN(Close,(period))[0];
 					Plotset.Set( SigClose + Bars.Instrument.MasterInstrument.Round2TickSize((ratchedval*(ATRTimes*ATR(period)[0]))));
 					if (Plotset[1] < Plotset[0])
 						Plotset.Set(Plotset[1]);  
@@ -193,45 +193,45 @@ namespace NinjaTrader.Indicator
 {
     public partial class Indicator : IndicatorBase
     {
-        private ATRTrailing[] cacheATRTrailing = null;
+        private ATRTrailingClose[] cacheATRTrailingClose = null;
 
-        private static ATRTrailing checkATRTrailing = new ATRTrailing();
+        private static ATRTrailingClose checkATRTrailingClose = new ATRTrailingClose();
 
         /// <summary>
         /// Wilder’s Volatility System, developed by and named after Welles Wilder, is a volatility index made up of the ongoing calculated average, the True Range. The consideration of the True Range means that days with a low trading range (little difference between daily high and low), but still showing a clear price difference to the previous day
         /// </summary>
         /// <returns></returns>
-        public ATRTrailing ATRTrailing(double aTRTIMES, int period, double ratched)
+        public ATRTrailingClose ATRTrailingClose(double aTRTIMES, int period, double ratched)
         {
-            return ATRTrailing(Input, aTRTIMES, period, ratched);
+            return ATRTrailingClose(Input, aTRTIMES, period, ratched);
         }
 
         /// <summary>
         /// Wilder’s Volatility System, developed by and named after Welles Wilder, is a volatility index made up of the ongoing calculated average, the True Range. The consideration of the True Range means that days with a low trading range (little difference between daily high and low), but still showing a clear price difference to the previous day
         /// </summary>
         /// <returns></returns>
-        public ATRTrailing ATRTrailing(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
+        public ATRTrailingClose ATRTrailingClose(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
         {
-            if (cacheATRTrailing != null)
-                for (int idx = 0; idx < cacheATRTrailing.Length; idx++)
-                    if (Math.Abs(cacheATRTrailing[idx].ATRTIMES - aTRTIMES) <= double.Epsilon && cacheATRTrailing[idx].Period == period && Math.Abs(cacheATRTrailing[idx].Ratched - ratched) <= double.Epsilon && cacheATRTrailing[idx].EqualsInput(input))
-                        return cacheATRTrailing[idx];
+            if (cacheATRTrailingClose != null)
+                for (int idx = 0; idx < cacheATRTrailingClose.Length; idx++)
+                    if (Math.Abs(cacheATRTrailingClose[idx].ATRTIMES - aTRTIMES) <= double.Epsilon && cacheATRTrailingClose[idx].Period == period && Math.Abs(cacheATRTrailingClose[idx].Ratched - ratched) <= double.Epsilon && cacheATRTrailingClose[idx].EqualsInput(input))
+                        return cacheATRTrailingClose[idx];
 
-            lock (checkATRTrailing)
+            lock (checkATRTrailingClose)
             {
-                checkATRTrailing.ATRTIMES = aTRTIMES;
-                aTRTIMES = checkATRTrailing.ATRTIMES;
-                checkATRTrailing.Period = period;
-                period = checkATRTrailing.Period;
-                checkATRTrailing.Ratched = ratched;
-                ratched = checkATRTrailing.Ratched;
+                checkATRTrailingClose.ATRTIMES = aTRTIMES;
+                aTRTIMES = checkATRTrailingClose.ATRTIMES;
+                checkATRTrailingClose.Period = period;
+                period = checkATRTrailingClose.Period;
+                checkATRTrailingClose.Ratched = ratched;
+                ratched = checkATRTrailingClose.Ratched;
 
-                if (cacheATRTrailing != null)
-                    for (int idx = 0; idx < cacheATRTrailing.Length; idx++)
-                        if (Math.Abs(cacheATRTrailing[idx].ATRTIMES - aTRTIMES) <= double.Epsilon && cacheATRTrailing[idx].Period == period && Math.Abs(cacheATRTrailing[idx].Ratched - ratched) <= double.Epsilon && cacheATRTrailing[idx].EqualsInput(input))
-                            return cacheATRTrailing[idx];
+                if (cacheATRTrailingClose != null)
+                    for (int idx = 0; idx < cacheATRTrailingClose.Length; idx++)
+                        if (Math.Abs(cacheATRTrailingClose[idx].ATRTIMES - aTRTIMES) <= double.Epsilon && cacheATRTrailingClose[idx].Period == period && Math.Abs(cacheATRTrailingClose[idx].Ratched - ratched) <= double.Epsilon && cacheATRTrailingClose[idx].EqualsInput(input))
+                            return cacheATRTrailingClose[idx];
 
-                ATRTrailing indicator = new ATRTrailing();
+                ATRTrailingClose indicator = new ATRTrailingClose();
                 indicator.BarsRequired = BarsRequired;
                 indicator.CalculateOnBarClose = CalculateOnBarClose;
 #if NT7
@@ -245,11 +245,11 @@ namespace NinjaTrader.Indicator
                 Indicators.Add(indicator);
                 indicator.SetUp();
 
-                ATRTrailing[] tmp = new ATRTrailing[cacheATRTrailing == null ? 1 : cacheATRTrailing.Length + 1];
-                if (cacheATRTrailing != null)
-                    cacheATRTrailing.CopyTo(tmp, 0);
+                ATRTrailingClose[] tmp = new ATRTrailingClose[cacheATRTrailingClose == null ? 1 : cacheATRTrailingClose.Length + 1];
+                if (cacheATRTrailingClose != null)
+                    cacheATRTrailingClose.CopyTo(tmp, 0);
                 tmp[tmp.Length - 1] = indicator;
-                cacheATRTrailing = tmp;
+                cacheATRTrailingClose = tmp;
                 return indicator;
             }
         }
@@ -266,18 +266,18 @@ namespace NinjaTrader.MarketAnalyzer
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.ATRTrailing ATRTrailing(double aTRTIMES, int period, double ratched)
+        public Indicator.ATRTrailingClose ATRTrailingClose(double aTRTIMES, int period, double ratched)
         {
-            return _indicator.ATRTrailing(Input, aTRTIMES, period, ratched);
+            return _indicator.ATRTrailingClose(Input, aTRTIMES, period, ratched);
         }
 
         /// <summary>
         /// Wilder’s Volatility System, developed by and named after Welles Wilder, is a volatility index made up of the ongoing calculated average, the True Range. The consideration of the True Range means that days with a low trading range (little difference between daily high and low), but still showing a clear price difference to the previous day
         /// </summary>
         /// <returns></returns>
-        public Indicator.ATRTrailing ATRTrailing(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
+        public Indicator.ATRTrailingClose ATRTrailingClose(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
         {
-            return _indicator.ATRTrailing(input, aTRTIMES, period, ratched);
+            return _indicator.ATRTrailingClose(input, aTRTIMES, period, ratched);
         }
     }
 }
@@ -292,21 +292,21 @@ namespace NinjaTrader.Strategy
         /// </summary>
         /// <returns></returns>
         [Gui.Design.WizardCondition("Indicator")]
-        public Indicator.ATRTrailing ATRTrailing(double aTRTIMES, int period, double ratched)
+        public Indicator.ATRTrailingClose ATRTrailingClose(double aTRTIMES, int period, double ratched)
         {
-            return _indicator.ATRTrailing(Input, aTRTIMES, period, ratched);
+            return _indicator.ATRTrailingClose(Input, aTRTIMES, period, ratched);
         }
 
         /// <summary>
         /// Wilder’s Volatility System, developed by and named after Welles Wilder, is a volatility index made up of the ongoing calculated average, the True Range. The consideration of the True Range means that days with a low trading range (little difference between daily high and low), but still showing a clear price difference to the previous day
         /// </summary>
         /// <returns></returns>
-        public Indicator.ATRTrailing ATRTrailing(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
+        public Indicator.ATRTrailingClose ATRTrailingClose(Data.IDataSeries input, double aTRTIMES, int period, double ratched)
         {
             if (InInitialize && input == null)
                 throw new ArgumentException("You only can access an indicator with the default input/bar series from within the 'Initialize()' method");
 
-            return _indicator.ATRTrailing(input, aTRTIMES, period, ratched);
+            return _indicator.ATRTrailingClose(input, aTRTIMES, period, ratched);
         }
     }
 }

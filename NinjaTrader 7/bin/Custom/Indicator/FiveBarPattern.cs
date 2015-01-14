@@ -14,38 +14,25 @@ using NinjaTrader.Gui.Chart;
 namespace NinjaTrader.Indicator
 {
     /// <summary>
-    /// Added markers to indicate 5 bar pattern resistance support and 10% target levels.
-	/// This indicator is based on ETF's Trend Trading program
-	/// Written by Rick Cromer for NinjaTrader
+    /// Added markers to indicate 5 bar pattern resistance support
     /// </summary>
     [Description("Added markers to indicate 5 bar pattern resistance support")]
     public class FiveBarPattern : Indicator
     {
         #region Variables
-			private int period = 10;
-			private double priorHigh = 0;
-			private double priorLow = Double.MaxValue;
-			private int donchianPeriod = 22;
-			private int smaPeriod = 100;
-			private Color upColor = Color.Green;
-			private Color downColor = Color.Red;
         #endregion
 
         /// <summary>
         /// This method is used to configure the indicator and is called once before any bar data is loaded.
+		/// Written by Rick Cromer
         /// </summary>
         protected override void Initialize()
         {
             Add(new Plot(Color.Blue, PlotStyle.Dot, "Upper"));
             Add(new Plot(Color.Red, PlotStyle.Dot, "Lower"));
-            Add(new Plot(Color.Green, PlotStyle.Dot, "UpperTarget"));
-            Add(new Plot(Color.Green, PlotStyle.Dot, "LowerTarget"));
-			Add(new Plot(Color.SlateBlue, "UpperDonchian"));
-			Add(new Plot(Color.SlateBlue, "LowerDonchian"));
-			Add(new Plot(Color.Green, "Trend"));
-			
-			Plots[6].Pen.Width = 2;
-			Plots[6].Pen.Color = Color.Gray;
+            
+			this.AutoScale = false;
+			this.PaintPriceMarkers = false;
 			
 			Overlay				= true;			
         }
@@ -55,117 +42,34 @@ namespace NinjaTrader.Indicator
         /// </summary>
         protected override void OnBarUpdate()
         {
-			// Code for SMA 100 line
-			if (CurrentBar == 0)
-				Trend.Set(Input[0]);
-			else
-			{
-				double last = Trend[1] * Math.Min(CurrentBar, smaPeriod);
+    		if (CurrentBar < 7)
+        		return;
 
-				if (CurrentBar >= smaPeriod)
-				{
-					Trend.Set((last + Input[0] - Input[smaPeriod]) / Math.Min(CurrentBar, smaPeriod));
-					
-					if (CountIf(delegate {return Trend[0] > Trend[1];}, 15) == 15)
-					//if (Rising(Trend))
-					{
-						PlotColors[6][0] = upColor;
-					}
-					else if (CountIf(delegate {return Trend[0] < Trend[1];}, 15) == 15)
-					{
-						PlotColors[6][0] = downColor;
-					}
-					
-				}
-				else
-					Trend.Set((last + Input[0]) / (Math.Min(CurrentBar, smaPeriod) + 1));
-				
-			}
-
-			// Code for other indicators
-			if (CurrentBar < 5)
-				return;
+			// to scale Dot for Instrument
+			double halfStdDevValue = (StdDev(5)[2])/2;
 			
-			if (High[0] < High[2] && High[1] < High[2] && High[3] < High[2] && High[4] < High[2]) 
-			{
-				double halfStdDevValue = (StdDev(period)[2])/2;
-				//Plots[0].Pen = new Pen(Color.Green);
+			// Checking 7 bars instead of 5 in case there's are other bars that hit the high
+			if (HighestBar(High, 7) == 2)
 				Values[0][2] = High[2] + halfStdDevValue;
-				if (High[2] > Close[HighestBar(Close, donchianPeriod)])
-				{
-					UpperTarget.Set(2, High[2] * 1.1);	//  10% above
-				}
-//				else
-//				{
-//					Print(Time + " CurrentBar: " + CurrentBar + " HighestBar(High, 22): " + HighestBar(High, 22));
-//				}
-			}
 			
-			if (Low[0] > Low[2] && Low[1] > Low[2] && Low[3] > Low[2] && Low[4] > Low[2]) 
-			{
-				double halfStdDevValue = (StdDev(period)[2])/2;
-				//Values[1][2] = Low[2] - halfStdDevValue;
-				Lower.Set(2, Low[2] - halfStdDevValue);
-				if (Low[2] < Close[LowestBar(Close, donchianPeriod)])
-				{
-					LowerTarget.Set(2, Low[2] * 0.9);	// 10% below low
-				}
-			}
-			
-			UpperDonchian.Set(MAX(Close, donchianPeriod)[0]);
-			LowerDonchian.Set(MIN(Close, donchianPeriod)[0]);
-
+			if (LowestBar(Low, 7) == 2)
+				Values[1][2] = Low[2] - halfStdDevValue;
         }
+		
 
         #region Properties
-		
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries Upper
+        public DataSeries Plot0
         {
             get { return Values[0]; }
         }
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries Lower
+        public DataSeries Plot1
         {
             get { return Values[1]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries UpperTarget
-        {
-            get { return Values[2]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries LowerTarget
-        {
-            get { return Values[3]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries UpperDonchian
-        {
-            get { return Values[4]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries LowerDonchian
-        {
-            get { return Values[5]; }
-        }
-
-        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
-        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries Trend
-        {
-            get { return Values[6]; }
         }
 
         #endregion
