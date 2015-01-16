@@ -69,7 +69,7 @@ namespace NinjaTrader.Strategy
 	/// 					Random Exit
 	/// 	
     /// </summary>
-    [Description("ES 30 Sec")]
+    [Description("ES 1 min")]
     public class KeyIdea10 : Strategy
     {
         #region Variables
@@ -84,8 +84,8 @@ namespace NinjaTrader.Strategy
 		private int entryS2 = 1;  // Sell x ticks pullback
 		private int entryS3 = 1;  // Sell x ticks pullback
 
-		private int iparm1 = 5; // Default setting for Target  
-        private int iparm2 = 20; // Default setting for Stop
+		private int iparm1 = 6; // Default setting for Target  
+        private int iparm2 = 6; // Default setting for Stop
         private int iparm3 = 100; // Default setting for Iparm2
 
 		private bool optimizedTargets = true;
@@ -94,12 +94,12 @@ namespace NinjaTrader.Strategy
         private int period2 = 30; // Default setting for Period2
         private int period3 = 15; // Default setting for Period2
 
-		private int startTime = 850;  // start of trading hhmm
-		private int stopTime = 1230;  // end of trading hhmm
+		private int startTime = 0;  // 850 // start of trading hhmm
+		private int stopTime = 2400;  // 1230 // end of trading hhmm
 		
 		int qty1 = 1;
-		int qty2 = 1;
-		int qty3 = 1;
+		int qty2 = 0;
+		int qty3 = 0;
 
 		// User defined variables (add any user defined variables below)
 		int target = 0;
@@ -140,7 +140,7 @@ namespace NinjaTrader.Strategy
 		double limitPrice = 0;
 		double stopPrice = 0;
 		
-		string orderPrefix = "KI9"; //"KeyIdea09";
+		string orderPrefix = "KI10"; //"KeyIdea10";
 		
 		// ATRTrailing parms
 //		ATRTrailing atr = null;
@@ -157,8 +157,16 @@ namespace NinjaTrader.Strategy
 //		DonchianChannel dc = null;
 //		int donchianPeriod = 20;
 		
-		HMARick hma = null;
+		// VHF
+		double threshold = 0.35;
+		int consolidationStartBar;
+		int consolidationEndBar;
+		double consolidationLow = 0;
+		double consolidationHigh = 0;
+		
 		ATR atr = null;
+		HMARick hma = null;
+		VHF vhf = null; 
 		
         #endregion
 
@@ -179,10 +187,13 @@ namespace NinjaTrader.Strategy
 			hma.PaintPriceMarkers = false;			
 			Add(hma);
 			
+			vhf = VHF(Period2, threshold);
+			Add(vhf);
+			
 			Add(PitColor(Color.Black, 83000, 25, 161500));
 			
 			atr = ATR(10);
-			Add(atr);
+			//Add(atr);
 			
 //			atr = ATRTrailing(atrTimes, Period1, Ratched);
 //			Add(atr);
@@ -230,48 +241,48 @@ namespace NinjaTrader.Strategy
 
 			if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100)
 				//|| (atr[0] < AtrBucket * 0.5 || atr[0] > (AtrBucket * 0.5 + 0.5))
-				|| (atr[0] < 0.5 || atr[0] > 6)
+				//|| (atr[0] < 0.5 || atr[0] > 6)
 				)
 			{
 				ShutDownOrders();
 				return;
 			}
 			
-			if (OptimizedTargets)
-			{
-				int bucket = (int) Math.Truncate(atr[0]/0.5);
-				switch (bucket) {
-					case 0: // not trading	
-						target = iparm1;
-						stop = iparm2;
-						break;
-					case 1:
-						target = 3;
-						stop = 6;
-						break;
-					case 2:
-						target = 3;
-						stop = 8;
-						break;
-					case 3:
-						target = 3;
-						stop = 12;
-						break;
-					case 4:
-						target = 4;
-						stop = 12;
-						break;
-					default:
-						target = iparm1;
-						stop = iparm2;
-						break;
-				}
-			} 
-			else
-			{
+//			if (OptimizedTargets)
+//			{
+//				int bucket = (int) Math.Truncate(atr[0]/0.5);
+//				switch (bucket) {
+//					case 0: // not trading	
+//						target = iparm1;
+//						stop = iparm2;
+//						break;
+//					case 1:
+//						target = 3;
+//						stop = 6;
+//						break;
+//					case 2:
+//						target = 3;
+//						stop = 8;
+//						break;
+//					case 3:
+//						target = 3;
+//						stop = 12;
+//						break;
+//					case 4:
+//						target = 4;
+//						stop = 12;
+//						break;
+//					default:
+//						target = iparm1;
+//						stop = iparm2;
+//						break;
+//				}
+//			} 
+//			else
+//			{
 				target = iparm1;
 				stop = iparm2;
-			}
+//			}
 			
 			// No Trade zone
 //			if ((ToTime(Time[0]) >= 800 * 100) && (ToTime(Time[0]) <= 900 * 100))
@@ -293,15 +304,38 @@ namespace NinjaTrader.Strategy
 					buyOrder1 = null;
 			}
 			
+			if (vhf.VHFLine[0] < threshold) //  possible onsolidation?
+			{
+				// consolidation found
+				if (consolidationStartBar == 0) 
+				{
+					consolidationStartBar = CurrentBar;
+				}
+				else
+				{
+					consolidationLow = Low[LowestBar(Low, CurrentBar - consolidationStartBar + 1)];
+					consolidationHigh = High[HighestBar(High, CurrentBar - consolidationStartBar + 1)];
+					DrawRectangle(consolidationStartBar + "", false, CurrentBar-consolidationStartBar, consolidationLow, 0, 
+						consolidationHigh, Color.PaleGreen, Color.PaleGreen, 2);
+					consolidationEndBar = CurrentBar;
+				}
+			} 
+			else
+			{
+				consolidationStartBar = 0;
+			}
+			
 			
 			// ============================================
 			// New long order placement
 			// ============================================
-			if (hma.TrendSet[0] == 1 && sellOrder1 == null) //  uptrend
+			if ((((CurrentBar - consolidationEndBar) == 0) || (CurrentBar - consolidationEndBar) == 1) 
+				&& sellOrder1 == null) //  uptrend
 			{
+				
 				if (Qty1 > 0)
 				{
-					limitPrice = Low[0] - EntryB1 * TickSize;
+					limitPrice = consolidationHigh + EntryB1 * TickSize;
 					stopPrice = limitPrice;
 					
 					if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
@@ -314,7 +348,7 @@ namespace NinjaTrader.Strategy
 					else if (buyOrder1 == null)
 					{
 						//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
-						buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
+						buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Stop, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
 						if (TraceOrders == true)
 							Print(Time + " submitOrder: " + buyOrder1);
 					}
@@ -627,7 +661,7 @@ namespace NinjaTrader.Strategy
 			{
 //				if (TraceOrders == true)
 //					Print(Time + " off hours buyOrder1: " + buyOrder1);
-				if (buyOrder1.OrderState == OrderState.Filled && closeLongOrder1 == null)
+				if (buyOrder1.OrderState == OrderState.Filled && closeLongOrder1 != null)
 				{
 //					if (TraceOrders == true)
 //						Print(Time + " delayed closing ");
@@ -653,7 +687,7 @@ namespace NinjaTrader.Strategy
 			
 			if (buyOrder2 != null)
 			{
-				if (buyOrder2.OrderState == OrderState.Filled && closeLongOrder2 == null)
+				if (buyOrder2.OrderState == OrderState.Filled && closeLongOrder2 != null)
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
@@ -670,7 +704,7 @@ namespace NinjaTrader.Strategy
 			
 			if (buyOrder3 != null)
 			{
-				if (buyOrder3.OrderState == OrderState.Filled && closeLongOrder3 == null)
+				if (buyOrder3.OrderState == OrderState.Filled && closeLongOrder3 != null)
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
@@ -688,7 +722,7 @@ namespace NinjaTrader.Strategy
 			
 			if (sellOrder1 != null)
 			{
-				if (sellOrder1.OrderState == OrderState.Filled && closeLongOrder1 == null)
+				if (sellOrder1.OrderState == OrderState.Filled && closeLongOrder1 != null)
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
@@ -705,7 +739,7 @@ namespace NinjaTrader.Strategy
 			
 			if (sellOrder2 != null)
 			{
-				if (sellOrder2.OrderState == OrderState.Filled && closeLongOrder2 == null)
+				if (sellOrder2.OrderState == OrderState.Filled && closeLongOrder2 != null)
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
@@ -722,7 +756,7 @@ namespace NinjaTrader.Strategy
 			
 			if (sellOrder3 != null)
 			{
-				if (sellOrder3.OrderState == OrderState.Filled && closeLongOrder3 == null)
+				if (sellOrder3.OrderState == OrderState.Filled && closeLongOrder3 != null)
 				{
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
