@@ -198,20 +198,20 @@ namespace NinjaTrader.Strategy
 		private int entryS2 = 1;  // Sell x ticks pullback
 		private int entryS3 = 1;  // Sell x ticks pullback
 
-		private int iparm1 = 5; // Default setting for Target  
+		private int iparm1 = 8; // Default setting for Target  
         private int iparm2 = 20; // Default setting for Stop
         private int iparm3 = 100; // Default setting for Iparm2
 
-		private bool optimizedTargets = true;
+		private bool optimizedTargets = false;
 		
-        private int period1 = 100; // hmaPeriod
-        private int period2 = 10; // atrPeriod
+        private int period1 = 15; // hmaPeriod
+        private int period2 = 40; // atrPeriod
         private int period3 = 30; // keltnerPeriod
 
-		private double ratched = 0.0005;
+		private double ratched = 20;//0.0005;
 
-		private int startTime = 850;  // start of trading hhmm
-		private int stopTime = 1230;  // end of trading hhmm
+		private int startTime = 830;  // start of trading hhmm
+		private int stopTime = 1500;  // end of trading hhmm
 		
 		int qty1 = 1;
 		int qty2 = 0;
@@ -257,6 +257,7 @@ namespace NinjaTrader.Strategy
 		double stopPrice = 0;
 		
 		string orderPrefix = "KI9"; //"KeyIdea09";
+		bool printOn = false;
 		
 		// ATRTrailing parms
 		ATRTrailing atrTrailing = null;
@@ -303,14 +304,14 @@ namespace NinjaTrader.Strategy
 			
 			Add(PitColor(Color.Black, 83000, 25, 161500));
 			
-			atr = ATR(10);
-			//Add(atr);
+			atr = ATR(Period2);
+			Add(atr);
 			
 			atrTrailing = ATRTrailing(atrTimes, Period2, Ratched);
-			Add(atrTrailing);
+			//Add(atrTrailing);
 			
 			kc = KeltnerChannel(offsetMultiplier, Period3);
-			Add(kc);
+			//Add(kc);
 			
 			Add(FiveBarPattern());
 			
@@ -345,9 +346,12 @@ namespace NinjaTrader.Strategy
         {
 			if (BarsInProgress == 1)
 			{
-				// Draws the longer period bar range
-				DrawTriangleDown(CurrentBar + "down1", false, 0, Lows[1][0], Color.DarkGray);
-				DrawTriangleUp(CurrentBar + "up1", false, 0, Highs[1][0], Color.DarkBlue);
+				if ((ToTime(Time[0]) >= StartTime * 100) && (ToTime(Time[0]) <= StopTime * 100))
+				{
+					// Draws the longer period bar range
+					DrawTriangleUp(CurrentBar + "down1", false, 0, Lows[1][0], Color.DarkGray);
+					DrawTriangleDown(CurrentBar + "up1", false, 0, Highs[1][0], Color.DarkBlue);
+				}
 			}
 			
 		    // Checks if OnBarUpdate() is called from an update on the secondary shorter Bars
@@ -356,7 +360,7 @@ namespace NinjaTrader.Strategy
 				// reset variables at the start of each day
 				if (Bars.BarsSinceSession == 1 && BarsInProgress == 0)
 				{
-					if (TraceOrders == true)
+					if (printOn == true)
 						Print(Time + " =======================");
 					ResetTrades();
 				}
@@ -366,15 +370,25 @@ namespace NinjaTrader.Strategy
 					return;
 
 
-				if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100))
-				{
-//					if ((!OptimizedTargets && (atr[0] < AtrBucket * 0.5 || atr[0] > ((AtrBucket+1) * 0.5)))
+				if ((ToTime(Time[0]) < StartTime * 100) || (ToTime(Time[0]) > StopTime * 100)
+					|| (!OptimizedTargets && (atr[0] < AtrBucket * 0.2 || atr[0] > ((AtrBucket+1) * 0.2)))
 //					|| (OptimizedTargets && (atr[0] < 0.5 || atr[0] > 6)))
-//					{
-						ShutDownOrders();
-						return;
-//					}
+					)
+				{
+					ShutDownOrders();
+					return;
 				}
+				
+				if (Times[0][0] != Times[1][0])
+					return;
+				
+//				if (BarsSinceEntry(0,"B1",0) > 50 && buyOrder1.OrderState == OrderState.Filled)
+//				{
+//					Print(Time + " BarsSinceEntry: " + BarsSinceEntry(0,"B1",0) + " BarsSinceExit: " + BarsSinceExit(0,"B1",0));
+//					Print(Time + " more than 50 bars since entry, shutting down");
+//					SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, 0, 0, "ocoCloseB1", "CXB1");
+//					//ShutDownOrders();
+//				}
 				
 //				if (OptimizedTargets)
 //				{
@@ -408,8 +422,8 @@ namespace NinjaTrader.Strategy
 //				} 
 //				else
 //				{
-					target = iparm1;
-					stop = iparm2;
+					target = (int) Math.Truncate(atr[0] * Ratched); //iparm1;
+					stop = target; //iparm2;
 //				}
 			
 			// No Trade zone
@@ -423,7 +437,7 @@ namespace NinjaTrader.Strategy
 				// it's not cleaning up the order
 				if (buyOrder1 != null)
 				{
-					if (TraceOrders == true)
+					if (printOn == true)
 					{
 						if (buyOrder1.OrderState != OrderState.Working)
 							Print(Time + " OrderState: " + buyOrder1.OrderState);
@@ -442,26 +456,26 @@ namespace NinjaTrader.Strategy
 					if (Qty1 > 0)
 					{
 						
-						limitPrice = Lows[0][0] - EntryB1 * TickSize;
+						limitPrice = Lows[1][0] - EntryB1 * TickSize;
 						stopPrice = limitPrice;
 						
 						if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
 						{
-							DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.LightGray);
+							DrawDot(CurrentBar + "b1", true, 0, limitPrice, Color.LightGray);
 							ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
-							if (TraceOrders == true)
+							if (printOn == true)
 								Print(Time + " changeOrder - limitPrice: " + limitPrice);
 						}
 						else if (buyOrder1 == null)
 						{
-							//DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
+							DrawDot(CurrentBar + "b1", false, 0, limitPrice, Color.DarkGray);
 							buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "B1");
-//							if (TraceOrders == true)
-								Print(Time + " submitOrder: " + buyOrder1);
+							if (printOn == true)
+								Print(Time + " Time of last 5 min bar: " + Times[1][0] + " submitOrder: " + buyOrder1);
 						}
 						else
 						{
-							if (TraceOrders == true)
+							if (printOn == true)
 								Print(Time + " OrderState: " + buyOrder1.OrderState);
 						}
 					}
@@ -501,47 +515,56 @@ namespace NinjaTrader.Strategy
 				// ============================================
 				// New Short order placement
 				// ============================================
-				if (hma.TrendSet[0] == -1 && buyOrder1 == null) //  downtrend
+				if (isGoShort() && sellOrder1 == null)
 				{
-					limitPrice = Highs[1][0] + EntryS1 * TickSize;
-					stopPrice = limitPrice;
-					
-					if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+					if (Qty1 > 0)
 					{
-						//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
-						ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
-					}
-					else if (sellOrder1 == null)
-					{
-						//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
-						sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
-					}
+						limitPrice = Highs[1][0] + EntryS1 * TickSize;
+						stopPrice = limitPrice;
+						
+						if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+						{
+							//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
+							ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
+						}
+						else if (sellOrder1 == null)
+						{
+							//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
+							sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
+						}
+					}						
 					
 					// Second Short Contract 
-					limitPrice = Highs[0][0] + (EntryS1 + EntryS2) * TickSize;
-					stopPrice = limitPrice;
-					
-					if (sellOrder2 != null && sellOrder2.OrderState == OrderState.Working)
+					if (Qty2 > 0)
 					{
-						ChangeOrder(sellOrder2, sellOrder2.Quantity, limitPrice, stopPrice);
-					}
-					else if (sellOrder2 == null)
-					{
-						sellOrder2 = SubmitOrder(1, OrderAction.Sell, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "S2");
-					}
+						limitPrice = Highs[0][0] + (EntryS1 + EntryS2) * TickSize;
+						stopPrice = limitPrice;
+						
+						if (sellOrder2 != null && sellOrder2.OrderState == OrderState.Working)
+						{
+							ChangeOrder(sellOrder2, sellOrder2.Quantity, limitPrice, stopPrice);
+						}
+						else if (sellOrder2 == null)
+						{
+							sellOrder2 = SubmitOrder(1, OrderAction.Sell, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "S2");
+						}
+					}						
 					
 					// Third Short Contract 
-					limitPrice = Highs[0][0] + (EntryS1 + EntryS2 + EntryS3) * TickSize;
-					stopPrice = limitPrice;
-					
-					if (sellOrder3 != null && sellOrder3.OrderState == OrderState.Working)
+					if (Qty3 > 0)
 					{
-						ChangeOrder(sellOrder3, sellOrder3.Quantity, limitPrice, stopPrice);
-					}
-					else if (sellOrder3 == null)
-					{
-						sellOrder3 = SubmitOrder(1, OrderAction.Sell, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "S3");
-					}
+						limitPrice = Highs[0][0] + (EntryS1 + EntryS2 + EntryS3) * TickSize;
+						stopPrice = limitPrice;
+						
+						if (sellOrder3 != null && sellOrder3.OrderState == OrderState.Working)
+						{
+							ChangeOrder(sellOrder3, sellOrder3.Quantity, limitPrice, stopPrice);
+						}
+						else if (sellOrder3 == null)
+						{
+							sellOrder3 = SubmitOrder(1, OrderAction.Sell, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "S3");
+						}
+					}						
 				}
 				
 				// ============================================
@@ -585,10 +608,12 @@ namespace NinjaTrader.Strategy
 
 		private bool isGoLong() 
 		{
-			//if (HMARick(BarsArray[1], Period1, 200).TrendSet[0] == 1)
-			if (kc.Midline[0] > kc.Midline[20]
-				&& Close[0] > atrTrailing.Upper[0])
+			if ((HMARick(BarsArray[0], Period1, 100).TrendSet[0] == 1)
+			 //&& (kc.Midline[0] > kc.Midline[20]
+			 //&& Close[0] > atrTrailing.Upper[0])
+				)
 			{
+				DrawDot(CurrentBar + "isGoLong", true, 0, HMARick(BarsArray[0], Period1, 100)[0], Color.Green);
 				return true;	
 			}
 			else
@@ -599,7 +624,17 @@ namespace NinjaTrader.Strategy
 		
 		private bool isGoShort()
 		{
-			return false;
+			if ((HMARick(BarsArray[0], Period1, 100).TrendSet[0] == -1)
+			 //&& (kc.Midline[0] < kc.Midline[20]
+			 //&& Close[0] < atrTrailing.Lower[0])
+				)
+			{
+				return true;	
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		private bool isNoNewTrades()
@@ -622,7 +657,7 @@ namespace NinjaTrader.Strategy
 				return;
 			}
 			
-			if (TraceOrders)
+			if (printOn)
 			{
 				Print(Time + " execution: " + execution.ToString());
 				Print(Time + " execution.Order: " + execution.Order.ToString());
@@ -637,6 +672,11 @@ namespace NinjaTrader.Strategy
 				
 				if (closeLongOrderLimit1 == null) 
 				{
+					// Prints the 20 period simple moving average of range
+					// double value = SMA(Range(), 20)[0];
+					// Print("The 20 period average of range is " + value.ToString());
+					// Math.Min(stop, ATR(BarsArray[0],10)[0])
+					
 					limitPrice = 0;
 					stopPrice = buyOrder1.AvgFillPrice - stop * TickSize;
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
@@ -791,11 +831,11 @@ namespace NinjaTrader.Strategy
 		{
 			if (buyOrder1 != null)
 			{
-//				if (TraceOrders == true)
+//				if (printOn == true)
 //					Print(Time + " off hours buyOrder1: " + buyOrder1);
 				if (buyOrder1.OrderState == OrderState.Filled && closeLongOrder1 == null)
 				{
-//					if (TraceOrders == true)
+//					if (printOn == true)
 //						Print(Time + " delayed closing ");
 					if (ToTime(Time[0]) > (StopTime + 15) * 100)	// wait 15 more min before closing
 					{
@@ -803,16 +843,22 @@ namespace NinjaTrader.Strategy
 							limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CTB1");
 					}
 				}
+				else if (buyOrder1.OrderState == OrderState.Filled && closeLongOrder1 != null)
+				{
+//					CancelOrder(closeLongOrder1);
+//					CancelOrder(closeLongStopOrder1);
+//					SubmitOrder(0, OrderAction.Sell, OrderType.Market, buyOrder1.Quantity, 0, 0, "ocoCloseB1", "CXB1");
+				}
 				else if (buyOrder1.OrderState == OrderState.Working)
 				{
-//					if (TraceOrders == true)
+//					if (printOn == true)
 //						Print(Time + " Cancelling off hours working order: " + buyOrder1);
 					CancelOrder(buyOrder1);
 					buyOrder1 = null;
 				} 
 //				else 
 //				{
-//					if (TraceOrders == true)
+//					if (printOn == true)
 //						Print(Time + " else " + buyOrder1);
 //				}
 			}
