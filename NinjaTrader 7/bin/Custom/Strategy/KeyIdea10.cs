@@ -329,7 +329,8 @@ namespace NinjaTrader.Strategy
 			// ============================================
 			// New long order placement
 			// ============================================
-			if ((((CurrentBar - consolidationEndBar) == 0) || (CurrentBar - consolidationEndBar) == 1) 
+			if ((((CurrentBar - consolidationEndBar) == 0) || (CurrentBar - consolidationEndBar) == 1)
+				&& (consolidationEndBar - consolidationEndBar) > 4
 				&& sellOrder1 == null) //  uptrend
 			{
 				
