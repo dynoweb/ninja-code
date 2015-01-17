@@ -17,16 +17,16 @@ namespace MakeItSoNumberOne
 	public enum DeviceType { Diamonds, Arrows, Dots, Triangles }
 }
 
-// This namespace holds all indicators and is required. Do not change it.
+
 namespace NinjaTrader.Indicator
 {
     /// <summary>
     /// This indicator combines the SMI5 and the Trader's Dynamic Index into one that will generate an arrow when the two line up.
-    /// </summary>
+    /// Revised by zondor aug 19 2014
     [Description("This indicator combines the SMI and the Trader's Dynamic Index into one that will generate a user selected device when the two line up.")]
     public class SMTDIndex : Indicator
     {
-        #region Variables
+       // #region Variables
 		private int				range			= 10;
 		private int				emaperiod1		= 17;
 		private int				emaperiod2		= 1;
@@ -56,13 +56,18 @@ namespace NinjaTrader.Indicator
 		private DataSeries		SignalLine;
 		private RSI 			DYNRSI;
 		private SMA 			DYNPrice;
-		private SMA 			DYNSignal; 
+		private SMA 	        DYNSignal;
+		/// added Aug 19 2014 zondor		
+        private double         denominator;
+        private EMA            emaEMAhls;
+		private EMA            emaEMAsms;
+		private EMA            emaSMI;
+		private MAX            MaxHI;
+		private MIN            MinLO;
+		private double firstTickHi, firstTickLo, HH, LL;
+		//#endregion
 
-		#endregion
-
-        /// <summary>
-        /// This method is used to configure the indicator and is called once before any bar data is loaded.
-        /// </summary>
+        
         protected override void Initialize()
         {
             Overlay	= true;
@@ -85,34 +90,55 @@ namespace NinjaTrader.Indicator
 			DYNRSI = RSI(Input,RSIPeriod,1);
 			DYNPrice = SMA(DYNRSI,PricePeriod);
 			DYNSignal = SMA(DYNRSI,SignalPeriod);
+			// added the following Aug 19 2014 zondor
+			emaEMAhls=EMA( EMA(hls, EMAPeriod1),EMAPeriod2 );
+			emaEMAsms=(EMA( EMA(sms,EMAPeriod1), EMAPeriod2 ));
+			emaSMI=EMA(smis, SMIEMAPeriod);
+			MaxHI=MAX(High,range);
+			MinLO=MIN(Low,range);
 		}
 		
-        /// <summary>
-        /// Called on each bar update event (incoming tick)
-        /// </summary>
+		
         protected override void OnBarUpdate()
         {
 			// Stochastic Momentum = SM {distance of close - midpoint}
-		 	sms.Set(Close[0] - 0.5 * ((MAX(High, Range)[0] + MIN(Low, Range)[0])));
+		 	//sms[0]=Close[0] - 0.5 * ((MAX(High, _Range)[0] + MIN(Low, _Range)[0]));
 			
 			// High low diffs
-			hls.Set(MAX(High, Range)[0] - MIN(Low, Range)[0]);
-
-			// Stochastic Momentum Index = SMI
-			double denom = 0.5*EMA( EMA(hls, EMAPeriod1),EMAPeriod2 )[0];
- 			smis.Set( 100*(EMA( EMA(sms,EMAPeriod1), EMAPeriod2 ))[0] / (denom ==0 ? 1 : denom  ));
+			//hls.Set(MAX(High, _Range)[0] - MIN(Low, _Range)[0]);
+			if(FirstTickOfBar)
+			  {   firstTickHi=MaxHI[0]; 
+				  firstTickLo=MinLO[0];
+			  }
+			HH=Math.Max(firstTickHi,High[0]);
+			LL=Math.Min(firstTickLo,Low [0]);
+            //hls[0]=MaxHi[0] - MinLo[0];
 			
+			sms[0]=Close[0] - 0.5 * (HH + LL);
+			hls[0]=HH-LL;
+			// Stochastic Momentum Index = SMI
+			//emaEMAhls=EMA( EMA(hls, EMAPeriod1),EMAPeriod2 );
+			
+			//double denom = 0.5*EMA( EMA(hls, EMAPeriod1),EMAPeriod2 )[0];
+			denominator = 0.5*emaEMAhls[0]; //  aug 19 2014
+			//emaEMAsms=(EMA( EMA(sms,EMAPeriod1), EMAPeriod2 ));
+			
+ 			//smis.Set( 100*(EMA( EMA(sms,EMAPeriod1), EMAPeriod2 ))[0] / (denom ==0 ? 1 : denom  ));
+			smis[0]= 100*emaEMAsms[0] / (denominator ==0 ? 1 : denominator  ); // aug 19 2014
 			// Set the line value for the SMIEMA by taking the EMA of the SMI
-			SMIEMA.Set(EMA(smis, SMIEMAPeriod)[0]);
+			
+			//emaSMI=EMA(smis, SMIEMAPeriod);
+			//SMIEMA.Set(EMA(smis, SMIEMAPeriod)[0]);
+			SMIEMA[0]=emaSMI[0]; // aug 19 2014
 
 			double priceValue = DYNPrice[0];
-			PriceLine.Set(priceValue);
-			SignalLine.Set(DYNSignal[0]);
+			PriceLine[0]=priceValue;
+			SignalLine[0]=DYNSignal[0];
 
 			#region Draw devices and maybe play sounds
 
-			upDeviceSeries.Set(false);
-			downDeviceSeries.Set(false);
+			upDeviceSeries[0]=false;
+			downDeviceSeries[0]=false;
 			switch( PickDeviceSelection )
 			{
 				case DeviceSelection.SMI_only:
@@ -267,16 +293,15 @@ namespace NinjaTrader.Indicator
 			}
         }
 		
-		[Description("Range for momentum calculation. ( Q )")]
+		[Description("_Range for momentum calculation. ( Q )")]
 		[Category("SMI_Parameters")]
-		public int Range
+		public int _Range
 		{
 			get { return range; }
 			set { range = Math.Max(1, value); }
 		}
 
-		/// <summary>
-		/// </summary>
+		
 		[Description("1st ema smothing period. ( R )")]
 		[Category("SMI_Parameters")]
 		public int EMAPeriod1
@@ -295,8 +320,7 @@ namespace NinjaTrader.Indicator
 			set { emaperiod2 = Math.Max(1, value); }
 		}
 		
-		/// <summary>
-		/// </summary>
+		
 		[Description("SMI EMA smoothing period.")]
 		[Category("SMI_Parameters")]
 		public int SMIEMAPeriod
@@ -314,8 +338,7 @@ namespace NinjaTrader.Indicator
 			set { rsiPeriod = Math.Max(1, value); }
 		}
 
-		/// <summary>
-		/// </summary>
+		
 		[Description("Period for Priceline")]
 		[Category("TDI_Parameters")]
 		[Gui.Design.DisplayNameAttribute("Period for Priceline")]
