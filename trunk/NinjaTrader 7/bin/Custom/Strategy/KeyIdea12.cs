@@ -10,7 +10,6 @@ using NinjaTrader.Data;
 using NinjaTrader.Indicator;
 using NinjaTrader.Gui.Chart;
 using NinjaTrader.Strategy;
-using PriceActionSwingOscillator.Utility;
 #endregion
 
 // This namespace holds all strategies and is required. Do not change it.
@@ -50,15 +49,15 @@ namespace NinjaTrader.Strategy
 	/// 					Random Exit
 	/// 	
     /// </summary>
-    [Description("Low Margin Futures")]
+    [Description("EMA_Colors_Paint_v01")]
     public class KeyIdea12 : Strategy
     {
         #region Variables
         // Wizard generated variables
         private int iparm1 = 7; // Default setting for Iparm1
         private int iparm2 = 5; // Default setting for Iparm2
-        private double dparm1 = 25; // Default setting for Dparm1
-        private double dparm2 = 25; // Default setting for Dparm2
+        private double dparm1 = 10; // Default setting for Dparm1
+        private double dparm2 = 10; // Default setting for Dparm2
 		private double ratched = 0.05;
         private int period1 = 10; // Default setting for Period1
         private int period2 = 27; // Default setting for Period2
@@ -80,8 +79,25 @@ namespace NinjaTrader.Strategy
 		DonchianChannel dc = null;
 		int donchianPeriod = 20;
 		
-		EMA_Colors_Paint_v01 ema = null;
+		// MACD
+		MACDrick macd = null;
 		
+		// SMA
+		SMA sma = null;
+		
+//		EMA_Colors_Paint_v01 ema = null;
+		
+		// FiveBarPattern
+		FiveBarPattern fbp;
+		double lastFiveBarPatternLow = 0;
+		double lastFiveBarPatternHigh = 0;
+		
+		double range = 0;
+		double lineLevel = 0;
+		double bullLimit = 0;
+		double bullStop = 0;
+		int lastLow = 0;  // bar number where the last lwo occurred
+		int lastHigh = 0; // bar number where the last high occurred
 		
         #endregion
 
@@ -91,14 +107,31 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
-			ema = EMA_Colors_Paint_v01(30, 30, Period1);
-			Add(ema);
+			ClearOutputWindow();
+
+//			ema = EMA_Colors_Paint_v01(30, 30, Period1);
+//			Add(ema);
+			
+			sma = SMA(50);
+			sma.Plots[0].Pen.Color = Color.Blue;
+			sma.PaintPriceMarkers = false;
+			sma.AutoScale = false;
+			Add(sma);
+			
+			//macd = MACDrick(5, 20, 30);
+			//Add(macd);
+			
+//			fbp = FiveBarPattern();
+//			Add(fbp);
+			
+			//Add(FiveBarPattern());
+			Add(FiveBarSample());
 			
 			Add(PitColor(Color.Black, 83000, 25, 161500));
 			
-            SetProfitTarget("", CalculationMode.Ticks, dparm1);
+            SetProfitTarget(CalculationMode.Ticks, dparm1);
             //SetStopLoss("", CalculationMode.Ticks, dparm2, false);
-            SetTrailStop("", CalculationMode.Ticks, dparm2, false);
+            //SetTrailStop("", CalculationMode.Ticks, dparm2, false);
 
             CalculateOnBarClose = true;
 			ExitOnClose = true;
@@ -127,69 +160,146 @@ namespace NinjaTrader.Strategy
 //				return;
 //			}
 
-			if (Position.MarketPosition == MarketPosition.Flat) 
+			
+			//Print(Time + " fbp.lower: " + FiveBarPattern().FiveBarLower.ContainsValue(2));
+			
+//			if (FiveBarPattern().FiveBarLower.ContainsValue(2))
+//			{
+//				lastFiveBarPatternLow = FiveBarPattern().FiveBarLower[2];
+//				Print(Time + " lastFiveBarPatternLow: " + lastFiveBarPatternLow);
+//			} else {
+//				Print(Time + " ---------------------- " + FiveBarPattern().FiveBarLower[2]);
+//			}
+//			if (FiveBarPattern().FiveBarLower.ContainsValue(2))
+//				Print(Time + " 2 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().FiveBarLower[2]);
+			
+//			if (FiveBarSample().FiveBarLower.ContainsValue(0))
+//				Print(Time + " 0 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarSample().FiveBarLower[0]);
+//			if (FiveBarSample().FiveBarLower.ContainsValue(2))
+//				Print(Time + " 2 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarSample().FiveBarLower[2]);
+			
+			// -------------------------------------------------------------------------
+			// For some reason, this has to be here for the other ContainsValues to work
+			// -------------------------------------------------------------------------
+			if (FiveBarSample().FiveBarLower.ContainsValue(0))
+				Print(Time + " 0 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarSample().FiveBarLower[0]);
+			
+			if (FiveBarSample().FiveBarLower.ContainsValue(2))
 			{
-				//SetStopLoss(CalculationMode.Ticks, 1000);
-				if (isBull())
+				if (lastHigh > lastLow || lastLow == 0)
 				{
-					if (isShort())
-					{
-						ExitShort();
-					}
+					lastFiveBarPatternLow = Low[2];
+					lastLow = CurrentBar - 2;
+					DrawDot(CurrentBar + "ll", false, 2, Low[2] - 5 * TickSize, Color.Black);
+					//Print(Time + " 2 - CurrentBar: " + CurrentBar + " FiveBarLower: " + lastFiveBarSampleLow);
 					
-					DrawDot(CurrentBar + "Bull", true, 0, High[0] + 2 * TickSize, Color.Blue);
-					if (isFlat()) 
+					if (isBear())
 					{
-						EnterLong();
-					}
-					
-				}
-				if (isBear())
-				{
-					if (isLong())
-					{
-						ExitLong();
-					}
-					
-				    DrawDot(CurrentBar + "Bear", true, 0, Low[0] - 2 * TickSize, Color.Red);
-					if (isFlat()) 
-					{
-						EnterShort();
+						range = lastFiveBarPatternHigh - lastFiveBarPatternLow;
+						if (range >= 6)
+						{
+							//Print(Time + " adding bear rectangle " + lastFiveBarPatternLow + " - " + lastFiveBarPatternHigh);
+							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 + lastFiveBarPatternLow, -13, 
+									range * 0.53 + lastFiveBarPatternLow, Color.LightPink, Color.LightPink, 2);
+							// Limit
+							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow - range * 0.68);
+							DrawLine(CurrentBar + " limit", 2, lineLevel, -13, lineLevel, Color.Green);
+							// Stop
+							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.85);
+							DrawLine(CurrentBar + " stop", 2, lineLevel, -13, lineLevel, Color.Red);
+						}
 					}
 				}
 			}
+			if (FiveBarSample().FiveBarUpper.ContainsValue(2))
+			{
+//				if (lastHigh == 0)
+//				{
+					lastFiveBarPatternHigh = High[2];
+					lastHigh = CurrentBar - 2;
+					DrawDot(CurrentBar + "lh", false, 2, High[2] + 5 * TickSize, Color.Black);
+					//Print(Time + " FiveBarUpper: " + lastFiveBarPatternHigh);
+					
+					if (isBullTrend())
+					{
+						range = lastFiveBarPatternHigh - lastFiveBarPatternLow;
+						if (range >= 6)
+						{
+							Double bullMidPoint = range * 0.50 + lastFiveBarPatternLow;
+							bullLimit = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternHigh + range * 0.68);
+							bullStop = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.15);
+							
+							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 + lastFiveBarPatternLow, -13, 
+									range * 0.53 + lastFiveBarPatternLow, Color.PaleGreen, Color.PaleGreen, 2);
+							
+							double rewardToRiskRatio = Math.Round((bullLimit - bullMidPoint)/(bullMidPoint - bullStop), 1);
+							// Trade details
+							DrawText(CurrentBar + "txt", "R:R " + rewardToRiskRatio + ":1", -2, bullMidPoint, Color.Black);
+							// Limit
+							DrawLine(CurrentBar + " limit", 2, bullLimit, -13, bullLimit, Color.Green);
+							// Stop
+							DrawLine(CurrentBar + " stop", 2, bullStop, -13, bullStop, Color.Red);
+						}
+					}
+//				}
+			}
+			
+			
+//			if (ema.EMAslopeup.ContainsValue(0))
+//			{
+//				//Print(Time + " EMAslopeup: " + ema.EMAslopeup[0]);
+//			} else {
+//				//Print(Time + " ++++++++++ " + ema.EMAslopeup[0]);
+//			}
+			
+//			if (Position.MarketPosition == MarketPosition.Flat) 
+//			{
+//				//SetStopLoss(CalculationMode.Ticks, 1000);
+//				if (isBullTrend())
+//				{
+//					if (isShort())
+//					{
+//						ExitShort();
+//					}
+//					
+//					if (isFlat()) 
+//					{
+//						//EnterLong();
+//						EnterLongStop(High[0] + 2 * TickSize);
+//						SetStopLoss(CalculationMode.Ticks, 16); //lastFiveBarPatternLow);
+//					}
+//					
+//				}
+//				if (isBear())
+//				{
+//					if (isLong())
+//					{
+//						ExitLong();
+//					}
+//					
+//				    //DrawDot(CurrentBar + "Bear", true, 0, Low[0] - 2 * TickSize, Color.Red);
+//					if (isFlat()) 
+//					{
+//						EnterShort();
+//					}
+//				}
+//			}
         }
 		
-		private bool isBull()
+		private bool isBullTrend()
 		{
-			if (ema.EMAslopedown.ContainsValue(1)
-			 && (ema.EMAslopeup.ContainsValue(0) && ema.EMAslopedown.ContainsValue(0)))
-			{
+			if (Rising(sma))
 				return true;
-			}
-			return false;
+			else
+				return false;
 		}
 		
 		private bool isBear()
 		{
-//			if (   (ema.EMAslopeup.ContainsValue(1) && ema.EMAflat.ContainsValue(1) 	// Green bar on flat slope
-//				&& ema.EMAslopedown.ContainsValue(0) && ema.EMAflat.ContainsValue(0)) // Red bar on falt slope
-//				|| (ema.EMAslopeup.ContainsValue(1) 
-//					&& (ema.EMAslopeup.ContainsValue(0) && ema.EMAslopedown.ContainsValue(0)))
-//				) 
-			if (ema.EMAflat.ContainsValue(0))
-			{
-				this.DrawDot(CurrentBar + "Flat", false, 0, High[0] + 2 * TickSize, Color.Pink);
-				Print(Time  + " ema.EMAslopedown: " + ema.EMAslopedown[0]);
-				if (ema.EMAslopedown[0] != null && (ema.EMAslopedown[0].ToString().Length > 0))
-				{
-					this.DrawDiamond(CurrentBar + "Flatx",  false, 0, Low[0] - 2 * TickSize, Color.Lavender);
-					return true;
-				} 
-				else
-					this.DrawDiamond(CurrentBar + "Flatx",  false, 0, Low[0] - 2 * TickSize, Color.Yellow);
-			}
-			return false;
+			if (Falling(sma))
+				return true;
+			else
+				return false;
 		}
 		
 		private bool isFlat()
