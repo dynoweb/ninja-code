@@ -59,7 +59,7 @@ namespace NinjaTrader.Strategy
         private double dparm1 = 10; // Default setting for Dparm1
         private double dparm2 = 10; // Default setting for Dparm2
 		private double ratched = 0.05;
-        private int period1 = 10; // Default setting for Period1
+        private int period1 = 50; // Default setting for Period1
         private int period2 = 27; // Default setting for Period2
 		private bool isMo = true;
 		private bool is2nd = false;
@@ -92,7 +92,8 @@ namespace NinjaTrader.Strategy
 		double lastFiveBarPatternLow = 0;
 		double lastFiveBarPatternHigh = 0;
 		
-		double range = 0;
+		int range = 0;
+		int minRange = 6;
 		double lineLevel = 0;
 		double bullLimit = 0;
 		double bullStop = 0;
@@ -112,7 +113,7 @@ namespace NinjaTrader.Strategy
 //			ema = EMA_Colors_Paint_v01(30, 30, Period1);
 //			Add(ema);
 			
-			sma = SMA(50);
+			sma = SMA(Period1);
 			sma.Plots[0].Pen.Color = Color.Blue;
 			sma.PaintPriceMarkers = false;
 			sma.AutoScale = false;
@@ -195,17 +196,18 @@ namespace NinjaTrader.Strategy
 					
 					if (isBear())
 					{
-						range = lastFiveBarPatternHigh - lastFiveBarPatternLow;
-						if (range >= 6)
+						range = (int) Math.Truncate((lastFiveBarPatternHigh - lastFiveBarPatternLow)/TickSize);
+						Print(Time + " range: " + range);
+						if (range >= MinRange)
 						{
 							//Print(Time + " adding bear rectangle " + lastFiveBarPatternLow + " - " + lastFiveBarPatternHigh);
-							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 + lastFiveBarPatternLow, -13, 
-									range * 0.53 + lastFiveBarPatternLow, Color.LightPink, Color.LightPink, 2);
+							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 * TickSize + lastFiveBarPatternLow, -13, 
+									range * 0.53 * TickSize + lastFiveBarPatternLow, Color.LightPink, Color.LightPink, 2);
 							// Limit
-							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow - range * 0.68);
+							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow - range * 0.68 * TickSize);
 							DrawLine(CurrentBar + " limit", 2, lineLevel, -13, lineLevel, Color.Green);
 							// Stop
-							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.85);
+							lineLevel = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.85 * TickSize);
 							DrawLine(CurrentBar + " stop", 2, lineLevel, -13, lineLevel, Color.Red);
 						}
 					}
@@ -222,15 +224,16 @@ namespace NinjaTrader.Strategy
 					
 					if (isBullTrend())
 					{
-						range = lastFiveBarPatternHigh - lastFiveBarPatternLow;
-						if (range >= 6)
+						range = (int) Math.Truncate((lastFiveBarPatternHigh - lastFiveBarPatternLow)/TickSize);
+						Print(Time + " range: " + range);
+						if (range >= MinRange)
 						{
-							Double bullMidPoint = range * 0.50 + lastFiveBarPatternLow;
-							bullLimit = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternHigh + range * 0.68);
-							bullStop = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.15);
+							Double bullMidPoint = range * 0.50 * TickSize + lastFiveBarPatternLow;
+							bullLimit = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternHigh + range * 0.68 * TickSize);
+							bullStop = Instrument.MasterInstrument.Round2TickSize(lastFiveBarPatternLow + range * 0.15 * TickSize);
 							
-							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 + lastFiveBarPatternLow, -13, 
-									range * 0.53 + lastFiveBarPatternLow, Color.PaleGreen, Color.PaleGreen, 2);
+							DrawRectangle(CurrentBar + " 50% " + lastFiveBarPatternHigh, false, 2, range * 0.47 * TickSize + lastFiveBarPatternLow, -13, 
+									range * 0.53 * TickSize + lastFiveBarPatternLow, Color.PaleGreen, Color.PaleGreen, 2);
 							
 							double rewardToRiskRatio = Math.Round((bullLimit - bullMidPoint)/(bullMidPoint - bullStop), 1);
 							// Trade details
@@ -356,6 +359,14 @@ namespace NinjaTrader.Strategy
         {
             get { return iparm2; }
             set { iparm2 = Math.Max(0, value); }
+        }
+
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int MinRange
+        {
+            get { return minRange; }
+            set { minRange = Math.Max(3, value); }
         }
 
         [Description("")]
