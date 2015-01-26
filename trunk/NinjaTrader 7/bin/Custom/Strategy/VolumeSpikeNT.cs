@@ -30,8 +30,8 @@ namespace NinjaTrader.Strategy
 	/// volume within the lookback period multiplied with a certain factor (preferably slighly below 1).
 	/// 
 	/// The Volume spike itself then consists of the volume of two consecutive bars: The first bar must 
-	/// exceed the threshold, and the second bar must be smaller than the first bar, in oder to confirm 
-	/// the spike. An outbreak from the combined price range of those to bars then generates a buy or sell signal.
+	/// exceed the threshold, and the second bar must be smaller than the first bar, in order to confirm 
+	/// the spike. An outbreak from the combined price range of those two bars then generates a buy or sell signal.
 	/// 
 	/// I had planned to use the variables VP_High and VP_Low to calculate their difference 
 	/// (the aforementioned combined range of the two consecutive bars), because I wanted to calculate 
@@ -48,19 +48,10 @@ namespace NinjaTrader.Strategy
         #region Variables
         // Wizard generated variables
 
-        private int lookback = 12; // Default setting for Lookback
+        private int lookback = 10; // Default setting for Lookback
         private int maxDailyEntries = 1; // Default setting for MaxDailyEntries
-//        private int stopTime = 145000; // Default setting for StopTime -- 2:50 PM CST
-
-//        private int lookback = 10; 
-//        private int maxDailyEntries = 1;
-
-
-//		private int startTime = 070000; // 07:00 AM CST
-//		private double vpFactor = 1.0; // Default setting for VpFactor
-
-		private int startTime = 170000; // 05:00 PM CST
-        private int stopTime = 145000; // 02:50 PM CST
+		private int startTime = 600; // 7:00 AM CST
+        private int stopTime = 1450; // 02:50 PM CST
 		private double vpFactor = 0.8;
 
         // User defined variables (add any user defined variables below)
@@ -115,9 +106,9 @@ namespace NinjaTrader.Strategy
 			// or 6 PM EST to 3:50 PM EST <-- note 6 is PM not AM
 			// that would be 5 PM to 2:50 PM CST 
 			if (Volume[0] < Volume[1] 
-				&& Volume[1] > threshold 
-				
-				&& ((ToTime(Time[0]) > startTime) && (ToTime(Time[0]) < stopTime)))
+				&& Volume[1] > threshold 				
+				&& ((ToTime(Time[0]) >= startTime * 100) && (ToTime(Time[0]) <= stopTime * 100))
+				)
 			{
 				if (//Position.MarketPosition == MarketPosition.Flat &&
 					tradeCount < MaxDailyEntries)
@@ -137,21 +128,21 @@ namespace NinjaTrader.Strategy
 				}
 			}
 			
-			if (ToTime(Time[0]) >= stopTime || ToTime(Time[0]) <= startTime)
-			{
-				for (int i = 0; i < maxDailyEntries; i++)
-				{
-					if (longOrder[i] != null && longOrder[i].OrderState == OrderState.Filled)
-					{
-						closeOrder[i] = SubmitOrder(0, OrderAction.Sell, OrderType.Market, longOrder[i].Quantity, 0,0, "", "LE"+i);
-					}
-						
-					if (shortOrder[i] != null && shortOrder[i].OrderState == OrderState.Filled)
-					{
-						closeOrder[i] = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, shortOrder[i].Quantity, 0,0, "", "SE"+i);
-					}
-				}
-			}
+//			if (ToTime(Time[0]) >= stopTime || ToTime(Time[0]) <= startTime)
+//			{
+//				for (int i = 0; i < maxDailyEntries; i++)
+//				{
+//					if (longOrder[i] != null && longOrder[i].OrderState == OrderState.Filled)
+//					{
+//						closeOrder[i] = SubmitOrder(0, OrderAction.Sell, OrderType.Market, longOrder[i].Quantity, 0,0, "", "LE"+i);
+//					}
+//						
+//					if (shortOrder[i] != null && shortOrder[i].OrderState == OrderState.Filled)
+//					{
+//						closeOrder[i] = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, shortOrder[i].Quantity, 0,0, "", "SE"+i);
+//					}
+//				}
+//			}
         }
 		
 		protected override void OnOrderUpdate(IOrder order)
@@ -205,7 +196,7 @@ namespace NinjaTrader.Strategy
             set { maxDailyEntries = Math.Min(Math.Max(1, value), 5); }
         }
 
-        [Description("HHMMSS (CST) 170000 = 5PM CST")]
+        [Description("HHMM (CST) 600 = 6AM CST (GMT-6)")]
         [GridCategory("Parameters")]
         public int StartTime
         {
@@ -213,7 +204,7 @@ namespace NinjaTrader.Strategy
             set { startTime = value; }
         }
 
-        [Description("HHMMSS (CST) 145000 = 2:50PM CST")]
+        [Description("HHMM (CST) 1450 = 2:50PM CST")]
         [GridCategory("Parameters")]
         public int StopTime
         {
