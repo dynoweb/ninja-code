@@ -20,8 +20,8 @@ namespace NinjaTrader.Indicator
     public class FiveBarPattern : Indicator
     {
         #region Variables
-//			private DataSeries lower;
-//			private DataSeries upper;
+			private DataSeries fiveBarLower;
+			private DataSeries fiveBarUpper;
         #endregion
 
         /// <summary>
@@ -33,11 +33,15 @@ namespace NinjaTrader.Indicator
             Add(new Plot(Color.Blue, PlotStyle.Dot, "Upper Five Bar"));
             Add(new Plot(Color.Red, PlotStyle.Dot, "Lower Five Bar"));
             
-//			lower = new DataSeries(this);
-//			upper = new DataSeries(this);
+			// Will contain the bar numbers that had the low or high
+			fiveBarLower = new DataSeries(this);
+			fiveBarUpper = new DataSeries(this);
 			
 			this.AutoScale = false;
 			this.PaintPriceMarkers = false;
+			
+			// Store all series values instead of only the last 256 values
+			MaximumBarsLookBack = MaximumBarsLookBack.Infinite;
 			
 			Overlay				= true;			
         }
@@ -57,19 +61,13 @@ namespace NinjaTrader.Indicator
 			if (HighestBar(High, 7) == 2)
 			{
 				Values[0][2] = High[2] + halfStdDevValue;
-				//upper.Set(0, High[2] + halfStdDevValue);
+				//fiveBarUpper.Set(2, CurrentBar - 2);
 			}
-			
-//			if (CurrentBar % 5 == 0)
-//			{
-//				//lower.Set(2, CurrentBar); for some reason, this didn't work
-//				Values[1][2] = CurrentBar;
-//			}
 			
 			if (LowestBar(Low, 7) == 2)
 			{
 				Values[1][2] = Low[2] - halfStdDevValue;
-				//lower.Set(2, Low[2] - halfStdDevValue);
+				//fiveBarLower.Set(2, CurrentBar - 2);
 			}
         }
 		
@@ -77,37 +75,37 @@ namespace NinjaTrader.Indicator
         #region Properties
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries FiveBarUpper
+        public DataSeries Plot0
         {
             get { return Values[0]; }
         }
 
         [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
         [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
-        public DataSeries FiveBarLower
+        public DataSeries Plot1
         {
             get { return Values[1]; }
         }
 
-//		/// <summary>
-//		/// Gets the lower value.
-//		/// </summary>
-//		[Browsable(false)]
-//		[XmlIgnore()]
-//		public DataSeries FiveBarLower
-//		{
-//			get { return lower; }
-//		}
-//		
-//		/// <summary>
-//		/// Get the Upper value.
-//		/// </summary>
-//		[Browsable(false)]
-//		[XmlIgnore()]
-//		public DataSeries FiveBarUpper
-//		{
-//			get { return upper; }
-//		}
+		/// <summary>
+		/// Gets the lower value.
+		/// </summary>
+		[Browsable(false)]
+		[XmlIgnore()]
+		public DataSeries FiveBarLower
+		{
+			get { Update(); return fiveBarLower; }
+		}
+		
+		/// <summary>
+		/// Get the Upper value.
+		/// </summary>
+		[Browsable(false)]
+		[XmlIgnore()]
+		public DataSeries FiveBarUpper
+		{
+			get { Update(); return fiveBarUpper; }
+		}
 		
         #endregion
     }

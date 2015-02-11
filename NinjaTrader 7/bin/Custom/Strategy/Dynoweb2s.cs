@@ -18,12 +18,12 @@ namespace NinjaTrader.Strategy
     /// <summary>
     /// Enter the description of your strategy here
     /// </summary>
-    [Description("This is designed to trade YM using 5 min bars")]
+    [Description("This is designed to trade CL using 15 min bars")]
     public class Dynoweb2s : Strategy
     {
         #region Variables
         // Wizard generated variables
-        private double target1 = 1.0; // Default setting for Target1
+        private double target1 = 2.5; // Default setting for Target1
         private double target2 = 5.0; // Default setting for Target2
         private double target3 = 7.5; // Default setting for Target3
 		
@@ -39,7 +39,8 @@ namespace NinjaTrader.Strategy
 		IOrder entryShortOrder = null;
 		IExecution openExecution = null;
 		
-		int orderSize = 3;
+		int orderSize = 2;
+		int startTradingHour = 1;
 		
 		double targetPrice1 = 0;
 		double targetPrice2 = 0;
@@ -73,8 +74,8 @@ namespace NinjaTrader.Strategy
 			dw.Plots[11].PlotStyle = PlotStyle.Line;
 			dw.Plots[12].Pen.Color = Color.Fuchsia;
 			dw.AutoScale = false;
-			//Add(dw);
-			//Add(PitColor(Color.Black, 83000, 25, 161500));
+			Add(dw);
+			Add(PitColor(Color.Black, 83000, 25, 161500));
 			
 			Font labelFont = new Font("Arial", 12, FontStyle.Bold);
 			String label = Name + " " + Instrument.FullName +				
@@ -96,20 +97,24 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
-			DateTime exp = new DateTime(2015, 1, 1);
+			DateTime exp = new DateTime(2016, 1, 1);
 			if (ToDay(Time[0]) > ToDay(exp))
 				return;
 			
-			if (BarsPeriod.Id != PeriodType.Minute) 
-				return;
+//			if (BarsPeriod.Id != PeriodType.Minute) 
+//				return;
 
 			// If it's Friday, do not trade.
 		    //if (Time[0].DayOfWeek == DayOfWeek.Tuesday)
         	//	return;
 
-		    if (Time[0].Hour < 8 || Time[0].Hour == 8 && Time[0].Minute < 20 || Time[0].Hour >= 14)
+						// reset variables at the start of each day
+//			if (Bars.BarsSinceSession == 1)
+//			{
+		    if (Time[0].Hour <= startTradingHour || Time[0].Hour >= 14)
 			{
 				// reset these each day
+				Print("=======================");
 				tradeCount = 0;
 				dayNetBalance = 0;
 				if (Position.MarketPosition == MarketPosition.Flat)	// manage trades if still in a trade
@@ -133,12 +138,12 @@ namespace NinjaTrader.Strategy
 							CancelOrder(entryLongOrder);
 						}
 						
-						entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, orderSize, 
+						entryLongOrder = SubmitOrder(0, OrderAction.Buy, OrderType.StopLimit, OrderSize, 
 							dw.LongEntry[0], dw.LongEntry[0], "openOrder", "Open Long");
 						
 						stopPrice   = dw.LongStop[0];
-						targetPrice1 = dw.LongTgt2[0];
-						targetPrice2 = dw.LongTgt3[0];
+						targetPrice1 = dw.LongTgt1[0];
+						targetPrice2 = dw.LongTgt2[0];
 					} 
 					if (dw.ShortEntry.ContainsValue(0)) 
 					{
@@ -149,12 +154,12 @@ namespace NinjaTrader.Strategy
 							CancelOrder(entryShortOrder);
 						}
 						
-						entryShortOrder = SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, orderSize, 
+						entryShortOrder = SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, OrderSize, 
 							dw.ShortEntry[0], dw.ShortEntry[0], "openOrder", "Open Short");
 						
 						stopPrice   = dw.ShortStop[0];
-						targetPrice1 = dw.ShortTgt2[0];
-						targetPrice2 = dw.ShortTgt3[0];
+						targetPrice1 = dw.ShortTgt1[0];
+						targetPrice2 = dw.ShortTgt2[0];
 					} 
 				}
 			} 
@@ -265,7 +270,8 @@ namespace NinjaTrader.Strategy
 		{
 			if (execution.Order == null)
 			{
-				Print(Time + " -->> OnExecution.Order is null");
+				// Most likely, it's the EOD close
+				//Print(Time + " -->> OnExecution.Order is null");
 				return;
 			}
 			
@@ -280,8 +286,9 @@ namespace NinjaTrader.Strategy
 				{
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					openExecution = execution;
-					if (targetPrice1 - execution.Order.AvgFillPrice < 8) 
+					if ((targetPrice1 - execution.Order.AvgFillPrice)/TickSize < (StdDev(10)[0]/4)) 
 					{
+						Print(Time + " (targetPrice1 - execution.Order.AvgFillPrice)/TickSize = " + ((targetPrice1 - execution.Order.AvgFillPrice)/TickSize));
 						targetPrice1 = execution.Order.AvgFillPrice + 15 * TickSize;
 						targetPrice2 = execution.Order.AvgFillPrice + 25 * TickSize;
 					}
@@ -310,9 +317,10 @@ namespace NinjaTrader.Strategy
 				{					
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					openExecution = execution;
-					if (execution.Order.AvgFillPrice - targetPrice2 < 8) 
+					if ((execution.Order.AvgFillPrice - targetPrice2)/TickSize < (StdDev(10)[0]/4)) 
 					{
-						targetPrice1 = execution.Order.AvgFillPrice - 15 * TickSize;
+						Print(Time + " (execution.Order.AvgFillPrice - targetPrice2)/TickSize = " + ((execution.Order.AvgFillPrice - targetPrice2)/TickSize));
+						targetPrice1 = execution.Order.AvgFillPrice - StdDev(10)[0] * 1;
 						targetPrice2 = execution.Order.AvgFillPrice - 25 * TickSize;
 					}
 					
@@ -407,7 +415,7 @@ namespace NinjaTrader.Strategy
 			{
 				double lastTrade = credit - debit;
 				dayNetBalance += lastTrade;
-				Print(Time + " Day trade count: "  + tradeCount + " dayNetBalance: " + dayNetBalance + " lastTrade: " + lastTrade + " credit: " + credit + " debit: " + debit); 
+				Print(Time + " Day trade count: "  + tradeCount + " dayNetBalance: " + Instrument.MasterInstrument.Round2TickSize(dayNetBalance) + " lastTrade: " + Instrument.MasterInstrument.Round2TickSize(lastTrade) + " credit: " + credit + " debit: " + debit); 
 				credit  = 0;
 				debit = 0;
 			}
@@ -421,6 +429,14 @@ namespace NinjaTrader.Strategy
         {
             get { return ema1; }
             set { ema1 = Math.Max(0, value); }
+        }
+		
+        [Description("")]
+        [GridCategory("Parameters")]
+        public int StartTradingHour
+        {
+            get { return startTradingHour; }
+            set { startTradingHour = Math.Max(0, value); }
         }
 		
         [Description("")]
@@ -439,6 +455,14 @@ namespace NinjaTrader.Strategy
             set { lengthSlow = Math.Max(0, value); }
         }
 		
+        [Description("Number of contracts 1-3")]
+        [GridCategory("Parameters")]
+        public int OrderSize
+        {
+            get { return orderSize; }
+            set { orderSize = Math.Min(Math.Max(1, value), 3); }
+        }
+
         [Description("")]
         [GridCategory("Parameters")]
         public double Target1

@@ -34,6 +34,10 @@ namespace NinjaTrader.Strategy
 			//Add(FiveBarSample());
 			Add(FiveBarPattern());
 			
+						
+			// Store all series values instead of only the last 256 values
+			MaximumBarsLookBack = MaximumBarsLookBack.Infinite;
+			
             CalculateOnBarClose = true;
         }
 
@@ -42,10 +46,17 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
-			if (FiveBarPattern().FiveBarLower.ContainsValue(0))
-				Print(Time + " 0 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().FiveBarLower[0]);
-			if (FiveBarPattern().FiveBarLower.ContainsValue(2))
-				Print(Time + " 2 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().FiveBarLower[2]);
+//			if (FiveBarPattern().FiveBarLower.ContainsValue(0))
+//				Print(Time + " 0 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().FiveBarLower[0]);
+			
+			// For me to get Plot1[2], I have to leave the following Plot1[0] code uncommented out
+			// Doesn't work when these next two lines are commented out
+//			if (FiveBarPattern().Plot1.ContainsValue(0))
+//				Print(Time + " 0 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().Plot1[0]);
+			
+			
+			if (FiveBarPattern().Plot1.ContainsValue(2))
+				Print(Time + " 2 - CurrentBar: " + CurrentBar + " FiveBarLower: " + FiveBarPattern().Plot1[2]);
         }
 
         #region Properties
