@@ -219,7 +219,7 @@ namespace NinjaTrader.Strategy
 			
 			//Slippage = 2;
 			BarsRequired = 22;
-            CalculateOnBarClose = true;		// Onbar update happens only on the start of a new bar vrs each tick
+            CalculateOnBarClose = false;		// Onbar update happens only on the start of a new bar vrs each tick
 			ExitOnClose = true;				// Closes open positions at the end of the session
 			IncludeCommission = true;		// Commissions are used in the calculation of the profit/loss
 			TraceOrders = false;			// Trace orders in the output window, used for debugging, normally false
@@ -397,44 +397,54 @@ namespace NinjaTrader.Strategy
 			// ============================================
 			if (hma.TrendSet[0] == -1 && buyOrder1 == null) //  downtrend
 			{
-				limitPrice = High[0] + EntryS1 * TickSize;
-				stopPrice = limitPrice;
-				
-				if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+				// First Short Contract 
+				if (Qty1 > 0)
 				{
-					//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
-					ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
-				}
-				else if (sellOrder1 == null)
-				{
-					//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
-					sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
+					limitPrice = High[0] + EntryS1 * TickSize;
+					stopPrice = limitPrice;
+					
+					if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+					{
+						//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.LightBlue);
+						ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
+					}
+					else if (sellOrder1 == null)
+					{
+						//DrawDot(CurrentBar + "s1", false, 0, limitPrice, Color.DarkBlue);
+						sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, orderPrefix + "oco1", "S1");
+					}
 				}
 				
 				// Second Short Contract 
-				limitPrice = High[0] + (EntryS1 + EntryS2) * TickSize;
-				stopPrice = limitPrice;
-				
-				if (sellOrder2 != null && sellOrder2.OrderState == OrderState.Working)
+				if (Qty2 > 0)
 				{
-					ChangeOrder(sellOrder2, sellOrder2.Quantity, limitPrice, stopPrice);
-				}
-				else if (sellOrder2 == null)
-				{
-					sellOrder2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "S2");
+					limitPrice = High[0] + (EntryS1 + EntryS2) * TickSize;
+					stopPrice = limitPrice;
+					
+					if (sellOrder2 != null && sellOrder2.OrderState == OrderState.Working)
+					{
+						ChangeOrder(sellOrder2, sellOrder2.Quantity, limitPrice, stopPrice);
+					}
+					else if (sellOrder2 == null)
+					{
+						sellOrder2 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty2, limitPrice, stopPrice, orderPrefix + "oco2", "S2");
+					}
 				}
 				
 				// Third Short Contract 
-				limitPrice = High[0] + (EntryS1 + EntryS2 + EntryS3) * TickSize;
-				stopPrice = limitPrice;
-				
-				if (sellOrder3 != null && sellOrder3.OrderState == OrderState.Working)
+				if (Qty3 > 0)
 				{
-					ChangeOrder(sellOrder3, sellOrder3.Quantity, limitPrice, stopPrice);
-				}
-				else if (sellOrder3 == null)
-				{
-					sellOrder3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "S3");
+					limitPrice = High[0] + (EntryS1 + EntryS2 + EntryS3) * TickSize;
+					stopPrice = limitPrice;
+					
+					if (sellOrder3 != null && sellOrder3.OrderState == OrderState.Working)
+					{
+						ChangeOrder(sellOrder3, sellOrder3.Quantity, limitPrice, stopPrice);
+					}
+					else if (sellOrder3 == null)
+					{
+						sellOrder3 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty3, limitPrice, stopPrice, orderPrefix + "oco3", "S3");
+					}
 				}
 			}
 			
