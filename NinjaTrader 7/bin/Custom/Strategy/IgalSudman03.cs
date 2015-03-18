@@ -52,10 +52,10 @@ namespace NinjaTrader.Strategy
 		IOrder sellOrder1 = null;
 		IOrder closeLongOrderLimit1 = null;
 		IOrder closeLongOrderStop1 = null;
-		IOrder closeLongOrder1 = null;
+		//IOrder closeLongOrder1 = null;
 		IOrder closeShortOrderLimit1 = null;
 		IOrder closeShortOrderStop1 = null;
-		IOrder closeShortOrder1 = null;
+		//IOrder closeShortOrder1 = null;
 		
 		double limitPrice = 0;
 		double stopPrice = 0;
@@ -108,11 +108,18 @@ namespace NinjaTrader.Strategy
 				return;
 			}
 			
+			// do this when in a trade
+			if (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short)
+			{
+				OrderManagement();
+			}
+			
 			if (channelSize != 0)
 			{
 				if (Time[0].Minute % 15 == 0)
 				{
 					CloseWorkingOrders();
+					
 					atr = CalcAtr();
 					upperTrigger = MAX(High, 5)[0] + atr;
 					lowerTrigger = MIN(Low, 5)[0] - atr;
@@ -136,18 +143,6 @@ namespace NinjaTrader.Strategy
 					DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
 				}
 			}
-			
-//			if (buyOrder1 != null)
-//			{
-//				if (TraceOrders == true)
-//				{
-//					//Print(Time + " isFlat() " + isFlat());
-//					if (buyOrder1.OrderState != OrderState.Working)
-//						Print(Time + " OrderState: " + buyOrder1.OrderState);
-//				}
-//				if (buyOrder1.OrderState == OrderState.Cancelled) 
-//					buyOrder1 = null;
-//			}			
 			
 			if (isFlat() && lowerTrigger != 0 && buyOrder1 == null)
 			{
@@ -173,6 +168,125 @@ namespace NinjaTrader.Strategy
 			
         }
 		
+		private void OrderManagement()
+		{
+			double limitPrice = 0;
+			double stopPrice = 0;
+			
+			double highSinceOpen = High[HighestBar(High, BarsSinceEntry())];
+			double lowSinceOpen = Low[LowestBar(Low, BarsSinceEntry())];
+
+			
+			// Change long close order
+    		if (closeLongOrderStop1 != null && closeLongOrderLimit1 != null)
+			{
+				// change to B/E if 50% of target
+				if (highSinceOpen > (buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*0.5))
+				{
+					//Print(Time + " moving stop to B/E");
+					stopPrice = buyOrder1.AvgFillPrice;
+					ChangeOrder(closeLongOrderStop1, closeLongOrderStop1.Quantity, closeLongOrderStop1.LimitPrice, stopPrice);
+				}
+			}
+//				buyOrder1.AvgFillPrice
+//				closeLongOrderLimit1.LimitPrice
+//				closeLongOrderStop1.StopPrice
+//				
+//				
+//				
+//				
+//				{
+//					stopPrice = Math.Max(closeOrderLongStop.StopPrice, entryOrderLong.AvgFillPrice);
+//					if (useTrailing)
+//					{
+//						stopPrice = Math.Max(closeOrderLongStop.StopPrice, entryOrderLong.AvgFillPrice + (highSinceOpen - breakEvenPrice));
+//					    DrawDot(CurrentBar + "breakEvenPrice", true, 0, stopPrice, Color.Yellow);
+//					}
+//					ChangeOrder(closeOrderLongStop, closeOrderLongStop.Quantity, closeOrderLongStop.LimitPrice, stopPrice);
+//				}
+//
+//				// keep from bouncing on one bar
+//				if (barNumberSinceFilled != CurrentBar)
+//				{
+//					Print(Time + "   LimitPrice: " + closeOrderLongLimit.LimitPrice + 
+//						" startingChannelHigh: " + startingChannelHigh + 
+//						" adjustedChannelSize: " + adjustedChannelSize * TickSize + 
+//						" result: " + (closeOrderLongLimit.LimitPrice - startingChannelHigh) * 0.5);
+//					
+//					// Slide channel up if price has reached at least 50% of target.
+//					if (highSinceOpen > (startingChannelHigh + (closeOrderLongLimit.LimitPrice - startingChannelHigh) * 0.5)
+//						&& tradeCount != maxReversals)
+//					{
+//						channelHigh = startingChannelHigh + (highSinceOpen - startingChannelHigh) * 0.75;
+//						channelLow = channelHigh - adjustedChannelSize * TickSize;
+//						//Print(Time + " new channelLow: " + channelLow);
+//						DrawDot(CurrentBar + "channelLow", false, 0, channelLow, Color.Yellow);
+//						//DrawDot(CurrentBar + "channelHigh", false, 0, channelHigh, Color.Yellow);
+//					}
+//					
+//					stopPrice = channelLow - 1 * TickSize;
+//					
+//					//if (closeOrderLongStop.StopPrice != stopPrice)
+//					if ((int) (closeOrderLongStop.StopPrice * 100) != (int) (stopPrice * 100))
+//					{
+//						ChangeOrder(closeOrderLongStop, closeOrderLongStop.Quantity, closeOrderLongStop.LimitPrice, stopPrice);
+//						DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+//					}
+//				}
+//			}
+//			
+//			// Change short close order to close if stop trigger (closed above channel)
+//    		if (null != closeOrderShortStop)
+//			{
+//				if (closeOrderShort == null
+//					&& High[0] > channelHigh
+//					&& barNumberSinceFilled != barNumberSinceFilled
+//					)
+//				{
+//					//Print(Time + " Closed above channel on a short, buying to cover position");
+//					closeOrderShort = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Market, entryOrderShort.Quantity, limitPrice, stopPrice, orderPrefix + "ocoShortClose", "Close Short");
+//					//Print(Time + " Submitted order to buy to cover position");
+//				}
+//				else if (breakEvenLast && lowSinceOpen < breakEvenPrice && tradeCount == maxReversals)
+//				{
+//					stopPrice = Math.Min(closeOrderShortStop.StopPrice, entryOrderShort.AvgFillPrice);
+//					if (useTrailing)
+//					{
+//						stopPrice = Math.Min(closeOrderShortStop.StopPrice, entryOrderShort.AvgFillPrice - (breakEvenPrice - lowSinceOpen));
+//					    DrawDot(CurrentBar + "breakEvenPrice", true, 0, stopPrice, Color.Yellow);
+//					}
+//					ChangeOrder(closeOrderShortStop, closeOrderShortStop.Quantity, closeOrderShortStop.LimitPrice, stopPrice);
+//					//DrawDot(CurrentBar + "breakEvenPrice", true, 0, stopPrice, Color.Yellow);
+//				}
+//				
+//				// keep from bouncing on one bar
+//				if (barNumberSinceFilled != CurrentBar)
+//				{
+//					// Slide channel up if price has reached at least 50% of target.
+//					if (lowSinceOpen < startingChannelLow // - (startingChannelLow - closeOrderShortLimit.LimitPrice) * 0.5)
+//						&& tradeCount != maxReversals)
+//					{
+//						channelLow = startingChannelLow - (startingChannelLow - lowSinceOpen) * 0.50;
+//						//channelLow = lowSinceOpen;
+//						channelHigh = channelLow + adjustedChannelSize * TickSize;
+//						//DrawDot(CurrentBar + "channelLow", false, 0, channelLow, Color.Green);
+//						DrawDot(CurrentBar + "channelHigh", false, 0, channelHigh, Color.Green);
+//					}
+//					
+//					stopPrice = channelHigh + 1 * TickSize;
+//					
+//					// rounding numbers, doubles wouldn't match
+//					//int sp = (int) (stopPrice * 100);
+//					if ((int) (closeOrderShortStop.StopPrice * 100) != (int) (stopPrice * 100))
+//					{
+//						//Print(Time + " closeOrderShortStop.StopPrice: " + closeOrderShortStop.StopPrice + " stopPrice: " + stopPrice);
+//						ChangeOrder(closeOrderShortStop, closeOrderShortStop.Quantity, closeOrderShortStop.LimitPrice, stopPrice);
+//						DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+//					}
+//				}
+//			}
+		}
+		
 		protected override void OnExecution(IExecution execution)
 		{
 			double limitPrice = 0;
@@ -180,15 +294,14 @@ namespace NinjaTrader.Strategy
 			
 			if (execution.Order == null)
 			{
-//				ResetTrades();
 				Print(Time + " executed/reset on close");
 				return;
 			}
 			
 			if (TraceOrders)
 			{
-				//Print(Time + " execution: " + execution.ToString());
-				//Print(Time + " execution.Order: " + execution.Order.ToString());
+				Print(Time + " execution: " + execution.ToString());
+				Print(Time + " execution.Order: " + execution.Order.ToString());
 			}
 			
 			// ============================================
@@ -202,14 +315,14 @@ namespace NinjaTrader.Strategy
 				{
 					limitPrice = 0;
 					stopPrice = buyOrder1.AvgFillPrice - atr;
-					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CSB1");
 					//Print(Time + " stopPrice: " + stopPrice);
 
 					stopPrice = 0;
 					limitPrice = buyOrder1.AvgFillPrice + atr*0.75;
-					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
 					//Print(Time + " limitPrice: " + limitPrice);
@@ -228,13 +341,13 @@ namespace NinjaTrader.Strategy
 				{
 					limitPrice = 0;
 					stopPrice = sellOrder1.AvgFillPrice + atr;
-					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
 					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
 
 					stopPrice = 0;
 					limitPrice = sellOrder1.AvgFillPrice - atr*0.75;
-					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
 				} 
