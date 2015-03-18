@@ -45,7 +45,24 @@ namespace NinjaTrader.Strategy
 		double upperStopLoss = 0;
 		double lowerStopLoss = 0;
 		double atr = 0;
+		
+		int Qty1 = 1;
 
+		IOrder buyOrder1 = null;
+		IOrder sellOrder1 = null;
+		IOrder closeLongOrderLimit1 = null;
+		IOrder closeLongOrderStop1 = null;
+		IOrder closeLongOrder1 = null;
+		IOrder closeShortOrderLimit1 = null;
+		IOrder closeShortOrderStop1 = null;
+		IOrder closeShortOrder1 = null;
+		
+		double limitPrice = 0;
+		double stopPrice = 0;
+		
+		string orderPrefix = "Igal03"; 
+		
+		
         #endregion
 
         /// <summary>
@@ -53,7 +70,14 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
-            CalculateOnBarClose = true;
+            Unmanaged = true;				// Use unmanaged order methods
+			
+			//Slippage = 2;
+			BarsRequired = 22;
+            CalculateOnBarClose = true;		// Onbar update happens only on the start of a new bar vrs each tick
+			ExitOnClose = true;				// Closes open positions at the end of the session
+			IncludeCommission = true;		// Commissions are used in the calculation of the profit/loss
+			TraceOrders = false;			// Trace orders in the output window, used for debugging, normally false
         }
 
         /// <summary>
@@ -69,6 +93,7 @@ namespace NinjaTrader.Strategy
 				channelSize = 0;
 				upperTrigger = 0;
 				lowerTrigger = 0;
+				ResetTrades();
 			}
 			
 			if (channelSize == 0 && ToTime(Time[0]) == startTime + 3000)
@@ -79,6 +104,7 @@ namespace NinjaTrader.Strategy
 			// Open pit session trading only
 			if (ToTime(Time[0]) < startTime || ToTime(Time[0]) > 150000)
 			{
+				CloseWorkingOrders();
 				return;
 			}
 			
@@ -86,86 +112,194 @@ namespace NinjaTrader.Strategy
 			{
 				if (Time[0].Minute % 15 == 0)
 				{
-					if (isFlat())
+					CloseWorkingOrders();
+					atr = CalcAtr();
+					upperTrigger = MAX(High, 5)[0] + atr;
+					lowerTrigger = MIN(Low, 5)[0] - atr;
+					
+					if (upperTrigger < channelLow || upperTrigger > channelHigh)
 					{
-						atr = CalcAtr();
-						Print(Time + " atr: " + atr + " getTicks: " + Instrument.MasterInstrument.GetTicks(atr));
-						upperTrigger = MAX(High, 5)[0] + atr;
-						lowerTrigger = MIN(Low, 5)[0] - atr;
-						
-						if (upperTrigger < channelLow || upperTrigger > channelHigh)
-						{
-							upperTrigger += atr*0.5;
-						}
-						if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
-						{
-							lowerTrigger -= atr*0.5;
-						}
-						
-						DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
-						DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
-						
-						upperStopLoss = upperTrigger + atr;
-						lowerStopLoss = lowerTrigger - atr;
-						
-						DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
-						DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
+						upperTrigger += atr*0.5;
 					}
-					else
+					if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 					{
-						lowerTrigger = 0;
-						upperTrigger = 0;
+						lowerTrigger -= atr*0.5;
 					}
+					
+					DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
+					DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
+					
+					upperStopLoss = upperTrigger + atr;
+					lowerStopLoss = lowerTrigger - atr;
+					
+					DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
+					DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
 				}
 			}
 			
-			if (isLong())
-			{
-				SetProfitTarget(CalculationMode.Ticks, Instrument.MasterInstrument.GetTicks(atr*0.75));
-				SetStopLoss(CalculationMode.Price, lowerStopLoss);
-				lowerTrigger = 0;
-				upperTrigger = 0;
-			}
+//			if (buyOrder1 != null)
+//			{
+//				if (TraceOrders == true)
+//				{
+//					//Print(Time + " isFlat() " + isFlat());
+//					if (buyOrder1.OrderState != OrderState.Working)
+//						Print(Time + " OrderState: " + buyOrder1.OrderState);
+//				}
+//				if (buyOrder1.OrderState == OrderState.Cancelled) 
+//					buyOrder1 = null;
+//			}			
 			
-			if (isShort())
+			if (isFlat() && lowerTrigger != 0 && buyOrder1 == null)
 			{
-				SetProfitTarget(CalculationMode.Ticks, Instrument.MasterInstrument.GetTicks(atr*0.75));
-				SetStopLoss(CalculationMode.Price, upperStopLoss);
-				lowerTrigger = 0;
-				upperTrigger = 0;
-			}
-			
-			if (isFlat() && lowerTrigger != 0)
-			{
-				//EnterLongLimit(lowerTrigger);
-				SetProfitTarget(CalculationMode.Ticks, 200);
-				SetStopLoss(CalculationMode.Ticks, 200);
+				limitPrice = lowerTrigger;
+				stopPrice = limitPrice;
+				buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, 
+					orderPrefix + "oco1", "B1");
+
 				double target = lowerTrigger + atr*0.75;
-				DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);
+				DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
 			}
 			
-			if (isFlat() && upperTrigger != 0)
+			if (isFlat() && upperTrigger != 0 && sellOrder1 == null)
 			{
-				//EnterShortLimit(upperTrigger);
-				SetProfitTarget(CalculationMode.Ticks, 200);
-				SetStopLoss(CalculationMode.Ticks, 200);
+				limitPrice = upperTrigger;
+				stopPrice = limitPrice;
+				sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, 
+					orderPrefix + "oco1", "S1");
+				
 				double target = upperTrigger - atr*0.75;
 				DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
 			}
 			
-			if (isLong() && BarsSinceEntry() > 6) 
-			{
-				ExitLong();
-			}
-			
-			if (isShort() && BarsSinceEntry() > 6) 
-			{
-				ExitShort();
-			}
-			
-			
         }
 		
+		protected override void OnExecution(IExecution execution)
+		{
+			double limitPrice = 0;
+			double stopPrice = 0;
+			
+			if (execution.Order == null)
+			{
+//				ResetTrades();
+				Print(Time + " executed/reset on close");
+				return;
+			}
+			
+			if (TraceOrders)
+			{
+				//Print(Time + " execution: " + execution.ToString());
+				//Print(Time + " execution.Order: " + execution.Order.ToString());
+			}
+			
+			// ============================================
+			// New long order placed, now set stops/limits
+			// ============================================
+			if (buyOrder1 != null && buyOrder1 == execution.Order)
+			{
+				//Print(Time + " buyOrder1: " + buyOrder1);
+				
+				if (closeLongOrderLimit1 == null) 
+				{
+					limitPrice = 0;
+					stopPrice = buyOrder1.AvgFillPrice - atr;
+					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+					closeLongOrderStop1 = SubmitOrder(0, OrderAction.Sell, OrderType.Stop, execution.Order.Quantity, 
+						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CSB1");
+					//Print(Time + " stopPrice: " + stopPrice);
+
+					stopPrice = 0;
+					limitPrice = buyOrder1.AvgFillPrice + atr*0.75;
+					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
+						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
+					//Print(Time + " limitPrice: " + limitPrice);
+				} 
+			} 
+
+
+			// ============================================
+			// New short order placed, now set stops/limits
+			// ============================================
+			if (sellOrder1 != null && sellOrder1 == execution.Order)
+			{
+				//Print(Time + " sellOrder1: " + sellOrder1);
+				
+				if (closeShortOrderLimit1 == null) 
+				{
+					limitPrice = 0;
+					stopPrice = sellOrder1.AvgFillPrice + atr;
+					DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
+					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
+						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
+
+					stopPrice = 0;
+					limitPrice = sellOrder1.AvgFillPrice - atr*0.75;
+					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
+					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
+						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
+				} 
+			} 
+			
+			// ===================================================
+			//   Trade hit Long limit
+			// ===================================================
+			if (closeLongOrderLimit1 != null && closeLongOrderLimit1 == execution.Order)
+			{
+				ResetTrades();
+			}
+			
+			// ===================================================
+			//   Trade hit Long stop 
+			// ===================================================
+			if (closeLongOrderStop1 != null && closeLongOrderStop1 == execution.Order)
+			{
+				ResetTrades();
+			}
+			
+			// ===================================================
+			//   Trade hit Long limit
+			// ===================================================
+			if (closeShortOrderLimit1 != null && closeShortOrderLimit1 == execution.Order)
+			{
+				ResetTrades();
+			}
+			
+			// ===================================================
+			//   Trade hit Long stop 
+			// ===================================================
+			if (closeShortOrderStop1 != null && closeShortOrderStop1 == execution.Order)
+			{
+				ResetTrades();
+			}
+			
+		}
+		
+		private void CloseWorkingOrders()
+		{
+			if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
+			{
+				CancelOrder(buyOrder1);
+				buyOrder1 = null;
+			}
+			if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+			{
+				CancelOrder(sellOrder1);
+				sellOrder1 = null;
+			}					
+		}	
+		
+		private void ResetTrades()
+		{
+			closeLongOrderStop1 = null;
+			closeLongOrderLimit1 = null;
+			closeShortOrderLimit1 = null;
+			closeShortOrderStop1 = null;
+			buyOrder1 = null;
+			sellOrder1 = null;
+			lowerTrigger = 0;
+			upperTrigger = 0;
+		}
+			
 		private void EstablishOpeningChannel()
 		{
 			channelHigh = MAX(High, 10)[0];
