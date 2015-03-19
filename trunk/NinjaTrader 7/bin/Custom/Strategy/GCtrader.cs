@@ -20,7 +20,7 @@ namespace NinjaTrader.Strategy
 	/// 
 	/// Written in NinjaScript by Rick Cromer (dynoweb)  Jan 26 2015
 	/// 	
-	/// This code worked well with FDAX, ZL, GC & NG
+	/// This code worked well with FDAX, ZL, GC, YG (mini gold) & NG
 	/// It also worked using a 1 hour period with a 40 period lookback (period1 & period2) and stop and targets set.
 	/// 
     /// </summary>

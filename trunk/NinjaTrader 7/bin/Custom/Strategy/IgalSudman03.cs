@@ -70,11 +70,12 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
+			ClearOutputWindow();
             Unmanaged = true;				// Use unmanaged order methods
 			
 			//Slippage = 2;
-			BarsRequired = 22;
-            CalculateOnBarClose = true;		// Onbar update happens only on the start of a new bar vrs each tick
+			BarsRequired = 10;
+            CalculateOnBarClose = false;		// Onbar update happens only on the start of a new bar vrs each tick
 			ExitOnClose = true;				// Closes open positions at the end of the session
 			IncludeCommission = true;		// Commissions are used in the calculation of the profit/loss
 			TraceOrders = false;			// Trace orders in the output window, used for debugging, normally false
@@ -111,13 +112,14 @@ namespace NinjaTrader.Strategy
 			// do this when in a trade
 			if (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short)
 			{
-				OrderManagement();
+				//OrderManagement();
 			}
 			
 			if (channelSize != 0)
 			{
-				if (Time[0].Minute % 15 == 0)
+				if (FirstTickOfBar && Time[0].Minute % 15 == 0)
 				{
+					Print(Time + " Closing Working Orders");
 					CloseWorkingOrders();
 					
 					atr = CalcAtr();
@@ -126,11 +128,11 @@ namespace NinjaTrader.Strategy
 					
 					if (upperTrigger < channelLow || upperTrigger > channelHigh)
 					{
-						upperTrigger += atr*0.5;
+						upperTrigger += Instrument.MasterInstrument.Round2TickSize(atr*0.5);
 					}
 					if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 					{
-						lowerTrigger -= atr*0.5;
+						lowerTrigger -= Instrument.MasterInstrument.Round2TickSize(atr*0.5);
 					}
 					
 					DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
@@ -147,22 +149,22 @@ namespace NinjaTrader.Strategy
 			if (isFlat() && lowerTrigger != 0 && buyOrder1 == null)
 			{
 				limitPrice = lowerTrigger;
-				stopPrice = limitPrice;
+				stopPrice = 0;
 				buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, 
 					orderPrefix + "oco1", "B1");
 
-				double target = lowerTrigger + atr*0.75;
+				double target = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr*0.75);
 				DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
 			}
 			
 			if (isFlat() && upperTrigger != 0 && sellOrder1 == null)
 			{
 				limitPrice = upperTrigger;
-				stopPrice = limitPrice;
+				stopPrice = 0;
 				sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, 
 					orderPrefix + "oco1", "S1");
 				
-				double target = upperTrigger - atr*0.75;
+				double target = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr*0.75);
 				DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
 			}
 			
@@ -298,10 +300,12 @@ namespace NinjaTrader.Strategy
 				return;
 			}
 			
+			Print(Time + " --- execution.Order: " + execution.Order);
+			
 			if (TraceOrders)
 			{
-				Print(Time + " execution: " + execution.ToString());
-				Print(Time + " execution.Order: " + execution.Order.ToString());
+				//Print(Time + " execution: " + execution.ToString());
+				//Print(Time + " execution.Order: " + execution.Order.ToString());
 			}
 			
 			// ============================================
@@ -321,7 +325,7 @@ namespace NinjaTrader.Strategy
 					//Print(Time + " stopPrice: " + stopPrice);
 
 					stopPrice = 0;
-					limitPrice = buyOrder1.AvgFillPrice + atr*0.75;
+					limitPrice = buyOrder1.AvgFillPrice + Instrument.MasterInstrument.Round2TickSize(atr*0.75);
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeLongOrderLimit1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseB1", "CLB1");
@@ -346,7 +350,7 @@ namespace NinjaTrader.Strategy
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
 
 					stopPrice = 0;
-					limitPrice = sellOrder1.AvgFillPrice - atr*0.75;
+					limitPrice = sellOrder1.AvgFillPrice - Instrument.MasterInstrument.Round2TickSize(atr*0.75);
 					//DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeShortOrderLimit1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CLS1");
@@ -358,7 +362,12 @@ namespace NinjaTrader.Strategy
 			// ===================================================
 			if (closeLongOrderLimit1 != null && closeLongOrderLimit1 == execution.Order)
 			{
-				ResetTrades();
+				if (closeLongOrderLimit1.OrderState != OrderState.Filled)
+				{
+					Print(Time + " --> not filled: " + execution.Order);
+				}
+				else
+					ResetTrades();
 			}
 			
 			// ===================================================
@@ -403,6 +412,7 @@ namespace NinjaTrader.Strategy
 		
 		private void ResetTrades()
 		{
+			Print(Time + " ----------- RESET ----------");
 			closeLongOrderStop1 = null;
 			closeLongOrderLimit1 = null;
 			closeShortOrderLimit1 = null;
