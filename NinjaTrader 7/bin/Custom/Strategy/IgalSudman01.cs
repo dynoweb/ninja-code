@@ -137,7 +137,7 @@ namespace NinjaTrader.Strategy
 			
 			if (isFlat() && lowerTrigger != 0)
 			{
-				//EnterLongLimit(lowerTrigger);
+				EnterLongLimit(lowerTrigger);
 				SetProfitTarget(CalculationMode.Ticks, 200);
 				SetStopLoss(CalculationMode.Ticks, 200);
 				double target = lowerTrigger + atr*0.75;
