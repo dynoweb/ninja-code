@@ -86,6 +86,10 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
+			// Return if historical--this sample utilizes tick information, so is necessary to run in real-time.
+			if (BarsPeriod.Id != PeriodType.Minute)
+				return;
+						
 			// reset variables at the start of each day
 			if (Bars.BarsSinceSession == 1)
 			{
@@ -97,77 +101,79 @@ namespace NinjaTrader.Strategy
 				ResetTrades();
 			}
 			
-			if (channelSize == 0 && ToTime(Time[0]) == startTime + 3000)
-			{
-				EstablishOpeningChannel();
-			}
-
-			// Open pit session trading only
-			if (ToTime(Time[0]) < startTime || ToTime(Time[0]) > 150000)
-			{
-				CloseWorkingOrders();
-				return;
-			}
-			
-			// do this when in a trade
+			// do this realtime when in a trade
+			//if (!Historical && (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short))
 			if (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short)
 			{
-				//OrderManagement();
+				OrderManagement();
 			}
 			
-			if (channelSize != 0)
+			if (FirstTickOfBar)
 			{
-				if (FirstTickOfBar && Time[0].Minute % 15 == 0)
+				// Open pit session trading only
+				if (ToTime(Time[0]) < startTime || ToTime(Time[0]) > 150000)
 				{
-					Print(Time + " Closing Working Orders");
 					CloseWorkingOrders();
-					
-					atr = CalcAtr();
-					upperTrigger = MAX(High, 5)[0] + atr;
-					lowerTrigger = MIN(Low, 5)[0] - atr;
-					
-					if (upperTrigger < channelLow || upperTrigger > channelHigh)
+					return;
+				}
+			
+				if (channelSize == 0 && ToTime(Time[0]) == startTime + 3000)
+				{
+					EstablishOpeningChannel();
+				}
+
+				if (channelSize != 0)
+				{
+					if (Time[0].Minute % (BarsPeriod.Value * 5) == 0)
 					{
-						upperTrigger += Instrument.MasterInstrument.Round2TickSize(atr*0.5);
+						CloseWorkingOrders();
+						
+						atr = CalcAtr();
+						upperTrigger = MAX(High, 5)[0] + atr;
+						lowerTrigger = MIN(Low, 5)[0] - atr;
+						
+						if (upperTrigger < channelLow || upperTrigger > channelHigh)
+						{
+							upperTrigger += Instrument.MasterInstrument.Round2TickSize(atr*0.5);
+						}
+						if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
+						{
+							lowerTrigger -= Instrument.MasterInstrument.Round2TickSize(atr*0.5);
+						}
+						
+						DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
+						DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
+						
+						upperStopLoss = upperTrigger + atr;
+						lowerStopLoss = lowerTrigger - atr;
+						
+						DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
+						DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
+
+						if (isFlat() && lowerTrigger != 0 && buyOrder1 == null)
+						{
+							limitPrice = lowerTrigger;
+							stopPrice = 0;
+							buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, 
+								orderPrefix + "oco1", "B1");
+
+							double target = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr*0.75);
+							DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
+						}
+						
+						if (isFlat() && upperTrigger != 0 && sellOrder1 == null)
+						{
+							limitPrice = upperTrigger;
+							stopPrice = 0;
+							sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, 
+								orderPrefix + "oco1", "S1");
+							
+							double target = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr*0.75);
+							DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
+						}
 					}
-					if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
-					{
-						lowerTrigger -= Instrument.MasterInstrument.Round2TickSize(atr*0.5);
-					}
-					
-					DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
-					DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
-					
-					upperStopLoss = upperTrigger + atr;
-					lowerStopLoss = lowerTrigger - atr;
-					
-					DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
-					DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
 				}
 			}
-			
-			if (isFlat() && lowerTrigger != 0 && buyOrder1 == null)
-			{
-				limitPrice = lowerTrigger;
-				stopPrice = 0;
-				buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Qty1, limitPrice, stopPrice, 
-					orderPrefix + "oco1", "B1");
-
-				double target = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr*0.75);
-				DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
-			}
-			
-			if (isFlat() && upperTrigger != 0 && sellOrder1 == null)
-			{
-				limitPrice = upperTrigger;
-				stopPrice = 0;
-				sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Qty1, limitPrice, stopPrice, 
-					orderPrefix + "oco1", "S1");
-				
-				double target = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr*0.75);
-				DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
-			}
-			
         }
 		
 		private void OrderManagement()
@@ -183,7 +189,7 @@ namespace NinjaTrader.Strategy
     		if (closeLongOrderStop1 != null && closeLongOrderLimit1 != null)
 			{
 				// change to B/E if 50% of target
-				if (highSinceOpen > (buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*0.5))
+				if (GetCurrentAsk() > (buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*0.5))
 				{
 					//Print(Time + " moving stop to B/E");
 					stopPrice = buyOrder1.AvgFillPrice;
@@ -398,6 +404,7 @@ namespace NinjaTrader.Strategy
 		
 		private void CloseWorkingOrders()
 		{
+			Print(Time + " Closing Working Orders");
 			if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
 			{
 				CancelOrder(buyOrder1);
