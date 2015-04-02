@@ -30,7 +30,7 @@ namespace NinjaTrader.Strategy
 	/// then we will have to be aggressive with it .. proabbaly only move when we are at min 80-90 % of target
 	/// i want to be able to gt the run so if you do it as a percentage parameter we can put it as 200% target when the atr is 15 ticks - profit will be 30 so then when we hit 40-50% we can go to BE plus something then when it hits 100% go to BE plus 12 and then for every tick or two move up a tick or two
 	/// I think you are right about hitting stops more then targets which is OK ,but want to take runs and let the market move to your target without chocking it
-	/// going out - let me know if you want to work on things tomorrow but will prbably have to wait for you to adjust htings , if you want to email me some of your other systems or strategies i can look them over as well , love learning new things
+	/// going out - let me know if you want to work on things tomorrow but will prbably have to wait for you to adjust things , if you want to email me some of your other systems or strategies i can look them over as well , love learning new things
 	/// some conclusions - looks like 15 ticks is the right number we get 138 trades  and loss ofa 370$
 	/// of those there are 62 winner and 72 losser but if we move the breakeven to closer to profit target and not do the 50% to BE then they move to 74 winners and 64 lossers with now being Profit of approx 400$ , if we are able to either get an extra 1-2 ticks or trail better beacuse most moves do have more of a follow then we have an additonal 74 *1-2 ticks , we are up 1500-2500$ for the period , looking at news will help as well ... all looks good and the number of trades is more in order of what i am seeing over the last month or so 4-5 per day and not 8-9
 	/// 
@@ -41,12 +41,12 @@ namespace NinjaTrader.Strategy
         #region Variables
         
         int contracts = 1; 
-		double maxAtr = 200.0;
+		double maxAtr = 0.29;
 		double breakEvenPercentOfTarget = 0.50;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 0.75;
 		int tradeStartTime = 800;	// 8 AM
-		int tradeEndTime = 1500;	// 2 PM
+		int tradeEndTime = 1500;	// 3 PM
 		
 		double channelHigh = 0;
 		double channelLow = 0;
@@ -127,7 +127,7 @@ namespace NinjaTrader.Strategy
 					return;
 				}
 			
-				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3000)
+				if (channelSize == 0 && ToTime(Time[1]) == (tradeStartTime * 100) + 3000)
 				{
 					EstablishOpeningChannel();
 				}
@@ -135,23 +135,24 @@ namespace NinjaTrader.Strategy
 				if (channelSize != 0)
 				{
 					// BarsPeriod.Value * 5 = 15 for 3 min bars
-					if (Time[0].Minute % (BarsPeriod.Value * 5) == 0)
+					if (Time[1].Minute % (BarsPeriod.Value * 5) == 0 && isFlat())
 					{
 						//CloseWorkingOrders();
 						
 						atr = CalcAtr();
+						//Print(Time + " atr: " + atr + " maxAtr: " +  maxAtr);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
+							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
+							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr);
 							
 							if (upperTrigger < channelLow || upperTrigger > channelHigh)
 							{
-								upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 							{
-								lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							
 							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
@@ -163,11 +164,11 @@ namespace NinjaTrader.Strategy
 							DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
 							DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
 
-							if (isFlat() && lowerTrigger != 0)
+							if (lowerTrigger != 0)
 							{
 								limitPrice = lowerTrigger;
 								stopPrice = limitPrice;
-								Print(Time + " placing buy order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
+								//Print(Time + " placing buy order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
 								
 								if (buyOrder1 == null)
 								{
@@ -176,6 +177,7 @@ namespace NinjaTrader.Strategy
 								}
 								else  if (buyOrder1.OrderState == OrderState.Working)
 								{
+									Print(Time + " changing Buy to Open order to: " + limitPrice);
 									ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
 								}
 								else								
@@ -187,19 +189,21 @@ namespace NinjaTrader.Strategy
 								DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
 							}
 							
-							if (isFlat() && upperTrigger != 0)
+							if (upperTrigger != 0)
 							{
 								limitPrice = upperTrigger;
 								stopPrice = limitPrice;
-								Print(Time + " placing sell order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
+								//Print(Time + " placing sell order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
 								
 								if (sellOrder1 == null)
 								{
-									sellOrder1 = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, Contracts, limitPrice, stopPrice, 
+									Print(Time + " placing sell order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
+									sellOrder1 = SubmitOrder(0, OrderAction.SellShort, OrderType.Limit, Contracts, limitPrice, stopPrice, 
 										orderPrefix + "oco1", "S1");
-								}
+								} 
 								else if (sellOrder1.OrderState == OrderState.Working)
 								{
+									Print(Time + " changing Sell to Open order to: " + limitPrice);
 									ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
 								}
 								else
@@ -228,13 +232,14 @@ namespace NinjaTrader.Strategy
 			// Change long stop order
     		if (closeLongOrderStop1 != null && closeLongOrderLimit1 != null)
 			{
+				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + " 50% trigger: " + Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget));
 				// change to B/E if 50% of target
-				if (GetCurrentAsk() > (buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget))
+				if (GetCurrentAsk() > Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget))
 				{
 					// moving the stop up
 					if (closeLongOrderStop1.StopPrice < buyOrder1.AvgFillPrice)
 					{
-						//Print(Time + " moving stop to B/E");
+						Print(Time + " moving stop to B/E");
 						stopPrice = buyOrder1.AvgFillPrice;
 						ChangeOrder(closeLongOrderStop1, closeLongOrderStop1.Quantity, closeLongOrderStop1.LimitPrice, stopPrice);
 					}
@@ -244,13 +249,16 @@ namespace NinjaTrader.Strategy
 			// Change short stop order
 			if (closeShortOrderStop1 != null && closeShortOrderLimit1 != null)
 			{
+				//Print(Time + "------------------------------------------------------");
+				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + "  50% trigger: " + Instrument.MasterInstrument.Round2TickSize(sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget));
+				
 				// change to B/E if 50% of target
-				if (GetCurrentAsk() < (sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget))
+				if (GetCurrentAsk() < Instrument.MasterInstrument.Round2TickSize(sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget))
 				{
 					// moving the stop down
 					if (closeShortOrderStop1.StopPrice > sellOrder1.AvgFillPrice)
 					{
-						//Print(Time + " moving stop to B/E");
+						Print(Time + " moving stop to B/E");
 						stopPrice = sellOrder1.AvgFillPrice;
 						ChangeOrder(closeShortOrderStop1, closeShortOrderStop1.Quantity, closeShortOrderStop1.LimitPrice, stopPrice);
 					}
@@ -261,7 +269,37 @@ namespace NinjaTrader.Strategy
 //				closeLongOrderStop1.StopPrice
 //				
 		}
-		
+
+		/// <summary>
+		/// Called before OnExecution
+		/// 
+		/// An order goes through these states
+		/// - PendingChange
+		/// - Accepted
+		/// - Working
+		/// 
+		/// </summary>
+		/// <param name="order"></param>
+		protected override void OnOrderUpdate(IOrder order) 
+		{ 
+			// Rejection handling 
+			if (order.OrderState == OrderState.Rejected) 
+			{
+				// Stop loss order was rejected !!!! 
+				// Do something about it here 
+				Print(Time + " order rejected !!!! " + order);
+			} 
+			else
+			{
+				//Print(Time + " orderUpdate: " + order);
+				if (order.OrderState == OrderState.Cancelled && order == sellOrder1)
+				{
+					Print(Time + " Sell order for " + sellOrder1.LimitPrice + " cancelled");
+					sellOrder1 = null;
+				}
+			}
+		}
+
 		protected override void OnExecution(IExecution execution)
 		{
 			double limitPrice = 0;
@@ -319,7 +357,7 @@ namespace NinjaTrader.Strategy
 					limitPrice = 0;
 					stopPrice = sellOrder1.AvgFillPrice + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 					//DrawDot(CurrentBar + "stopPrice", false, 0, stopPrice, Color.Red);
-					closeLongOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
+					closeShortOrderStop1 = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Stop, execution.Order.Quantity, 
 						limitPrice, stopPrice, orderPrefix + "ocoCloseS1", "CSS1");
 
 					stopPrice = 0;
@@ -386,7 +424,7 @@ namespace NinjaTrader.Strategy
 		
 		private void ResetTrades()
 		{
-			Print(Time + " ----------- RESET ----------");
+			//Print(Time + " ----------- RESET ----------");
 			closeLongOrderStop1 = null;
 			closeLongOrderLimit1 = null;
 			closeShortOrderLimit1 = null;
@@ -445,7 +483,7 @@ namespace NinjaTrader.Strategy
 
         #region Properties
 		
-        [Description("Maximum allowed ATR value for trade")]
+        [Description("Maximum allowed ATR value for trade in Points")]
         [GridCategory("Parameters")]
         public double MaxAtr
         {
