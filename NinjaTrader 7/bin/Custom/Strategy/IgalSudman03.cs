@@ -440,7 +440,7 @@ namespace NinjaTrader.Strategy
 			channelHigh = MAX(High, 10)[0];
 			channelLow = MIN(Low, 10)[0];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -30, channelLow, Color.SeaGreen, Color.SeaGreen, 1);
+			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.20 - 10)), channelLow, Color.SeaGreen, Color.SeaGreen, 1);
 		}
 		
 		private double CalcAtr()
