@@ -43,6 +43,7 @@ namespace NinjaTrader.Strategy
         int contracts = 1; 
 		double maxAtr = 0.29;
 		double breakEvenPercentOfTarget = 0.50;
+		int breakEvenPlus = 0;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 0.75;
 		int tradeStartTime = 800;	// 8 AM
@@ -127,15 +128,16 @@ namespace NinjaTrader.Strategy
 					return;
 				}
 			
-				if (channelSize == 0 && ToTime(Time[1]) == (tradeStartTime * 100) + 5000)
+				// Channel measurement happens 30 min after the start time
+				if (channelSize == 0 && ToTime(Time[1]) == (tradeStartTime * 100) + 3000)
 				{
 					EstablishOpeningChannel();
 				}
 
 				if (channelSize != 0)
 				{
-					// a block is 5 bars
-					int block = (Time[1].Minute + Time[1].Hour * 60) % (BarsPeriod.Value * 5);
+					// for the 5 min strategy, a block is 6 bars
+					int block = (Time[1].Minute + Time[1].Hour * 60) % (BarsPeriod.Value * 6);
 					if (block == 0 && isFlat())
 					{
 						//CloseWorkingOrders();
@@ -216,6 +218,10 @@ namespace NinjaTrader.Strategy
 								DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
 							}
 						}
+						else
+						{
+							CloseWorkingOrders();
+						}
 					}
 				}
 			}
@@ -241,7 +247,7 @@ namespace NinjaTrader.Strategy
 					if (closeLongOrderStop1.StopPrice < buyOrder1.AvgFillPrice)
 					{
 						Print(Time + " moving stop to B/E");
-						stopPrice = buyOrder1.AvgFillPrice;
+						stopPrice = buyOrder1.AvgFillPrice + BreakEvenPlus * TickSize;
 						ChangeOrder(closeLongOrderStop1, closeLongOrderStop1.Quantity, closeLongOrderStop1.LimitPrice, stopPrice);
 					}
 				}
@@ -260,7 +266,7 @@ namespace NinjaTrader.Strategy
 					if (closeShortOrderStop1.StopPrice > sellOrder1.AvgFillPrice)
 					{
 						Print(Time + " moving stop to B/E");
-						stopPrice = sellOrder1.AvgFillPrice;
+						stopPrice = sellOrder1.AvgFillPrice - BreakEvenPlus * TickSize;
 						ChangeOrder(closeShortOrderStop1, closeShortOrderStop1.Quantity, closeShortOrderStop1.LimitPrice, stopPrice);
 					}
 				}
@@ -297,6 +303,11 @@ namespace NinjaTrader.Strategy
 				{
 					Print(Time + " Sell order for " + sellOrder1.LimitPrice + " cancelled");
 					sellOrder1 = null;
+				}
+				if (order.OrderState == OrderState.Cancelled && order == buyOrder1)
+				{
+					Print(Time + " Buy order for " + buyOrder1.LimitPrice + " cancelled");
+					buyOrder1 = null;
 				}
 			}
 		}
@@ -414,12 +425,12 @@ namespace NinjaTrader.Strategy
 			if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
 			{
 				CancelOrder(buyOrder1);
-				buyOrder1 = null;
+				//buyOrder1 = null;
 			}
 			if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
 			{
 				CancelOrder(sellOrder1);
-				sellOrder1 = null;
+				//sellOrder1 = null;
 			}					
 		}	
 		
@@ -438,24 +449,24 @@ namespace NinjaTrader.Strategy
 			
 		private void EstablishOpeningChannel()
 		{
-			channelHigh = MAX(High, 10)[1];
-			channelLow = MIN(Low, 10)[1];
+			channelHigh = MAX(High, 6)[1];
+			channelLow = MIN(Low, 6)[1];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.12 - 10)), channelLow, Color.SeaGreen, Color.SeaGreen, 1);
+			DrawRectangle(CurrentBar + "channel", false, 6, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.12 - 6)), channelLow, Color.SeaGreen, Color.SeaGreen, 1);
 		}
 		
 		private double CalcAtr()
 		{
 			double _atr = 0;
-			for (int i = 0; i < 10; i++) 
+			for (int i = 0; i < 12; i++) 
 			{
-				_atr += ATR(10)[i];
+				_atr += ATR(12)[i];
 			}
-			for (int i = 0; i < 5; i++) 
+			for (int i = 0; i < 6; i++) 
 			{
-				_atr += ATR(5)[i];
+				_atr += ATR(6)[i];
 			}
-			return Instrument.MasterInstrument.Round2TickSize(_atr/15);
+			return Instrument.MasterInstrument.Round2TickSize(_atr/18);
 		}
 		
 		private bool isFlat()
@@ -498,6 +509,14 @@ namespace NinjaTrader.Strategy
         {
             get { return breakEvenPercentOfTarget; }
             set { breakEvenPercentOfTarget = value; }
+        }
+		
+		[Description("After break-even target is hit, move to break-even plus x ticks")]
+        [GridCategory("Parameters")]
+        public int BreakEvenPlus
+        {
+            get { return breakEvenPlus; }
+            set { breakEvenPlus = Math.Max(0, value); }
         }
 		
 		[Description("Number of future contracts traded")]
