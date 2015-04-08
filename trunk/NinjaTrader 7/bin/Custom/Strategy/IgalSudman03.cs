@@ -137,7 +137,7 @@ namespace NinjaTrader.Strategy
 				if (channelSize != 0)
 				{
 					// BarsPeriod.Value * 5 = 15 for 3 min bars
-					if (Time[1].Minute % (BarsPeriod.Value * 5) == 0 && isFlat())
+					if (Time[0].Minute % (BarsPeriod.Value * 5) == 0 && isFlat())
 					{
 						//CloseWorkingOrders();
 						
@@ -145,16 +145,16 @@ namespace NinjaTrader.Strategy
 						Print(Time + " *********** atr: " + atr + " maxAtr: " +  maxAtr);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr);
+							upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
+							lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
 							
 							if (upperTrigger < channelLow || upperTrigger > channelHigh)
 							{
-								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 							{
-								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							
 							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
@@ -451,7 +451,7 @@ namespace NinjaTrader.Strategy
 			channelHigh = MAX(High, 10)[1];
 			channelLow = MIN(Low, 10)[1];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.20 - 10)), channelLow, Color.SeaGreen, Color.SeaGreen, 1);
+			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.20 - 10)), channelLow, Color.Teal, Color.Teal, 4);
 		}
 		
 		private double CalcAtr()

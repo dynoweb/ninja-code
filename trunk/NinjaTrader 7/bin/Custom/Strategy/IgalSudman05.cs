@@ -137,7 +137,7 @@ namespace NinjaTrader.Strategy
 				if (channelSize != 0)
 				{
 					// for the 5 min strategy, a block is 6 bars
-					int block = (Time[1].Minute + Time[1].Hour * 60) % (BarsPeriod.Value * 6);
+					int block = (Time[0].Minute + Time[0].Hour * 60) % (BarsPeriod.Value * 6);
 					if (block == 0 && isFlat())
 					{
 						//CloseWorkingOrders();
@@ -146,26 +146,26 @@ namespace NinjaTrader.Strategy
 						Print(Time + " *********** atr: " + atr + " maxAtr: " +  maxAtr);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr);
+							upperTrigger = MAX(High, 6)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
+							lowerTrigger = MIN(Low, 6)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
 							
 							if (upperTrigger < channelLow || upperTrigger > channelHigh)
 							{
-								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								upperTrigger = MAX(High, 6)[0] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 							{
-								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = MIN(Low, 6)[0] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							
-							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
-							DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
+							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -6, upperTrigger, Color.Blue);
+							DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -6, lowerTrigger, Color.Blue);
 							
 							upperStopLoss = upperTrigger + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 							lowerStopLoss = lowerTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 							
-							DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
-							DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
+							DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -6, upperStopLoss, Color.Red);
+							DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -6, lowerStopLoss, Color.Red);
 
 							if (lowerTrigger != 0)
 							{
@@ -189,7 +189,7 @@ namespace NinjaTrader.Strategy
 								}
 
 								double target = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
-								DrawLine(CurrentBar+"longTarget", 0, target, -5, target, Color.Green);				
+								DrawLine(CurrentBar+"longTarget", 0, target, -6, target, Color.Green);				
 							}
 							
 							if (upperTrigger != 0)
@@ -215,7 +215,7 @@ namespace NinjaTrader.Strategy
 								}
 								
 								double target = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
-								DrawLine(CurrentBar+"shortTarget", 0, target, -5, target, Color.Green);
+								DrawLine(CurrentBar+"shortTarget", 0, target, -6, target, Color.Green);
 							}
 						}
 						else
@@ -452,7 +452,7 @@ namespace NinjaTrader.Strategy
 			channelHigh = MAX(High, 6)[1];
 			channelLow = MIN(Low, 6)[1];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 6, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.12 - 6)), channelLow, Color.SeaGreen, Color.SeaGreen, 1);
+			DrawRectangle(CurrentBar + "channel", false, 6, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.12 - 6)), channelLow, Color.Teal, Color.Teal, 4);
 		}
 		
 		private double CalcAtr()
