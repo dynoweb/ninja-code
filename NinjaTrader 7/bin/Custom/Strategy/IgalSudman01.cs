@@ -46,8 +46,8 @@ namespace NinjaTrader.Strategy
 		int breakEvenPlus = 0;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 0.75;
-		int tradeStartTime = 800;	// 8 AM
-		int tradeEndTime = 1500;	// 3 PM
+		int tradeStartTime = 800;	// 8 AM Central
+		int tradeEndTime = 1430;	// 2:30 PM
 		
 		double channelHigh = 0;
 		double channelLow = 0;
@@ -83,6 +83,15 @@ namespace NinjaTrader.Strategy
         {
 			ClearOutputWindow();
             Unmanaged = true;				// Use unmanaged order methods
+			
+			Add(anaMultiPeriodBoxes(3, 5));
+			
+			// Local time zone: (UTC-06:00) Central Time (US & Canada)
+//			Print("Local time zone: " + TimeZoneInfo.Local.DisplayName);
+//			if (TimeZoneInfo.Local.DisplayName.Contains("Eastern Time"))
+//			{
+//				tradeStartTime = 900;
+//			}
 			
 			//Slippage = 2;
 			BarsRequired = 10;
@@ -128,7 +137,7 @@ namespace NinjaTrader.Strategy
 					return;
 				}
 			
-				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3000)
+				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3100)
 				{
 					EstablishOpeningChannel();
 				}
@@ -136,24 +145,22 @@ namespace NinjaTrader.Strategy
 				if (channelSize != 0)
 				{
 					// BarsPeriod.Value * 5 = 15 for 3 min bars
-					if (Time[0].Minute % (BarsPeriod.Value * 5) == 0 && isFlat())
+					if (Time[0].Minute % (BarsPeriod.Value * 5) == 1 && isFlat())
 					{
-						//CloseWorkingOrders();
-						
 						atr = CalcAtr();
-						Print(Time + " *********** atr: " + atr + " maxAtr: " +  maxAtr);
+						Print(Time + " Order entry or adjustment - atr: " + atr + " maxAtr: " +  maxAtr);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
+							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
+							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr);
 							
 							if (upperTrigger < channelLow || upperTrigger > channelHigh)
 							{
-								upperTrigger = MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 							{
-								lowerTrigger = MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
 							}
 							
 							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
@@ -173,12 +180,13 @@ namespace NinjaTrader.Strategy
 								
 								if (buyOrder1 == null)
 								{
+									Print(Time + " placing Buy Limit order to: " + limitPrice);
 									buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Limit, Contracts, limitPrice, stopPrice, 
 										orderPrefix + "oco1", "B1");
 								}
-								else  if (buyOrder1.OrderState == OrderState.Working)
+								else  if (buyOrder1.OrderState == OrderState.Working || buyOrder1.OrderState == OrderState.Accepted)
 								{
-									Print(Time + " changing Buy to Open order to: " + limitPrice);
+									Print(Time + " changing Buy Limit order to: " + limitPrice);
 									ChangeOrder(buyOrder1, buyOrder1.Quantity, limitPrice, stopPrice);
 								}
 								else								
@@ -194,17 +202,17 @@ namespace NinjaTrader.Strategy
 							{
 								limitPrice = upperTrigger;
 								stopPrice = limitPrice;
-								//Print(Time + " placing sell order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
+								Print(Time + " placing sell order for limitPrice: " + limitPrice + " sellOrder1 is null " + (sellOrder1 == null));
 								
 								if (sellOrder1 == null)
 								{
-									Print(Time + " placing sell order for limitPrice: " + limitPrice + " and stopPrice: " + stopPrice);
+									Print(Time + " placing SellShort stop order to: " + limitPrice + " and stopPrice: " + stopPrice);
 									sellOrder1 = SubmitOrder(0, OrderAction.SellShort, OrderType.Limit, Contracts, limitPrice, stopPrice, 
 										orderPrefix + "oco1", "S1");
 								} 
-								else if (sellOrder1.OrderState == OrderState.Working)
+								else if (sellOrder1.OrderState == OrderState.Working || sellOrder1.OrderState == OrderState.Accepted)
 								{
-									Print(Time + " changing Sell to Open order to: " + limitPrice);
+									Print(Time + " changing Sell to Open order to: " + limitPrice + " and stopPrice: " + stopPrice);
 									ChangeOrder(sellOrder1, sellOrder1.Quantity, limitPrice, stopPrice);
 								}
 								else
@@ -239,7 +247,7 @@ namespace NinjaTrader.Strategy
 			{
 				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + " 50% trigger: " + Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget));
 				// change to B/E if 50% of target
-				if (GetCurrentAsk() > Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget))
+				if (GetCurrentAsk() > buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget)
 				{
 					// moving the stop up
 					if (closeLongOrderStop1.StopPrice < buyOrder1.AvgFillPrice)
@@ -292,7 +300,7 @@ namespace NinjaTrader.Strategy
 			{
 				// Stop loss order was rejected !!!! 
 				// Do something about it here 
-				Print(Time + " order rejected !!!! " + order);
+				Print(Time + " >>>> order rejected <<<< " + order);
 			} 
 			else
 			{
@@ -420,15 +428,23 @@ namespace NinjaTrader.Strategy
 		private void CloseWorkingOrders()
 		{
 			//Print(Time + " Closing Working Orders");
-			if (buyOrder1 != null && buyOrder1.OrderState == OrderState.Working)
+			CloseBuyOrder();
+			CloseSellOrder();
+		}	
+		
+		private void CloseBuyOrder()
+		{
+			if (buyOrder1 != null && (buyOrder1.OrderState == OrderState.Working || buyOrder1.OrderState == OrderState.Accepted))
 			{
 				CancelOrder(buyOrder1);
-				//buyOrder1 = null;
 			}
-			if (sellOrder1 != null && sellOrder1.OrderState == OrderState.Working)
+		}
+		
+		private void CloseSellOrder()
+		{
+			if (sellOrder1 != null && (sellOrder1.OrderState == OrderState.Working || sellOrder1.OrderState == OrderState.Accepted))
 			{
 				CancelOrder(sellOrder1);
-				//sellOrder1 = null;
 			}					
 		}	
 		
