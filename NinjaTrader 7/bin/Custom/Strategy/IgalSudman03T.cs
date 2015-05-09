@@ -46,12 +46,13 @@ namespace NinjaTrader.Strategy
 		int breakEvenPlus = 0;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 0.75;
-		int tradeStartTime = 800;	// 8 AM
-		int tradeEndTime = 1500;	// 3 PM
+		int tradeStartTime = 800;	// 8 AM Central
+		int tradeEndTime = 1430;	// 2:30 PM
 		
 		double channelHigh = 0;
 		double channelLow = 0;
 		double channelSize = 0;
+		int channelStartBar = 0;
 		
 		double upperTrigger = 0;
 		double lowerTrigger = 0;
@@ -120,6 +121,7 @@ namespace NinjaTrader.Strategy
 					channelSize = 0;
 					upperTrigger = 0;
 					lowerTrigger = 0;
+					ResetTrades();
 				}
 				
 				// Open pit session trading only
@@ -139,6 +141,7 @@ namespace NinjaTrader.Strategy
 				{
 					//DrawDot(CurrentBar + "cp", false, 0, MAX(High, 5)[0] + 5 * TickSize, Color.Blue);
 					EstablishOpeningChannel();
+					channelStartBar = CurrentBar - 10;
 				}
 
 				if (channelSize != 0)
@@ -153,21 +156,25 @@ namespace NinjaTrader.Strategy
 							upperTrigger = 0; //MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
 							lowerTrigger = 0; //MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
 							
-							if (MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr) > channelHigh)
+							// channelStartBar
+							if (MAX(High, 5)[1] >= (MAX(High, CurrentBar - channelStartBar)[6]))
 							{
-								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
-								longTarget = upperTrigger + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
-								upperStopLoss = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
-								
-								DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
-								DrawLine(CurrentBar+"longTarget", 0, longTarget, -5, longTarget, Color.Green);				
-								DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
+								if (MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr) > channelHigh)
+								{
+									longTarget = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+									upperTrigger = longTarget - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
+									upperStopLoss = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
+									
+									DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
+									DrawLine(CurrentBar+"longTarget", 0, longTarget, -5, longTarget, Color.Green);				
+									DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
+								}
 							}
 							if (MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr) < channelLow)
 							{
 								//Print(Time + " MIN(Low, 5)[1] = " + MIN(Low, 5)[1]);
-								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
-								shortTarget = lowerTrigger - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
+								shortTarget = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = shortTarget + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
 								lowerStopLoss = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 								
 								DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
@@ -197,7 +204,7 @@ namespace NinjaTrader.Strategy
 								if (buyOrder1 == null || (buyOrder1 != null && buyOrder1.OrderState == OrderState.Filled))
 								{
 									Print(Time + " placing Buy stop order to: " + limitPrice);
-									ResetLongTrade();
+//									ResetLongTrade();
 									buyOrder1 = SubmitOrder(0, OrderAction.Buy, OrderType.Stop, Contracts, limitPrice, stopPrice, 
 										orderPrefix + "long", "B1");
 								}
@@ -222,7 +229,7 @@ namespace NinjaTrader.Strategy
 								if (sellOrder1 == null)
 								{
 									Print(Time + " placing SellShort stop order to: " + limitPrice + " and stopPrice: " + stopPrice);
-									ResetShortTrade();
+//									ResetShortTrade();
 									sellOrder1 = SubmitOrder(0, OrderAction.SellShort, OrderType.Stop, Contracts, limitPrice, stopPrice, 
 										orderPrefix + "short", "S1");
 								} 
@@ -242,7 +249,7 @@ namespace NinjaTrader.Strategy
 						else
 						{
 							Print(Time + " max ATR out of range, closing orders");
-							CloseWorkingOrders();
+						//	CloseWorkingOrders();
 						}
 					}
 				}				
@@ -474,9 +481,10 @@ namespace NinjaTrader.Strategy
 //					buyOrder1 = null;
 //				}
 			}
-			Print(Time + " buyOrder1.OrderState = " + buyOrder1.OrderState);
-			ResetLongTrade();
-			Print(Time + " isNulls - buyOrder1 " + (buyOrder1 == null) + " closeLongOrderLimit1 " + (closeLongOrderLimit1 == null) + " closeLongOrderStop1 " + (closeLongOrderStop1 == null));
+			// EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+//			Print(Time + " buyOrder1.OrderState = " + buyOrder1.OrderState);
+//			ResetLongTrade();
+//			Print(Time + " isNulls - buyOrder1 " + (buyOrder1 == null) + " closeLongOrderLimit1 " + (closeLongOrderLimit1 == null) + " closeLongOrderStop1 " + (closeLongOrderStop1 == null));
 		}
 		
 		private void CloseSellOrder()
@@ -495,11 +503,19 @@ namespace NinjaTrader.Strategy
 //				}
 					//sellOrder1 = null;
 			}
-			Print(Time + " sellOrder1.OrderState = " + sellOrder1.OrderState);
-			ResetShortTrade();
-			Print(Time + " shortTrade has been reset");
 			
-			Print(Time + " isNulls - sellOrder1 " + (sellOrder1 == null) + " closeShortOrderLimit1 " + (closeShortOrderLimit1 == null) + " closeShortOrderStop1 " + (closeShortOrderStop1 == null));
+			// EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+//			Print(Time + " sellOrder1.OrderState = " + sellOrder1.OrderState);
+//			ResetShortTrade();
+//			Print(Time + " shortTrade has been reset");
+//			
+//			Print(Time + " isNulls - sellOrder1 " + (sellOrder1 == null) + " closeShortOrderLimit1 " + (closeShortOrderLimit1 == null) + " closeShortOrderStop1 " + (closeShortOrderStop1 == null));
+		}
+		
+		private void ResetTrades()
+		{
+			ResetLongTrade();
+			ResetShortTrade();
 		}
 		
 		private void ResetLongTrade()

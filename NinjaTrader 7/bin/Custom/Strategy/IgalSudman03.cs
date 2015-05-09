@@ -149,6 +149,7 @@ namespace NinjaTrader.Strategy
 					{
 						atr = CalcAtr();
 						Print(Time + " Order entry or adjustment - atr: " + atr + " maxAtr: " +  maxAtr);
+						DrawText(CurrentBar + "atr", atr.ToString(), 2, MAX(High, 5)[1] + 0.3 * atr, Color.Black);
 						if (atr <= maxAtr)
 						{
 							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
