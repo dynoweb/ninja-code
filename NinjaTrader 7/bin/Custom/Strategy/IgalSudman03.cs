@@ -40,6 +40,10 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         
+		double atrFactorChannelIn = 1.0;
+		double atrFactorChannelOut = 1.5;
+		int channelStartPeriodSize = 30;
+		
         int contracts = 1; 
 		double maxAtr = 0.29;
 		double breakEvenPercentOfTarget = 0.50;
@@ -138,7 +142,7 @@ namespace NinjaTrader.Strategy
 				}
 			
 				// Channel measurement happens 30 min after the start time
-				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3300)
+				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime + channelStartPeriodSize + BarsPeriod.Value) * 100)
 				{
 					EstablishOpeningChannel();
 				}
@@ -152,16 +156,16 @@ namespace NinjaTrader.Strategy
 						DrawText(CurrentBar + "atr", atr.ToString(), 2, MAX(High, 5)[1] + 0.3 * atr, Color.Black);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr);
+							upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr) * atrFactorChannelIn;
+							lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr) * atrFactorChannelIn;
 							
 							if (upperTrigger < channelLow || upperTrigger > channelHigh)
 							{
-								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								upperTrigger = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * atrFactorChannelOut);
 							}
 							if (lowerTrigger < channelLow || lowerTrigger > channelHigh)
 							{
-								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
+								lowerTrigger = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * atrFactorChannelOut);
 							}
 							
 							DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
@@ -464,10 +468,15 @@ namespace NinjaTrader.Strategy
 			
 		private void EstablishOpeningChannel()
 		{
-			channelHigh = MAX(High, 10)[1];
-			channelLow = MIN(Low, 10)[1];
+			int barsToEstablishChannel = channelStartPeriodSize/BarsPeriod.Value;
+			channelHigh = MAX(High, barsToEstablishChannel)[1];
+			channelLow = MIN(Low, barsToEstablishChannel)[1];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.20 - 10)), channelLow, Color.Teal, Color.Teal, 4);
+			int endHour = tradeEndTime/100;
+			int endMin = tradeEndTime - endHour * 100;
+			int barsToTrade = (endHour * 60 + endMin - (Time[0].Hour * 60 + Time[0].Minute)) / BarsPeriod.Value; 
+			//Print(Time +  " barsToTrade: " + barsToTrade + " tradeEndTime: " + tradeEndTime +  " Time[0]: " + Time[0] + " endHour: " + endHour + " endMin: " + endMin);
+			DrawRectangle(CurrentBar + "channel", false, barsToEstablishChannel, channelHigh, -barsToTrade, channelLow, Color.Teal, Color.Teal, 4);
 		}
 		
 		private double CalcAtr()
@@ -508,14 +517,22 @@ namespace NinjaTrader.Strategy
 				return false;
 		}		
 
-        #region Properties
+        #region Properties		
 		
-        [Description("Maximum allowed ATR value for trade in Points")]
+        [Description("ATR multiplier in channel")]
         [GridCategory("Parameters")]
-        public double MaxAtr
+        public double AtrFactorChannelIn
         {
-            get { return maxAtr; }
-            set { maxAtr = value; }
+            get { return atrFactorChannelIn; }
+            set { atrFactorChannelIn = value; }
+        }
+		
+        [Description("ATR multiplier out of channel")]
+        [GridCategory("Parameters")]
+        public double AtrFactorChannelOut
+        {
+            get { return atrFactorChannelOut; }
+            set { atrFactorChannelOut = value; }
         }
 		
         [Description("Percent of target which the price moved that triggers the stop to be moved to Break/Even")]
@@ -534,12 +551,28 @@ namespace NinjaTrader.Strategy
             set { breakEvenPlus = Math.Max(0, value); }
         }
 		
+		[Description("Period to determine channel size in min")]
+        [GridCategory("Parameters")]
+        public int ChannelStartPeriodSize
+        {
+            get { return channelStartPeriodSize; }
+            set { channelStartPeriodSize = Math.Max(15, value); }
+        }
+		
 		[Description("Number of future contracts traded")]
         [GridCategory("Parameters")]
         public int Contracts
         {
             get { return contracts; }
             set { contracts = Math.Max(1, value); }
+        }
+		
+        [Description("Maximum allowed ATR value for trade in Points")]
+        [GridCategory("Parameters")]
+        public double MaxAtr
+        {
+            get { return maxAtr; }
+            set { maxAtr = value; }
         }
 		
         [Description("Stop Loss as a Percent of ATR ex 0.9 as 90% or 1.5 as 150%")]
