@@ -40,14 +40,18 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         
+		double atrFactorChannelIn = 1.0;
+		double atrFactorChannelOut = 1.5;
+		int channelStartPeriodSize = 30;
+		
         int contracts = 1; 
 		double maxAtr = 0.29;
 		double breakEvenPercentOfTarget = 0.50;
 		int breakEvenPlus = 0;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 0.75;
-		int tradeStartTime = 800;	// 8 AM
-		int tradeEndTime = 1500;	// 3 PM
+		int tradeStartTime = 800;	// 8 AM Central
+		int tradeEndTime = 1430;	// 2:30 PM
 		
 		double channelHigh = 0;
 		double channelLow = 0;
@@ -83,6 +87,15 @@ namespace NinjaTrader.Strategy
         {
 			ClearOutputWindow();
             Unmanaged = true;				// Use unmanaged order methods
+			
+			Add(anaMultiPeriodBoxes(3, 5));
+			
+			// Local time zone: (UTC-06:00) Central Time (US & Canada)
+//			Print("Local time zone: " + TimeZoneInfo.Local.DisplayName);
+//			if (TimeZoneInfo.Local.DisplayName.Contains("Eastern Time"))
+//			{
+//				tradeStartTime = 900;
+//			}
 			
 			//Slippage = 2;
 			BarsRequired = 10;
@@ -129,7 +142,7 @@ namespace NinjaTrader.Strategy
 				}
 			
 				// Channel measurement happens 30 min after the start time
-				if (channelSize == 0 && ToTime(Time[1]) == (tradeStartTime * 100) + 3000)
+				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime + channelStartPeriodSize + BarsPeriod.Value) * 100)
 				{
 					EstablishOpeningChannel();
 				}

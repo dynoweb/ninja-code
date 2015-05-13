@@ -1,28 +1,29 @@
 <NinjaTrader>
   <SingletonForms>
     <AlertWindow>
-      <Location>248;276</Location>
+      <Location>50;50</Location>
       <Size>518;340</Size>
-      <ZOrder>44</ZOrder>
+      <ZOrder>59</ZOrder>
       <WindowState>
       </WindowState>
       <AlwaysOnTop>False</AlwaysOnTop>
       <LinkColor>n:Control</LinkColor>
     </AlertWindow>
     <ChartDataBox>
-      <Location>750;704</Location>
-      <Size>253;440</Size>
-      <ZOrder>646</ZOrder>
+      <Location>0;0</Location>
+      <Size>253;358</Size>
+      <ZOrder>0</ZOrder>
       <WindowState>
       </WindowState>
       <AlwaysOnTop>True</AlwaysOnTop>
       <DataBoxAutoSize>False</DataBoxAutoSize>
     </ChartDataBox>
     <OutputWindow>
-      <Location>2;90</Location>
-      <Size>998;500</Size>
-      <ZOrder>10</ZOrder>
-      <WindowState>Normal</WindowState>
+      <Location>0;0</Location>
+      <Size>768;473</Size>
+      <ZOrder>57</ZOrder>
+      <WindowState>
+      </WindowState>
     </OutputWindow>
     <HistoricalDataManager>
       <Location>868;117</Location>
@@ -55,9 +56,9 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.MarketAnalyzer.MarketAnalyzer</Class>
       <WindowState>Normal</WindowState>
-      <Location>206;425</Location>
+      <Location>300;727</Location>
       <Size>939;473</Size>
-      <ZOrder>336</ZOrder>
+      <ZOrder>103</ZOrder>
       <Instruments>
         <Row>
           <Column>FDAX 03-15 Eurex</Column>
@@ -1535,8 +1536,8 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.MarketAnalyzer.MarketAnalyzer</Class>
       <WindowState>Normal</WindowState>
-      <ZOrder>307</ZOrder>
-      <Location>350;420</Location>
+      <ZOrder>100</ZOrder>
+      <Location>506;596</Location>
       <Size>768;604</Size>
       <Instruments>
         <Row>
@@ -2059,8 +2060,8 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.MarketAnalyzer.MarketAnalyzer</Class>
       <WindowState>Normal</WindowState>
-      <ZOrder>304</ZOrder>
-      <Location>521;0</Location>
+      <ZOrder>97</ZOrder>
+      <Location>751;0</Location>
       <Size>768;900</Size>
       <Instruments>
         <Row>
@@ -2627,6 +2628,168 @@
         <Strategies />
         <Indicators>
           <Indicator0>
+            <ClassName>NinjaTrader.Indicator.Stochastics</ClassName>
+            <Input>
+              <PriceType>Close</PriceType>
+            </Input>
+            <BarsSeriesIdx>0</BarsSeriesIdx>
+            <Indicator>
+              <Stochastics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+                <AutoScale>true</AutoScale>
+                <BarsPeriods>
+                  <Period>
+                    <BasePeriodType>Minute</BasePeriodType>
+                    <BasePeriodValue>1</BasePeriodValue>
+                    <Id>Minute</Id>
+                    <MarketDataType>Last</MarketDataType>
+                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+                    <ReversalType>Tick</ReversalType>
+                    <Value>1</Value>
+                    <Value2>1</Value2>
+                  </Period>
+                </BarsPeriods>
+                <CalculateOnBarClose>false</CalculateOnBarClose>
+                <DisableScaleBuffer>false</DisableScaleBuffer>
+                <Displacement>0</Displacement>
+                <DisplayInDataBox>true</DisplayInDataBox>
+                <DrawOnPricePanel>true</DrawOnPricePanel>
+                <Enabled>true</Enabled>
+                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+                <HorizontalGridLines>true</HorizontalGridLines>
+                <InstrumentsSerializable>CL 02-15 Nymex</InstrumentsSerializable>
+                <Lines>
+                  <Line>
+                    <Name>Lower</Name>
+                    <PenSerializable>
+                      <Color>n:Black</Color>
+                      <DashStyle>Dot</DashStyle>
+                      <Width>2</Width>
+                    </PenSerializable>
+                    <Value>20</Value>
+                  </Line>
+                  <Line>
+                    <Name>Upper</Name>
+                    <PenSerializable>
+                      <Color>n:Black</Color>
+                      <DashStyle>Dot</DashStyle>
+                      <Width>2</Width>
+                    </PenSerializable>
+                    <Value>80</Value>
+                  </Line>
+                </Lines>
+                <LinesConfigurable>true</LinesConfigurable>
+                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+                <Name>Stochastics</Name>
+                <Overlay>false</Overlay>
+                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <Panel>2</Panel>
+                <PanelUI>3</PanelUI>
+                <Plots>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>D</Name>
+                    <PenSerializable>
+                      <Color>n:Blue</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>2</Width>
+                    </PenSerializable>
+                    <PlotStyle>Line</PlotStyle>
+                  </Plot>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>K</Name>
+                    <PenSerializable>
+                      <Color>n:Black</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Line</PlotStyle>
+                  </Plot>
+                </Plots>
+                <PlotsConfigurable>true</PlotsConfigurable>
+                <ScaleJustification>Right</ScaleJustification>
+                <SelectedSeries>0</SelectedSeries>
+                <SessionBreakLines>true</SessionBreakLines>
+                <VerticalGridLines>true</VerticalGridLines>
+                <ZOrder>30006</ZOrder>
+                <PeriodD>5</PeriodD>
+                <PeriodK>13</PeriodK>
+                <Smooth>7</Smooth>
+              </Stochastics>
+            </Indicator>
+            <ChartObjects />
+          </Indicator0>
+          <Indicator1>
+            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
+            <Input>
+              <PriceType>Close</PriceType>
+            </Input>
+            <BarsSeriesIdx>0</BarsSeriesIdx>
+            <Indicator>
+              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+                <AutoScale>false</AutoScale>
+                <BarsPeriods>
+                  <Period>
+                    <BasePeriodType>Minute</BasePeriodType>
+                    <BasePeriodValue>1</BasePeriodValue>
+                    <Id>Minute</Id>
+                    <MarketDataType>Last</MarketDataType>
+                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+                    <ReversalType>Tick</ReversalType>
+                    <Value>1</Value>
+                    <Value2>1</Value2>
+                  </Period>
+                </BarsPeriods>
+                <CalculateOnBarClose>true</CalculateOnBarClose>
+                <DisableScaleBuffer>false</DisableScaleBuffer>
+                <Displacement>0</Displacement>
+                <DisplayInDataBox>false</DisplayInDataBox>
+                <DrawOnPricePanel>false</DrawOnPricePanel>
+                <Enabled>true</Enabled>
+                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+                <HorizontalGridLines>true</HorizontalGridLines>
+                <InstrumentsSerializable>CL 02-15 Nymex</InstrumentsSerializable>
+                <Lines />
+                <LinesConfigurable>true</LinesConfigurable>
+                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+                <Name>PitColor</Name>
+                <Overlay>true</Overlay>
+                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <Panel>-2</Panel>
+                <PanelUI>-1</PanelUI>
+                <Plots>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>Dummy</Name>
+                    <PenSerializable>
+                      <Color>n:Orange</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Line</PlotStyle>
+                  </Plot>
+                </Plots>
+                <PlotsConfigurable>false</PlotsConfigurable>
+                <ScaleJustification>Right</ScaleJustification>
+                <SelectedSeries>0</SelectedSeries>
+                <SessionBreakLines>true</SessionBreakLines>
+                <VerticalGridLines>true</VerticalGridLines>
+                <ZOrder>30001</ZOrder>
+                <StartTime>161500</StartTime>
+                <EndTime>80000</EndTime>
+                <Opacity>40</Opacity>
+                <ColorBackground />
+                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
+              </PitColor>
+            </Indicator>
+            <ChartObjects />
+          </Indicator1>
+          <Indicator2>
             <ClassName>NinjaTrader.Indicator.MACDRick2</ClassName>
             <Input>
               <PriceType>Close</PriceType>
@@ -2735,71 +2898,8 @@
               </MACDRick2>
             </Indicator>
             <ChartObjects />
-          </Indicator0>
-          <Indicator1>
-            <ClassName>NinjaTrader.Indicator.EMA</ClassName>
-            <Input>
-              <PriceType>Close</PriceType>
-            </Input>
-            <BarsSeriesIdx>0</BarsSeriesIdx>
-            <Indicator>
-              <EMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-                <AutoScale>false</AutoScale>
-                <BarsPeriods>
-                  <Period>
-                    <BasePeriodType>Minute</BasePeriodType>
-                    <BasePeriodValue>1</BasePeriodValue>
-                    <Id>Minute</Id>
-                    <MarketDataType>Last</MarketDataType>
-                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-                    <ReversalType>Tick</ReversalType>
-                    <Value>1</Value>
-                    <Value2>1</Value2>
-                  </Period>
-                </BarsPeriods>
-                <CalculateOnBarClose>true</CalculateOnBarClose>
-                <DisableScaleBuffer>false</DisableScaleBuffer>
-                <Displacement>0</Displacement>
-                <DisplayInDataBox>true</DisplayInDataBox>
-                <DrawOnPricePanel>true</DrawOnPricePanel>
-                <Enabled>true</Enabled>
-                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-                <HorizontalGridLines>true</HorizontalGridLines>
-                <InstrumentsSerializable>CL 02-15 Nymex</InstrumentsSerializable>
-                <Lines />
-                <LinesConfigurable>true</LinesConfigurable>
-                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>EMA</Name>
-                <Overlay>true</Overlay>
-                <PaintPriceMarkers>false</PaintPriceMarkers>
-                <Panel>-2</Panel>
-                <PanelUI>-1</PanelUI>
-                <Plots>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>EMA</Name>
-                    <PenSerializable>
-                      <Color>n:DimGray</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Line</PlotStyle>
-                  </Plot>
-                </Plots>
-                <PlotsConfigurable>true</PlotsConfigurable>
-                <ScaleJustification>Right</ScaleJustification>
-                <SelectedSeries>0</SelectedSeries>
-                <SessionBreakLines>true</SessionBreakLines>
-                <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30004</ZOrder>
-                <Period>15</Period>
-              </EMA>
-            </Indicator>
-            <ChartObjects />
-          </Indicator1>
-          <Indicator2>
+          </Indicator2>
+          <Indicator3>
             <ClassName>NinjaTrader.Indicator.SMARick</ClassName>
             <Input>
               <PriceType>Close</PriceType>
@@ -2868,110 +2968,15 @@
               </SMARick>
             </Indicator>
             <ChartObjects />
-          </Indicator2>
-          <Indicator3>
-            <ClassName>NinjaTrader.Indicator.Stochastics</ClassName>
-            <Input>
-              <PriceType>Close</PriceType>
-            </Input>
-            <BarsSeriesIdx>0</BarsSeriesIdx>
-            <Indicator>
-              <Stochastics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-                <AutoScale>true</AutoScale>
-                <BarsPeriods>
-                  <Period>
-                    <BasePeriodType>Minute</BasePeriodType>
-                    <BasePeriodValue>1</BasePeriodValue>
-                    <Id>Minute</Id>
-                    <MarketDataType>Last</MarketDataType>
-                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-                    <ReversalType>Tick</ReversalType>
-                    <Value>1</Value>
-                    <Value2>1</Value2>
-                  </Period>
-                </BarsPeriods>
-                <CalculateOnBarClose>false</CalculateOnBarClose>
-                <DisableScaleBuffer>false</DisableScaleBuffer>
-                <Displacement>0</Displacement>
-                <DisplayInDataBox>true</DisplayInDataBox>
-                <DrawOnPricePanel>true</DrawOnPricePanel>
-                <Enabled>true</Enabled>
-                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-                <HorizontalGridLines>true</HorizontalGridLines>
-                <InstrumentsSerializable>CL 02-15 Nymex</InstrumentsSerializable>
-                <Lines>
-                  <Line>
-                    <Name>Lower</Name>
-                    <PenSerializable>
-                      <Color>n:Black</Color>
-                      <DashStyle>Dot</DashStyle>
-                      <Width>2</Width>
-                    </PenSerializable>
-                    <Value>20</Value>
-                  </Line>
-                  <Line>
-                    <Name>Upper</Name>
-                    <PenSerializable>
-                      <Color>n:Black</Color>
-                      <DashStyle>Dot</DashStyle>
-                      <Width>2</Width>
-                    </PenSerializable>
-                    <Value>80</Value>
-                  </Line>
-                </Lines>
-                <LinesConfigurable>true</LinesConfigurable>
-                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>Stochastics</Name>
-                <Overlay>false</Overlay>
-                <PaintPriceMarkers>true</PaintPriceMarkers>
-                <Panel>2</Panel>
-                <PanelUI>3</PanelUI>
-                <Plots>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>D</Name>
-                    <PenSerializable>
-                      <Color>n:Blue</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>2</Width>
-                    </PenSerializable>
-                    <PlotStyle>Line</PlotStyle>
-                  </Plot>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>K</Name>
-                    <PenSerializable>
-                      <Color>n:Black</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Line</PlotStyle>
-                  </Plot>
-                </Plots>
-                <PlotsConfigurable>true</PlotsConfigurable>
-                <ScaleJustification>Right</ScaleJustification>
-                <SelectedSeries>0</SelectedSeries>
-                <SessionBreakLines>true</SessionBreakLines>
-                <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30006</ZOrder>
-                <PeriodD>5</PeriodD>
-                <PeriodK>13</PeriodK>
-                <Smooth>7</Smooth>
-              </Stochastics>
-            </Indicator>
-            <ChartObjects />
           </Indicator3>
           <Indicator4>
-            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
+            <ClassName>NinjaTrader.Indicator.EMA</ClassName>
             <Input>
               <PriceType>Close</PriceType>
             </Input>
             <BarsSeriesIdx>0</BarsSeriesIdx>
             <Indicator>
-              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+              <EMA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                 <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
                 <AutoScale>false</AutoScale>
                 <BarsPeriods>
@@ -2989,8 +2994,8 @@
                 <CalculateOnBarClose>true</CalculateOnBarClose>
                 <DisableScaleBuffer>false</DisableScaleBuffer>
                 <Displacement>0</Displacement>
-                <DisplayInDataBox>false</DisplayInDataBox>
-                <DrawOnPricePanel>false</DrawOnPricePanel>
+                <DisplayInDataBox>true</DisplayInDataBox>
+                <DrawOnPricePanel>true</DrawOnPricePanel>
                 <Enabled>true</Enabled>
                 <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
                 <HorizontalGridLines>true</HorizontalGridLines>
@@ -2998,36 +3003,32 @@
                 <Lines />
                 <LinesConfigurable>true</LinesConfigurable>
                 <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>PitColor</Name>
+                <Name>EMA</Name>
                 <Overlay>true</Overlay>
-                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <PaintPriceMarkers>false</PaintPriceMarkers>
                 <Panel>-2</Panel>
                 <PanelUI>-1</PanelUI>
                 <Plots>
                   <Plot>
                     <Max>1.7976931348623157E+308</Max>
                     <Min>-1.7976931348623157E+308</Min>
-                    <Name>Dummy</Name>
+                    <Name>EMA</Name>
                     <PenSerializable>
-                      <Color>n:Orange</Color>
+                      <Color>n:DimGray</Color>
                       <DashStyle>Solid</DashStyle>
                       <Width>1</Width>
                     </PenSerializable>
                     <PlotStyle>Line</PlotStyle>
                   </Plot>
                 </Plots>
-                <PlotsConfigurable>false</PlotsConfigurable>
+                <PlotsConfigurable>true</PlotsConfigurable>
                 <ScaleJustification>Right</ScaleJustification>
                 <SelectedSeries>0</SelectedSeries>
                 <SessionBreakLines>true</SessionBreakLines>
                 <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30001</ZOrder>
-                <StartTime>161500</StartTime>
-                <EndTime>80000</EndTime>
-                <Opacity>40</Opacity>
-                <ColorBackground />
-                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
-              </PitColor>
+                <ZOrder>30004</ZOrder>
+                <Period>15</Period>
+              </EMA>
             </Indicator>
             <ChartObjects />
           </Indicator4>
@@ -3139,9 +3140,9 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.Gui.Chart.ChartForm</Class>
       <WindowState>Normal</WindowState>
-      <Location>1198;332</Location>
+      <Location>1198;592</Location>
       <Size>722;600</Size>
-      <ZOrder>301</ZOrder>
+      <ZOrder>92</ZOrder>
       <Bars>
         <Bars0>
           <Bars>
@@ -3151,7 +3152,7 @@
               <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;0.175&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
               <DaysBack>30</DaysBack>
               <DisplayInDataBox>true</DisplayInDataBox>
-              <From>2015-01-07T00:00:00-06:00</From>
+              <From>2015-04-11T00:00:00-05:00</From>
               <Instrument>CL 02-15 Nymex</Instrument>
               <IsPrimarySeries>true</IsPrimarySeries>
               <Label>CL 02-15</Label>
@@ -3196,539 +3197,7 @@
               <ZOrder>30002</ZOrder>
             </BarsData>
           </Bars>
-          <ChartObjects>
-            <ChartObject1>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>52.867020405797106</Y>
-                  <Tag>0</Tag>
-                  <Time>2015-01-02T12:40:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30007</ZOrder>
-                  <EndTime>2015-01-02T13:02:00</EndTime>
-                  <EndY>52.867020405797106</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2015-01-02T12:40:00</StartTime>
-                  <StartY>52.867020405797106</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject1>
-            <ChartObject2>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>52.557406183574884</Y>
-                  <Tag>1</Tag>
-                  <Time>2015-01-02T12:36:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30008</ZOrder>
-                  <EndTime>2015-01-02T13:03:00</EndTime>
-                  <EndY>52.7256747826087</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2015-01-02T12:36:00</StartTime>
-                  <StartY>52.557406183574884</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject2>
-            <ChartObject3>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>53.701694879227055</Y>
-                  <Tag>6</Tag>
-                  <Time>2014-12-31T02:10:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30009</ZOrder>
-                  <EndTime>2014-12-31T09:36:00</EndTime>
-                  <EndY>52.964135613526565</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-31T02:10:00</StartTime>
-                  <StartY>53.701694879227055</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject3>
-            <ChartObject4>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>52.802132</Y>
-                  <Tag>7</Tag>
-                  <Time>2014-12-30T03:15:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30010</ZOrder>
-                  <EndTime>2014-12-30T07:20:00</EndTime>
-                  <EndY>53.694661217391307</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-30T03:15:00</StartTime>
-                  <StartY>52.802132</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject4>
-            <ChartObject5>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>53.615520695652172</Y>
-                  <Tag>8</Tag>
-                  <Time>2014-12-30T06:02:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30011</ZOrder>
-                  <EndTime>2014-12-30T08:24:00</EndTime>
-                  <EndY>52.916446086956526</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-30T06:02:00</StartTime>
-                  <StartY>53.615520695652172</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject5>
-            <ChartObject6>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>58.58008182608696</Y>
-                  <Tag>9</Tag>
-                  <Time>2014-12-22T02:00:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30012</ZOrder>
-                  <EndTime>2015-01-02T15:15:00</EndTime>
-                  <EndY>53.969956454106281</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-22T02:00:00</StartTime>
-                  <StartY>58.58008182608696</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject6>
-            <ChartObject7>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5428093-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>55.291977700483095</Y>
-                  <Tag>A</Tag>
-                  <Time>2014-12-22T11:00:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30013</ZOrder>
-                  <EndTime>2015-01-02T07:45:00</EndTime>
-                  <EndY>51.292015980676332</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-22T11:00:00</StartTime>
-                  <StartY>55.291977700483095</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject7>
-            <ChartObject8>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-23T23:33:15.8234895-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>68.183543236714968</Y>
-                  <Tag>B</Tag>
-                  <Time>2014-12-04T04:15:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30014</ZOrder>
-                  <EndTime>2014-12-17T15:15:00</EndTime>
-                  <EndY>56.232048869565219</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-04T04:15:00</StartTime>
-                  <StartY>68.183543236714968</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject8>
-            <ChartObject9>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-23T23:33:15.8244896-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>54.842340222222226</Y>
-                  <Tag>15</Tag>
-                  <Time>2014-12-17T09:30:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30015</ZOrder>
-                  <EndTime>2014-12-17T14:30:00</EndTime>
-                  <EndY>59.289407893719805</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2014-12-17T09:30:00</StartTime>
-                  <StartY>54.842340222222226</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject9>
-            <ChartObject10>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5438094-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>52.207261458937204</Y>
-                  <Tag>17</Tag>
-                  <Time>2015-01-02T08:30:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30016</ZOrder>
-                  <EndTime>2015-01-04T20:15:00</EndTime>
-                  <EndY>55.359773661835753</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2015-01-02T08:30:00</StartTime>
-                  <StartY>52.207261458937204</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject10>
-            <ChartObject11>
-              <ClassName>NinjaTrader.Gui.Chart.ChartDot</ClassName>
-              <ChartObject>
-                <ChartDot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5438094-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>53.319225507246379</Y>
-                  <Tag>18</Tag>
-                  <Time>2015-01-02T11:45:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30017</ZOrder>
-                  <ColorSerialize>n:Blue</ColorSerialize>
-                </ChartDot>
-              </ChartObject>
-            </ChartObject11>
-            <ChartObject12>
-              <ClassName>NinjaTrader.Gui.Chart.ChartLine</ClassName>
-              <ChartObject>
-                <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5458095-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>53.862570241545896</Y>
-                  <Tag>19</Tag>
-                  <Time>2015-01-02T10:30:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30018</ZOrder>
-                  <EndTime>2015-01-02T12:45:00</EndTime>
-                  <EndY>53.854211091787441</EndY>
-                  <PenSerializable>
-                    <Color>n:Brown</Color>
-                    <DashStyle>Solid</DashStyle>
-                    <Width>2</Width>
-                  </PenSerializable>
-                  <StartTime>2015-01-02T10:30:00</StartTime>
-                  <StartY>53.862570241545896</StartY>
-                </ChartLine>
-              </ChartObject>
-            </ChartObject12>
-            <ChartObject13>
-              <ClassName>NinjaTrader.Gui.Chart.FibonacciExtensions</ClassName>
-              <ChartObject>
-                <FibonacciExtensions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                  <AutoScale>false</AutoScale>
-                  <AddGlobalAsDefault>false</AddGlobalAsDefault>
-                  <CreatedOnBar>-1</CreatedOnBar>
-                  <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
-                  <InstrumentOnCopyPaste />
-                  <LastSeen>2015-01-30T05:28:00.5458095-06:00</LastSeen>
-                  <Locked>false</Locked>
-                  <Panel>0</Panel>
-                  <Persist>true</Persist>
-                  <ScaleJustification>Right</ScaleJustification>
-                  <Selectable>true</Selectable>
-                  <SeparateZOrder>false</SeparateZOrder>
-                  <Y>55.55</Y>
-                  <Tag>1C</Tag>
-                  <Time>2014-12-31T00:00:00</Time>
-                  <VisibleOnInstrument>CL 02-15</VisibleOnInstrument>
-                  <ZOrder>30019</ZOrder>
-                  <AnchorPenSerializable>
-                    <Color>n:Gray</Color>
-                    <DashStyle>Dash</DashStyle>
-                    <Width>1</Width>
-                  </AnchorPenSerializable>
-                  <CalculationMethod>StandardPitchfork</CalculationMethod>
-                  <EndTime>2014-12-30T21:00:00</EndTime>
-                  <EndY>57.56</EndY>
-                  <ExtendLeft>false</ExtendLeft>
-                  <ExtremeLeft>false</ExtremeLeft>
-                  <ExtendRight>false</ExtendRight>
-                  <ExtremeRight>false</ExtremeRight>
-                  <GannFanDirection>UpRight</GannFanDirection>
-                  <Levels>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Gray</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Green</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.86</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>false</Active>
-                      <PenSerializable>
-                        <Color>n:LightSteelBlue</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.236</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Red</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.382</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Red</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.5</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Red</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.618</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Navy</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.764</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:ForestGreen</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>0.86</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Gray</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>1</Value>
-                    </FibonacciLevel>
-                    <FibonacciLevel>
-                      <Active>true</Active>
-                      <PenSerializable>
-                        <Color>n:Navy</Color>
-                        <DashStyle>Solid</DashStyle>
-                        <Width>1</Width>
-                      </PenSerializable>
-                      <Value>-0.27</Value>
-                    </FibonacciLevel>
-                  </Levels>
-                  <PointsPerBar>0.05</PointsPerBar>
-                  <InsideLeft>true</InsideLeft>
-                  <InsideRight>false</InsideRight>
-                  <ShowText>true</ShowText>
-                  <StartTime>2014-12-31T00:00:00</StartTime>
-                  <StartY>55.55</StartY>
-                  <Anchor1Time>2014-12-31T00:00:00</Anchor1Time>
-                  <Anchor2Time>2014-12-30T21:00:00</Anchor2Time>
-                  <Anchor3Time>2014-12-31T05:15:00</Anchor3Time>
-                  <Anchor1Y>55.55</Anchor1Y>
-                  <Anchor2Y>57.56</Anchor2Y>
-                  <Anchor3Y>57.57</Anchor3Y>
-                  <MiddleTime>2014-12-31T05:15:00</MiddleTime>
-                  <MiddleY>57.57</MiddleY>
-                </FibonacciExtensions>
-              </ChartObject>
-            </ChartObject13>
-          </ChartObjects>
+          <ChartObjects />
         </Bars0>
       </Bars>
     </ChartForm-ebbe0a9a038341baa7df433081566590>
@@ -3843,149 +3312,6 @@
         <Strategies />
         <Indicators>
           <Indicator0>
-            <ClassName>NinjaTrader.Indicator.ATRTrailingClose</ClassName>
-            <Input>
-              <PriceType>Close</PriceType>
-            </Input>
-            <BarsSeriesIdx>0</BarsSeriesIdx>
-            <Indicator>
-              <ATRTrailingClose xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-                <AutoScale>false</AutoScale>
-                <BarsPeriods>
-                  <Period>
-                    <BasePeriodType>Minute</BasePeriodType>
-                    <BasePeriodValue>1</BasePeriodValue>
-                    <Id>Minute</Id>
-                    <MarketDataType>Last</MarketDataType>
-                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-                    <ReversalType>Tick</ReversalType>
-                    <Value>5</Value>
-                    <Value2>1</Value2>
-                  </Period>
-                </BarsPeriods>
-                <CalculateOnBarClose>true</CalculateOnBarClose>
-                <DisableScaleBuffer>false</DisableScaleBuffer>
-                <Displacement>0</Displacement>
-                <DisplayInDataBox>true</DisplayInDataBox>
-                <DrawOnPricePanel>true</DrawOnPricePanel>
-                <Enabled>true</Enabled>
-                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-                <HorizontalGridLines>true</HorizontalGridLines>
-                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
-                <Lines />
-                <LinesConfigurable>true</LinesConfigurable>
-                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>ATRTrailingClose</Name>
-                <Overlay>true</Overlay>
-                <PaintPriceMarkers>true</PaintPriceMarkers>
-                <Panel>-2</Panel>
-                <PanelUI>-1</PanelUI>
-                <Plots>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>ATR Trailing Dn</Name>
-                    <PenSerializable>
-                      <Color>n:Red</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Dot</PlotStyle>
-                  </Plot>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>ATR Trailing Up</Name>
-                    <PenSerializable>
-                      <Color>n:Blue</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Dot</PlotStyle>
-                  </Plot>
-                </Plots>
-                <PlotsConfigurable>true</PlotsConfigurable>
-                <ScaleJustification>Right</ScaleJustification>
-                <SelectedSeries>0</SelectedSeries>
-                <SessionBreakLines>true</SessionBreakLines>
-                <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30005</ZOrder>
-                <ATRTIMES>1.5</ATRTIMES>
-                <Period>10</Period>
-                <Ratched>0</Ratched>
-              </ATRTrailingClose>
-            </Indicator>
-            <ChartObjects />
-          </Indicator0>
-          <Indicator1>
-            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
-            <Input>
-              <PriceType>Close</PriceType>
-            </Input>
-            <BarsSeriesIdx>0</BarsSeriesIdx>
-            <Indicator>
-              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-                <AutoScale>false</AutoScale>
-                <BarsPeriods>
-                  <Period>
-                    <BasePeriodType>Minute</BasePeriodType>
-                    <BasePeriodValue>1</BasePeriodValue>
-                    <Id>Minute</Id>
-                    <MarketDataType>Last</MarketDataType>
-                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-                    <ReversalType>Tick</ReversalType>
-                    <Value>5</Value>
-                    <Value2>1</Value2>
-                  </Period>
-                </BarsPeriods>
-                <CalculateOnBarClose>true</CalculateOnBarClose>
-                <DisableScaleBuffer>false</DisableScaleBuffer>
-                <Displacement>0</Displacement>
-                <DisplayInDataBox>false</DisplayInDataBox>
-                <DrawOnPricePanel>false</DrawOnPricePanel>
-                <Enabled>true</Enabled>
-                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-                <HorizontalGridLines>true</HorizontalGridLines>
-                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
-                <Lines />
-                <LinesConfigurable>true</LinesConfigurable>
-                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>PitColor</Name>
-                <Overlay>true</Overlay>
-                <PaintPriceMarkers>true</PaintPriceMarkers>
-                <Panel>-2</Panel>
-                <PanelUI>-1</PanelUI>
-                <Plots>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>Dummy</Name>
-                    <PenSerializable>
-                      <Color>n:Orange</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Line</PlotStyle>
-                  </Plot>
-                </Plots>
-                <PlotsConfigurable>false</PlotsConfigurable>
-                <ScaleJustification>Right</ScaleJustification>
-                <SelectedSeries>0</SelectedSeries>
-                <SessionBreakLines>true</SessionBreakLines>
-                <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30001</ZOrder>
-                <StartTime>161500</StartTime>
-                <EndTime>83000</EndTime>
-                <Opacity>25</Opacity>
-                <ColorBackground />
-                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
-              </PitColor>
-            </Indicator>
-            <ChartObjects />
-          </Indicator1>
-          <Indicator2>
             <ClassName>NinjaTrader.Indicator.EMA_Colors_Paint_v01</ClassName>
             <Input>
               <PriceType>Close</PriceType>
@@ -4100,8 +3426,75 @@
               </EMA_Colors_Paint_v01>
             </Indicator>
             <ChartObjects />
-          </Indicator2>
-          <Indicator3>
+          </Indicator0>
+          <Indicator1>
+            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
+            <Input>
+              <PriceType>Close</PriceType>
+            </Input>
+            <BarsSeriesIdx>0</BarsSeriesIdx>
+            <Indicator>
+              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+                <AutoScale>false</AutoScale>
+                <BarsPeriods>
+                  <Period>
+                    <BasePeriodType>Minute</BasePeriodType>
+                    <BasePeriodValue>1</BasePeriodValue>
+                    <Id>Minute</Id>
+                    <MarketDataType>Last</MarketDataType>
+                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+                    <ReversalType>Tick</ReversalType>
+                    <Value>5</Value>
+                    <Value2>1</Value2>
+                  </Period>
+                </BarsPeriods>
+                <CalculateOnBarClose>true</CalculateOnBarClose>
+                <DisableScaleBuffer>false</DisableScaleBuffer>
+                <Displacement>0</Displacement>
+                <DisplayInDataBox>false</DisplayInDataBox>
+                <DrawOnPricePanel>false</DrawOnPricePanel>
+                <Enabled>true</Enabled>
+                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+                <HorizontalGridLines>true</HorizontalGridLines>
+                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
+                <Lines />
+                <LinesConfigurable>true</LinesConfigurable>
+                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+                <Name>PitColor</Name>
+                <Overlay>true</Overlay>
+                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <Panel>-2</Panel>
+                <PanelUI>-1</PanelUI>
+                <Plots>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>Dummy</Name>
+                    <PenSerializable>
+                      <Color>n:Orange</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Line</PlotStyle>
+                  </Plot>
+                </Plots>
+                <PlotsConfigurable>false</PlotsConfigurable>
+                <ScaleJustification>Right</ScaleJustification>
+                <SelectedSeries>0</SelectedSeries>
+                <SessionBreakLines>true</SessionBreakLines>
+                <VerticalGridLines>true</VerticalGridLines>
+                <ZOrder>30001</ZOrder>
+                <StartTime>161500</StartTime>
+                <EndTime>83000</EndTime>
+                <Opacity>25</Opacity>
+                <ColorBackground />
+                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
+              </PitColor>
+            </Indicator>
+            <ChartObjects />
+          </Indicator1>
+          <Indicator2>
             <ClassName>NinjaTrader.Indicator.T3</ClassName>
             <Input>
               <PriceType>Close</PriceType>
@@ -4165,6 +3558,82 @@
               </T3>
             </Indicator>
             <ChartObjects />
+          </Indicator2>
+          <Indicator3>
+            <ClassName>NinjaTrader.Indicator.ATRTrailingClose</ClassName>
+            <Input>
+              <PriceType>Close</PriceType>
+            </Input>
+            <BarsSeriesIdx>0</BarsSeriesIdx>
+            <Indicator>
+              <ATRTrailingClose xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+                <AutoScale>false</AutoScale>
+                <BarsPeriods>
+                  <Period>
+                    <BasePeriodType>Minute</BasePeriodType>
+                    <BasePeriodValue>1</BasePeriodValue>
+                    <Id>Minute</Id>
+                    <MarketDataType>Last</MarketDataType>
+                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+                    <ReversalType>Tick</ReversalType>
+                    <Value>5</Value>
+                    <Value2>1</Value2>
+                  </Period>
+                </BarsPeriods>
+                <CalculateOnBarClose>true</CalculateOnBarClose>
+                <DisableScaleBuffer>false</DisableScaleBuffer>
+                <Displacement>0</Displacement>
+                <DisplayInDataBox>true</DisplayInDataBox>
+                <DrawOnPricePanel>true</DrawOnPricePanel>
+                <Enabled>true</Enabled>
+                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+                <HorizontalGridLines>true</HorizontalGridLines>
+                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
+                <Lines />
+                <LinesConfigurable>true</LinesConfigurable>
+                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+                <Name>ATRTrailingClose</Name>
+                <Overlay>true</Overlay>
+                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <Panel>-2</Panel>
+                <PanelUI>-1</PanelUI>
+                <Plots>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>ATR Trailing Dn</Name>
+                    <PenSerializable>
+                      <Color>n:Red</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Dot</PlotStyle>
+                  </Plot>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>ATR Trailing Up</Name>
+                    <PenSerializable>
+                      <Color>n:Blue</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Dot</PlotStyle>
+                  </Plot>
+                </Plots>
+                <PlotsConfigurable>true</PlotsConfigurable>
+                <ScaleJustification>Right</ScaleJustification>
+                <SelectedSeries>0</SelectedSeries>
+                <SessionBreakLines>true</SessionBreakLines>
+                <VerticalGridLines>true</VerticalGridLines>
+                <ZOrder>30005</ZOrder>
+                <ATRTIMES>1.5</ATRTIMES>
+                <Period>10</Period>
+                <Ratched>0</Ratched>
+              </ATRTrailingClose>
+            </Indicator>
+            <ChartObjects />
           </Indicator3>
         </Indicators>
         <Panels>
@@ -4208,8 +3677,8 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.Gui.Chart.ChartForm</Class>
       <WindowState>Normal</WindowState>
-      <ZOrder>296</ZOrder>
-      <Location>818;583</Location>
+      <ZOrder>87</ZOrder>
+      <Location>888;628</Location>
       <Size>1032;572</Size>
       <Bars>
         <Bars0>
@@ -4220,7 +3689,7 @@
               <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;5&lt;/BarWidth&gt;&lt;ChartStyleType&gt;OHLC&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
               <DaysBack>20</DaysBack>
               <DisplayInDataBox>true</DisplayInDataBox>
-              <From>2015-01-17T00:00:00-06:00</From>
+              <From>2015-04-21T00:00:00-05:00</From>
               <Instrument>ES 03-15 Globex</Instrument>
               <IsPrimarySeries>true</IsPrimarySeries>
               <Label>ES 03-15</Label>
@@ -4266,7 +3735,7 @@
             </BarsData>
           </Bars>
           <ChartObjects>
-            <ChartObject1>
+            <ChartObject0>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4275,7 +3744,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4400291-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.852666-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4303,8 +3772,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject1>
-            <ChartObject2>
+            </ChartObject0>
+            <ChartObject1>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4313,7 +3782,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4341,8 +3810,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject2>
-            <ChartObject3>
+            </ChartObject1>
+            <ChartObject2>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4351,7 +3820,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4379,8 +3848,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject3>
-            <ChartObject4>
+            </ChartObject2>
+            <ChartObject3>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4389,7 +3858,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4417,8 +3886,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject4>
-            <ChartObject5>
+            </ChartObject3>
+            <ChartObject4>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4427,7 +3896,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4455,8 +3924,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject5>
-            <ChartObject6>
+            </ChartObject4>
+            <ChartObject5>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4465,20 +3934,20 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
                   <ScaleJustification>Right</ScaleJustification>
                   <Selectable>true</Selectable>
                   <SeparateZOrder>false</SeparateZOrder>
-                  <Y>1930.1957476076555</Y>
+                  <Y>1930.1957476076554</Y>
                   <Tag>4E</Tag>
                   <Time>2014-10-22T12:45:00</Time>
                   <VisibleOnInstrument>ES 03-15</VisibleOnInstrument>
                   <ZOrder>30013</ZOrder>
                   <Anchor1Time>2014-10-22T12:45:00</Anchor1Time>
-                  <Anchor1Y>1930.1957476076555</Anchor1Y>
+                  <Anchor1Y>1930.1957476076554</Anchor1Y>
                   <Anchor2Y>1932.7493839712918</Anchor2Y>
                   <Anchor3Y>1928.4149222488038</Anchor3Y>
                   <Anchor2Time>2014-10-22T13:05:00</Anchor2Time>
@@ -4493,8 +3962,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject6>
-            <ChartObject7>
+            </ChartObject5>
+            <ChartObject6>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4503,7 +3972,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4531,8 +4000,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject7>
-            <ChartObject8>
+            </ChartObject6>
+            <ChartObject7>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4541,7 +4010,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4569,8 +4038,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject8>
-            <ChartObject9>
+            </ChartObject7>
+            <ChartObject8>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4579,7 +4048,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4607,8 +4076,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject9>
-            <ChartObject10>
+            </ChartObject8>
+            <ChartObject9>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4617,7 +4086,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4632,11 +4101,11 @@
                   <Anchor1Time>2014-10-22T10:30:00</Anchor1Time>
                   <Anchor1Y>1941.1159031100478</Anchor1Y>
                   <Anchor2Y>1937.4534509569378</Anchor2Y>
-                  <Anchor3Y>1943.0311303827753</Anchor3Y>
+                  <Anchor3Y>1943.0311303827752</Anchor3Y>
                   <Anchor2Time>2014-10-22T10:50:00</Anchor2Time>
                   <EndY>1937.4534509569378</EndY>
                   <Anchor3Time>2014-10-22T10:40:00</Anchor3Time>
-                  <MiddleY>1943.0311303827753</MiddleY>
+                  <MiddleY>1943.0311303827752</MiddleY>
                   <PenSerializable>
                     <Color>n:Gray</Color>
                     <DashStyle>Dash</DashStyle>
@@ -4645,8 +4114,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject10>
-            <ChartObject11>
+            </ChartObject9>
+            <ChartObject10>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4655,7 +4124,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.868667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4683,8 +4152,8 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject11>
-            <ChartObject12>
+            </ChartObject10>
+            <ChartObject11>
               <ClassName>NinjaTrader.Gui.Chart.ChartRuler</ClassName>
               <ChartObject>
                 <ChartRuler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -4693,7 +4162,7 @@
                   <CreatedOnBar>-1</CreatedOnBar>
                   <CreatedOnTime>1800-01-01T00:00:00</CreatedOnTime>
                   <InstrumentOnCopyPaste />
-                  <LastSeen>2015-02-09T16:07:51.4450293-06:00</LastSeen>
+                  <LastSeen>2015-05-12T08:02:28.869667-05:00</LastSeen>
                   <Locked>false</Locked>
                   <Panel>0</Panel>
                   <Persist>true</Persist>
@@ -4721,7 +4190,7 @@
                   <TextColorSerialize>n:Black</TextColorSerialize>
                 </ChartRuler>
               </ChartObject>
-            </ChartObject12>
+            </ChartObject11>
           </ChartObjects>
         </Bars0>
       </Bars>
@@ -4837,6 +4306,73 @@
         <Strategies />
         <Indicators>
           <Indicator0>
+            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
+            <Input>
+              <PriceType>Close</PriceType>
+            </Input>
+            <BarsSeriesIdx>0</BarsSeriesIdx>
+            <Indicator>
+              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
+                <AutoScale>false</AutoScale>
+                <BarsPeriods>
+                  <Period>
+                    <BasePeriodType>Minute</BasePeriodType>
+                    <BasePeriodValue>1</BasePeriodValue>
+                    <Id>Minute</Id>
+                    <MarketDataType>Last</MarketDataType>
+                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
+                    <ReversalType>Tick</ReversalType>
+                    <Value>5</Value>
+                    <Value2>1</Value2>
+                  </Period>
+                </BarsPeriods>
+                <CalculateOnBarClose>true</CalculateOnBarClose>
+                <DisableScaleBuffer>false</DisableScaleBuffer>
+                <Displacement>0</Displacement>
+                <DisplayInDataBox>false</DisplayInDataBox>
+                <DrawOnPricePanel>false</DrawOnPricePanel>
+                <Enabled>true</Enabled>
+                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
+                <HorizontalGridLines>true</HorizontalGridLines>
+                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
+                <Lines />
+                <LinesConfigurable>true</LinesConfigurable>
+                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
+                <Name>PitColor</Name>
+                <Overlay>true</Overlay>
+                <PaintPriceMarkers>true</PaintPriceMarkers>
+                <Panel>-2</Panel>
+                <PanelUI>-1</PanelUI>
+                <Plots>
+                  <Plot>
+                    <Max>1.7976931348623157E+308</Max>
+                    <Min>-1.7976931348623157E+308</Min>
+                    <Name>Dummy</Name>
+                    <PenSerializable>
+                      <Color>n:Orange</Color>
+                      <DashStyle>Solid</DashStyle>
+                      <Width>1</Width>
+                    </PenSerializable>
+                    <PlotStyle>Line</PlotStyle>
+                  </Plot>
+                </Plots>
+                <PlotsConfigurable>false</PlotsConfigurable>
+                <ScaleJustification>Right</ScaleJustification>
+                <SelectedSeries>0</SelectedSeries>
+                <SessionBreakLines>true</SessionBreakLines>
+                <VerticalGridLines>true</VerticalGridLines>
+                <ZOrder>30002</ZOrder>
+                <StartTime>161500</StartTime>
+                <EndTime>83000</EndTime>
+                <Opacity>25</Opacity>
+                <ColorBackground />
+                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
+              </PitColor>
+            </Indicator>
+            <ChartObjects />
+          </Indicator0>
+          <Indicator1>
             <ClassName>NinjaTrader.Indicator.HMARick</ClassName>
             <Input>
               <PriceType>Close</PriceType>
@@ -4908,73 +4444,6 @@
               </HMARick>
             </Indicator>
             <ChartObjects />
-          </Indicator0>
-          <Indicator1>
-            <ClassName>NinjaTrader.Indicator.PitColor</ClassName>
-            <Input>
-              <PriceType>Close</PriceType>
-            </Input>
-            <BarsSeriesIdx>0</BarsSeriesIdx>
-            <Indicator>
-              <PitColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-                <AutoScale>false</AutoScale>
-                <BarsPeriods>
-                  <Period>
-                    <BasePeriodType>Minute</BasePeriodType>
-                    <BasePeriodValue>1</BasePeriodValue>
-                    <Id>Minute</Id>
-                    <MarketDataType>Last</MarketDataType>
-                    <PointAndFigurePriceType>Close</PointAndFigurePriceType>
-                    <ReversalType>Tick</ReversalType>
-                    <Value>5</Value>
-                    <Value2>1</Value2>
-                  </Period>
-                </BarsPeriods>
-                <CalculateOnBarClose>true</CalculateOnBarClose>
-                <DisableScaleBuffer>false</DisableScaleBuffer>
-                <Displacement>0</Displacement>
-                <DisplayInDataBox>false</DisplayInDataBox>
-                <DrawOnPricePanel>false</DrawOnPricePanel>
-                <Enabled>true</Enabled>
-                <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
-                <HorizontalGridLines>true</HorizontalGridLines>
-                <InstrumentsSerializable>ES 03-15 Globex</InstrumentsSerializable>
-                <Lines />
-                <LinesConfigurable>true</LinesConfigurable>
-                <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
-                <Name>PitColor</Name>
-                <Overlay>true</Overlay>
-                <PaintPriceMarkers>true</PaintPriceMarkers>
-                <Panel>-2</Panel>
-                <PanelUI>-1</PanelUI>
-                <Plots>
-                  <Plot>
-                    <Max>1.7976931348623157E+308</Max>
-                    <Min>-1.7976931348623157E+308</Min>
-                    <Name>Dummy</Name>
-                    <PenSerializable>
-                      <Color>n:Orange</Color>
-                      <DashStyle>Solid</DashStyle>
-                      <Width>1</Width>
-                    </PenSerializable>
-                    <PlotStyle>Line</PlotStyle>
-                  </Plot>
-                </Plots>
-                <PlotsConfigurable>false</PlotsConfigurable>
-                <ScaleJustification>Right</ScaleJustification>
-                <SelectedSeries>0</SelectedSeries>
-                <SessionBreakLines>true</SessionBreakLines>
-                <VerticalGridLines>true</VerticalGridLines>
-                <ZOrder>30002</ZOrder>
-                <StartTime>161500</StartTime>
-                <EndTime>83000</EndTime>
-                <Opacity>25</Opacity>
-                <ColorBackground />
-                <bgColorDownSerialize>n:Black</bgColorDownSerialize>
-              </PitColor>
-            </Indicator>
-            <ChartObjects />
           </Indicator1>
         </Indicators>
         <Panels>
@@ -5018,9 +4487,9 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.Gui.Chart.ChartForm</Class>
       <WindowState>Normal</WindowState>
-      <Location>20;247</Location>
+      <Location>31;329</Location>
       <Size>1032;761</Size>
-      <ZOrder>291</ZOrder>
+      <ZOrder>82</ZOrder>
       <Bars>
         <Bars0>
           <Bars>
@@ -5030,7 +4499,7 @@
               <ChartStyleSerialize>&lt;ChartStyle&gt;&lt;BarWidth&gt;2.1&lt;/BarWidth&gt;&lt;ChartStyleType&gt;CandleStick&lt;/ChartStyleType&gt;&lt;DownColor&gt;n:Red&lt;/DownColor&gt;&lt;Pen&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen&gt;&lt;Pen2&gt;&amp;lt;Pen&amp;gt;&amp;lt;Color&amp;gt;n:Black&amp;lt;/Color&amp;gt;&amp;lt;DashStyle&amp;gt;Solid&amp;lt;/DashStyle&amp;gt;&amp;lt;Width&amp;gt;1&amp;lt;/Width&amp;gt;&amp;lt;/Pen&amp;gt;&lt;/Pen2&gt;&lt;UpColor&gt;n:LightGreen&lt;/UpColor&gt;&lt;/ChartStyle&gt;</ChartStyleSerialize>
               <DaysBack>5</DaysBack>
               <DisplayInDataBox>true</DisplayInDataBox>
-              <From>2015-02-01T00:00:00-06:00</From>
+              <From>2015-05-06T00:00:00-05:00</From>
               <Instrument>ES 03-15 Globex</Instrument>
               <IsPrimarySeries>true</IsPrimarySeries>
               <Label>ES 03-15</Label>
@@ -5087,7 +4556,7 @@
       <WindowState>Normal</WindowState>
       <Location>1;1</Location>
       <Size>1598;898</Size>
-      <ZOrder>286</ZOrder>
+      <ZOrder>77</ZOrder>
     </StrategyAnalyzer-c3c24f8f0d2d40d883f2346581f74261>
     <MarketAnalyzer-0a77af448f9845d0a4f9f103d69de7ff>
       <AlertsEnabled>True</AlertsEnabled>
@@ -5114,8 +4583,8 @@
       <Assembly>NinjaTrader.Core</Assembly>
       <Class>NinjaTrader.MarketAnalyzer.MarketAnalyzer</Class>
       <WindowState>Normal</WindowState>
-      <ZOrder>283</ZOrder>
-      <Location>91;101</Location>
+      <ZOrder>74</ZOrder>
+      <Location>132;183</Location>
       <Size>768;449</Size>
       <Instruments>
         <Row>
@@ -6614,5 +6083,5 @@
   <NinjaTrader.Gui.Chart.ChartStrategies>
     <Size>586;505</Size>
   </NinjaTrader.Gui.Chart.ChartStrategies>
-  <Version>7.0.1000.25</Version>
+  <Version>7.0.1000.27</Version>
 </NinjaTrader>

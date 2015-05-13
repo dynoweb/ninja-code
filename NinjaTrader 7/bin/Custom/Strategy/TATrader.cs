@@ -29,7 +29,7 @@ namespace NinjaTrader.Strategy
 	///   CL 02-13 (333 Tick) - $1,110.00
 	/// 
     /// </summary>
-    [Description("Will Trade RTM, SLO-MOMO, MOMO Trades")]
+    [Description("CL 333 Tick - Trades RTM, SLO-MOMO, MOMO Trades")]
     public class TATrader : Strategy
     {
         #region Variables

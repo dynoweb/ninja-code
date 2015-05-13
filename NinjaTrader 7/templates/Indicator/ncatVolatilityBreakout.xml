@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.16</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.ncatVolatilityBreakout</ClassName>
   <Default>
     <ncatVolatilityBreakout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -20,12 +20,12 @@
       <CalculateOnBarClose>true</CalculateOnBarClose>
       <DisableScaleBuffer>false</DisableScaleBuffer>
       <Displacement>0</Displacement>
-      <DisplayInDataBox>false</DisplayInDataBox>
+      <DisplayInDataBox>true</DisplayInDataBox>
       <DrawOnPricePanel>true</DrawOnPricePanel>
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>EMCF Default</InstrumentsSerializable>
+      <InstrumentsSerializable>IVW Default</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -162,14 +162,14 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>10006</ZOrder>
+      <ZOrder>10003</ZOrder>
       <BoxOutline>
         <Max>1.7976931348623157E+308</Max>
         <Min>-1.7976931348623157E+308</Min>
         <Name>BoxOutline</Name>
         <PenSerializable>
-          <Color>n:Gray</Color>
-          <DashStyle>Solid</DashStyle>
+          <Color>n:Orchid</Color>
+          <DashStyle>Dot</DashStyle>
           <Width>1</Width>
         </PenSerializable>
         <PlotStyle>Line</PlotStyle>
@@ -197,7 +197,7 @@
         <Min>-1.7976931348623157E+308</Min>
         <Name>BoxLow</Name>
         <PenSerializable>
-          <Color>n:Red</Color>
+          <Color>n:Maroon</Color>
           <DashStyle>Solid</DashStyle>
           <Width>2</Width>
         </PenSerializable>
@@ -217,8 +217,8 @@
       </ExtendedMiddle>
       <ExtendedMiddleVisible>true</ExtendedMiddleVisible>
       <ExtendedMiddleLineLength>6</ExtendedMiddleLineLength>
-      <ExtendedLineLength>10</ExtendedLineLength>
-      <BoxAreaColor Web="Orange" />
+      <ExtendedLineLength>8</ExtendedLineLength>
+      <BoxAreaColor Web="Blue" />
       <BoxAreaOpacity>1</BoxAreaOpacity>
       <TickHeightVisible>true</TickHeightVisible>
       <TickHeightPosition>Both</TickHeightPosition>
@@ -263,12 +263,12 @@
         </PenSerializable>
         <PlotStyle>Line</PlotStyle>
       </ExtendedLineLevel3>
-      <SoundHigh>Alert4.wav</SoundHigh>
-      <SoundLow>Alert4.wav</SoundLow>
-      <SoundLevel1>Alert4.wav</SoundLevel1>
-      <SoundLevel2>Alert4.wav</SoundLevel2>
+      <SoundHigh>Announcement.wav</SoundHigh>
+      <SoundLow>Announcement.wav</SoundLow>
+      <SoundLevel1>AutoBreakEven.wav</SoundLevel1>
+      <SoundLevel2>AutoChase.wav</SoundLevel2>
       <SoundLevel3>Alert4.wav</SoundLevel3>
-      <MultiAlert>false</MultiAlert>
+      <MultiAlert>true</MultiAlert>
     </ncatVolatilityBreakout>
   </Default>
 </NinjaTrader>

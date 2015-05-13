@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.14</Version>
+  <Version>7.0.1000.25</Version>
   <Default>
     <ChartLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AutoScale>false</AutoScale>
@@ -14,20 +14,20 @@
       <ScaleJustification>Right</ScaleJustification>
       <Selectable>true</Selectable>
       <SeparateZOrder>false</SeparateZOrder>
-      <Y>1.31659128017311</Y>
-      <Tag>13</Tag>
-      <Time>2013-09-06T08:59:04</Time>
-      <VisibleOnInstrument>6E 09-13</VisibleOnInstrument>
+      <Y>77.4607198878504</Y>
+      <Tag>2</Tag>
+      <Time>2014-11-25T16:15:00</Time>
+      <VisibleOnInstrument>CL 03-15</VisibleOnInstrument>
       <ZOrder>0</ZOrder>
-      <EndTime>2013-09-06T09:03:52</EndTime>
-      <EndY>1.31880096556518</EndY>
+      <EndTime>2015-01-20T16:15:00</EndTime>
+      <EndY>43.505790411215</EndY>
       <PenSerializable>
-        <Color>n:Green</Color>
-        <DashStyle>Dash</DashStyle>
+        <Color>n:Brown</Color>
+        <DashStyle>Solid</DashStyle>
         <Width>2</Width>
       </PenSerializable>
-      <StartTime>2013-09-06T08:59:04</StartTime>
-      <StartY>1.31659128017311</StartY>
+      <StartTime>2014-11-25T16:15:00</StartTime>
+      <StartY>77.4607198878504</StartY>
     </ChartLine>
   </Default>
 </NinjaTrader>

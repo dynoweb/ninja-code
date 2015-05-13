@@ -1,10 +1,10 @@
 <NinjaTrader>
-  <Version>7.0.1000.16</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.ncatSpreadScalper</ClassName>
   <Default>
     <ncatSpreadScalper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>false</AutoScale>
+      <AutoScale>true</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
@@ -23,7 +23,7 @@
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
-          <Value>3</Value>
+          <Value>390</Value>
           <Value2>1</Value2>
         </Period>
       </BarsPeriods>
@@ -35,13 +35,13 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>NSC Default|NSC Default</InstrumentsSerializable>
+      <InstrumentsSerializable>AAPL Default|AAPL Default</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
       <Name>ncatSpreadScalper</Name>
       <Overlay>true</Overlay>
-      <PaintPriceMarkers>false</PaintPriceMarkers>
+      <PaintPriceMarkers>true</PaintPriceMarkers>
       <Panel>-2</Panel>
       <PanelUI>-1</PanelUI>
       <Plots>
@@ -117,19 +117,19 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>0</ZOrder>
+      <ZOrder>30002</ZOrder>
       <ShortLogo>true</ShortLogo>
       <DrawMarkers>true</DrawMarkers>
-      <HLtextSize>6</HLtextSize>
+      <HLtextSize>8</HLtextSize>
       <HLtextColor Web="Black" />
-      <BarTextSize>7</BarTextSize>
+      <BarTextSize>8</BarTextSize>
       <BarTextColor Web="Black" />
       <AlertOnHighLine>Disabled</AlertOnHighLine>
       <AlertOnLow>Disabled</AlertOnLow>
       <ValuesRight>true</ValuesRight>
       <ValuesLeft>true</ValuesLeft>
-      <HighLine>false</HighLine>
-      <LowLine>false</LowLine>
+      <HighLine>true</HighLine>
+      <LowLine>true</LowLine>
       <HighLineWidth>2</HighLineWidth>
       <HighLineDash>Dash</HighLineDash>
       <HighLineColor Web="Green" />

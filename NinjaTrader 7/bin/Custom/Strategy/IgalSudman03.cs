@@ -34,6 +34,23 @@ namespace NinjaTrader.Strategy
 	/// some conclusions - looks like 15 ticks is the right number we get 138 trades and loss of 370$
 	/// of those there are 62 winner and 72 loser but if we move the break-even to closer to profit target and not do the 50% to BE then they move to 74 winners and 64 lossers with now being Profit of approx 400$ , if we are able to either get an extra 1-2 ticks or trail better beacuse most moves do have more of a follow then we have an additonal 74 *1-2 ticks , we are up 1500-2500$ for the period , looking at news will help as well ... all looks good and the number of trades is more in order of what i am seeing over the last month or so 4-5 per day and not 8-9
 	/// 
+	/// Enhancement Request on 5/11/15
+	/// 
+	/// the entry range when its beside the range - so when we place an order and the entry is within X ticks of a range  
+	/// I would like to move the entry , as you know when we are on edge of the range they like to run stops , so I'd 
+	/// rather not have an entry placed within 2-5 ticks of the range either above it or below it - if it does fall 
+	/// within that "box" then double the ATR and place the entry there for ex - today range bottom is 59.10 and 
+	/// during the day we have a 3-15m box that is at 59.20 with an atr of 8 - our entry would be at 59.12 long 
+	/// for example _ i know they will run the stop - if the entry is at that location then double the atr and place 
+	/// the entry at 8*2=16 and the entry would be at 59.04 , everything else stay the same.
+	/// 
+	/// so we need a parameter that we can choose _distance from range edge - 1-2-3-10 ticks - on the higher time 
+	/// frame its better to use 5-10 ticks - so if the bottom is 59.10 and we choose 5 - any entry that will fall 
+	/// between 59.15 and 59.05 would be doubled
+	/// 
+	/// 
+	/// 
+	/// 
     /// </summary>
     [Description("CL 3 min bars")]
     public class IgalSudman03 : Strategy
