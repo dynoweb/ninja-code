@@ -1,15 +1,15 @@
 <NinjaTrader>
-  <Version>7.0.1000.16</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.ncatRSD</ClassName>
   <Default>
     <ncatRSD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>false</AutoScale>
+      <AutoScale>true</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
           <BasePeriodValue>1</BasePeriodValue>
-          <Id>Day</Id>
+          <Id>Month</Id>
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
@@ -25,13 +25,13 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>NSC Default</InstrumentsSerializable>
+      <InstrumentsSerializable>CL 05-14 Nymex</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
       <Name>ncatRSD</Name>
       <Overlay>true</Overlay>
-      <PaintPriceMarkers>true</PaintPriceMarkers>
+      <PaintPriceMarkers>false</PaintPriceMarkers>
       <Panel>-2</Panel>
       <PanelUI>-1</PanelUI>
       <Plots>
@@ -52,19 +52,19 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>0</ZOrder>
+      <ZOrder>30003</ZOrder>
       <ShortLogo>true</ShortLogo>
       <periodValue>0</periodValue>
       <Draw_edge_price>false</Draw_edge_price>
       <DrawFarEdgePrice>false</DrawFarEdgePrice>
       <DrawZoneHeight>false</DrawZoneHeight>
       <Recolor_retouch>true</Recolor_retouch>
-      <Recolor_weak_retouch>false</Recolor_weak_retouch>
-      <No_weak_zones>true</No_weak_zones>
+      <Recolor_weak_retouch>true</Recolor_weak_retouch>
+      <No_weak_zones>false</No_weak_zones>
       <ExtendZone>false</ExtendZone>
-      <ExtendMinutes>60</ExtendMinutes>
-      <AlertOnDemandSound>Disabled</AlertOnDemandSound>
-      <AlertOnSupplySound>Disabled</AlertOnSupplySound>
+      <ExtendMinutes>15</ExtendMinutes>
+      <AlertOnDemandSound>Alert1.wav</AlertOnDemandSound>
+      <AlertOnSupplySound>Alert1.wav</AlertOnSupplySound>
       <SupplyStrong Web="Red" />
       <SupplyWeak Web="PaleVioletRed" />
       <SupplyRetouch Web="Coral" />

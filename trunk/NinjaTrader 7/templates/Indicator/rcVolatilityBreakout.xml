@@ -1,5 +1,5 @@
 <NinjaTrader>
-  <Version>7.0.1000.16</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.rcVolatilityBreakout</ClassName>
   <Default>
     <rcVolatilityBreakout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -25,7 +25,7 @@
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>6E 03-14 Globex</InstrumentsSerializable>
+      <InstrumentsSerializable>YNDX Default</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -162,7 +162,7 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>10007</ZOrder>
+      <ZOrder>0</ZOrder>
     </rcVolatilityBreakout>
   </Default>
 </NinjaTrader>

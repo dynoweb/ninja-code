@@ -1,15 +1,15 @@
 <NinjaTrader>
-  <Version>7.0.1000.16</Version>
+  <Version>7.0.1000.18</Version>
   <ClassName>NinjaTrader.Indicator.ncatABCDWave</ClassName>
   <Default>
     <ncatABCDWave xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <AllowRemovalOfDrawObjects>false</AllowRemovalOfDrawObjects>
-      <AutoScale>false</AutoScale>
+      <AutoScale>true</AutoScale>
       <BarsPeriods>
         <Period>
           <BasePeriodType>Minute</BasePeriodType>
           <BasePeriodValue>1</BasePeriodValue>
-          <Id>Day</Id>
+          <Id>Minute</Id>
           <MarketDataType>Last</MarketDataType>
           <PointAndFigurePriceType>Close</PointAndFigurePriceType>
           <ReversalType>Tick</ReversalType>
@@ -20,12 +20,12 @@
       <CalculateOnBarClose>true</CalculateOnBarClose>
       <DisableScaleBuffer>false</DisableScaleBuffer>
       <Displacement>0</Displacement>
-      <DisplayInDataBox>false</DisplayInDataBox>
+      <DisplayInDataBox>true</DisplayInDataBox>
       <DrawOnPricePanel>true</DrawOnPricePanel>
       <Enabled>false</Enabled>
       <ForceMaximumBarsLookBack256>false</ForceMaximumBarsLookBack256>
       <HorizontalGridLines>true</HorizontalGridLines>
-      <InstrumentsSerializable>NSC Default</InstrumentsSerializable>
+      <InstrumentsSerializable>F Default</InstrumentsSerializable>
       <Lines />
       <LinesConfigurable>true</LinesConfigurable>
       <MaximumBarsLookBack>TwoHundredFiftySix</MaximumBarsLookBack>
@@ -151,7 +151,7 @@
       <SelectedSeries>0</SelectedSeries>
       <SessionBreakLines>true</SessionBreakLines>
       <VerticalGridLines>true</VerticalGridLines>
-      <ZOrder>10006</ZOrder>
+      <ZOrder>0</ZOrder>
       <ShortLogo>true</ShortLogo>
       <FontSize>7</FontSize>
       <_iextMaxBars>5000</_iextMaxBars>
