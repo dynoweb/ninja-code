@@ -40,7 +40,8 @@ namespace NinjaTrader.Strategy
     {
         #region Variables
         
-        int contracts = 1; 
+		double atrFactorChannelOut = 1.5;
+		int contracts = 1; 
 		double maxAtr = 0.29;
 		double breakEvenPercentOfTarget = 0.50;
 		int breakEvenPlus = 0;
@@ -73,7 +74,7 @@ namespace NinjaTrader.Strategy
 		double stopPrice = 0;
 		
 		string orderPrefix = "Ig3T"; 
-		
+		bool fullTrace=false;		
 		
         #endregion
 
@@ -100,12 +101,14 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
+			if (fullTrace) Print(Time + " OnBarUpdate start");
 			// do this realtime when in a trade
 			//if (!Historical && (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short))
 			if (Position.MarketPosition == MarketPosition.Long || Position.MarketPosition == MarketPosition.Short)
 			{
 				OrderManagement();
 			}
+			if (fullTrace) Print(Time + " OnBarUpdate CP01");
 			
 			if (FirstTickOfBar)
 			{
@@ -135,6 +138,7 @@ namespace NinjaTrader.Strategy
 					}
 					return;
 				}
+				if (fullTrace) Print(Time + " OnBarUpdate CP03");
 			
 				// Channel measurement happens 30 min after the start time
 				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3300)
@@ -153,35 +157,47 @@ namespace NinjaTrader.Strategy
 						DrawText(CurrentBar + "atr", atr.ToString(), 2, MAX(High, 5)[1] + 0.3 * atr, Color.Black);
 						if (atr <= maxAtr)
 						{
-							upperTrigger = 0; //MAX(High, 5)[0] + Instrument.MasterInstrument.Round2TickSize(atr);
-							lowerTrigger = 0; //MIN(Low, 5)[0] - Instrument.MasterInstrument.Round2TickSize(atr);
-							
 							// channelStartBar
-							if (MAX(High, 5)[1] >= (MAX(High, CurrentBar - channelStartBar)[6]))
-							{
-								if (MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr) > channelHigh)
-								{
-									longTarget = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
-									upperTrigger = longTarget - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
-									upperStopLoss = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
+//							if (MAX(High, 5)[1] >= (MAX(High, CurrentBar - channelStartBar)[6]))
+//							{
+								longTarget = MAX(High, 5)[1] + Instrument.MasterInstrument.Round2TickSize(atr * AtrFactorChannelOut);
+								upperTrigger = longTarget - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
+								upperStopLoss = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 									
-									DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -5, upperTrigger, Color.Blue);
-									DrawLine(CurrentBar+"longTarget", 0, longTarget, -5, longTarget, Color.Green);				
-									DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -5, upperStopLoss, Color.Red);
+								if (upperTrigger > channelHigh)
+								{
+									DrawLine(CurrentBar + "longTarget", 0, longTarget, -4, longTarget, Color.Green);				
+									DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -4, upperTrigger, Color.Blue);
+									DrawLine(CurrentBar + "upperStopLoss", 0, upperStopLoss, -4, upperStopLoss, Color.Red);
 								}
-							}
-							if (MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr) < channelLow)
+								else
+								{
+									longTarget = 0;
+									upperTrigger = 0;
+									lowerTrigger = 0;
+								}
+//							}
+							if (fullTrace) Print(Time + " OnBarUpdate CP05");
+							
+							//Print(Time + " MIN(Low, 5)[1] = " + MIN(Low, 5)[1]);
+							shortTarget = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * AtrFactorChannelOut);
+							lowerTrigger = shortTarget + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
+							lowerStopLoss = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
+							
+							if (lowerTrigger < channelLow)
 							{
-								//Print(Time + " MIN(Low, 5)[1] = " + MIN(Low, 5)[1]);
-								shortTarget = MIN(Low, 5)[1] - Instrument.MasterInstrument.Round2TickSize(atr * 1.5);
-								lowerTrigger = shortTarget + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
-								lowerStopLoss = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
-								
-								DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -5, lowerTrigger, Color.Blue);
-								DrawLine(CurrentBar+"shortTarget", 0, shortTarget, -5, shortTarget, Color.Green);
-								DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -5, lowerStopLoss, Color.Red);
+								DrawLine(CurrentBar+"shortTarget", 0, shortTarget, -4, shortTarget, Color.Green);
+								DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -4, lowerTrigger, Color.Blue);
+								DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -4, lowerStopLoss, Color.Red);
+							}
+							else
+							{
+								shortTarget = 0;
+								lowerTrigger = 0;
+								lowerStopLoss = 0;
 							}
 							
+							if (fullTrace) Print(Time + " OnBarUpdate CP07");
 							if (upperTrigger == 0)
 							{
 								Print(Time + " upperTrigger == 0, closing buy order");
@@ -219,6 +235,7 @@ namespace NinjaTrader.Strategy
 								}
 							}
 								
+							if (fullTrace) Print(Time + " OnBarUpdate CP20");
 							
 							if (lowerTrigger != 0)
 							{
@@ -254,6 +271,7 @@ namespace NinjaTrader.Strategy
 					}
 				}				
 			}
+			if (fullTrace) Print(Time + " OnBarUpdate end");
         }
 		
 		private void OrderManagement()
@@ -264,23 +282,29 @@ namespace NinjaTrader.Strategy
 			//double highSinceOpen = High[HighestBar(High, BarsSinceEntry())];
 			//double lowSinceOpen = Low[LowestBar(Low, BarsSinceEntry())];
 
-			
+			if (fullTrace) Print(Time + " OrderManagement Start");			
 			// Change long stop order
-    		if (closeLongOrderStop1 != null && closeLongOrderLimit1 != null)
+    		if (closeLongOrderStop1 != null && closeLongOrderLimit1 != null && buyOrder1 != null)
 			{
+				if (fullTrace) Print(Time + " OrderManagement CP1");			
 				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + " 50% trigger: " + Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget));
 				// change to B/E if 50% of target
+				Print(Time + " buyOrder1: " + buyOrder1 + " breakEvenPercentOfTarget: " + breakEvenPercentOfTarget);
 				if (GetCurrentAsk() > buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice) * breakEvenPercentOfTarget)
 				{
+					if (fullTrace) Print(Time + " OrderManagement CP2");			
 					// moving the stop up
 					if (closeLongOrderStop1.StopPrice < buyOrder1.AvgFillPrice)
 					{
+						if (fullTrace) Print(Time + " OrderManagement CP3");			
 						Print(Time + " moving stop to B/E");
 						stopPrice = buyOrder1.AvgFillPrice + BreakEvenPlus * TickSize;
+						if (fullTrace) Print(Time + " OrderManagement CP4");			
 						ChangeOrder(closeLongOrderStop1, closeLongOrderStop1.Quantity, closeLongOrderStop1.LimitPrice, stopPrice);
 					}
 				}
 			}
+			if (fullTrace) Print(Time + " OrderManagement CP5");			
 			
 			// Change short stop order
 			if (closeShortOrderStop1 != null && closeShortOrderLimit1 != null)
@@ -304,6 +328,7 @@ namespace NinjaTrader.Strategy
 //				closeLongOrderLimit1.LimitPrice
 //				closeLongOrderStop1.StopPrice
 //				
+			if (fullTrace) Print(Time + " OrderManagement End");			
 		}
 
 		/// <summary>
@@ -318,6 +343,7 @@ namespace NinjaTrader.Strategy
 		/// <param name="order"></param>
 		protected override void OnOrderUpdate(IOrder order) 
 		{ 
+			if (fullTrace) Print(Time + " OnOrderUpdate start");
 			// Rejection handling 
 			if (order.OrderState == OrderState.Rejected) 
 			{
@@ -341,10 +367,12 @@ namespace NinjaTrader.Strategy
 					Print(Time + " buyOrder1 == null ? " + (buyOrder1 == null));
 				}
 			}
+			if (fullTrace) Print(Time + " OnOrderUpdate end");
 		}
 
 		protected override void OnExecution(IExecution execution)
 		{
+			if (fullTrace) Print(Time + " OnExecution start");
 			double limitPrice = 0;
 			double stopPrice = 0;
 			
@@ -433,7 +461,7 @@ namespace NinjaTrader.Strategy
 			// ===================================================
 			if (closeLongOrderStop1 != null && closeLongOrderStop1 == execution.Order)
 			{
-				Print(Time + " hit stop, closing all orders");
+				Print(Time + " hit long stop, closing all orders");
 				CloseWorkingOrders();
 				buyOrder1 = null;
 			}
@@ -453,11 +481,11 @@ namespace NinjaTrader.Strategy
 			// ===================================================
 			if (closeShortOrderStop1 != null && closeShortOrderStop1 == execution.Order)
 			{
-				Print(Time + " hit stop, closing all orders");
+				Print(Time + " hit short stop, closing all orders");
 				CloseWorkingOrders();
 				sellOrder1 = null;
 			}
-			
+			if (fullTrace) Print(Time + " OnExecution end");
 		}
 		
 		private void CloseWorkingOrders()
@@ -469,6 +497,7 @@ namespace NinjaTrader.Strategy
 		
 		private void CloseBuyOrder()
 		{
+			if (fullTrace) Print(Time + " CloseBuyOrder start");
 			if (buyOrder1 != null)
 			{
 				Print(Time + " buyOrder1.OrderState = " + buyOrder1.OrderState);
@@ -476,40 +505,44 @@ namespace NinjaTrader.Strategy
 				{
 					CancelOrder(buyOrder1);
 				}
-//				else if (buyOrder1.OrderState == OrderState.Filled)
-//				{
-//					buyOrder1 = null;
-//				}
+				else if (buyOrder1.OrderState == OrderState.Filled)
+				{
+					Print(Time + " buyOrder1.OrderState is Filled, setting to null");
+					buyOrder1 = null;
+				}
+				else
+				{
+					Print(Time + " buyOrder1.OrderState = " + buyOrder1.OrderState);
+				}
+//				Print(Time + " isNulls - buyOrder1 " + (buyOrder1 == null) + " closeLongOrderLimit1 " + (closeLongOrderLimit1 == null) + " closeLongOrderStop1 " + (closeLongOrderStop1 == null));
 			}
-			// EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-//			Print(Time + " buyOrder1.OrderState = " + buyOrder1.OrderState);
-//			ResetLongTrade();
-//			Print(Time + " isNulls - buyOrder1 " + (buyOrder1 == null) + " closeLongOrderLimit1 " + (closeLongOrderLimit1 == null) + " closeLongOrderStop1 " + (closeLongOrderStop1 == null));
+			ResetLongTrade();
+			if (fullTrace) Print(Time + " CloseBuyOrder end");
 		}
 		
 		private void CloseSellOrder()
 		{
+			Print(Time + " CloseSellOrder end");
 			if (sellOrder1 != null)
 			{
 				if (sellOrder1.OrderState == OrderState.Working || sellOrder1.OrderState == OrderState.Accepted)
 				{
 					CancelOrder(sellOrder1);
 				}					
-//				else if (sellOrder1.OrderState == OrderState.Filled)
-//				{
-//					Print(Time + " orderState is Filled, setting to null");
-//					sellOrder1 = null;
-//					Print(Time + " was able to set it to null");
-//				}
-					//sellOrder1 = null;
+				else if (sellOrder1.OrderState == OrderState.Filled)
+				{
+					Print(Time + " sellOrder1.orderState is Filled, setting to null");
+					sellOrder1 = null;
+				}
+				else
+				{
+					Print(Time + " sellOrder1.OrderState = " + sellOrder1.OrderState);
+				}
+//				Print(Time + " isNulls - sellOrder1 " + (sellOrder1 == null) + " closeShortOrderLimit1 " + (closeShortOrderLimit1 == null) + " closeShortOrderStop1 " + (closeShortOrderStop1 == null));
 			}
 			
-			// EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-//			Print(Time + " sellOrder1.OrderState = " + sellOrder1.OrderState);
-//			ResetShortTrade();
-//			Print(Time + " shortTrade has been reset");
-//			
-//			Print(Time + " isNulls - sellOrder1 " + (sellOrder1 == null) + " closeShortOrderLimit1 " + (closeShortOrderLimit1 == null) + " closeShortOrderStop1 " + (closeShortOrderStop1 == null));
+			ResetShortTrade();
+			if (fullTrace) Print(Time + " CloseSellOrder end");
 		}
 		
 		private void ResetTrades()
@@ -589,6 +622,14 @@ namespace NinjaTrader.Strategy
 		}		
 
         #region Properties
+		
+        [Description("ATR multiplier out of channel")]
+        [GridCategory("Parameters")]
+        public double AtrFactorChannelOut
+        {
+            get { return atrFactorChannelOut; }
+            set { atrFactorChannelOut = value; }
+        }
 		
         [Description("Maximum allowed ATR value for trade in Points")]
         [GridCategory("Parameters")]
