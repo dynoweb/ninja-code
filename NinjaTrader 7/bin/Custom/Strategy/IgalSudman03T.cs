@@ -46,7 +46,7 @@ namespace NinjaTrader.Strategy
 		double breakEvenPercentOfTarget = 0.50;
 		int breakEvenPlus = 0;
 		double stopLossPercent = 1.0;
-		double targetProfitPercent = 0.75;
+		double targetProfitPercent = 1.0;
 		int tradeStartTime = 800;	// 8 AM Central
 		int tradeEndTime = 1430;	// 2:30 PM
 		
@@ -186,7 +186,7 @@ namespace NinjaTrader.Strategy
 							
 							if (lowerTrigger < channelLow)
 							{
-								DrawLine(CurrentBar+"shortTarget", 0, shortTarget, -4, shortTarget, Color.Green);
+								DrawLine(CurrentBar + "shortTarget", 0, shortTarget, -4, shortTarget, Color.Green);
 								DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -4, lowerTrigger, Color.Blue);
 								DrawLine(CurrentBar + "lowerStopLoss", 0, lowerStopLoss, -4, lowerStopLoss, Color.Red);
 							}
