@@ -96,7 +96,7 @@ namespace NinjaTrader.Strategy
 			double limitPrice = 0;
 			double stopPrice = 0;
 			
-			DateTime exp = new DateTime(2015, 5, 1);
+			DateTime exp = new DateTime(2016, 5, 1);
 			if (BarsPeriod.Id != PeriodType.Minute || ToDay(Time[0]) > ToDay(exp))
 				return;
 
