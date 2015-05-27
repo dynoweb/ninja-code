@@ -54,7 +54,7 @@ namespace NinjaTrader.Strategy
 		private int minute = 0;
 		private int period = 60;
 		private int sessionHighLow = 0;
-		private double stdDevMax = 0.02;
+		private double stdDevMax = 0.08;
 		private bool useTrailing = false;
 		
        // private int abeProfitTrigger = 20; // ATM Strategy Variables - sets stop loss to B/E when price moves to this target
@@ -230,14 +230,14 @@ namespace NinjaTrader.Strategy
 				//&& ToTime(Time[0]) >= (ToTime(hour, minute, 0) + 10000) // add an hour before we start the trades
 				) 
 			{
-				if (StdDev(20)[0] < stdDevMax)
-				{
-					if (Rising(ma) || MaPeriod == 0)
-					{
-						if (entryOrderShort != null && MaPeriod > 0)
-						{
-							CancelOrder(entryOrderShort);
-						}
+//				if (StdDev(20)[0] < stdDevMax)
+//				{
+//					if (Rising(ma) || MaPeriod == 0)
+//					{
+//						if (entryOrderShort != null && MaPeriod > 0)
+//						{
+//							CancelOrder(entryOrderShort);
+//						}
 						if (entryOrderLong == null)
 					 	{					
 							stopPrice = channelHigh + 1 * TickSize;
@@ -251,13 +251,13 @@ namespace NinjaTrader.Strategy
 								barNumberOfOrder = CurrentBar;
 							}
 						}
-					}
-					if (Falling(ma) || MaPeriod == 0)
-					{
-						if (entryOrderLong != null && MaPeriod > 0)
-						{
-							CancelOrder(entryOrderLong);
-						}
+//					}
+//					if (Falling(ma) || MaPeriod == 0)
+//					{
+//						if (entryOrderLong != null && MaPeriod > 0)
+//						{
+//							CancelOrder(entryOrderLong);
+//						}
 						if (entryOrderShort == null) 
 						{					
 							//Print(Time + " ATR: " + ATR(period).Plots[0]);
@@ -272,13 +272,13 @@ namespace NinjaTrader.Strategy
 								
 								barNumberOfOrder = CurrentBar;
 							}
-						}
-					}
+//						}
+//					}
 				}
-				else
-				{
-					DrawDiamond(CurrentBar + "highSD", false, 0, (channelHigh + channelLow)/2, Color.Red);
-				}
+//				else
+//				{
+//					DrawDiamond(CurrentBar + "highSD", false, 0, (channelHigh + channelLow)/2, Color.Red);
+//				}
 			}			
 			
 			if (enableSummary)
@@ -473,7 +473,7 @@ namespace NinjaTrader.Strategy
 				}				
 			}
 			
-			DrawText(CurrentBar + "adj", adjustedChannelSize.ToString(), 3, channelHigh + 4 * TickSize, Color.Black);
+			DrawText(CurrentBar + "adj", channelSize.ToString(), 3, channelHigh + 4 * TickSize, Color.Black);
 			if (adjustedChannelSize != 0)
 			{
 				Print(Time + " channelLow: " + channelLow + " channelHigh: " + channelHigh + " channelSize: " + channelSize);
@@ -523,6 +523,7 @@ namespace NinjaTrader.Strategy
 					breakEvenPrice = entryOrderLong.AvgFillPrice + Math.Abs(profitPoints/entryOrderLong.Quantity); 
 					DrawDot(CurrentBar + "breakEvenPrice", false, 0, breakEvenPrice, Color.Yellow);
 					limitPrice = breakEvenPrice + (adjustedChannelSize + 2) * TickSize;
+					//if (adjustedChannelSize > 35) limitPrice = limitPrice * 0.70;
 					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeOrderLongLimit = SubmitOrder(0, OrderAction.Sell, OrderType.Limit, entryOrderLong.Quantity, limitPrice, stopPrice, orderPrefix + "ocoLongClose", "Close Long Limit");
 					
@@ -559,6 +560,7 @@ namespace NinjaTrader.Strategy
 					breakEvenPrice = entryOrderShort.AvgFillPrice - Math.Abs(profitPoints/entryOrderShort.Quantity);
 					DrawDot(CurrentBar + "breakEvenPrice", false, 0, breakEvenPrice, Color.Yellow);
 					limitPrice = breakEvenPrice - (adjustedChannelSize + 2) * TickSize;
+					//if (adjustedChannelSize > 35) limitPrice = limitPrice * 0.70;
 					DrawDot(CurrentBar + "limitPrice", false, 0, limitPrice, Color.Green);
 					closeOrderShortLimit = SubmitOrder(0, OrderAction.BuyToCover, OrderType.Limit, entryOrderShort.Quantity, limitPrice, stopPrice, orderPrefix + "ocoShortClose", "Close Short Limit");
 					
