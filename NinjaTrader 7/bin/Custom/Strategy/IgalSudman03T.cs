@@ -41,14 +41,17 @@ namespace NinjaTrader.Strategy
         #region Variables
         
 		double atrFactorChannelOut = 1.5;
-		int contracts = 1; 
+		int channelStartPeriodSize = 30;
+		
+        int contracts = 1; 
 		double maxAtr = 0.29;
-		double breakEvenPercentOfTarget = 0.50;
-		int breakEvenPlus = 0;
+		double breakEvenPercentOfTarget = 0.70;
+		double breakEvenPlus = 0.30;
 		double stopLossPercent = 1.0;
 		double targetProfitPercent = 1.0;
 		int tradeStartTime = 800;	// 8 AM Central
 		int tradeEndTime = 1430;	// 2:30 PM
+		bool tradeHiAndLow = true;
 		
 		double channelHigh = 0;
 		double channelLow = 0;
@@ -141,7 +144,7 @@ namespace NinjaTrader.Strategy
 				if (fullTrace) Print(Time + " OnBarUpdate CP03");
 			
 				// Channel measurement happens 30 min after the start time
-				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime * 100) + 3300)
+				if (channelSize == 0 && ToTime(Time[0]) == (tradeStartTime + channelStartPeriodSize + BarsPeriod.Value) * 100)
 				{
 					//DrawDot(CurrentBar + "cp", false, 0, MAX(High, 5)[0] + 5 * TickSize, Color.Blue);
 					EstablishOpeningChannel();
@@ -164,7 +167,7 @@ namespace NinjaTrader.Strategy
 								upperTrigger = longTarget - Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
 								upperStopLoss = upperTrigger - Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 									
-								if (upperTrigger > channelHigh)
+								if (upperTrigger > channelHigh || TradeHiAndLow)
 								{
 									DrawLine(CurrentBar + "longTarget", 0, longTarget, -4, longTarget, Color.Green);				
 									DrawLine(CurrentBar + "upperTrigger", 0, upperTrigger, -4, upperTrigger, Color.Blue);
@@ -184,7 +187,7 @@ namespace NinjaTrader.Strategy
 							lowerTrigger = shortTarget + Instrument.MasterInstrument.Round2TickSize(atr * TargetProfitPercent);
 							lowerStopLoss = lowerTrigger + Instrument.MasterInstrument.Round2TickSize(atr * StopLossPercent);
 							
-							if (lowerTrigger < channelLow)
+							if (lowerTrigger < channelLow || TradeHiAndLow)
 							{
 								DrawLine(CurrentBar + "shortTarget", 0, shortTarget, -4, shortTarget, Color.Green);
 								DrawLine(CurrentBar + "lowerTrigger", 0, lowerTrigger, -4, lowerTrigger, Color.Blue);
@@ -289,16 +292,18 @@ namespace NinjaTrader.Strategy
 				if (fullTrace) Print(Time + " OrderManagement CP1");			
 				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + " 50% trigger: " + Instrument.MasterInstrument.Round2TickSize(buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice)*breakEvenPercentOfTarget));
 				// change to B/E if 50% of target
+				Print(Time + "------------------------------------------------------");
 				Print(Time + " buyOrder1: " + buyOrder1 + " breakEvenPercentOfTarget: " + breakEvenPercentOfTarget);
-				if (GetCurrentAsk() > buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice) * breakEvenPercentOfTarget)
+				if (High[0] > buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice) * breakEvenPercentOfTarget)
 				{
+					Print(Time + " checking for long stop adjustment");
 					if (fullTrace) Print(Time + " OrderManagement CP2");			
 					// moving the stop up
 					if (closeLongOrderStop1.StopPrice < buyOrder1.AvgFillPrice)
 					{
 						if (fullTrace) Print(Time + " OrderManagement CP3");			
 						Print(Time + " moving stop to B/E");
-						stopPrice = buyOrder1.AvgFillPrice + BreakEvenPlus * TickSize;
+						stopPrice = buyOrder1.AvgFillPrice + (closeLongOrderLimit1.LimitPrice - buyOrder1.AvgFillPrice) * BreakEvenPlus;
 						if (fullTrace) Print(Time + " OrderManagement CP4");			
 						ChangeOrder(closeLongOrderStop1, closeLongOrderStop1.Quantity, closeLongOrderStop1.LimitPrice, stopPrice);
 					}
@@ -313,13 +318,13 @@ namespace NinjaTrader.Strategy
 				//Print(Time + " CurrentAsk: " + GetCurrentAsk() + "  50% trigger: " + Instrument.MasterInstrument.Round2TickSize(sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget));
 				
 				// change to B/E if 50% of target
-				if (GetCurrentAsk() < Instrument.MasterInstrument.Round2TickSize(sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget))
+				if (Low[0] < Instrument.MasterInstrument.Round2TickSize(sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice)*breakEvenPercentOfTarget))
 				{
 					// moving the stop down
 					if (closeShortOrderStop1.StopPrice > sellOrder1.AvgFillPrice)
 					{
 						Print(Time + " moving stop to B/E");
-						stopPrice = sellOrder1.AvgFillPrice - BreakEvenPlus * TickSize;
+						stopPrice = sellOrder1.AvgFillPrice - (sellOrder1.AvgFillPrice - closeShortOrderLimit1.LimitPrice) * BreakEvenPlus;
 						ChangeOrder(closeShortOrderStop1, closeShortOrderStop1.Quantity, closeShortOrderStop1.LimitPrice, stopPrice);
 					}
 				}
@@ -495,6 +500,7 @@ namespace NinjaTrader.Strategy
 			CloseSellOrder();
 		}	
 		
+		// TODO: if a trade is on, it doesn't seem to close an active trade
 		private void CloseBuyOrder()
 		{
 			if (fullTrace) Print(Time + " CloseBuyOrder start");
@@ -565,10 +571,15 @@ namespace NinjaTrader.Strategy
 
 		private void EstablishOpeningChannel()
 		{
-			channelHigh = MAX(High, 10)[1];
-			channelLow = MIN(Low, 10)[1];
+			int barsToEstablishChannel = channelStartPeriodSize/BarsPeriod.Value;
+			channelHigh = MAX(High, barsToEstablishChannel)[1];
+			channelLow = MIN(Low, barsToEstablishChannel)[1];
 			channelSize = channelHigh - channelLow;
-			DrawRectangle(CurrentBar + "channel", false, 10, channelHigh, -((int) ((tradeEndTime - tradeStartTime) * 0.20 - 10)), channelLow, Color.Teal, Color.Teal, 4);
+			int endHour = tradeEndTime/100;
+			int endMin = tradeEndTime - endHour * 100;
+			int barsToTrade = (endHour * 60 + endMin - (Time[0].Hour * 60 + Time[0].Minute)) / BarsPeriod.Value; 
+			//Print(Time +  " barsToTrade: " + barsToTrade + " tradeEndTime: " + tradeEndTime +  " Time[0]: " + Time[0] + " endHour: " + endHour + " endMin: " + endMin);
+			DrawRectangle(CurrentBar + "channel", false, barsToEstablishChannel, channelHigh, -barsToTrade, channelLow, Color.Teal, Color.Teal, 4);
 		}
 		
 //		protected override void OnPositionUpdate(IPosition position)
@@ -647,12 +658,20 @@ namespace NinjaTrader.Strategy
             set { breakEvenPercentOfTarget = value; }
         }
 		
-		[Description("After break-even target is hit, move to break-even plus x ticks")]
+		[Description("After break-even target is hit, move to break-even plus x percent")]
         [GridCategory("Parameters")]
-        public int BreakEvenPlus
+        public double BreakEvenPlus
         {
             get { return breakEvenPlus; }
             set { breakEvenPlus = Math.Max(0, value); }
+        }
+		
+		[Description("Period to determine channel size in min")]
+        [GridCategory("Parameters")]
+        public int ChannelStartPeriodSize
+        {
+            get { return channelStartPeriodSize; }
+            set { channelStartPeriodSize = Math.Max(15, value); }
         }
 		
 		[Description("Number of future contracts traded")]
@@ -670,6 +689,14 @@ namespace NinjaTrader.Strategy
             get { return stopLossPercent; }
             set { stopLossPercent = value; }
         }
+				
+        [Description("Trade both directions anytime")]
+        [GridCategory("Parameters")]
+        public bool TradeHiAndLow
+        {
+            get { return tradeHiAndLow; }
+            set { tradeHiAndLow = value; }
+        }				
 		
         [Description("Target Profit Percent of ATR ex 0.5 or 1.25")]
         [GridCategory("Parameters")]
