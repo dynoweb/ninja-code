@@ -3,10 +3,13 @@ SVN Repository - TortoiseSVN 1.8.2
 https://code.google.com/p/ninja-code/
 
 When you get ready to checkout the code ninja uses
+c:\users\rcromer\Documents\NinjaTrader 7
 
-c:\users\username\documents\Ninja Trader 7
+$ pwd
+/c/Users/rcromer/Documents
+$ git clone https://github.com/dynoweb/ninja-code.git NinjaTrader\ 7
 
-Ninja Trader 7 is the root of the checked in code.  You should be able to do a check-out right on top of your existing files.
+NinjaTrader 7 is the root of the checked in code.  You should be able to do a check-out right on top of your existing files.
 
 
 Trading Platform
