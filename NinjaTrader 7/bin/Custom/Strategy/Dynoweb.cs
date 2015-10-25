@@ -355,8 +355,8 @@ namespace NinjaTrader.Strategy
 					if (highSinceOpen > (startingChannelHigh + (closeOrderLongLimit.LimitPrice - startingChannelHigh) * 0.5)
 						&& tradeCount != maxReversals)
 					{
-						channelHigh = startingChannelHigh + (highSinceOpen - startingChannelHigh) * 0.75;
-						channelLow = channelHigh - adjustedChannelSize * TickSize;
+//	RC 7/20/15					channelHigh = startingChannelHigh + (highSinceOpen - startingChannelHigh) * 0.75;
+//	RC 7/20/15					channelLow = channelHigh - adjustedChannelSize * TickSize;
 						//Print(Time + " new channelLow: " + channelLow);
 						DrawDot(CurrentBar + "channelLow", false, 0, channelLow, Color.Yellow);
 						//DrawDot(CurrentBar + "channelHigh", false, 0, channelHigh, Color.Yellow);
@@ -404,9 +404,9 @@ namespace NinjaTrader.Strategy
 					if (lowSinceOpen < startingChannelLow // - (startingChannelLow - closeOrderShortLimit.LimitPrice) * 0.5)
 						&& tradeCount != maxReversals)
 					{
-						channelLow = startingChannelLow - (startingChannelLow - lowSinceOpen) * 0.50;
+// RC 7/20/15						channelLow = startingChannelLow - (startingChannelLow - lowSinceOpen) * 0.50;
 						//channelLow = lowSinceOpen;
-						channelHigh = channelLow + adjustedChannelSize * TickSize;
+// RC 7/20/15						channelHigh = channelLow + adjustedChannelSize * TickSize;
 						//DrawDot(CurrentBar + "channelLow", false, 0, channelLow, Color.Green);
 						DrawDot(CurrentBar + "channelHigh", false, 0, channelHigh, Color.Green);
 					}

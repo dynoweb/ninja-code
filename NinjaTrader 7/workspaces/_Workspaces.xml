@@ -1,0 +1,2252 @@
+<NinjaTrader>
+  <Grids>
+    <Grid-DE326D5E-DC74-4231-993E-A4902CDF08DE>
+      <ColumnDefinition>
+        <Name>NinjaScript File</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Error</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Code</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Line</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Column</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-DE326D5E-DC74-4231-993E-A4902CDF08DE>
+    <Grid-925668DF-004B-4ac4-8BF5-6B2CCCD51C04>
+      <ColumnDefinition>
+        <Name>Name</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Type</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Description</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>2</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Tick Size</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Point Val.</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>masterInstrument</Name>
+        <Position>5</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-925668DF-004B-4ac4-8BF5-6B2CCCD51C04>
+    <Grid-CA67EC33-A5EC-4137-8ECE-4F99C64049E0>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Action</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Order Type</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Qty</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Limit</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Stop</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>State</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Filled</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg Price</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Remaining</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Name</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>OCO</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>TIF</Name>
+        <Position>12</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>GTD</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>14</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Connection</Name>
+        <Position>15</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>ID</Name>
+        <Position>16</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Strategy ID</Name>
+        <Position>17</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.30769230769231</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Token</Name>
+        <Position>18</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.12820512820513</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Time</Name>
+        <Position>19</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>2.74358974358974</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Increase</Name>
+        <Position>20</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Decrease</Name>
+        <Position>21</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cancel</Name>
+        <Position>22</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.17948717948718</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-CA67EC33-A5EC-4137-8ECE-4F99C64049E0>
+    <Grid-1E38386B-90BE-4AD2-BB76-98FF297486BC>
+      <ColumnDefinition>
+        <Name>Performance</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>All Trades</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Long Trades</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Short Trades</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-1E38386B-90BE-4AD2-BB76-98FF297486BC>
+    <Grid-110F9D0F-FA5F-4d64-ABAB-ACD5847887DA>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Performance</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Parameters</Name>
+        <Position>2</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total Net Profit</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Profit</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Loss</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit Factor</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cumulative Profit</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Drawdown</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Sharpe Ratio</Name>
+        <Position>9</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Commission</Name>
+        <Position>10</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total # of Trades</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Percent Profitable</Name>
+        <Position>12</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Winning Trades</Name>
+        <Position>13</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Losing Trades</Name>
+        <Position>14</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Trade</Name>
+        <Position>15</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Winning Trade</Name>
+        <Position>16</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Losing Trade</Name>
+        <Position>17</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Ratio avg. Win / avg. Loss</Name>
+        <Position>18</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Winners</Name>
+        <Position>19</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Losers</Name>
+        <Position>20</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Winning Trade</Name>
+        <Position>21</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Losing Trade</Name>
+        <Position>22</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Trades per Day</Name>
+        <Position>23</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg. Time in Market</Name>
+        <Position>24</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit per Month</Name>
+        <Position>25</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Time to Recover</Name>
+        <Position>26</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MAE</Name>
+        <Position>27</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MFE</Name>
+        <Position>28</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average ETD</Name>
+        <Position>29</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-110F9D0F-FA5F-4d64-ABAB-ACD5847887DA>
+    <Grid-C4165673-EA1F-4bb0-B28D-9AEBB152BDDA>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Performance</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Parameters</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>From</Name>
+        <Position>3</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>To</Name>
+        <Position>4</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total Net Profit</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Profit</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Loss</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit Factor</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cumulative Profit</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Drawdown</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Sharpe Ratio</Name>
+        <Position>11</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Commission</Name>
+        <Position>12</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total # of Trades</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Percent Profitable</Name>
+        <Position>14</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Winning Trades</Name>
+        <Position>15</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Losing Trades</Name>
+        <Position>16</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Trade</Name>
+        <Position>17</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Winning Trade</Name>
+        <Position>18</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Losing Trade</Name>
+        <Position>19</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Ratio avg. Win / avg. Loss</Name>
+        <Position>20</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Winners</Name>
+        <Position>21</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Losers</Name>
+        <Position>22</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Winning Trade</Name>
+        <Position>23</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Losing Trade</Name>
+        <Position>24</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Trades per Day</Name>
+        <Position>25</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg. Time in Market</Name>
+        <Position>26</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit per Month</Name>
+        <Position>27</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Time to Recover</Name>
+        <Position>28</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MAE</Name>
+        <Position>29</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MFE</Name>
+        <Position>30</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average ETD</Name>
+        <Position>31</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-C4165673-EA1F-4bb0-B28D-9AEBB152BDDA>
+    <Grid-614DCF20-BBCE-44e7-979A-51021E2D9F9B>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Performance</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Parameters</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>From</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>To</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total Net Profit</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Profit</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Gross Loss</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit Factor</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cumulative Profit</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Drawdown</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Sharpe Ratio</Name>
+        <Position>11</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Commission</Name>
+        <Position>12</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total # of Trades</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Percent Profitable</Name>
+        <Position>14</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Winning Trades</Name>
+        <Position>15</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Losing Trades</Name>
+        <Position>16</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Trade</Name>
+        <Position>17</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Winning Trade</Name>
+        <Position>18</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average Losing Trade</Name>
+        <Position>19</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Ratio avg. Win / avg. Loss</Name>
+        <Position>20</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Winners</Name>
+        <Position>21</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. conseq. Losers</Name>
+        <Position>22</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Winning Trade</Name>
+        <Position>23</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Largest Losing Trade</Name>
+        <Position>24</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name># of Trades per Day</Name>
+        <Position>25</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg. Time in Market</Name>
+        <Position>26</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit per Month</Name>
+        <Position>27</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Max. Time to Recover</Name>
+        <Position>28</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MAE</Name>
+        <Position>29</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average MFE</Name>
+        <Position>30</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Average ETD</Name>
+        <Position>31</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-614DCF20-BBCE-44e7-979A-51021E2D9F9B>
+    <Grid-3674D97E-3CB3-45ca-B23F-714606FB8F66>
+      <ColumnDefinition>
+        <Name>Strategy</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Data Series</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Parameters</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Position</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg Price</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Unrealized</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Realized</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Connection</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Enabled</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>0.5</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>ActualStrategy</Name>
+        <Position>11</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>MultiInstrument</Name>
+        <Position>12</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-3674D97E-3CB3-45ca-B23F-714606FB8F66>
+    <Grid-1F600562-12F5-445e-82B9-F7786CE9BABD>
+      <ColumnDefinition>
+        <Name>Date</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Category</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Message</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>4</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-1F600562-12F5-445e-82B9-F7786CE9BABD>
+    <Grid-D6FAAD70-3BFC-4534-9558-28B7205F58EC>
+      <ColumnDefinition>
+        <Name>Start Day</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Start Time</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>End Day</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>End Time</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-D6FAAD70-3BFC-4534-9558-28B7205F58EC>
+    <Grid-B22D661B-626E-4ab6-8EC8-5F5F1F5E23E2>
+      <ColumnDefinition>
+        <Name>Trade-#</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Strategy</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Market pos.</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Quantity</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Entry price</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Exit price</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Entry time</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Exit time</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Entry name</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Exit name</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Profit</Name>
+        <Position>12</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cum. profit</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Commission</Name>
+        <Position>14</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>MAE</Name>
+        <Position>15</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>MFE</Name>
+        <Position>16</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>ETD</Name>
+        <Position>17</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Bars</Name>
+        <Position>18</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-B22D661B-626E-4ab6-8EC8-5F5F1F5E23E2>
+    <Grid-5078DC91-9E57-4ad9-B1A3-ACAB7E048E5F>
+      <ColumnDefinition>
+        <Name>Item</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Value</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-5078DC91-9E57-4ad9-B1A3-ACAB7E048E5F>
+    <Grid-E5243F0A-71AD-4158-A18E-7F0E4D7D7079>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Action</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Qty</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Price</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Time</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>ID</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>E/X</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Position</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Order ID</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Name</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Commission</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Rate</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>12</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Connection</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-E5243F0A-71AD-4158-A18E-7F0E4D7D7079>
+    <Grid-AE8C628F-0323-480c-92EF-B24AF2721CAF>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Connection</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Buying Power</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Cash Value</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Excess Equity</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Initial Margin</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Initial Margin Overnight</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Maintenance Margin</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Maintenance Margin Overnight</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.51612903225806</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Net Liquidation</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Net Liquidation By Currency</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Realized PnL</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.03225806451613</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Total Cash Balance</Name>
+        <Position>12</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1.2258064516129</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-AE8C628F-0323-480c-92EF-B24AF2721CAF>
+    <Grid-DA16D66D-2122-448c-901A-B0F4BAF2B7E1>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Side</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Qty</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Avg Price</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>PnL</Name>
+        <Position>4</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Account</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Connection</Name>
+        <Position>6</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-DA16D66D-2122-448c-901A-B0F4BAF2B7E1>
+    <Grid-82EABFF8-50AC-4F25-B1C1-9B2A85CFDE23>
+      <ColumnDefinition>
+        <Name>Instrument</Name>
+        <Position>0</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Ask</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Ask Size</Name>
+        <Position>2</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Bid</Name>
+        <Position>3</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Bid Size</Name>
+        <Position>4</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Last</Name>
+        <Position>5</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Last Size</Name>
+        <Position>6</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Close</Name>
+        <Position>7</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Open</Name>
+        <Position>8</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>High</Name>
+        <Position>9</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Low</Name>
+        <Position>10</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Net Chg</Name>
+        <Position>11</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>% Net Chg</Name>
+        <Position>12</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Tot Vol</Name>
+        <Position>13</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Bid Tick</Name>
+        <Position>14</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-82EABFF8-50AC-4F25-B1C1-9B2A85CFDE23>
+    <Grid-C0C5F8B3-4E61-4a1b-88AC-9176A2D617EA>
+      <ColumnDefinition>
+        <Name>Headline</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>3</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Time</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Provider</Name>
+        <Position>2</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>ID</Name>
+        <Position>3</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-C0C5F8B3-4E61-4a1b-88AC-9176A2D617EA>
+    <Grid-4442C884-4AAD-459f-8615-D47064D74FC4>
+      <ColumnDefinition>
+        <Name>Date</Name>
+        <Position>0</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>True</SortStatus>
+        <SortAscending>False</SortAscending>
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Note</Name>
+        <Position>1</Position>
+        <Hidden>False</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>3.34193548387097</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-4442C884-4AAD-459f-8615-D47064D74FC4>
+    <Grid-699C1774-DA88-4960-89D4-DD2A0904A8E6>
+      <ColumnDefinition>
+        <Name>Date</Name>
+        <Position>0</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Time</Name>
+        <Position>1</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Type</Name>
+        <Position>2</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Price</Name>
+        <Position>3</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Open</Name>
+        <Position>4</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>High</Name>
+        <Position>5</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Low</Name>
+        <Position>6</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Close</Name>
+        <Position>7</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Volume</Name>
+        <Position>8</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+      <ColumnDefinition>
+        <Name>Status</Name>
+        <Position>9</Position>
+        <Hidden>True</Hidden>
+        <ReadOnly />
+        <SortStatus>False</SortStatus>
+        <SortAscending />
+        <ColumnWidthRatio>1</ColumnWidthRatio>
+      </ColumnDefinition>
+    </Grid-699C1774-DA88-4960-89D4-DD2A0904A8E6>
+  </Grids>
+  <Forms>
+    <ControlCenter-DD6EDFCD-18D0-45ef-A9D3-74F6C150EA24>
+      <Instrument>6A 12-15 Globex</Instrument>
+      <Assembly>NinjaTrader</Assembly>
+      <Class>NinjaTrader.Gui.ControlCenterForm</Class>
+      <WindowState>Normal</WindowState>
+      <Location>1053;2</Location>
+      <Size>862;314</Size>
+      <ZOrder>0</ZOrder>
+    </ControlCenter-DD6EDFCD-18D0-45ef-A9D3-74F6C150EA24>
+  </Forms>
+  <ActiveWorkspace>Untitled2.xml</ActiveWorkspace>
+  <SingletonForms>
+    <SimulationControlCenter>
+      <Location>0;0</Location>
+      <Size>60;159</Size>
+      <ZOrder>189</ZOrder>
+      <WindowState>
+      </WindowState>
+    </SimulationControlCenter>
+    <ReplayControlCenter>
+      <Location>0;0</Location>
+      <Size>319;102</Size>
+      <ZOrder>204</ZOrder>
+      <WindowState>Normal</WindowState>
+    </ReplayControlCenter>
+  </SingletonForms>
+  <Workspaces>
+    <Workspace>Untitled1.xml</Workspace>
+    <Workspace>Untitled2.xml</Workspace>
+  </Workspaces>
+  <XmlSerializers>
+    <XmlSerializer>NinjaTrader.Strategy.AtmStrategy</XmlSerializer>
+    <XmlSerializer>System.Boolean</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.ConnectionLossHandling</XmlSerializer>
+    <XmlSerializer>System.Int32</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.RealtimeErrorHandling</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.StrategySync</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.SimOptions</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.TATrader</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.Boomerang</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.BarsData</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Data.MergePolicy</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartRuler</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.RegressionChannel</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartTrendChannel</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.Message[]</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartLine</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartArrowLine</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartData</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.IchiCloud</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.EMA</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.TickCounter</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.PitColor</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.StochasticsCycles</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.HMARick</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.Pivots</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.NPCPHTChopFree</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.FiveBarSample</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Data.NewsEventArgs+RssProvider[]</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.TrackedServers</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.SoundType[]</XmlSerializer>
+    <XmlSerializer>System.DateTime</XmlSerializer>
+    <XmlSerializer>System.String</XmlSerializer>
+    <XmlSerializer>System.Double</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartArrowUp</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartEllipse</XmlSerializer>
+  </XmlSerializers>
+</NinjaTrader>

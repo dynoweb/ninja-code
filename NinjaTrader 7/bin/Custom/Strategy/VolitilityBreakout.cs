@@ -18,7 +18,7 @@ namespace NinjaTrader.Strategy
     /// <summary>
     /// Enter the description of your strategy here
     /// </summary>
-    [Description("Enter the description of your strategy here")]
+    [Description("15 min CL - looks for moves following consolidation")]
     public class VolitilityBreakout : Strategy
     {
         #region Variables
@@ -72,8 +72,25 @@ namespace NinjaTrader.Strategy
 			
 			if (Position.MarketPosition == MarketPosition.Flat)
 			{
+//				if (vbo.Squeeze[0] == 0.0)
+//					DrawSquare(CurrentBar + "sq", false, 0, High[0], Color.DarkRed);
+//				else
+//					DrawSquare(CurrentBar + "sq", false, 0, High[0], Color.DarkGreen);
+//				
+//				if (vbo.SqueezeOn[0] == 0.0)
+//					DrawSquare(CurrentBar + "sqo", false, 0, Low[0], Color.LightGray);
+//				else
+//					DrawSquare(CurrentBar + "sqo", false, 0, Low[0], Color.LightGreen);
+				
 				if (enableTrade && vbo.BarsSinceSqueeze[0] > 0 && squeezeSize > 1)
 				{
+					//DrawText(CurrentBar + "bss", vbo.BarsSinceSqueeze[0].ToString(), 0, ATR(5)[0] + High[0], Color.Black);
+					if (vbo.BarsSinceSqueeze[0] == 1)
+					{
+						DrawText(CurrentBar + "sh", vbo.SqueezeHigh[0].ToString(), 4, vbo.SqueezeHigh[0] + 0.05, Color.Black);
+						DrawText(CurrentBar + "sl", vbo.SqueezeLow[0].ToString(), 4, vbo.SqueezeLow[0] - 0.05, Color.Black);
+					}
+					
 					if (vbo.SqueezeHigh[0] > 0 && Close[0] > vbo.SqueezeHigh[0])				
 					{
 						shares = (int) Math.Floor(5000/vbo.SqueezeHigh[0]);
