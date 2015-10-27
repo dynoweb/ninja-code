@@ -18,7 +18,13 @@ namespace NinjaTrader.Strategy
     /// <summary>
     /// SPY-EOD This strategy is based from a purchased e-book named Building Profitable Trading Systems. 
 	/// http://www.systemtradersuccess.com
-	/// The testing period will be between 01/01/1997 and 12/31/2011
+	/// 
+	/// The testing period will be between 09/01/1997 and 12/31/2011
+	/// I used 9/1 instead of 1/1 because the pdf file had a 200 day Min Bars Req
+	/// 
+	/// The sanity test gain was 7795.17, slightly better than buy and hold
+	/// The buy and hold gain during this same period is 7536.93
+	/// 
     /// </summary>
     [Description("SPY-EOD This strategy is based on Building Profitable Trading Systems")]
     public class KeyReversalETF : Strategy
@@ -28,7 +34,7 @@ namespace NinjaTrader.Strategy
 			private int myInput0 = 1; // Default setting for MyInput0
 			// User defined variables (add any user defined variables below)
 			double accountSize = 20000.00;
-			int lookBack = 10;
+			int lookBackPeriod = 10;
 			int smaPeriod = 10;
 			int shares = 0;	// shares to trade
 			bool isBearish = false;
@@ -50,7 +56,7 @@ namespace NinjaTrader.Strategy
 //            SetStopLoss("", CalculationMode.Price, 0, false);
 //            SetTrailStop("", CalculationMode.Percent, 0, false);
 
-			dc = DonchianChannel(lookBack);
+			dc = DonchianChannel(LookBackPeriod);
 			dc.Displacement = 0;
 			dc.PaintPriceMarkers = false;
 			dc.Plots[0].Pen.Color = Color.Transparent;	// mean
@@ -58,7 +64,7 @@ namespace NinjaTrader.Strategy
 			dc.Plots[2].Pen.Color = Color.Black;		// bottom plot
 			Add(dc);
 			
-			sma = SMA(smaPeriod);
+			sma = SMA(SmaPeriod);
 			sma.Plots[0].Pen.Color = Color.Blue;
 			Add(sma);
 
@@ -72,15 +78,17 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
-			isBullish = ((Low[0] < MIN(Low, lookBack)[1]) && (Close[0] >= Close[1]));
+			isBullish = ((Low[0] < MIN(Low, LookBackPeriod)[1]) && (Close[0] >= Close[1]));
 			//Print(Time + " Low[0] " + Low[0] + " MIN: " + MIN(Low, lookBack)[1] + " isBullish? " + isBullish);
-			isBearish = ((High[0] > MAX(High, lookBack)[1]) && (Close[0] <= Close[1]));
+			isBearish = ((High[0] > MAX(High, LookBackPeriod)[1]) && (Close[0] <= Close[1]));
 			//Print(Time + " High[0] " + High[0] + " MAX: " + MAX(High, lookBack)[1] + " isBearish? " + isBearish);
 			shares = (int) Math.Floor(accountSize/Close[0]);
 			
 			if (Position.MarketPosition == MarketPosition.Flat) 
 			{
-				Print(Time + " gross profit: " + Performance.AllTrades.TradesPerformance.GrossProfit);
+				double currentAccountSize = accountSize + Performance.AllTrades.TradesPerformance.GrossProfit + Performance.AllTrades.TradesPerformance.GrossLoss;
+				shares = (int) Math.Floor(currentAccountSize/Close[0]);
+				Print(Time + " GrossProfit: " + Performance.AllTrades.TradesPerformance.GrossProfit + "GrossLoss " + Performance.AllTrades.TradesPerformance.GrossLoss);
 				if (isBullish) {
 					EnterLong(shares, "KR_Long");
 				} else if (isBearish) {
@@ -98,12 +106,20 @@ namespace NinjaTrader.Strategy
         }
 
         #region Properties
-        [Description("")]
+        [Description("The look-back period for the key reversal entry")]
         [GridCategory("Parameters")]
-        public int MyInput0
+        public int LookBackPeriod
         {
-            get { return myInput0; }
-            set { myInput0 = Math.Max(1, value); }
+            get { return lookBackPeriod; }
+            set { lookBackPeriod = Math.Max(1, value); }
+        }
+		
+        [Description("The look-back period for our exit calculation")]
+        [GridCategory("Parameters")]
+        public int SmaPeriod
+        {
+            get { return smaPeriod; }
+            set { smaPeriod = Math.Max(1, value); }
         }
         #endregion
     }
