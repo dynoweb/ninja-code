@@ -25,7 +25,7 @@ using NinjaTrader.Gui.Chart;
 using NinjaTrader.Strategy;
 
 //using PriceActionSwingOscillator.Utility;
-using PriceActionSwingPro.Utility;
+//using PriceActionSwingPro.Utility;
 #endregion
 
 // This namespace holds all strategies and is required. Do not change it.
@@ -45,8 +45,12 @@ namespace NinjaTrader.Strategy
         // User defined variables (add any user defined variables below)
 		
 		private int swingSize = 1;
-        private SwingTypes swingType = SwingTypes.Standard;
-        private int dtbStrength = 15;
+		///
+		/// I commented out the following line to get it to compile after getting a different version 
+		/// of PriceActionSwingPro
+		/// private SwingTypes swingType = SwingTypes.Standard;
+		///
+		private int dtbStrength = 15;
 
 		//NinjaTrader.Indicator.PriceActionSwing pas;
 		//NinjaTrader.Indicator.PriceActionSwingOscillator paso;
@@ -90,8 +94,8 @@ namespace NinjaTrader.Strategy
 			//paso = PriceActionSwingOscillator(dtbStrength, swingSize, SwingTypes.Standard);
 			//Add(paso);
 			
-			pasp = PriceActionSwingPro(dtbStrength, swingSize, SwingTypes.Standard);
-			Add(pasp);
+///			pasp = PriceActionSwingPro(dtbStrength, swingSize, SwingTypes.Standard);
+///			Add(pasp);
 			
 			//zz = ZigZagUTC(ZZ_SHOW_LINES, zzSpan, zzUseHighLow, Color.Black);
 			//Add(zz);
@@ -120,7 +124,7 @@ namespace NinjaTrader.Strategy
 			ichi = IchiCloud(BarsArray[0], periodFast, periodMedium, periodSlow);
 			ema = EMA(BarsArray[0], emaPeriod);
 			//paso = PriceActionSwingOscillator(BarsArray[0], dtbStrength, swingSize, SwingTypes.Standard);
-			pasp = PriceActionSwingPro(BarsArray[0], dtbStrength, swingSize, SwingTypes.Standard);
+///			pasp = PriceActionSwingPro(BarsArray[0], dtbStrength, swingSize, SwingTypes.Standard);
 			
 			if (Position.MarketPosition == MarketPosition.Long)
 			{

@@ -21,6 +21,7 @@ namespace NinjaTrader.Strategy
 	/// 
 	/// The testing period will be between 09/01/1997 and 12/31/2011
 	/// I used 9/1 instead of 1/1 because the pdf file had a 200 day Min Bars Req
+	/// or 1/1/97 when I set the min bars to 200
 	/// 
 	/// The sanity test gain was 7795.17, slightly better than buy and hold
 	/// The buy and hold gain during this same period is 7536.93
@@ -35,14 +36,20 @@ namespace NinjaTrader.Strategy
 			// User defined variables (add any user defined variables below)
 			double accountSize = 20000.00;
 			int lookBackPeriod = 10;
+			int bullBearPeriod = 200;
+			double profitTarget = 0.0;
 			int smaPeriod = 10;
 			int shares = 0;	// shares to trade
+			double stopLoss = 0;
+			double stopTrailing = 0;
 			bool isBearish = false;
 			bool isBullish = false;
+			bool isBullMarket = false;
 
 			// DonchianChannel parms
 			DonchianChannel dc = null;
 			SMA sma = null;
+			SMA smaBullBear = null;
 		
 		#endregion
 
@@ -51,10 +58,12 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void Initialize()
         {
-//            SetProfitTarget(20000);
-//            SetProfitTarget("", CalculationMode.Percent, 0);
-//            SetStopLoss("", CalculationMode.Price, 0, false);
-//            SetTrailStop("", CalculationMode.Percent, 0, false);
+			if (profitTarget > 0.0)
+	            SetProfitTarget("", CalculationMode.Percent, profitTarget);
+			if (stopLoss > 0.0)
+            	SetStopLoss("", CalculationMode.Percent, stopLoss, false);
+			if (stopTrailing > 0.0)
+            	SetTrailStop("", CalculationMode.Percent, stopTrailing, false);
 
 			dc = DonchianChannel(LookBackPeriod);
 			dc.Displacement = 0;
@@ -67,6 +76,10 @@ namespace NinjaTrader.Strategy
 			sma = SMA(SmaPeriod);
 			sma.Plots[0].Pen.Color = Color.Blue;
 			Add(sma);
+			
+			smaBullBear = SMA(BullBearPeriod);
+			smaBullBear.Plots[0].Pen.Color = Color.Black;
+			Add(smaBullBear);
 
 			Slippage = 0.04;
 			IncludeCommission = true;
@@ -78,6 +91,8 @@ namespace NinjaTrader.Strategy
         /// </summary>
         protected override void OnBarUpdate()
         {
+			isBullMarket = Close[0] > smaBullBear[0];
+			
 			isBullish = ((Low[0] < MIN(Low, LookBackPeriod)[1]) && (Close[0] >= Close[1]));
 			//Print(Time + " Low[0] " + Low[0] + " MIN: " + MIN(Low, lookBack)[1] + " isBullish? " + isBullish);
 			isBearish = ((High[0] > MAX(High, LookBackPeriod)[1]) && (Close[0] <= Close[1]));
@@ -89,20 +104,20 @@ namespace NinjaTrader.Strategy
 				double currentAccountSize = accountSize + Performance.AllTrades.TradesPerformance.GrossProfit + Performance.AllTrades.TradesPerformance.GrossLoss;
 				shares = (int) Math.Floor(currentAccountSize/Close[0]);
 				Print(Time + " GrossProfit: " + Performance.AllTrades.TradesPerformance.GrossProfit + "GrossLoss " + Performance.AllTrades.TradesPerformance.GrossLoss);
-				if (isBullish) {
+				if (isBullish && isBullMarket) {
 					EnterLong(shares, "KR_Long");
-				} else if (isBearish) {
+				} else if (isBearish && !isBullMarket) {
 					//Print(Time + " High[0] " + High[0] + " MAX: " + MAX(High, lookBack)[1]);
 					EnterShort(shares, "KR_Short");
 				}
 			}
 			
-			if (Position.MarketPosition == MarketPosition.Long && Close[0] > sma[0]) {
-				ExitLong("SMA Exit", "KR_Long");
-			}
-			if (Position.MarketPosition == MarketPosition.Short && Close[0] < sma[0]) {
-				ExitShort("SMA Exit", "KR_Short");
-			}
+//			if (Position.MarketPosition == MarketPosition.Long && (Close[0] > sma[0])) {
+//				ExitLong("SMA Exit", "KR_Long");
+//			}
+//			if (Position.MarketPosition == MarketPosition.Short && (Close[0] < sma[0])) {
+//				ExitShort("SMA Exit", "KR_Short");
+//			}
         }
 
         #region Properties
@@ -114,6 +129,38 @@ namespace NinjaTrader.Strategy
             set { lookBackPeriod = Math.Max(1, value); }
         }
 		
+        [Description("The period used to determine if in a bull or a bear market")]
+        [GridCategory("Parameters")]
+        public int BullBearPeriod
+        {
+            get { return bullBearPeriod; }
+            set { bullBearPeriod = Math.Max(1, value); }
+        }
+		
+        [Description("Profit Target in percentage - 0 to disable")]
+        [GridCategory("Parameters")]
+        public double ProfitTarget
+        {
+            get { return profitTarget; }
+            set { profitTarget = value; }
+        }
+
+        [Description("Stop Loss in percentage  - 0 to disable")]
+        [GridCategory("Parameters")]
+        public double StopLoss
+        {
+            get { return stopLoss; }
+            set { stopLoss = value; }
+        }
+
+        [Description("Auto trail Stop loss in percentage  - 0 to disable")]
+        [GridCategory("Parameters")]
+        public double StopTrailing
+        {
+            get { return stopTrailing; }
+            set { stopTrailing = value; }
+        }
+
         [Description("The look-back period for our exit calculation")]
         [GridCategory("Parameters")]
         public int SmaPeriod
