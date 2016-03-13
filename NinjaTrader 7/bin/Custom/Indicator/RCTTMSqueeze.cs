@@ -38,6 +38,7 @@ namespace NinjaTrader.Indicator
 		
 			private DataSeries		diff;
 			private DataSeries		mo;
+			private BoolSeries  inSqueeze;
 		
 			// Momentum
 			private int				smoothPeriod	= 6;
@@ -58,9 +59,10 @@ namespace NinjaTrader.Indicator
 			
 			diff				= new DataSeries(this);
 			mo					= new DataSeries(this);
+			inSqueeze			= new BoolSeries(this);
 			
 			Plots[0].Pen.Width = 3;
-			Plots[1].Pen.Width = 3;
+			Plots[1].Pen.Width = 2;
 			
             Overlay				= false;
         }
@@ -94,7 +96,8 @@ namespace NinjaTrader.Indicator
 			
 			//====================================
 
-			SqueezeAlert.Set(bWidth/kWidth);
+			double squeezeRatio = bWidth/kWidth;
+			//SqueezeAlert.Set(bWidth/kWidth);
 			
 			// Smoothing out momentum
 			double smoothedMo = SMA(mo, smoothPeriod)[0];
@@ -130,7 +133,8 @@ namespace NinjaTrader.Indicator
 				}
 				
 				VolComp.Set(0);
-				if (SqueezeAlert[0] < alertLine) 
+				inSqueeze.Set((squeezeRatio < alertLine) ? true : false);
+				if (inSqueeze[0])
 				{
 					// in a squeeze
 					PlotColors[1][0] = normalColor;
@@ -163,6 +167,13 @@ namespace NinjaTrader.Indicator
         public DataSeries SqueezeAlert
         {
             get { return Values[2]; }
+        }
+
+        [Browsable(false)]	// this line prevents the data series from being displayed in the indicator properties dialog, do not remove
+        [XmlIgnore()]		// this line ensures that the indicator can be saved/recovered as part of a chart template, do not remove
+        public BoolSeries InSqueeze
+        {
+            get { return inSqueeze; }
         }
 
 		[Description("Select color for Rising Trend")]
