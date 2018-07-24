@@ -2187,12 +2187,12 @@
       <Assembly>NinjaTrader</Assembly>
       <Class>NinjaTrader.Gui.ControlCenterForm</Class>
       <WindowState>Normal</WindowState>
-      <Location>1053;2</Location>
-      <Size>862;314</Size>
+      <Location>267;367</Location>
+      <Size>1024;314</Size>
       <ZOrder>0</ZOrder>
     </ControlCenter-DD6EDFCD-18D0-45ef-A9D3-74F6C150EA24>
   </Forms>
-  <ActiveWorkspace>Untitled2.xml</ActiveWorkspace>
+  <ActiveWorkspace>Untitled1.xml</ActiveWorkspace>
   <SingletonForms>
     <SimulationControlCenter>
       <Location>0;0</Location>
@@ -2210,43 +2210,39 @@
   </SingletonForms>
   <Workspaces>
     <Workspace>Untitled1.xml</Workspace>
-    <Workspace>Untitled2.xml</Workspace>
   </Workspaces>
   <XmlSerializers>
-    <XmlSerializer>NinjaTrader.Strategy.AtmStrategy</XmlSerializer>
     <XmlSerializer>System.Boolean</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Strategy.ConnectionLossHandling</XmlSerializer>
-    <XmlSerializer>System.Int32</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Strategy.RealtimeErrorHandling</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Strategy.StrategySync</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Cbi.SimOptions</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Strategy.TATrader</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Strategy.Boomerang</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.BarsData</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Data.MergePolicy</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartRuler</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.RegressionChannel</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartTrendChannel</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Cbi.Message[]</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartLine</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartArrowLine</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartData</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.IchiCloud</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.EMA</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.TickCounter</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.PitColor</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.StochasticsCycles</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.HMARick</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.Pivots</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.NPCPHTChopFree</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Indicator.FiveBarSample</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Data.NewsEventArgs+RssProvider[]</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Cbi.TrackedServers</XmlSerializer>
     <XmlSerializer>NinjaTrader.Gui.SoundType[]</XmlSerializer>
+    <XmlSerializer>System.Int32</XmlSerializer>
     <XmlSerializer>System.DateTime</XmlSerializer>
     <XmlSerializer>System.String</XmlSerializer>
     <XmlSerializer>System.Double</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.AtmStrategy</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.ConnectionLossHandling</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.RealtimeErrorHandling</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Strategy.StrategySync</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.SimOptions</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.BarsData</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Data.MergePolicy</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.Message[]</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Data.NewsEventArgs+RssProvider[]</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartData</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.WTBarsOverlay</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.WTMomentum</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.WTIntent</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.VendorLicense</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartDot</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartDiamond</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartHorizontalLine</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartRuler</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.PitColor</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.EMA</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.HMARick</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.StochasticsCycles</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Indicator.IchiCloud</XmlSerializer>
     <XmlSerializer>NinjaTrader.Gui.Chart.ChartArrowUp</XmlSerializer>
-    <XmlSerializer>NinjaTrader.Gui.Chart.ChartEllipse</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Cbi.Commission</XmlSerializer>
+    <XmlSerializer>NinjaTrader.Gui.Chart.ChartLine</XmlSerializer>
   </XmlSerializers>
 </NinjaTrader>
